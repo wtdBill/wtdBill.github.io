@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  <title>No title | Hexo | </title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="theme-color" content="#3F51B5">
+  
+  
+  <meta name="keywords" content="">
+  <meta name="description" content="在我们开发过程中，经常会用到异步操作来进行界面的更新，一般来说，在子线程更新UI线程有三种方式，具体可以看：https://blog.csdn.net/qq_29451649/article/details/79529441  但是我们在写一些复杂的操作时直接使用Handler会有点麻烦，下面我们学习一下AsyncTask的使用以及实现的原理吧。   首先看AsyncTask的定义，方法如下：">
+<meta property="og:type" content="article">
+<meta property="og:title" content="No title">
+<meta property="og:url" content="http://yoursite.com/2019/01/26/AysncTask详解/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="在我们开发过程中，经常会用到异步操作来进行界面的更新，一般来说，在子线程更新UI线程有三种方式，具体可以看：https://blog.csdn.net/qq_29451649/article/details/79529441  但是我们在写一些复杂的操作时直接使用Handler会有点麻烦，下面我们学习一下AsyncTask的使用以及实现的原理吧。   首先看AsyncTask的定义，方法如下：">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2019-01-26T07:08:58.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="No title">
+<meta name="twitter:description" content="在我们开发过程中，经常会用到异步操作来进行界面的更新，一般来说，在子线程更新UI线程有三种方式，具体可以看：https://blog.csdn.net/qq_29451649/article/details/79529441  但是我们在写一些复杂的操作时直接使用Handler会有点麻烦，下面我们学习一下AsyncTask的使用以及实现的原理吧。   首先看AsyncTask的定义，方法如下：">
+  
+    <link rel="alternative" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  <meta name="summary" content="">
+  <link rel="shortcut icon" href="/favicon.ico">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="loading" class="active"></div>
+
+  <nav id="menu" class="hide" >
+   <div class="inner flex-row-vertical">
+  <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+      <i class="icon icon-lg icon-close"></i>
+  </a>
+  <div class="brand-wrap">
+    <div class="brand">
+      <a href="/" class="avatar"><img src="/img/header.jpg"></a>
+      <hgroup class="introduce">
+        <h5 class="nickname">John Doe</h5>
+        <a href="mailto:1246275955@qq.com" title="1246275955@qq.com" class="mail">1246275955@qq.com</a>
+      </hgroup>
+    </div>
+  </div>
+  <div class="scroll-wrap flex-col">
+    <ul class="nav">
+      
+          <li class="waves-block waves-effect">
+            <a href="/">
+              <i class="icon icon-lg icon-home"></i>
+              主页
+            </a>
+          </li>
+      
+          <li class="waves-block waves-effect">
+            <a href="/archives">
+              <i class="icon icon-lg icon-archives"></i>
+              Archives
+            </a>
+          </li>
+      
+          <li class="waves-block waves-effect">
+            <a href="/tags">
+              <i class="icon icon-lg icon-tags"></i>
+              Tags
+            </a>
+          </li>
+      
+          <li class="waves-block waves-effect">
+            <a href="https://github.com/wtdBill" target="_blank">
+              <i class="icon icon-lg icon-github"></i>
+              Github
+            </a>
+          </li>
+      
+          <li class="waves-block waves-effect">
+            <a href="http://www.weibo.com/ysweb" target="_blank">
+              <i class="icon icon-lg icon-weibo"></i>
+              Weibo
+            </a>
+          </li>
+      
+          <li class="waves-block waves-effect">
+            <a href="/404">
+              <i class="icon icon-lg icon-link"></i>
+              --
+            </a>
+          </li>
+      
+    </ul>
+
+    <footer class="footer">
+  <p><a rel="license" target="_blank" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0;vertical-align:middle;" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFAAAAAPCAMAAABEF7i9AAAAllBMVEUAAAD///+rsapERER3d3eIiIjMzMzu7u4iIiKUmZO6v7rKzsoODg4RERFVVVUNDQ0NDg0PEA8zMzNLTEtbXltmZmZydnF9gn2AgICPkI+ZmZmqqqq7u7vFxsXIzMgNDQwZGRkgICAhISEkJSMnKCcuMC4xMzE5Ozk7PTtBQkFCQkJDQ0Nna2eGhoaHh4ezuLLGysbd3d1wVGpAAAAA4UlEQVR42q2T1xqCMAyFk7QsBQeKA9x7j/d/OSm22CpX0nzcpA1/T05aAOuBVkMAScQFHLnEwoCo2f1TnQIGoVMewjZEjVFN4GH1Ue1Cn2jWqwfsOOj6wDwGvotsl/c8lv7KIq1eLOsT0HMFHMIE/RZyHnlphryT9zyV+8WH5e8yQw3wnQvgAFxPTKUVi555SHR/lOfLMgVTeDlSfN+TaoUsiTyeIm+bCkHvCA2FUKG48LDtYBZBknsYP/G8NTw0gaaHyuQf4H5pecrB/FYCT2sL9zAfy1Xyjou6L8X2W7YcLyBZCRtnq/zfAAAAAElFTkSuQmCC"></a></p>
+  <p>Hexo &copy; 2019</p>
+  <p>Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme
+  <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a></p>
+  <a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-2x icon-rss-square"></i></a>
+</footer>
+
+  </div>
+</div>
+
+  </nav>
+  <main id="main">
+    <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">No title</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input " autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-share">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header">
+  <div class="container">
+    <h1 class="author">No title</h1>
+    <h5 class="subtitle">
+        
+            <time datetime="2019-01-26T07:09:51.403Z" itemprop="datePublished" class="page-time">
+  2019-01-26
+</time>
+
+
+        
+    </h5>
+  </div>
+</header>
+
+    <div class="container body-wrap">
+      <article id="post-AysncTask详解" class="article article-type-post" itemprop="blogPost">
+    <div class="post-meta flex-row">
+        
+    </div>
+    <div class="post-body">
+        <aside class="post-widget" id="post-widget">
+
+            
+            <div class="post-share" id="post-share">
+    <div class="tit">分享到：</div>
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" href="javascript:;" data-title="微博" data-service="tsina">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns" href="javascript:;" data-title="微信" data-service="weixin">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" href="javascript:;" data-title=" QQ" data-service="cqq">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" href="javascript:;" data-title=" Facebook" data-service="fb">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" href="javascript:;" data-title=" Twitter" data-service="twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="douban share-sns" href="javascript:;" data-title="豆瓣" data-service="douban">
+          豆
+        </a>
+      </li>
+    </ul>
+ </div>
+
+            
+
+            
+            <nav class="post-toc-wrap" id="post-toc">
+            
+            </nav>
+            
+        </aside>
+
+        <div class="post-main">
+
+            <div class="post-content" id="post-content" itemprop="postContent">
+            <p>  在我们开发过程中，经常会用到异步操作来进行界面的更新，一般来说，在子线程更新UI线程有三种方式，具体可以看：<a href="https://blog.csdn.net/qq_29451649/article/details/79529441" target="_blank" rel="noopener">https://blog.csdn.net/qq_29451649/article/details/79529441</a><br>  但是我们在写一些复杂的操作时直接使用Handler会有点麻烦，下面我们学习一下AsyncTask的使用以及实现的原理吧。</p>
+<p>  首先看AsyncTask的定义，方法如下：</p>
+<p>  public abstract class AsyncTask&lt;Params, Progress, Result&gt; {…</p>
+<p>  可以看到AsyncTask是泛型类，它包含3个参数，其中Params是参数的类型，Progress后台任务执行的任务类型，Result是返回的结果类型。我们在创建<br>  AsyncTask的时候后，要有以下四个核心的方法：</p>
+<pre><code>protected Object doInBackground(Object[] objects) {
+    return null;
+}
+
+@Override
+protected void onPostExecute(Object o) {
+    super.onPostExecute(o);
+}
+
+@Override
+protected void onProgressUpdate(Object[] values) {
+    super.onProgressUpdate(values);
+}
+
+@Override
+protected void onPreExecute() {
+    super.onPreExecute();
+}
+</code></pre><p>  其中除了doInBackground方法是在子线程中运行的，其他的都是在主线程中执行的。onPreExecute方法做的是初始化的工作，在任务执行前执行。doInBackground方法在onPreExecute方法之后之行，主要用来进行耗时操作，在我们执行的过程中可以调用publishProgress方法，将我们执行的进度传到下一个方法onProgressUpdate中（例如我们下载的操作），onPreExecute是在doInBackground执行完毕时进行的操作，在这里我们可以进行一些UI的更新等。</p>
+<p>  好了，用法什么的就不再说了，我们来看一下它到底是怎么实现这样的线程切换以及doInBackground到底是怎么执行操作的吧：</p>
+<pre><code>private static final BlockingQueue&lt;Runnable&gt; sPoolWorkQueue =
+        new LinkedBlockingQueue&lt;Runnable&gt;(128);
+
+/**
+ * An {@link Executor} that can be used to execute tasks in parallel.
+ */
+public static final Executor THREAD_POOL_EXECUTOR;
+
+static {
+    ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(
+            CORE_POOL_SIZE, MAXIMUM_POOL_SIZE, KEEP_ALIVE_SECONDS, TimeUnit.SECONDS,
+            sPoolWorkQueue, sThreadFactory);
+    threadPoolExecutor.allowCoreThreadTimeOut(true);
+    THREAD_POOL_EXECUTOR = threadPoolExecutor;
+}
+</code></pre><p>  可以看到，在这个类中新建了一个sPoolWorkQueue，这是一个由链表组成的阻塞队列。然后通过这个阻塞队列创建了一个线程池threadPoolExecutor。下面看一下其他的参数：</p>
+<pre><code> private static final int CPU_COUNT = Runtime.getRuntime().availableProcessors();
+// We want at least 2 threads and at most 4 threads in the core pool,
+// preferring to have 1 less than the CPU count to avoid saturating
+// the CPU with background work
+private static final int CORE_POOL_SIZE = Math.max(2, Math.min(CPU_COUNT - 1, 4));
+private static final int MAXIMUM_POOL_SIZE = CPU_COUNT * 2 + 1;
+private static final int KEEP_ALIVE_SECONDS = 30;
+</code></pre><p>  可以看到通过CPU_COUNT返回可用处理器的Java虚拟机的数量然后构建一个线程池。下面看一下doInBackground的实现:</p>
+<pre><code>mWorker = new WorkerRunnable&lt;Params, Result&gt;() {
+       public Result call() throws Exception {
+           mTaskInvoked.set(true);
+           Result result = null;
+           try {
+               Process.setThreadPriority(Process.THREAD_PRIORITY_BACKGROUND);
+               //noinspection unchecked
+               result = doInBackground(mParams);
+               Binder.flushPendingCommands();
+           } catch (Throwable tr) {
+               mCancelled.set(true);
+               throw tr;
+           } finally {
+               postResult(result);
+           }
+           return result;
+       }
+   };
+</code></pre><p>  可以看到整合各WorkerRunnable实现的是会很少用到的Callable接口，在它的call方法中调用了doInBackground方法并获取到了Result。下面我们看一下AsyncTask的exexute的执行过程:</p>
+<pre><code>  @MainThread
+public final AsyncTask&lt;Params, Progress, Result&gt; execute(Params... params) {
+    return executeOnExecutor(sDefaultExecutor, params);
+}
+
+
+@MainThread
+public final AsyncTask&lt;Params, Progress, Result&gt; executeOnExecutor(Executor exec,
+        Params... params) {
+    if (mStatus != Status.PENDING) {
+        switch (mStatus) {
+            case RUNNING:
+                throw new IllegalStateException(&quot;Cannot execute task:&quot;
+                        + &quot; the task is already running.&quot;);
+            case FINISHED:
+                throw new IllegalStateException(&quot;Cannot execute task:&quot;
+                        + &quot; the task has already been executed &quot;
+                        + &quot;(a task can be executed only once)&quot;);
+        }
+    }
+
+    mStatus = Status.RUNNING;
+
+    onPreExecute();
+
+    mWorker.mParams = params;
+    exec.execute(mFuture);//1
+
+    return this;
+}
+</code></pre><p>  我们看到先是调用了executeOnExecutor方法，然后判断一下它的状态，如果是在运行和完成都会抛出异常。否则将状态设置为运行中，并调用onPreExecute方法,之后调用上面注释1处的方法，</p>
+<pre><code>mFuture = new FutureTask&lt;Result&gt;(mWorker) {
+        @Override
+        protected void done() {
+            try {
+                postResultIfNotInvoked(get());
+            } catch (InterruptedException e) {
+                android.util.Log.w(LOG_TAG, e);
+            } catch (ExecutionException e) {
+                throw new RuntimeException(&quot;An error occurred while executing doInBackground()&quot;,
+                        e.getCause());
+            } catch (CancellationException e) {
+                postResultIfNotInvoked(null);
+            }
+        }
+    };
+</code></pre><p>  在上面我们说过，mWorker继承了Callable接口，这里的mFuture是一个FutureTask实现了Runnable和Callable两个接口，接着我们看postResultIfNotInvoked这个方法：</p>
+<pre><code>  private void postResultIfNotInvoked(Result result) {
+    final boolean wasTaskInvoked = mTaskInvoked.get();
+    if (!wasTaskInvoked) {
+        postResult(result);
+    }
+}
+
+private Result postResult(Result result) {
+    @SuppressWarnings(&quot;unchecked&quot;)
+    Message message = getHandler().obtainMessage(MESSAGE_POST_RESULT,
+            new AsyncTaskResult&lt;Result&gt;(this, result));
+    message.sendToTarget();
+    return result;
+}
+</code></pre><p>  可以看到在postResult方法中创建了新的Message对象，到这里大家是不是都明白了，通过gethHandler方法得到Handler并通过这个handler发送消息</p>
+<pre><code>mHandler = callbackLooper == null || callbackLooper == Looper.getMainLooper()
+        ? getMainHandler()
+        : new Handler(callbackLooper);
+
+private Handler getHandler() {
+    return mHandler;
+}
+
+private static Handler getMainHandler() {
+    synchronized (AsyncTask.class) {
+        if (sHandler == null) {
+            sHandler = new InternalHandler(Looper.getMainLooper());
+        }
+        return sHandler;
+    }
+}
+
+private static class InternalHandler extends Handler {
+    public InternalHandler(Looper looper) {
+        super(looper);
+    }
+
+    @SuppressWarnings({&quot;unchecked&quot;, &quot;RawUseOfParameterizedType&quot;})
+    @Override
+    public void handleMessage(Message msg) {
+        AsyncTaskResult&lt;?&gt; result = (AsyncTaskResult&lt;?&gt;) msg.obj;
+        switch (msg.what) {
+            case MESSAGE_POST_RESULT:
+                // There is only one result
+                result.mTask.finish(result.mData[0]);
+                break;
+            case MESSAGE_POST_PROGRESS:
+                result.mTask.onProgressUpdate(result.mData);
+                break;
+        }
+    }
+} super(looper);
+    }
+</code></pre><p>  可以看到这个Handler和获取到的Looper对象是MainLooper。可以看到完成时会调用finish方法：</p>
+<pre><code>  private void finish(Result result) {
+    if (isCancelled()) {
+        onCancelled(result);
+    } else {
+        onPostExecute(result);
+    }
+    mStatus = Status.FINISHED;
+}
+</code></pre><p>  现在可以看到在结束时调用了postExecute方法并将Result传了过去。好了，到这里大家就该明白这这整个执行过程了吧。</p>
+
+
+            
+            <div class="post-reward">
+                <a id="rewardBtn" href="javascript:;" class="post-reward-btn waves-effect waves-circle waves-light">赏</a>
+            </div>
+            
+            
+            <blockquote>
+                <p>
+                本文地址：
+                <a href="http://yoursite.com/2019/01/26/AysncTask详解/" target="_blank" rel="external">http://yoursite.com/2019/01/26/AysncTask详解/</a>
+                </p>
+                <footer><cite><a href="http://yoursite.com">@Hexo</a></cite></footer>
+            </blockquote>
+            </div>
+            
+
+            
+            
+<div class="duoshuo">
+	<!-- 多说评论框 start -->
+	<div class="ds-thread" data-thread-key="AysncTask详解" data-title="No title" data-url="http://yoursite.com/2019/01/26/AysncTask详解/index.html"></div>
+	<!-- 多说评论框 end -->
+	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+	<script type="text/javascript">
+	var duoshuoQuery = {short_name:"ysblog"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+	<!-- 多说公共JS代码 end -->
+</div>
+
+
+
+
+
+        </div>
+    </div>
+</article>
+
+<div id="reward" class="reward-lay">
+    <a class="reward-off" id="rewardOff" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        谢谢老板~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <ul class="reward-items">
+        
+        <li>
+            <img src="/img/wechat.jpg" title="微信打赏二维码" alt="微信打赏二维码">
+            <p>微信</p>
+        </li>
+        
+
+        
+        <li>
+            <img src="/img/alipay.jpg" title="支付宝打赏二维码" alt="支付宝打赏二维码">
+            <p>支付宝</p>
+        </li>
+        
+    </ul>
+</div>
+
+    </div>
+  </main>
+<div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+<script>
+var BLOG_SHARE = {
+    title: "No title",
+    pic: "/img/header.jpg",
+    summary: document.getElementsByName('summary')[0].content,
+    url: "http://yoursite.com/2019/01/26/AysncTask详解/index.html"
+};
+</script>
+<div class="global-share" id="global-share">
+    <div class="tit">分享到：</div>
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" href="javascript:;" data-title="微博" data-service="tsina">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns" href="javascript:;" data-title="微信" data-service="weixin">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" href="javascript:;" data-title=" QQ" data-service="cqq">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" href="javascript:;" data-title=" Facebook" data-service="fb">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" href="javascript:;" data-title=" Twitter" data-service="twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="douban share-sns" href="javascript:;" data-title="豆瓣" data-service="douban">
+          豆
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+
+<script src="/js/main.js"></script>
+
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<script type="text/template" id="search-tpl">
+<li class="item">
+    <a href="/{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</script>
+
+<script src="/js/search.js"></script>
+
+
+
+
+
+
+
+
+
+</body>
+</html>
