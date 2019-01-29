@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2019-01-28T16:26:28.961Z</updated>
+  <updated>2019-01-29T14:38:15.785Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -15,6 +15,33 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>android性能优化</title>
+    <link href="http://yoursite.com/2019/01/29/android%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/"/>
+    <id>http://yoursite.com/2019/01/29/android性能优化/</id>
+    <published>2019-01-29T13:36:14.000Z</published>
+    <updated>2019-01-29T14:38:15.785Z</updated>
+    
+    <content type="html"><![CDATA[<p>1.优化布局</p><p>（1）减少布局嵌套，VIew树的高度不超过10层，使用RelativeLayout可以提高渲染的效率</p><p>（2）使用<include>标签重用布局</include></p><p>（3）使用ViewStub延迟加载</p><p>（4）<a href="https://github.com/romainguy/ViewServer" target="_blank" rel="noopener">github开源工具检测布局</a></p><p>2.内存优化</p><p>获取应用程序最大内存//128MB</p><p>int maxMemory=(int)(Runtime.getRuntime().maxMemory()/1024);</p><p>获取手机堆内存大小  MB</p><p>int memClass=((ActivityManager)getSystemService(Context.ACTIVITY_SERVICE)).getMemoryClass();</p><p>int maxMemory=(int)(Runtime.getRuntime().maxMemory()/1024);//得到应用程序最大内存的kb大小</p><p>Log.d(TAG, maxMemory+””);</p><p>int memClass=((ActivityManager)getSystemService(Context.ACTIVITY_SERVICE)).getMemoryClass();//得到手机最大堆内存的大小，java heap最大值</p><p>Log.d(TAG, memClass+””);</p><p>Runtime runtime=Runtime.getRuntime();</p><p>//字节大小</p><p>long maxHeap=runtime.maxMemory();//最大java heap最大值</p><p>Log.d(TAG, “maxMemory”+maxHeap+””);</p><p>long freeMemory=runtime.freeMemory();//获取<strong>申请但未使用</strong>java heap,单位byte</p><p>Log.d(TAG, “freeMemory”+freeMemory);</p><p>long usedMemory=runtime.totalMemory();//获取已经申请的全部内存</p><p>Log.d(TAG, “totalMemory”+usedMemory);</p><p>long haveusedMemory=runtime.totalMemory()-runtime.freeMemory();//已经使用的heap内存</p><p>Log.d(TAG, “haveusedMemory”+haveusedMemory);</p><p>long availableMemory=runtime.maxMemory()-runtime.totalMemory()+runtime.freeMemory();//当前可new出来的最大内存</p><p>Log.d(TAG, “availableMemory”+availableMemory);</p><p>（1）堆内存：堆内存用来存放new创建的对象和数组，由虚拟机的垃圾回收器GC管理。调用System.gc()方法可以建议系统回收，但是开发者无法控制。</p><p>（2）Bitmap优化  在Bitmap对象使用结束时及时调用bitmap.recycle()方法释放资源；通过内存缓存（LruCache）和磁盘缓存（DiskLruCache）更好的使用（推荐使用Glide框架）</p><p>（3）代码优化</p><p>常量使用static修饰符</p><p>static方法可以提高访问速度</p><p>尽量使用局部变量代替成员变量（as自带提醒）</p><p>减少对象的使用，尽量使用基础类型  eg: Sting s;   better than String s = new String();(装拆箱)</p><p>不使用枚举！！（很消耗内存）  减少使用Iterator</p><p>Cursor、Receiver、Sensor、File等内存大户的创建、回收、注册和解注册</p><p>避免使用IOC注解？？？（待理解）</p><p>利用SurfaceView代替View来进行绘图操作</p><p>View inflate后及时缓存  不用每次都去解析视图</p><p>3.Lint工具</p><p>4.Android Studio自带的Mrmory Monitor工具</p><p>5.<a href="https://blog.csdn.net/u011240877/article/details/54347396" target="_blank" rel="noopener">使用TraceView工具优化</a></p><p>6.<a href="https://blog.csdn.net/zxm317122667/article/details/52162764" target="_blank" rel="noopener">使用MAT工具分析应用内存</a></p><p>7.<a href="https://www.jianshu.com/p/2ff0f2a5571c" target="_blank" rel="noopener">使用Dumpsys分析系统状态</a></p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;1.优化布局&lt;/p&gt;
+&lt;p&gt;（1）减少布局嵌套，VIew树的高度不超过10层，使用RelativeLayout可以提高渲染的效率&lt;/p&gt;
+&lt;p&gt;（2）使用&lt;include&gt;标签重用布局&lt;/include&gt;&lt;/p&gt;
+&lt;p&gt;（3）使用ViewStub延迟加载&lt;/p&gt;
+&lt;p&gt;（4
+      
+    
+    </summary>
+    
+    
+      <category term="android" scheme="http://yoursite.com/tags/android/"/>
+    
+  </entry>
   
   <entry>
     <title>AysncTask详解</title>
