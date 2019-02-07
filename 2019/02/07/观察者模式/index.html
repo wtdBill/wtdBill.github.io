@@ -10,18 +10,18 @@
   
   
   <meta name="keywords" content="设计模式">
-  <meta name="description" content="首先，实现被观察者、观察者的接口 public interface Subject {    void registerObserver(Observer o); //注册观察者    void removeObserver(Observer o); //删除观察者    void notifyObservers(); //当被观察者状态改变时，通知所有观察者信息} public interfac">
+  <meta name="description" content="首先，实现观察者、被观察者接口 public interface Subject {    void registerObserver(Observer o); //注册观察者    void removeObserver(Observer o); //删除观察者    void notifyObservers(); //当被观察者状态改变时，通知所有观察者信息} public interface">
 <meta name="keywords" content="设计模式">
 <meta property="og:type" content="article">
 <meta property="og:title" content="观察者模式">
 <meta property="og:url" content="http://www.yppcat.top/2019/02/07/观察者模式/index.html">
 <meta property="og:site_name" content="wtdbill笔记">
-<meta property="og:description" content="首先，实现被观察者、观察者的接口 public interface Subject {    void registerObserver(Observer o); //注册观察者    void removeObserver(Observer o); //删除观察者    void notifyObservers(); //当被观察者状态改变时，通知所有观察者信息} public interfac">
+<meta property="og:description" content="首先，实现观察者、被观察者接口 public interface Subject {    void registerObserver(Observer o); //注册观察者    void removeObserver(Observer o); //删除观察者    void notifyObservers(); //当被观察者状态改变时，通知所有观察者信息} public interface">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-02-07T11:30:14.793Z">
+<meta property="og:updated_time" content="2019-02-07T11:40:21.201Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="观察者模式">
-<meta name="twitter:description" content="首先，实现被观察者、观察者的接口 public interface Subject {    void registerObserver(Observer o); //注册观察者    void removeObserver(Observer o); //删除观察者    void notifyObservers(); //当被观察者状态改变时，通知所有观察者信息} public interfac">
+<meta name="twitter:description" content="首先，实现观察者、被观察者接口 public interface Subject {    void registerObserver(Observer o); //注册观察者    void removeObserver(Observer o); //删除观察者    void notifyObservers(); //当被观察者状态改变时，通知所有观察者信息} public interface">
   
     <link rel="alternative" href="/atom.xml" title="wtdbill笔记" type="application/atom+xml">
   
@@ -136,7 +136,7 @@
     <h1 class="author">观察者模式</h1>
     <h5 class="subtitle">
         
-            <time datetime="2019-02-07T10:47:07.000Z" itemprop="datePublished" class="page-time">
+            <time datetime="2019-02-07T11:35:29.000Z" itemprop="datePublished" class="page-time">
   2019-02-07
 </time>
 
@@ -205,11 +205,11 @@
         <div class="post-main">
 
             <div class="post-content" id="post-content" itemprop="postContent">
-            <p>首先，实现被观察者、观察者的接口</p>
+            <p>首先，实现观察者、被观察者接口</p>
 <p><code>public interface Subject {    void registerObserver(Observer o); //注册观察者    void removeObserver(Observer o); //删除观察者    void notifyObservers(); //当被观察者状态改变时，通知所有观察者信息}</code></p>
 <p><code>public interface Observer {    //当被观察者的数据更新时，将更新的信息当做参数传递给观察者    void update(float temperature, float humidity, float pressure);}</code></p>
 <p><code>public interface DisplayElement {    void display(); //用于显示更新的数据}</code></p>
-<p>被观察对象实现</p>
+<p>被观察者对象的实现</p>
 
 
             
