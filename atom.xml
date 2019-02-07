@@ -1,25 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
-  <title>Hexo</title>
+  <title>wtdbill笔记</title>
   
   
   <link href="/atom.xml" rel="self"/>
   
-  <link href="http://yoursite.com/"/>
-  <updated>2019-01-29T14:38:15.785Z</updated>
-  <id>http://yoursite.com/</id>
+  <link href="http://www.yppcat.top/"/>
+  <updated>2019-02-07T11:30:14.793Z</updated>
+  <id>http://www.yppcat.top/</id>
   
   <author>
-    <name>John Doe</name>
+    <name>wtdBill</name>
     
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>观察者模式</title>
+    <link href="http://www.yppcat.top/2019/02/07/%E8%A7%82%E5%AF%9F%E8%80%85%E6%A8%A1%E5%BC%8F/"/>
+    <id>http://www.yppcat.top/2019/02/07/观察者模式/</id>
+    <published>2019-02-07T10:47:07.000Z</published>
+    <updated>2019-02-07T11:30:14.793Z</updated>
+    
+    <content type="html"><![CDATA[<p>首先，实现被观察者、观察者的接口</p><p><code>public interface Subject {    void registerObserver(Observer o); //注册观察者    void removeObserver(Observer o); //删除观察者    void notifyObservers(); //当被观察者状态改变时，通知所有观察者信息}</code></p><p><code>public interface Observer {    //当被观察者的数据更新时，将更新的信息当做参数传递给观察者    void update(float temperature, float humidity, float pressure);}</code></p><p><code>public interface DisplayElement {    void display(); //用于显示更新的数据}</code></p><p>被观察对象实现</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;首先，实现被观察者、观察者的接口&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;public interface Subject {    void registerObserver(Observer o); //注册观察者    void removeObserver(Observer o)
+      
+    
+    </summary>
+    
+    
+      <category term="设计模式" scheme="http://www.yppcat.top/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>RxJava操作符</title>
+    <link href="http://www.yppcat.top/2019/01/30/RxJava%E6%93%8D%E4%BD%9C%E7%AC%A6/"/>
+    <id>http://www.yppcat.top/2019/01/30/RxJava操作符/</id>
+    <published>2019-01-30T12:12:08.000Z</published>
+    <updated>2019-01-30T12:18:57.498Z</updated>
+    
+    <content type="html"><![CDATA[<p><a href="https://www.jianshu.com/p/cd984dd5aae8" target="_blank" rel="noopener">RxJava操作符详解</a></p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;&lt;a href=&quot;https://www.jianshu.com/p/cd984dd5aae8&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;RxJava操作符详解&lt;/a&gt;&lt;/p&gt;
+
+      
+    
+    </summary>
+    
+    
+      <category term="安卓资源" scheme="http://www.yppcat.top/tags/%E5%AE%89%E5%8D%93%E8%B5%84%E6%BA%90/"/>
+    
+  </entry>
+  
+  <entry>
     <title>android性能优化</title>
-    <link href="http://yoursite.com/2019/01/29/android%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/"/>
-    <id>http://yoursite.com/2019/01/29/android性能优化/</id>
+    <link href="http://www.yppcat.top/2019/01/29/android%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/"/>
+    <id>http://www.yppcat.top/2019/01/29/android性能优化/</id>
     <published>2019-01-29T13:36:14.000Z</published>
     <updated>2019-01-29T14:38:15.785Z</updated>
     
@@ -39,14 +87,14 @@
     </summary>
     
     
-      <category term="android" scheme="http://yoursite.com/tags/android/"/>
+      <category term="android" scheme="http://www.yppcat.top/tags/android/"/>
     
   </entry>
   
   <entry>
     <title>AysncTask详解</title>
-    <link href="http://yoursite.com/2019/01/29/AysncTask%E8%AF%A6%E8%A7%A3/"/>
-    <id>http://yoursite.com/2019/01/29/AysncTask详解/</id>
+    <link href="http://www.yppcat.top/2019/01/29/AysncTask%E8%AF%A6%E8%A7%A3/"/>
+    <id>http://www.yppcat.top/2019/01/29/AysncTask详解/</id>
     <published>2019-01-28T16:07:39.000Z</published>
     <updated>2019-01-28T16:26:28.961Z</updated>
     
@@ -62,14 +110,14 @@
     </summary>
     
     
-      <category term="android" scheme="http://yoursite.com/tags/android/"/>
+      <category term="android" scheme="http://www.yppcat.top/tags/android/"/>
     
   </entry>
   
   <entry>
     <title>图片加水印</title>
-    <link href="http://yoursite.com/2019/01/29/%E5%9B%BE%E7%89%87%E5%8A%A0%E6%B0%B4%E5%8D%B0/"/>
-    <id>http://yoursite.com/2019/01/29/图片加水印/</id>
+    <link href="http://www.yppcat.top/2019/01/29/%E5%9B%BE%E7%89%87%E5%8A%A0%E6%B0%B4%E5%8D%B0/"/>
+    <id>http://www.yppcat.top/2019/01/29/图片加水印/</id>
     <published>2019-01-28T16:05:20.000Z</published>
     <updated>2019-01-28T16:26:35.401Z</updated>
     
@@ -86,7 +134,7 @@
     </summary>
     
     
-      <category term="android" scheme="http://yoursite.com/tags/android/"/>
+      <category term="android" scheme="http://www.yppcat.top/tags/android/"/>
     
   </entry>
   
