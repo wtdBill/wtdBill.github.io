@@ -3,25 +3,25 @@
 <head><meta name="generator" content="Hexo 3.8.0">
   <meta charset="utf-8">
   
-  <title>观察者模式 | wtdbill笔记 | </title>
+  <title>activity启动模式和intent filter | wtdbill笔记 | </title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   
   <meta name="theme-color" content="#3F51B5">
   
   
-  <meta name="keywords" content="设计模式">
-  <meta name="description" content="首先，实现观察者、被观察者接口 123456789101112public interface Subject &amp;#123;    void registerObserver(Observer o); //注册观察者    void removeObserver(Observer o); //删除观察者    void notifyObservers(); //当被观察者状态改变时，通知所有观察者">
-<meta name="keywords" content="设计模式">
+  <meta name="keywords" content="android">
+  <meta name="description" content="Activity的启动模式： 1.standard : 标准模式，每次打开都会新建一个实例，而且会处于启动当前activity的activity的任务栈中 2.singleTop : 栈顶复用模式，在这种模式下，如果新的activity已经位于任务栈的栈顶，那么此activity不会被创建，同时它的onNewIntent会被调用，此时它的生命周期不会被调用。 3.singleTask ：栈内复用模">
+<meta name="keywords" content="android">
 <meta property="og:type" content="article">
-<meta property="og:title" content="观察者模式">
-<meta property="og:url" content="http://www.yppcat.top/2019/02/07/观察者模式/index.html">
+<meta property="og:title" content="activity启动模式和intent filter">
+<meta property="og:url" content="http://www.yppcat.top/2019/02/20/activity启动模式/index.html">
 <meta property="og:site_name" content="wtdbill笔记">
-<meta property="og:description" content="首先，实现观察者、被观察者接口 123456789101112public interface Subject &amp;#123;    void registerObserver(Observer o); //注册观察者    void removeObserver(Observer o); //删除观察者    void notifyObservers(); //当被观察者状态改变时，通知所有观察者">
+<meta property="og:description" content="Activity的启动模式： 1.standard : 标准模式，每次打开都会新建一个实例，而且会处于启动当前activity的activity的任务栈中 2.singleTop : 栈顶复用模式，在这种模式下，如果新的activity已经位于任务栈的栈顶，那么此activity不会被创建，同时它的onNewIntent会被调用，此时它的生命周期不会被调用。 3.singleTask ：栈内复用模">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-02-07T11:46:08.450Z">
+<meta property="og:updated_time" content="2019-02-26T14:55:10.436Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="观察者模式">
-<meta name="twitter:description" content="首先，实现观察者、被观察者接口 123456789101112public interface Subject &amp;#123;    void registerObserver(Observer o); //注册观察者    void removeObserver(Observer o); //删除观察者    void notifyObservers(); //当被观察者状态改变时，通知所有观察者">
+<meta name="twitter:title" content="activity启动模式和intent filter">
+<meta name="twitter:description" content="Activity的启动模式： 1.standard : 标准模式，每次打开都会新建一个实例，而且会处于启动当前activity的activity的任务栈中 2.singleTop : 栈顶复用模式，在这种模式下，如果新的activity已经位于任务栈的栈顶，那么此activity不会被创建，同时它的onNewIntent会被调用，此时它的生命周期不会被调用。 3.singleTask ：栈内复用模">
   
     <link rel="alternative" href="/atom.xml" title="wtdbill笔记" type="application/atom+xml">
   
@@ -112,7 +112,7 @@
         <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
           <i class="icon icon-lg icon-navicon"></i>
         </a>
-        <div class="flex-col header-title ellipsis">观察者模式</div>
+        <div class="flex-col header-title ellipsis">activity启动模式和intent filter</div>
         
         <div class="search-wrap" id="search-wrap">
             <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
@@ -133,11 +133,11 @@
 </header>
 <header class="content-header">
   <div class="container">
-    <h1 class="author">观察者模式</h1>
+    <h1 class="author">activity启动模式和intent filter</h1>
     <h5 class="subtitle">
         
-            <time datetime="2019-02-07T11:35:29.000Z" itemprop="datePublished" class="page-time">
-  2019-02-07
+            <time datetime="2019-02-20T14:50:26.000Z" itemprop="datePublished" class="page-time">
+  2019-02-20
 </time>
 
 
@@ -147,10 +147,10 @@
 </header>
 
     <div class="container body-wrap">
-      <article id="post-观察者模式" class="article article-type-post" itemprop="blogPost">
+      <article id="post-activity启动模式" class="article article-type-post" itemprop="blogPost">
     <div class="post-meta flex-row">
         
-	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/设计模式/">设计模式</a></li></ul>
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/android/">android</a></li></ul>
 
     </div>
     <div class="post-body">
@@ -205,15 +205,16 @@
         <div class="post-main">
 
             <div class="post-content" id="post-content" itemprop="postContent">
-            <p>首先，实现观察者、被观察者接口</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">public interface Subject &#123;</span><br><span class="line">    void registerObserver(Observer o); //注册观察者</span><br><span class="line">    void removeObserver(Observer o); //删除观察者</span><br><span class="line">    void notifyObservers(); //当被观察者状态改变时，通知所有观察者信息</span><br><span class="line">&#125;</span><br><span class="line">public interface Observer &#123;</span><br><span class="line">    //当被观察者的数据更新时，将更新的信息当做参数传递给观察者</span><br><span class="line">    void update(float temperature, float humidity, float pressure);</span><br><span class="line">&#125;</span><br><span class="line">public interface DisplayElement &#123;</span><br><span class="line">    void display(); //用于显示更新的数据</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>被观察者对象的实现</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line">//被观察对象实现被观察接口</span><br><span class="line">public class WeatherData implements Subject &#123;</span><br><span class="line">    private ArrayList&lt;Observer&gt; observers;</span><br><span class="line">    private float temperature;</span><br><span class="line">    private float humidity;</span><br><span class="line">    private float pressure;</span><br><span class="line"></span><br><span class="line">    public WeatherData() &#123;</span><br><span class="line">        observers = new ArrayList&lt;Observer&gt;();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public void registerObserver(Observer o) &#123;</span><br><span class="line">        observers.add(o);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public void removeObserver(Observer o) &#123;</span><br><span class="line">        int i = observers.indexOf(o);</span><br><span class="line">        if (i &gt;= 0) &#123;</span><br><span class="line">            observers.remove(i);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void notifyObservers() &#123;</span><br><span class="line">        for (int i = 0; i &lt; observers.size(); i++) &#123;</span><br><span class="line">            Observer observer = observers.get(i);</span><br><span class="line">            observer.update(temperature, humidity, pressure);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void measurementsChanged()&#123;</span><br><span class="line">        notifyObservers();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void setMeasurements(float temperature,float humidity,float pressure)&#123;</span><br><span class="line">        this.temperature = temperature;</span><br><span class="line">        this.humidity = humidity;</span><br><span class="line">        this.pressure = pressure;</span><br><span class="line">        measurementsChanged();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>观察者被观察者逻辑的具体实现</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">//观察者实现观察者接口和具体的数据展示</span><br><span class="line">public class CurrentContionsDisplay implements Observer, DisplayElement &#123;</span><br><span class="line">    private static final String TAG = &quot;CurrentContionsDisplay&quot;;</span><br><span class="line">    private float temperature;</span><br><span class="line">    private float humidity;</span><br><span class="line">    private Subject weatherData;</span><br><span class="line"></span><br><span class="line">    public CurrentContionsDisplay(Subject weatherData) &#123;</span><br><span class="line">        this.weatherData = weatherData;</span><br><span class="line">        weatherData.registerObserver(this);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public void update(float temperature, float humidity, float pressure) &#123;</span><br><span class="line">        this.temperature = temperature;</span><br><span class="line">        this.humidity = humidity;</span><br><span class="line">        display();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public void display() &#123;</span><br><span class="line">        Log.d(TAG, &quot;display: &quot; + temperature + &quot;::&quot; + humidity);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>使用实例：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">WeatherData data = new WeatherData();</span><br><span class="line">CurrentContionsDisplay display = new CurrentContionsDisplay(data);</span><br><span class="line">data.setMeasurements(100,100,100);</span><br></pre></td></tr></table></figure>
-<p><a href="https://github.com/wtdBill/Subscriber" target="_blank" rel="noopener">代码地址</a></p>
+            <p>Activity的启动模式：</p>
+<p>1.standard : 标准模式，每次打开都会新建一个实例，而且会处于启动当前activity的activity的任务栈中</p>
+<p>2.singleTop : 栈顶复用模式，在这种模式下，如果新的activity已经位于任务栈的栈顶，那么此activity不会被创建，同时它的onNewIntent会被调用，此时它的生命周期不会被调用。</p>
+<p>3.singleTask ：栈内复用模式，这是一种单实例模式，只要activity在一个栈中存在，那么多次启动此activity都不会被重新创建，并且调用其onNewIntent。当一个activity具有这种模式，系统会首先寻找当前activity是否在当前任务栈中是否存在当前activity 的实例，如果没有则重新创建     </p>
+<p>4.singleInstance : 单实例模式。这是一种加强的singleTask模式，它除了具有singleTask模式的所有特性之外，还加强了一点，那就是具有此种模式的activity只能单独的位于一个任务栈中，换句话说，比如Activity A 是singleInstance模式，当A启动后，系统会为它创建一个新的任务栈，然后A独自在这个新的任务栈中，由于栈内的复用性，后续的请求均不会创建新的Activity，除非这个独特的任务栈被系统销毁了。</p>
+<p>此外，对于singleTask模式的Activity，还可以通过TaskAffinity来指定Activity启动所在的任务栈的名字，未指定情况下会出现在和包名相同的任务栈中。</p>
+<p>可通过一下两种方式来指定activity 的启动模式：</p>
+<p>1.<code>&lt;activity android:name=&quot;.Main2Activity&quot;    android:launchMode=&quot;singleTop&quot;&gt;</code></p>
+<p>2.<code>Intent intent = new Intent(this,Main2Activity.class);intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);startActivity(intent);</code></p>
+<p>此外增加FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS这个标记的Activity不会出现在历史的Activity的列表中，等同于在XML中指定Activity的属性android:excludeFromRecents=”true”。</p>
 
 
             
@@ -225,7 +226,7 @@
             <blockquote>
                 <p>
                 本文地址：
-                <a href="http://www.yppcat.top/2019/02/07/观察者模式/" target="_blank" rel="external">http://www.yppcat.top/2019/02/07/观察者模式/</a>
+                <a href="http://www.yppcat.top/2019/02/20/activity启动模式/" target="_blank" rel="external">http://www.yppcat.top/2019/02/20/activity启动模式/</a>
                 </p>
                 <footer><cite><a href="http://www.yppcat.top">@wtdbill笔记</a></cite></footer>
             </blockquote>
@@ -234,18 +235,18 @@
 <nav class="post-nav">
   
     <div class="waves-block waves-effect prev fl">
-      <a href="/2019/02/17/activity生命周期相关/" id="post-prev" class="post-nav-link">
+      <a href="/2019/02/26/IntentFilter的匹配规则/" id="post-prev" class="post-nav-link">
         <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
-        <h4 class="title">activity生命周期相关</h4>
+        <h4 class="title">IntentFilter的匹配规则</h4>
       </a>
     </div>
   
 
   
     <div class="waves-block waves-effect next fr">
-      <a href="/2019/01/30/RxJava操作符/" id="post-next" class="post-nav-link">
+      <a href="/2019/02/17/activity生命周期相关/" id="post-next" class="post-nav-link">
         <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
-        <h4 class="title">RxJava操作符</h4>
+        <h4 class="title">activity生命周期相关</h4>
       </a>
     </div>
   
@@ -256,7 +257,7 @@
             
 <div class="duoshuo">
 	<!-- 多说评论框 start -->
-	<div class="ds-thread" data-thread-key="观察者模式" data-title="观察者模式" data-url="http://www.yppcat.top/2019/02/07/观察者模式/index.html"></div>
+	<div class="ds-thread" data-thread-key="activity启动模式" data-title="activity启动模式和intent filter" data-url="http://www.yppcat.top/2019/02/20/activity启动模式/index.html"></div>
 	<!-- 多说评论框 end -->
 	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
 	<script type="text/javascript">
@@ -312,10 +313,10 @@
 
 <script>
 var BLOG_SHARE = {
-    title: "观察者模式",
+    title: "activity启动模式和intent filter",
     pic: "/img/header.jpg",
     summary: document.getElementsByName('summary')[0].content,
-    url: "http://www.yppcat.top/2019/02/07/观察者模式/index.html"
+    url: "http://www.yppcat.top/2019/02/20/activity启动模式/index.html"
 };
 </script>
 <div class="global-share" id="global-share">
