@@ -3,25 +3,25 @@
 <head><meta name="generator" content="Hexo 3.8.0">
   <meta charset="utf-8">
   
-  <title>app冷热启动及优化 | wtdbill笔记 | </title>
+  <title>ContentProvider用法详解 | wtdbill笔记 | </title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   
   <meta name="theme-color" content="#3F51B5">
   
   
   <meta name="keywords" content="android">
-  <meta name="description" content="冷启动：当启动应用时，后台没有该应用的进程，这时系统会重新创建一个新的进程分配给该应用，这个启动方式就是冷启动。  特点：冷启动因为系统会重新创建一个新的进程分配给它，所以会先创建和初始化Application类，再创建和初始化MainActivity类（包括一系列的测量、布局、绘制），最后显示在界面上。 热启动：当启动应用时，后台已有该应用的进程（例：按back键、home键，应用虽然会退出，但">
+  <meta name="description" content="在安卓中，我们可以使用内容提供器ContentResolver来获取其他应用程序的数据： Cursor cursor = getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI,null,null,null,null); public final @Nullable Cursor query(@Re">
 <meta name="keywords" content="android">
 <meta property="og:type" content="article">
-<meta property="og:title" content="app冷热启动及优化">
-<meta property="og:url" content="http://www.yppcat.top/2019/03/08/app冷热启动及优化/index.html">
+<meta property="og:title" content="ContentProvider用法详解">
+<meta property="og:url" content="http://www.yppcat.top/2019/03/09/ContentProvider用法详解/index.html">
 <meta property="og:site_name" content="wtdbill笔记">
-<meta property="og:description" content="冷启动：当启动应用时，后台没有该应用的进程，这时系统会重新创建一个新的进程分配给该应用，这个启动方式就是冷启动。  特点：冷启动因为系统会重新创建一个新的进程分配给它，所以会先创建和初始化Application类，再创建和初始化MainActivity类（包括一系列的测量、布局、绘制），最后显示在界面上。 热启动：当启动应用时，后台已有该应用的进程（例：按back键、home键，应用虽然会退出，但">
+<meta property="og:description" content="在安卓中，我们可以使用内容提供器ContentResolver来获取其他应用程序的数据： Cursor cursor = getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI,null,null,null,null); public final @Nullable Cursor query(@Re">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-03-08T15:08:14.273Z">
+<meta property="og:updated_time" content="2019-03-11T14:19:18.570Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="app冷热启动及优化">
-<meta name="twitter:description" content="冷启动：当启动应用时，后台没有该应用的进程，这时系统会重新创建一个新的进程分配给该应用，这个启动方式就是冷启动。  特点：冷启动因为系统会重新创建一个新的进程分配给它，所以会先创建和初始化Application类，再创建和初始化MainActivity类（包括一系列的测量、布局、绘制），最后显示在界面上。 热启动：当启动应用时，后台已有该应用的进程（例：按back键、home键，应用虽然会退出，但">
+<meta name="twitter:title" content="ContentProvider用法详解">
+<meta name="twitter:description" content="在安卓中，我们可以使用内容提供器ContentResolver来获取其他应用程序的数据： Cursor cursor = getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI,null,null,null,null); public final @Nullable Cursor query(@Re">
   
     <link rel="alternative" href="/atom.xml" title="wtdbill笔记" type="application/atom+xml">
   
@@ -112,7 +112,7 @@
         <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
           <i class="icon icon-lg icon-navicon"></i>
         </a>
-        <div class="flex-col header-title ellipsis">app冷热启动及优化</div>
+        <div class="flex-col header-title ellipsis">ContentProvider用法详解</div>
         
         <div class="search-wrap" id="search-wrap">
             <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
@@ -133,11 +133,11 @@
 </header>
 <header class="content-header">
   <div class="container">
-    <h1 class="author">app冷热启动及优化</h1>
+    <h1 class="author">ContentProvider用法详解</h1>
     <h5 class="subtitle">
         
-            <time datetime="2019-03-08T14:35:49.000Z" itemprop="datePublished" class="page-time">
-  2019-03-08
+            <time datetime="2019-03-09T10:22:28.000Z" itemprop="datePublished" class="page-time">
+  2019-03-09
 </time>
 
 
@@ -147,7 +147,7 @@
 </header>
 
     <div class="container body-wrap">
-      <article id="post-app冷热启动及优化" class="article article-type-post" itemprop="blogPost">
+      <article id="post-ContentProvider用法详解" class="article article-type-post" itemprop="blogPost">
     <div class="post-meta flex-row">
         
 	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/android/">android</a></li></ul>
@@ -205,27 +205,45 @@
         <div class="post-main">
 
             <div class="post-content" id="post-content" itemprop="postContent">
-            <p>冷启动：当启动应用时，后台没有该应用的进程，这时系统会重新创建一个新的进程分配给该应用，这个启动方式就是冷启动。 </p>
-<p>特点：冷启动因为系统会重新创建一个新的进程分配给它，所以会先创建和初始化Application类，再创建和初始化MainActivity类（包括一系列的测量、布局、绘制），最后显示在界面上。</p>
-<p>热启动：当启动应用时，后台已有该应用的进程（例：按back键、home键，应用虽然会退出，但是该应用的进程是依然会保留在后台，可进入任务列表查看），所以在已有进程的情况下，这种启动会从已有的进程中来启动应用，这个方式叫热启动。</p>
-<p>特点：热启动因为会从已有的进程中来启动，所以热启动就不会走Application这步了，而是直接走MainActivity（包括一系列的测量、布局、绘制），所以热启动的过程只需要创建和初始化一个MainActivity就行了，而不必创建和初始化Application，因为一个应用从新进程的创建到进程的销毁，Application只会初始化一次。</p>
-<p>冷启动优化方案：</p>
-<p>1.使用背景图：</p>
-<p>在style文件下定义如下主题：</p>
-<p><code>&lt;style name=&quot;AppWelcome&quot; parent=&quot;AppTheme&quot;&gt; &lt;item name=&quot;android:windowBackground&quot;&gt;@mipmap/bg_welcome_start&lt;/item&gt; &lt;/style&gt;</code></p>
-<p>然后在Manifest中将启动页的主题设置为当前主题：</p>
-<p><code>android:theme=&quot;@style/AppWelcome&quot;</code></p>
-<p>2.使用透明背景和全屏：</p>
-<p><code>&lt;style name=&quot;AppTransparent&quot; parent=&quot;AppTheme&quot;&gt;    &lt;item name=&quot;android:windowFullscreen&quot;&gt;true&lt;/item&gt;    &lt;item name=&quot;android:windowIsTranslucent&quot;&gt;true&lt;/item&gt;&lt;/style&gt;</code></p>
-<p>或者：</p>
-<p><code>&lt;style name=&quot;APPWel&quot; parent=&quot;android:Theme.Translucent.NoTitleBar.Fullscreen&quot; /&gt;</code></p>
-<p>这种就和微信的处理方式是一样的，APP启动时会有一种因为系统卡顿造成启动较慢的假象。</p>
-<p>3.如下几点建议：</p>
-<p>尽量不要让Application参与业务的操作  </p>
-<p>尽量不要在APPlication进行耗时操作，比如有些开发者会在自己的APP里一系列文件夹或文件（比如我自己），这些I/O操作应该放到”确实该使用的时候再去创建”亦或者是数据库的一些操作</p>
-<p> 尽量不要以静态变量的方式在Application中保存数据等。  4、减少LaunchActivity的View层级，减少View测量绘制时间</p>
-<p>此外，可以通过如下方式测量APP冷启动和热启动的时间：</p>
-<p><code>adb shell am start -W [packageName]/[packageName.launchActivity]</code></p>
+            <p>在安卓中，我们可以使用内容提供器ContentResolver来获取其他应用程序的数据：</p>
+<p><code>Cursor cursor = getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI,null,null,null,null);</code></p>
+<p><code>public final @Nullable Cursor query(@RequiresPermission.Read @NonNull Uri uri,        @Nullable String[] projection, @Nullable String selection,        @Nullable String[] selectionArgs, @Nullable String sortOrder) {    return query(uri, projection, selection, selectionArgs, sortOrder, null);}</code></p>
+<p>类似上面的获取Cursor，其中的参数分别有以下含义：</p>
+<p>uri：指定某一应用程序下的某一张表(l类似SQL中 from table_name),注意一点，使用时要提前申请访问数据权限</p>
+<p>​      eg  content://com.example.app.provider/table1</p>
+<p>​        <code>Uri uri = Uri.parse(&quot;content://com.example.app.provider/table1&quot;);</code></p>
+<p>projection:指定查询的列名（类似SQL中 select column1,column2）</p>
+<p>selection:指定where的约束条件（类似SQL中 where column = value）</p>
+<p>selectionArgs:为以上条件指定具体的指（相当于SQL中where占位符提供的具体的值）</p>
+<p>orderBy：指定查询结果的排序方式（类似SQL中 order by column1,column2）</p>
+<p>用以上方法获取到指定的cursor后，可用以下方式获取：</p>
+<p><code>if (cursor!=null){    while (cursor.moveToNext()){        //通过指定的列名获取相应的数据        String displayName = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));    }}</code></p>
+<p>类似SQLite数据插入的方式，我们可以用以下的方式向指定表中添加数据：</p>
+<p><code>ContentValues values = new ContentValues();values.put(&quot;column1&quot;,&quot;text&quot;);values.put(&quot;column2&quot;,1);getContentResolver().insert(uri,values);</code></p>
+<p>更新数据：</p>
+<p><code>ContentValues values1 = new ContentValues();values.put(&quot;column1&quot;,&quot;&quot;);//利用selection 和 selectionArgs参数来约束需要更新的条件getContentResolver().update(uri,values,&quot;column1 = ? and column2 = ?&quot;,new String[]{&quot;text&quot;,1});</code></p>
+<p>删除数据：</p>
+<p><code>//删除指定列column2中值为1的数据getContentResolver().delete(uri,&quot;column2 = ?&quot;,new String[]{&quot;1&quot;});</code></p>
+<p>实现自定义ContentProvider</p>
+<p>先看一下ContentProvider中主要的几个方法：</p>
+<p>onCreate（）：初始化内容提供器的时候调用。通常会在这里完成对数据库的创建和升级等操作，返回true表示内容提供器初始化成功，返回false则表示失败。注意，<strong>只有当存在ContentResolver尝试访问我们程序中的数据时，内容提供器才会被初始化</strong>。</p>
+<p>query（）：从内容提供器中查询数据。使用uri参数来确定查询哪张表，projection参数用于确定查询哪些列，selection和selectionArgs参数用于约束查询哪些行，sortOrder参数用于对结果进行排序，<strong>查询的结果存放在Cursor对象中返回</strong>。</p>
+<p>insert（）：向内容提供器中添加一条数据。使用uri参数来确定要添加到的表，待添加的数据保存在values参数中。添加完成后，<strong>返回一个用于表示这条记录的URI</strong>。</p>
+<p>update（）：更新内容提供器已有的数据。使用uri参数来确定更新哪一张表中的数据，新数据保存在values参数中，selection和selectionArgs参数用于约束更新哪些行，<strong>受影响的行数将作为返回值返回</strong>。</p>
+<p>delete（）：从内容提供器中删除数据。使用uri参数来确定删除哪一张表中的数据，selection和selectionArgs参数用于约束删除哪些行，<strong>被删除的行数将作为返回值返回</strong>。</p>
+<p>getType（）：根据传入的内容URI来返回相应的MIME类型。</p>
+<p>URI写法：</p>
+<p>content://com.example.app.provider/table1 表示访问com.example.app这个应用table1表中的数据。此外，我们可以在这个URI的后面加上一个id：</p>
+<p>content://com.example.app.provider/table1/1 这就表示查询table1表中id为1的数据</p>
+<p>此外我们可以使用通配符的方式来分别匹配这两种格式内容的URI：</p>
+<p><code>* ：表示匹配任意长度的任意字符</code></p>
+<p><code># ：表示匹配任意长度的数字</code></p>
+<p>所以，一个能够匹配任意表的内容URI格式就可以写成：</p>
+<p>content://com.example.app.provider/* </p>
+<p>而一个能够匹配任意一行数据的内容URI格式就可以写成：</p>
+<p>content://com.example.app.provider/table1/#</p>
+<p>接着，借助UriMatcher这个类可以实现匹配内容URI的功能。UriMatcher中提供了一个addURI()方法，这个方法接收三个参数，可以分别把authority、path和一个自定义代码传进去。这样，当调用UriMatcher的match()方法时，就可以将一个Uri对象传入，返回值是某个能够匹配这个Uri对象所对应的自定义代码，利用这个代码，我们就可以判断出调用方期望的是那张表中的数据了。</p>
+<p>eg:</p>
 
 
             
@@ -237,7 +255,7 @@
             <blockquote>
                 <p>
                 本文地址：
-                <a href="http://www.yppcat.top/2019/03/08/app冷热启动及优化/" target="_blank" rel="external">http://www.yppcat.top/2019/03/08/app冷热启动及优化/</a>
+                <a href="http://www.yppcat.top/2019/03/09/ContentProvider用法详解/" target="_blank" rel="external">http://www.yppcat.top/2019/03/09/ContentProvider用法详解/</a>
                 </p>
                 <footer><cite><a href="http://www.yppcat.top">@wtdbill笔记</a></cite></footer>
             </blockquote>
@@ -245,19 +263,12 @@
             
 <nav class="post-nav">
   
-    <div class="waves-block waves-effect prev fl">
-      <a href="/2019/03/09/ContentProvider用法详解/" id="post-prev" class="post-nav-link">
-        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
-        <h4 class="title">ContentProvider用法详解</h4>
-      </a>
-    </div>
-  
 
   
     <div class="waves-block waves-effect next fr">
-      <a href="/2019/02/26/IntentFilter的匹配规则/" id="post-next" class="post-nav-link">
+      <a href="/2019/03/08/app冷热启动及优化/" id="post-next" class="post-nav-link">
         <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
-        <h4 class="title">IntentFilter的匹配规则</h4>
+        <h4 class="title">app冷热启动及优化</h4>
       </a>
     </div>
   
@@ -268,7 +279,7 @@
             
 <div class="duoshuo">
 	<!-- 多说评论框 start -->
-	<div class="ds-thread" data-thread-key="app冷热启动及优化" data-title="app冷热启动及优化" data-url="http://www.yppcat.top/2019/03/08/app冷热启动及优化/index.html"></div>
+	<div class="ds-thread" data-thread-key="ContentProvider用法详解" data-title="ContentProvider用法详解" data-url="http://www.yppcat.top/2019/03/09/ContentProvider用法详解/index.html"></div>
 	<!-- 多说评论框 end -->
 	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
 	<script type="text/javascript">
@@ -324,10 +335,10 @@
 
 <script>
 var BLOG_SHARE = {
-    title: "app冷热启动及优化",
+    title: "ContentProvider用法详解",
     pic: "/img/header.jpg",
     summary: document.getElementsByName('summary')[0].content,
-    url: "http://www.yppcat.top/2019/03/08/app冷热启动及优化/index.html"
+    url: "http://www.yppcat.top/2019/03/09/ContentProvider用法详解/index.html"
 };
 </script>
 <div class="global-share" id="global-share">
