@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
-  <title>wtdbill笔记</title>
+  <title>wtdBill笔记</title>
   
-  
+  <subtitle>wtdbill</subtitle>
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.yppcat.top/"/>
@@ -10,7 +10,7 @@
   <id>http://www.yppcat.top/</id>
   
   <author>
-    <name>wtdBill</name>
+    <name>藏精阁大弟子</name>
     
   </author>
   
