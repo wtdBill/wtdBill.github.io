@@ -3,7 +3,7 @@
 <head><meta name="generator" content="Hexo 3.8.0">
   <meta charset="utf-8">
   
-  <title>wtdBill笔记 | wtdbill</title>
+  <title>Archives: 2019/4 | wtdBill笔记 | wtdbill</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   
   <meta name="theme-color" content="#3F51B5">
@@ -14,7 +14,7 @@
 <meta name="keywords" content="wtdBill笔记">
 <meta property="og:type" content="website">
 <meta property="og:title" content="wtdBill笔记">
-<meta property="og:url" content="http://www.yppcat.top/page/2/index.html">
+<meta property="og:url" content="http://www.yppcat.top/archives/2019/04/index.html">
 <meta property="og:site_name" content="wtdBill笔记">
 <meta property="og:description" content="重新入门">
 <meta property="og:locale" content="default">
@@ -142,310 +142,40 @@
 </header>
 
     <div class="container body-wrap">
-      <ul class="post-list">
-  
-    <li class="post-list-item">
-        <article id="post-activity启动模式" class="article article-type-post" itemprop="blogPost">
-     
+      
+
+
+        <h3 class="archive-separator">April, 2019</h3>
+
+
+
+     <article class="archive-article">
+  <div class="archive-article-date">
+    <time datetime="2019-04-02T13:49:34.000Z" itemprop="datePublished" class="post-time">
+  Apr 2
+</time>
+
+  </div>
+  <div class="archive-article-inner">
+    
 
 
   
     <h3 class="post-title" itemprop="name">
-      <a class="post-title-link" href="/2019/02/20/activity启动模式/">activity启动模式和intent filter</a>
+      <a class="post-title-link" href="/2019/04/02/apk优化方式/">apk优化方式</a>
     </h3>
   
 
 
 
-    <div class="post-meta">
-        <time datetime="2019-02-20T14:50:26.000Z" itemprop="datePublished" class="post-time">
-  2019-02-20
-</time>
-
-        
-
-
-    </div>
-
-    <div class="post-content" id="post-content" itemprop="postContent">
-
-    
-         Activity的启动模式： 
- 1.standard : 标准模式，每次打开都会新建一个实例，而且会处于启动当前activity的activity的任务栈中 
- 2.singleTop : 栈顶复用模式，在这种模式下，如果新的activity已经位于任务栈的栈顶，那么此activity不会被创建，同时它的onNewIntent会被调用，此时它的生命周期不会被调用。 
- 3.singleTask
-    
-    
-        <a href="/2019/02/20/activity启动模式/" class="post-more waves-effect waves-button">
-            阅读全文...
-        </a>
-    </div>
     
 	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/android/">android</a></li></ul>
 
+  </div>
 </article>
 
-    </li>
-  
-    <li class="post-list-item">
-        <article id="post-activity生命周期相关" class="article article-type-post" itemprop="blogPost">
-     
 
 
-  
-    <h3 class="post-title" itemprop="name">
-      <a class="post-title-link" href="/2019/02/17/activity生命周期相关/">activity生命周期相关</a>
-    </h3>
-  
-
-
-
-    <div class="post-meta">
-        <time datetime="2019-02-17T12:05:04.000Z" itemprop="datePublished" class="post-time">
-  2019-02-17
-</time>
-
-        
-
-
-    </div>
-
-    <div class="post-content" id="post-content" itemprop="postContent">
-
-    
-         (1) onCreate : 表示activity 正在被创建，这是生命周期的第一个方法。在这个方法中，我们可以做一些初始化工作，比如setContentView去加载界面布局资源、初始化activity所需数据等，还可以在异常状态重建是利用savedInstanceState 获取需要的值。 
- (2) onRestart : 表示acticity正在重新启动。一般情况下，当当前activit
-    
-    
-        <a href="/2019/02/17/activity生命周期相关/" class="post-more waves-effect waves-button">
-            阅读全文...
-        </a>
-    </div>
-    
-	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/android/">android</a></li></ul>
-
-</article>
-
-    </li>
-  
-    <li class="post-list-item">
-        <article id="post-观察者模式" class="article article-type-post" itemprop="blogPost">
-     
-
-
-  
-    <h3 class="post-title" itemprop="name">
-      <a class="post-title-link" href="/2019/02/07/观察者模式/">观察者模式</a>
-    </h3>
-  
-
-
-
-    <div class="post-meta">
-        <time datetime="2019-02-07T11:35:29.000Z" itemprop="datePublished" class="post-time">
-  2019-02-07
-</time>
-
-        
-
-
-    </div>
-
-    <div class="post-content" id="post-content" itemprop="postContent">
-
-    
-         首先，实现观察者、被观察者接口 
-      1   2   3   4   5   6   7   8   9   10   11   12       public interface Subject &#123;       void registerObserver(Observer o); //注册观察者       void removeObserver(Observer o); /
-    
-    
-        <a href="/2019/02/07/观察者模式/" class="post-more waves-effect waves-button">
-            阅读全文...
-        </a>
-    </div>
-    
-	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/设计模式/">设计模式</a></li></ul>
-
-</article>
-
-    </li>
-  
-    <li class="post-list-item">
-        <article id="post-RxJava操作符" class="article article-type-post" itemprop="blogPost">
-     
-
-
-  
-    <h3 class="post-title" itemprop="name">
-      <a class="post-title-link" href="/2019/01/30/RxJava操作符/">RxJava操作符</a>
-    </h3>
-  
-
-
-
-    <div class="post-meta">
-        <time datetime="2019-01-30T12:12:08.000Z" itemprop="datePublished" class="post-time">
-  2019-01-30
-</time>
-
-        
-
-
-    </div>
-
-    <div class="post-content" id="post-content" itemprop="postContent">
-
-    
-          RxJava操作符详解  
-
-    
-    
-        <a href="/2019/01/30/RxJava操作符/" class="post-more waves-effect waves-button">
-            阅读全文...
-        </a>
-    </div>
-    
-	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/安卓资源/">安卓资源</a></li></ul>
-
-</article>
-
-    </li>
-  
-    <li class="post-list-item">
-        <article id="post-android性能优化" class="article article-type-post" itemprop="blogPost">
-     
-
-
-  
-    <h3 class="post-title" itemprop="name">
-      <a class="post-title-link" href="/2019/01/29/android性能优化/">android性能优化</a>
-    </h3>
-  
-
-
-
-    <div class="post-meta">
-        <time datetime="2019-01-29T13:36:14.000Z" itemprop="datePublished" class="post-time">
-  2019-01-29
-</time>
-
-        
-
-
-    </div>
-
-    <div class="post-content" id="post-content" itemprop="postContent">
-
-    
-         1.优化布局 
- （1）减少布局嵌套，VIew树的高度不超过10层，使用RelativeLayout可以提高渲染的效率 
- （2）使用 标签重用布局  
- （3）使用ViewStub延迟加载 
- （4） github开源工具检测布局  
- 2.内存优化 
- 获取应用程序最大内存//128MB 
- int maxMemory=(int)(Runtime.getRuntime().maxMemory
-    
-    
-        <a href="/2019/01/29/android性能优化/" class="post-more waves-effect waves-button">
-            阅读全文...
-        </a>
-    </div>
-    
-	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/android/">android</a></li></ul>
-
-</article>
-
-    </li>
-  
-    <li class="post-list-item">
-        <article id="post-AysncTask详解" class="article article-type-post" itemprop="blogPost">
-     
-
-
-  
-    <h3 class="post-title" itemprop="name">
-      <a class="post-title-link" href="/2019/01/29/AysncTask详解/">AysncTask详解</a>
-    </h3>
-  
-
-
-
-    <div class="post-meta">
-        <time datetime="2019-01-28T16:07:39.000Z" itemprop="datePublished" class="post-time">
-  2019-01-29
-</time>
-
-        
-
-
-    </div>
-
-    <div class="post-content" id="post-content" itemprop="postContent">
-
-    
-         在我们开发过程中，经常会用到异步操作来进行界面的更新，一般来说，在子线程更新UI线程有三种方式，具体可以看： https://blog.csdn.net/qq_29451649/article/details/79529441  但是我们在写一些复杂的操作时直接使用Handler会有点麻烦，下面我们学习一下AsyncTask的使用以及实现的原理吧。 
- 首先看AsyncTask的定义，方法如下：
-    
-    
-        <a href="/2019/01/29/AysncTask详解/" class="post-more waves-effect waves-button">
-            阅读全文...
-        </a>
-    </div>
-    
-	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/android/">android</a></li></ul>
-
-</article>
-
-    </li>
-  
-    <li class="post-list-item">
-        <article id="post-图片加水印" class="article article-type-post" itemprop="blogPost">
-     
-
-
-  
-    <h3 class="post-title" itemprop="name">
-      <a class="post-title-link" href="/2019/01/29/图片加水印/">图片加水印</a>
-    </h3>
-  
-
-
-
-    <div class="post-meta">
-        <time datetime="2019-01-28T16:05:20.000Z" itemprop="datePublished" class="post-time">
-  2019-01-29
-</time>
-
-        
-
-
-    </div>
-
-    <div class="post-content" id="post-content" itemprop="postContent">
-
-    
-         关于一些对于图片添加水印的处理，具体方法如下： 
- `package yppcat.morethread; import android.graphics.Bitmap; import android.graphics.BitmapFactory; import android.graphics.Canvas; import android.graphics.Matrix; import and
-    
-    
-        <a href="/2019/01/29/图片加水印/" class="post-more waves-effect waves-button">
-            阅读全文...
-        </a>
-    </div>
-    
-	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/android/">android</a></li></ul>
-
-</article>
-
-    </li>
-  
-</ul>
-
-<nav id="page-nav">
-    <div class="inner">
-    <a class="extend prev" rel="prev" href="/">上一页</a><a class="page-number" href="/">1</a><span class="page-number current">2</span>
-    </div>
-</nav>
 
     </div>
   </main>
@@ -457,7 +187,7 @@ var BLOG_SHARE = {
     title: "wtdBill笔记",
     pic: "/img/header.jpg",
     summary: document.getElementsByName('summary')[0].content,
-    url: "http://www.yppcat.top/page/2/index.html"
+    url: "http://www.yppcat.top/archives/2019/04/index.html"
 };
 </script>
 <div class="global-share" id="global-share">
