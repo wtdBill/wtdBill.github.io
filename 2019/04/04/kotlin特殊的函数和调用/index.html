@@ -3,25 +3,25 @@
 <head><meta name="generator" content="Hexo 3.8.0">
   <meta charset="utf-8">
   
-  <title>wtdBill笔记 | wtdbill</title>
+  <title>kotlin特殊的函数和调用 | wtdBill笔记 | wtdbill</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   
   <meta name="theme-color" content="#3F51B5">
   
   
-  <meta name="keywords" content="wtdBill笔记">
-  <meta name="description" content="重新入门">
-<meta name="keywords" content="wtdBill笔记">
-<meta property="og:type" content="website">
-<meta property="og:title" content="wtdBill笔记">
-<meta property="og:url" content="http://www.yppcat.top/categories/index.html">
+  <meta name="keywords" content="Kotlin">
+  <meta name="description" content="1.扩展函数的使用： 新建.kt文件，并编写如下 12345fun Fragment.showToast(content: String): Toast &amp;#123;    val toast = Toast.makeText(this.activity?.applicationContext, content, Toast.LENGTH_SHORT)    toast.show()    ret">
+<meta name="keywords" content="Kotlin">
+<meta property="og:type" content="article">
+<meta property="og:title" content="kotlin特殊的函数和调用">
+<meta property="og:url" content="http://www.yppcat.top/2019/04/04/kotlin特殊的函数和调用/index.html">
 <meta property="og:site_name" content="wtdBill笔记">
-<meta property="og:description" content="重新入门">
+<meta property="og:description" content="1.扩展函数的使用： 新建.kt文件，并编写如下 12345fun Fragment.showToast(content: String): Toast &amp;#123;    val toast = Toast.makeText(this.activity?.applicationContext, content, Toast.LENGTH_SHORT)    toast.show()    ret">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-01-24T12:45:02.000Z">
+<meta property="og:updated_time" content="2019-04-04T15:58:17.592Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="wtdBill笔记">
-<meta name="twitter:description" content="重新入门">
+<meta name="twitter:title" content="kotlin特殊的函数和调用">
+<meta name="twitter:description" content="1.扩展函数的使用： 新建.kt文件，并编写如下 12345fun Fragment.showToast(content: String): Toast &amp;#123;    val toast = Toast.makeText(this.activity?.applicationContext, content, Toast.LENGTH_SHORT)    toast.show()    ret">
   
     <link rel="alternative" href="/atom.xml" title="wtdBill笔记" type="application/atom+xml">
   
@@ -33,7 +33,7 @@
 <body>
   <div id="loading" class="active"></div>
 
-  <nav id="menu"  >
+  <nav id="menu" class="hide" >
    <div class="inner flex-row-vertical">
   <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
       <i class="icon icon-lg icon-close"></i>
@@ -112,7 +112,7 @@
         <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
           <i class="icon icon-lg icon-navicon"></i>
         </a>
-        <div class="flex-col header-title ellipsis">wtdBill笔记</div>
+        <div class="flex-col header-title ellipsis">kotlin特殊的函数和调用</div>
         
         <div class="search-wrap" id="search-wrap">
             <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
@@ -133,11 +133,11 @@
 </header>
 <header class="content-header">
   <div class="container">
-    <h1 class="author">wtdBill笔记</h1>
+    <h1 class="author">kotlin特殊的函数和调用</h1>
     <h5 class="subtitle">
         
-            <time datetime="2019-03-25T13:27:50.107Z" itemprop="datePublished" class="page-time">
-  2019-03-25
+            <time datetime="2019-04-04T15:23:38.000Z" itemprop="datePublished" class="page-time">
+  2019-04-04
 </time>
 
 
@@ -147,9 +147,11 @@
 </header>
 
     <div class="container body-wrap">
-      <article id="categories-" class="article article-type-categories" itemprop="blogPost">
+      <article id="post-kotlin特殊的函数和调用" class="article article-type-post" itemprop="blogPost">
     <div class="post-meta flex-row">
         
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Kotlin/">Kotlin</a></li></ul>
+
     </div>
     <div class="post-body">
         <aside class="post-widget" id="post-widget">
@@ -203,7 +205,20 @@
         <div class="post-main">
 
             <div class="post-content" id="post-content" itemprop="postContent">
-            
+            <p>1.扩展函数的使用：</p>
+<p>新建.kt文件，并编写如下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">fun Fragment.showToast(content: String): Toast &#123;</span><br><span class="line">    val toast = Toast.makeText(this.activity?.applicationContext, content, Toast.LENGTH_SHORT)</span><br><span class="line">    toast.show()</span><br><span class="line">    return toast</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>图上的showToast就是一个扩展函数，可以直接访问被扩展的其他方法和属性，相当于在Fragment类中添加了这样的方法再去访问一样，此外，扩展函数不能访问私有的和受保护的成员。扩展函数不存在重写，在Kotlin中会被当做静态的函数对待。通过以下方导入：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">import ktmvp.yppcat.ktmvp.utils.showToast</span><br></pre></td></tr></table></figure>
+<p>之后在Fragment可以这样使用：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">showToast(errorMessage)</span><br></pre></td></tr></table></figure>
+<p>2.可变参数：让函数支持任意数量的参数</p>
+<p>在Java中：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"> private void getName(String... params) &#123;</span><br><span class="line">        Log.e(&quot;test&quot;, Arrays.toString(params));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Kotlin中：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">private fun getName(vararg params: String) &#123;</span><br><span class="line">    val list = listOf(&quot;aa&quot;, *params)</span><br><span class="line">    print(list)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>java中的…被vararg修饰符替代，此外*表示的是展开运算符</p>
+
 
             
             <div class="post-reward">
@@ -214,15 +229,48 @@
             <blockquote>
                 <p>
                 本文地址：
-                <a href="http://www.yppcat.top/categories/index.html" target="_blank" rel="external">http://www.yppcat.top/categories/index.html</a>
+                <a href="http://www.yppcat.top/2019/04/04/kotlin特殊的函数和调用/" target="_blank" rel="external">http://www.yppcat.top/2019/04/04/kotlin特殊的函数和调用/</a>
                 </p>
                 <footer><cite><a href="http://www.yppcat.top">@wtdBill笔记</a></cite></footer>
             </blockquote>
             </div>
             
+<nav class="post-nav">
+  
+
+  
+    <div class="waves-block waves-effect next fr">
+      <a href="/2019/04/02/apk优化方式/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">apk优化方式</h4>
+      </a>
+    </div>
+  
+</nav>
+
 
             
             
+<div class="duoshuo">
+	<!-- 多说评论框 start -->
+	<div class="ds-thread" data-thread-key="kotlin特殊的函数和调用" data-title="kotlin特殊的函数和调用" data-url="http://www.yppcat.top/2019/04/04/kotlin特殊的函数和调用/index.html"></div>
+	<!-- 多说评论框 end -->
+	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+	<script type="text/javascript">
+	var duoshuoQuery = {short_name:"ysblog"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+	<!-- 多说公共JS代码 end -->
+</div>
+
+
 
 
 
@@ -261,10 +309,10 @@
 
 <script>
 var BLOG_SHARE = {
-    title: "wtdBill笔记",
+    title: "kotlin特殊的函数和调用",
     pic: "/img/header.jpg",
     summary: document.getElementsByName('summary')[0].content,
-    url: "http://www.yppcat.top/categories/index.html"
+    url: "http://www.yppcat.top/2019/04/04/kotlin特殊的函数和调用/index.html"
 };
 </script>
 <div class="global-share" id="global-share">

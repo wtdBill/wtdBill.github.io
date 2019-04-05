@@ -6,15 +6,40 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.yppcat.top/"/>
-  <updated>2019-04-02T14:59:11.966Z</updated>
+  <updated>2019-04-04T15:58:17.592Z</updated>
   <id>http://www.yppcat.top/</id>
   
   <author>
-    <name>藏精阁大弟子</name>
+    <name>wtdBill</name>
     
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>kotlin特殊的函数和调用</title>
+    <link href="http://www.yppcat.top/2019/04/04/kotlin%E7%89%B9%E6%AE%8A%E7%9A%84%E5%87%BD%E6%95%B0%E5%92%8C%E8%B0%83%E7%94%A8/"/>
+    <id>http://www.yppcat.top/2019/04/04/kotlin特殊的函数和调用/</id>
+    <published>2019-04-04T15:23:38.000Z</published>
+    <updated>2019-04-04T15:58:17.592Z</updated>
+    
+    <content type="html"><![CDATA[<p>1.扩展函数的使用：</p><p>新建.kt文件，并编写如下</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">fun Fragment.showToast(content: String): Toast &#123;</span><br><span class="line">    val toast = Toast.makeText(this.activity?.applicationContext, content, Toast.LENGTH_SHORT)</span><br><span class="line">    toast.show()</span><br><span class="line">    return toast</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>图上的showToast就是一个扩展函数，可以直接访问被扩展的其他方法和属性，相当于在Fragment类中添加了这样的方法再去访问一样，此外，扩展函数不能访问私有的和受保护的成员。扩展函数不存在重写，在Kotlin中会被当做静态的函数对待。通过以下方导入：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">import ktmvp.yppcat.ktmvp.utils.showToast</span><br></pre></td></tr></table></figure><p>之后在Fragment可以这样使用：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">showToast(errorMessage)</span><br></pre></td></tr></table></figure><p>2.可变参数：让函数支持任意数量的参数</p><p>在Java中：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"> private void getName(String... params) &#123;</span><br><span class="line">        Log.e(&quot;test&quot;, Arrays.toString(params));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>Kotlin中：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">private fun getName(vararg params: String) &#123;</span><br><span class="line">    val list = listOf(&quot;aa&quot;, *params)</span><br><span class="line">    print(list)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>java中的…被vararg修饰符替代，此外*表示的是展开运算符</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;1.扩展函数的使用：&lt;/p&gt;
+&lt;p&gt;新建.kt文件，并编写如下&lt;/p&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;sp
+      
+    
+    </summary>
+    
+    
+      <category term="Kotlin" scheme="http://www.yppcat.top/tags/Kotlin/"/>
+    
+  </entry>
   
   <entry>
     <title>apk优化方式</title>
