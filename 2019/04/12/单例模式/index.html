@@ -3,25 +3,25 @@
 <head><meta name="generator" content="Hexo 3.8.0">
   <meta charset="utf-8">
   
-  <title>android性能优化 | wtdBill笔记 | wtdbill</title>
+  <title>单例模式 | wtdBill笔记 | wtdbill</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   
   <meta name="theme-color" content="#3F51B5">
   
   
-  <meta name="keywords" content="android">
-  <meta name="description" content="1.优化布局 （1）减少布局嵌套，VIew树的高度不超过10层，使用RelativeLayout可以提高渲染的效率 （2）使用标签重用布局 （3）使用ViewStub延迟加载 （4）github开源工具检测布局 2.内存优化 获取应用程序最大内存//128MB int maxMemory=(int)(Runtime.getRuntime().maxMemory()/1024); 获取手机堆内存大小">
-<meta name="keywords" content="android">
+  <meta name="keywords" content="Java">
+  <meta name="description" content="单例模式：保证一个类仅有一个实例，并提供一个访问它的全局访问点。 单例模式的６中写法： 饿汉模式：在类加载时就完成了初始化，所以加载较慢，但是对象的获取速度快，避免了多线程同步问题。 123456789101112public class SingleTon &amp;#123;    private static SingleTon instance = new SingleTon();    priv">
+<meta name="keywords" content="Java">
 <meta property="og:type" content="article">
-<meta property="og:title" content="android性能优化">
-<meta property="og:url" content="http://www.yppcat.top/2019/01/29/android性能优化/index.html">
+<meta property="og:title" content="单例模式">
+<meta property="og:url" content="http://www.yppcat.top/2019/04/12/单例模式/index.html">
 <meta property="og:site_name" content="wtdBill笔记">
-<meta property="og:description" content="1.优化布局 （1）减少布局嵌套，VIew树的高度不超过10层，使用RelativeLayout可以提高渲染的效率 （2）使用标签重用布局 （3）使用ViewStub延迟加载 （4）github开源工具检测布局 2.内存优化 获取应用程序最大内存//128MB int maxMemory=(int)(Runtime.getRuntime().maxMemory()/1024); 获取手机堆内存大小">
+<meta property="og:description" content="单例模式：保证一个类仅有一个实例，并提供一个访问它的全局访问点。 单例模式的６中写法： 饿汉模式：在类加载时就完成了初始化，所以加载较慢，但是对象的获取速度快，避免了多线程同步问题。 123456789101112public class SingleTon &amp;#123;    private static SingleTon instance = new SingleTon();    priv">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-01-29T14:38:14.000Z">
+<meta property="og:updated_time" content="2019-04-12T15:06:47.663Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="android性能优化">
-<meta name="twitter:description" content="1.优化布局 （1）减少布局嵌套，VIew树的高度不超过10层，使用RelativeLayout可以提高渲染的效率 （2）使用标签重用布局 （3）使用ViewStub延迟加载 （4）github开源工具检测布局 2.内存优化 获取应用程序最大内存//128MB int maxMemory=(int)(Runtime.getRuntime().maxMemory()/1024); 获取手机堆内存大小">
+<meta name="twitter:title" content="单例模式">
+<meta name="twitter:description" content="单例模式：保证一个类仅有一个实例，并提供一个访问它的全局访问点。 单例模式的６中写法： 饿汉模式：在类加载时就完成了初始化，所以加载较慢，但是对象的获取速度快，避免了多线程同步问题。 123456789101112public class SingleTon &amp;#123;    private static SingleTon instance = new SingleTon();    priv">
   
     <link rel="alternative" href="/atom.xml" title="wtdBill笔记" type="application/atom+xml">
   
@@ -112,7 +112,7 @@
         <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
           <i class="icon icon-lg icon-navicon"></i>
         </a>
-        <div class="flex-col header-title ellipsis">android性能优化</div>
+        <div class="flex-col header-title ellipsis">单例模式</div>
         
         <div class="search-wrap" id="search-wrap">
             <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
@@ -133,11 +133,11 @@
 </header>
 <header class="content-header">
   <div class="container">
-    <h1 class="author">android性能优化</h1>
+    <h1 class="author">单例模式</h1>
     <h5 class="subtitle">
         
-            <time datetime="2019-01-29T13:36:14.000Z" itemprop="datePublished" class="page-time">
-  2019-01-29
+            <time datetime="2019-04-12T14:47:57.000Z" itemprop="datePublished" class="page-time">
+  2019-04-12
 </time>
 
 
@@ -147,10 +147,10 @@
 </header>
 
     <div class="container body-wrap">
-      <article id="post-android性能优化" class="article article-type-post" itemprop="blogPost">
+      <article id="post-单例模式" class="article article-type-post" itemprop="blogPost">
     <div class="post-meta flex-row">
         
-	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/android/">android</a></li></ul>
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Java/">Java</a></li></ul>
 
     </div>
     <div class="post-body">
@@ -205,50 +205,20 @@
         <div class="post-main">
 
             <div class="post-content" id="post-content" itemprop="postContent">
-            <p>1.优化布局</p>
-<p>（1）减少布局嵌套，VIew树的高度不超过10层，使用RelativeLayout可以提高渲染的效率</p>
-<p>（2）使用<include>标签重用布局</include></p>
-<p>（3）使用ViewStub延迟加载</p>
-<p>（4）<a href="https://github.com/romainguy/ViewServer" target="_blank" rel="noopener">github开源工具检测布局</a></p>
-<p>2.内存优化</p>
-<p>获取应用程序最大内存//128MB</p>
-<p>int maxMemory=(int)(Runtime.getRuntime().maxMemory()/1024);</p>
-<p>获取手机堆内存大小  MB</p>
-<p>int memClass=((ActivityManager)getSystemService(Context.ACTIVITY_SERVICE)).getMemoryClass();</p>
-<p>int maxMemory=(int)(Runtime.getRuntime().maxMemory()/1024);//得到应用程序最大内存的kb大小</p>
-<p>Log.d(TAG, maxMemory+””);</p>
-<p>int memClass=((ActivityManager)getSystemService(Context.ACTIVITY_SERVICE)).getMemoryClass();//得到手机最大堆内存的大小，java heap最大值</p>
-<p>Log.d(TAG, memClass+””);</p>
-<p>Runtime runtime=Runtime.getRuntime();</p>
-<p>//字节大小</p>
-<p>long maxHeap=runtime.maxMemory();//最大java heap最大值</p>
-<p>Log.d(TAG, “maxMemory”+maxHeap+””);</p>
-<p>long freeMemory=runtime.freeMemory();//获取<strong>申请但未使用</strong>java heap,单位byte</p>
-<p>Log.d(TAG, “freeMemory”+freeMemory);</p>
-<p>long usedMemory=runtime.totalMemory();//获取已经申请的全部内存</p>
-<p>Log.d(TAG, “totalMemory”+usedMemory);</p>
-<p>long haveusedMemory=runtime.totalMemory()-runtime.freeMemory();//已经使用的heap内存</p>
-<p>Log.d(TAG, “haveusedMemory”+haveusedMemory);</p>
-<p>long availableMemory=runtime.maxMemory()-runtime.totalMemory()+runtime.freeMemory();//当前可new出来的最大内存</p>
-<p>Log.d(TAG, “availableMemory”+availableMemory);</p>
-<p>（1）堆内存：堆内存用来存放new创建的对象和数组，由虚拟机的垃圾回收器GC管理。调用System.gc()方法可以建议系统回收，但是开发者无法控制。</p>
-<p>（2）Bitmap优化  在Bitmap对象使用结束时及时调用bitmap.recycle()方法释放资源；通过内存缓存（LruCache）和磁盘缓存（DiskLruCache）更好的使用（推荐使用Glide框架）</p>
-<p>（3）代码优化</p>
-<p>常量使用static修饰符</p>
-<p>static方法可以提高访问速度</p>
-<p>尽量使用局部变量代替成员变量（as自带提醒）</p>
-<p>减少对象的使用，尽量使用基础类型  eg: Sting s;   better than String s = new String();(装拆箱)</p>
-<p>不使用枚举！！（很消耗内存）  减少使用Iterator</p>
-<p>Cursor、Receiver、Sensor、File等内存大户的创建、回收、注册和解注册</p>
-<p>避免使用IOC注解？？？（待理解）</p>
-<p>利用SurfaceView代替View来进行绘图操作</p>
-<p>View inflate后及时缓存  不用每次都去解析视图</p>
-<p>3.Lint工具</p>
-<p>4.Android Studio自带的Mrmory Monitor工具</p>
-<p>5.<a href="https://blog.csdn.net/u011240877/article/details/54347396" target="_blank" rel="noopener">使用TraceView工具优化</a></p>
-<p>6.<a href="https://blog.csdn.net/zxm317122667/article/details/52162764" target="_blank" rel="noopener">使用MAT工具分析应用内存</a></p>
-<p>7.<a href="https://www.jianshu.com/p/2ff0f2a5571c" target="_blank" rel="noopener">使用Dumpsys分析系统状态</a></p>
-
+            <p>单例模式：保证一个类仅有一个实例，并提供一个访问它的全局访问点。</p>
+<p>单例模式的６中写法：</p>
+<p><strong>饿汉模式：</strong>在类加载时就完成了初始化，所以加载较慢，但是对象的获取速度快，避免了多线程同步问题。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">public class SingleTon &#123;</span><br><span class="line"></span><br><span class="line">    private static SingleTon instance = new SingleTon();</span><br><span class="line"></span><br><span class="line">    private SingleTon() &#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public static SingleTon getInstance() &#123;</span><br><span class="line">        return instance;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>懒汉模式：</strong>线程不安全，节约了资源，在多线程时不能正常工作。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">public class SingleTon &#123;</span><br><span class="line"></span><br><span class="line">    private static SingleTon instance;</span><br><span class="line"></span><br><span class="line">    private SingleTon() &#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public static SingleTon getInstance() &#123;</span><br><span class="line">        if (instance == null) &#123;</span><br><span class="line">            return new SingleTon();</span><br><span class="line">        &#125;</span><br><span class="line">        return instance;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>线程安全的懒汉模式：</strong>能够在多线程下工作，但是每次调用getInstance都需要进行同步，造成的同步开销较大。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">public class SingleTon &#123;</span><br><span class="line"></span><br><span class="line">    private static SingleTon instance;</span><br><span class="line"></span><br><span class="line">    private SingleTon() &#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public static synchronized SingleTon getInstance() &#123;</span><br><span class="line">        if (instance == null) &#123;</span><br><span class="line">            return new SingleTon();</span><br><span class="line">        &#125;</span><br><span class="line">        return instance;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>双重检查模式:　</strong>避免了不必要的同步，同时避免创建多余的实例，volatile稍微影响了性能。　第一次加载稍慢，有可能出现失效的问题。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">public class SingleTon &#123;</span><br><span class="line"></span><br><span class="line">    private volatile static SingleTon instance;</span><br><span class="line"></span><br><span class="line">    private SingleTon() &#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public static synchronized SingleTon getInstance() &#123;</span><br><span class="line">        if (instance == null) &#123;</span><br><span class="line">            synchronized (SingleTon.class) &#123;</span><br><span class="line">                if (instance == null) &#123;</span><br><span class="line">                    instance = new SingleTon();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        return instance;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>静态内部类单例模式：</strong>第一次加载时不会初始化sInstance,只有第一次调用getInstance方法时才会加载SingleTonHolder并初始化sInstance。不仅能保证线程安全，也能保证SingleTon类的唯一性。（推荐使用）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">public class SingleTon &#123;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    private SingleTon() &#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public static SingleTon getInstance() &#123;</span><br><span class="line">        return SingleTonHolder.sInstance;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    private static class SingleTonHolder &#123;</span><br><span class="line">        private static final SingleTon sInstance = new SingleTon();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>枚举单例：</strong>　线程安全，且在任何情况下都是单例，但是可读性不高。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">public enum  SingleTon &#123;</span><br><span class="line"></span><br><span class="line">    INSTANCE;</span><br><span class="line">    </span><br><span class="line">    public void doSomeThing()&#123;</span><br><span class="line">        </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
             
             <div class="post-reward">
@@ -259,7 +229,7 @@
             <blockquote>
                 <p>
                 本文地址：
-                <a href="http://www.yppcat.top/2019/01/29/android性能优化/" target="_blank" rel="external">http://www.yppcat.top/2019/01/29/android性能优化/</a>
+                <a href="http://www.yppcat.top/2019/04/12/单例模式/" target="_blank" rel="external">http://www.yppcat.top/2019/04/12/单例模式/</a>
                 </p>
                 <footer><cite><a href="http://www.yppcat.top">@wtdBill笔记</a></cite></footer>
             </blockquote>
@@ -268,18 +238,18 @@
 <nav class="post-nav">
   
     <div class="waves-block waves-effect prev fl">
-      <a href="/2019/01/30/RxJava操作符/" id="post-prev" class="post-nav-link">
+      <a href="/2019/04/13/Android文件路径详解/" id="post-prev" class="post-nav-link">
         <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
-        <h4 class="title">RxJava操作符</h4>
+        <h4 class="title">Android文件路径详解</h4>
       </a>
     </div>
   
 
   
     <div class="waves-block waves-effect next fr">
-      <a href="/2019/01/29/图片加水印/" id="post-next" class="post-nav-link">
+      <a href="/2019/04/12/AsyncTask原理分析/" id="post-next" class="post-nav-link">
         <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
-        <h4 class="title">图片加水印</h4>
+        <h4 class="title">AsyncTask原理分析</h4>
       </a>
     </div>
   
@@ -290,7 +260,7 @@
             
 <div class="duoshuo">
 	<!-- 多说评论框 start -->
-	<div class="ds-thread" data-thread-key="android性能优化" data-title="android性能优化" data-url="http://www.yppcat.top/2019/01/29/android性能优化/index.html"></div>
+	<div class="ds-thread" data-thread-key="单例模式" data-title="单例模式" data-url="http://www.yppcat.top/2019/04/12/单例模式/index.html"></div>
 	<!-- 多说评论框 end -->
 	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
 	<script type="text/javascript">
@@ -346,10 +316,10 @@
 
 <script>
 var BLOG_SHARE = {
-    title: "android性能优化",
+    title: "单例模式",
     pic: "/img/header.jpg",
     summary: document.getElementsByName('summary')[0].content,
-    url: "http://www.yppcat.top/2019/01/29/android性能优化/index.html"
+    url: "http://www.yppcat.top/2019/04/12/单例模式/index.html"
 };
 </script>
 <div class="global-share" id="global-share">

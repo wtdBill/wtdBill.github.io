@@ -3,25 +3,25 @@
 <head><meta name="generator" content="Hexo 3.8.0">
   <meta charset="utf-8">
   
-  <title>图片加水印 | wtdBill笔记 | wtdbill</title>
+  <title>Android文件路径详解 | wtdBill笔记 | wtdbill</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   
   <meta name="theme-color" content="#3F51B5">
   
   
   <meta name="keywords" content="android">
-  <meta name="description" content="关于一些对于图片添加水印的处理，具体方法如下： `package yppcat.morethread;import android.graphics.Bitmap;import android.graphics.BitmapFactory;import android.graphics.Canvas;import android.graphics.Matrix;import android.uti">
+  <meta name="description" content="Android磁盘存储可以分为两类，内部存储和外部存储。 内部存储：内部存储不是内存，是位于系统磁盘中一个独特的位置。/data/文件夹就是内部存储，内部存储中一般存储一些应用数据，如apk,sharedpreference,database数据，webView缓存和图片缓存等。内部存储中还有一个文件夹，每个应用都有一个，里面中的数据在应用卸载之后就会删除。结构如：/data/data/你的应用报">
 <meta name="keywords" content="android">
 <meta property="og:type" content="article">
-<meta property="og:title" content="图片加水印">
-<meta property="og:url" content="http://www.yppcat.top/2019/01/29/图片加水印/index.html">
+<meta property="og:title" content="Android文件路径详解">
+<meta property="og:url" content="http://www.yppcat.top/2019/04/13/Android文件路径详解/index.html">
 <meta property="og:site_name" content="wtdBill笔记">
-<meta property="og:description" content="关于一些对于图片添加水印的处理，具体方法如下： `package yppcat.morethread;import android.graphics.Bitmap;import android.graphics.BitmapFactory;import android.graphics.Canvas;import android.graphics.Matrix;import android.uti">
+<meta property="og:description" content="Android磁盘存储可以分为两类，内部存储和外部存储。 内部存储：内部存储不是内存，是位于系统磁盘中一个独特的位置。/data/文件夹就是内部存储，内部存储中一般存储一些应用数据，如apk,sharedpreference,database数据，webView缓存和图片缓存等。内部存储中还有一个文件夹，每个应用都有一个，里面中的数据在应用卸载之后就会删除。结构如：/data/data/你的应用报">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-01-28T16:26:34.000Z">
+<meta property="og:updated_time" content="2019-04-13T13:57:45.733Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="图片加水印">
-<meta name="twitter:description" content="关于一些对于图片添加水印的处理，具体方法如下： `package yppcat.morethread;import android.graphics.Bitmap;import android.graphics.BitmapFactory;import android.graphics.Canvas;import android.graphics.Matrix;import android.uti">
+<meta name="twitter:title" content="Android文件路径详解">
+<meta name="twitter:description" content="Android磁盘存储可以分为两类，内部存储和外部存储。 内部存储：内部存储不是内存，是位于系统磁盘中一个独特的位置。/data/文件夹就是内部存储，内部存储中一般存储一些应用数据，如apk,sharedpreference,database数据，webView缓存和图片缓存等。内部存储中还有一个文件夹，每个应用都有一个，里面中的数据在应用卸载之后就会删除。结构如：/data/data/你的应用报">
   
     <link rel="alternative" href="/atom.xml" title="wtdBill笔记" type="application/atom+xml">
   
@@ -112,7 +112,7 @@
         <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
           <i class="icon icon-lg icon-navicon"></i>
         </a>
-        <div class="flex-col header-title ellipsis">图片加水印</div>
+        <div class="flex-col header-title ellipsis">Android文件路径详解</div>
         
         <div class="search-wrap" id="search-wrap">
             <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
@@ -133,11 +133,11 @@
 </header>
 <header class="content-header">
   <div class="container">
-    <h1 class="author">图片加水印</h1>
+    <h1 class="author">Android文件路径详解</h1>
     <h5 class="subtitle">
         
-            <time datetime="2019-01-28T16:05:20.000Z" itemprop="datePublished" class="page-time">
-  2019-01-29
+            <time datetime="2019-04-13T05:11:50.000Z" itemprop="datePublished" class="page-time">
+  2019-04-13
 </time>
 
 
@@ -147,7 +147,7 @@
 </header>
 
     <div class="container body-wrap">
-      <article id="post-图片加水印" class="article article-type-post" itemprop="blogPost">
+      <article id="post-Android文件路径详解" class="article article-type-post" itemprop="blogPost">
     <div class="post-meta flex-row">
         
 	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/android/">android</a></li></ul>
@@ -205,178 +205,100 @@
         <div class="post-main">
 
             <div class="post-content" id="post-content" itemprop="postContent">
-            <p>关于一些对于图片添加水印的处理，具体方法如下：</p>
-<p>`package yppcat.morethread;<br>import android.graphics.Bitmap;<br>import android.graphics.BitmapFactory;<br>import android.graphics.Canvas;<br>import android.graphics.Matrix;<br>import android.util.Log;<br>import android.view.View;</p>
-<p>import java.io.File;<br>import java.io.FileOutputStream;</p>
-<p>/**</p>
+            <p>Android磁盘存储可以分为两类，内部存储和外部存储。</p>
+<p><strong>内部存储：</strong>内部存储不是内存，是位于系统磁盘中一个独特的位置。/data/文件夹就是内部存储，内部存储中一般存储一些应用数据，如apk,sharedpreference,database数据，webView缓存和图片缓存等。内部存储中还有一个文件夹，每个应用都有一个，里面中的数据在应用卸载之后就会删除。结构如：/data/data/你的应用报名/。其次还有一个/data/app/的文件夹，这里面存储着我们手机上安装的ａｐｋ文件。</p>
+<p><strong>特点：</strong></p>
+<p>内部存储的文件和目录只能被我们的app自己访问，别的app不能访问。</p>
+<p>内部存储中的私有目录，当用户卸载app之后，该文件目录中关于该应用的信息就会被删除。</p>
+<p>内部存储是可用的。</p>
+<p>内部存储大小有限，不适合存储大量数据。</p>
+<p>只有root的手机，才能从手机文件管理器看见，否则都是隐藏的。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">getCacheDir().getAbsolutePath();///data/data/包名/cache</span><br></pre></td></tr></table></figure>
+<p>常见的内部存储中有这些目录:</p>
+<p>/data/app/</p>
+<p>/data/data/包名/shared_prefs</p>
+<p>/data/data/包名/cache</p>
+<p>/data/data/包名/databases</p>
+<p>/data/data/包名/files</p>
+<p><strong>外部存储：</strong>外部存储并不是指拓展的ＳＤ卡，不管有无外接设备，每个Android手机都有外部存储。</p>
+<p>一般的mnt或者storage目录。外部存储中分两类目录，私有目录和公有目录，私有目录的数据会随着应用的卸载而删除，公有目录不会。</p>
+<p><strong>特点：</strong></p>
+<p>公有目录任何程序都可以访问，私有目录自身可以访问。</p>
+<p>并不一定是可用的，因为SD卡会被挂载。</p>
+<p>外部存储中的私有目录中的数据会随着应用的卸载而删除，而公有目录不会。</p>
+<p><strong>公有目录：</strong></p>
+<p>公有目录是任何程序都可以</p>
 <ul>
-<li>Created by 殷朋朋 on 19-1-28.<br> */</li>
+<li><strong>DIRECTORY_MUSIC</strong></li>
 </ul>
-<p>public class BitmapUtils {<br>    private static final String TAG = “BitmapUtils”;<br>    /**</p>
-<pre><code> * view转成bitmap (此方法在低分辨率手机上有可能出现返回null,可选用下面的重载方法)
- *
- * @param view 指定的view
- * @return 图片大小和view大小相同
- */
-public static Bitmap convertViewToBitmap(View view) {
-    view.measure(View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED), View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
-    view.layout(0, 0, view.getMeasuredWidth(), view.getMeasuredHeight());
-    view.buildDrawingCache();
-    Bitmap bitmap = view.getDrawingCache();
-    if (bitmap == null) {
-        Log.d(TAG, &quot;bitmap is null&quot;);
-        return null;
-    }
-    return bitmap;
-}
-
-/**
- * view 转换bitmap
- * @param view 指定的view
- * @param width 图片的宽
- * @param height 图片的高
- * @return 图片
- */
-public static Bitmap convertViewToBitmap(View view, int width, int height) {
-    Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
-    view.draw(new Canvas(bitmap));
-    if (bitmap == null) {
-        Log.d(TAG, &quot;bitmap is null&quot;);
-        return null;
-    }
-    return bitmap;
-}
-
-/**
- * 创建水印bitmap
- *
- * @param src       原图
- * @param watermark 水印图
- * @return 加完水印的图片
- */
-public static Bitmap createWatermarkBitmap(Bitmap src, Bitmap watermark) {
-    if (src == null || watermark == null) {
-        return null;
-    }
-    int w = src.getWidth(); //获取图片的宽高
-    int h = src.getHeight();
-    int ww = watermark.getWidth();  //获取水印宽高
-    int wh = watermark.getHeight();
-    Bitmap newb = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);//创建一个新的和SRC长度宽度一样的位图
-    Canvas cv = new Canvas(newb);
-    cv.drawBitmap(src, 0, 0, null);//在 0，0坐标开始画入src
-    cv.drawBitmap(watermark, w - ww - 5, h - wh - 5, null);//在src的右下角画入水印  位置可自定义
-    cv.save(Canvas.ALL_SAVE_FLAG);//保存
-    cv.restore();//存储
-    return newb;
-}
-
-/**
- * 创建水印bitmap
- * @param src 原图
- */
-public static Bitmap createWatermarkBitmap(Bitmap src) {
-    Bitmap watermark = BitmapFactory.decodeResource(App.getContext().getResources(), R.mipmap.water_mark);
-    return createWatermarkBitmap(src, watermark);
-}
-
-/**
- * 将bitmap保存到本地
- * @param path 文件目录
- * @param mBitmap 图片
- * @param quality 图片质量 0-100
- * @return 是否保存成功
- */
-public static boolean saveBitmap(String path, Bitmap mBitmap, int quality) {
-    File f = new File(path);
-    if (f.exists())
-        f.delete();
-
-    try {
-        FileOutputStream out = new FileOutputStream(f);
-        mBitmap.compress(Bitmap.CompressFormat.PNG, quality, out);
-        out.flush();
-        out.close();
-        return true;
-    } catch (Exception e) {
-        e.printStackTrace();
-    }
-
-    return false;
-}
-
-/**
- * 
- * @param src 原图
- * @param watermark 水印图片
- * @param paddingLeft 水平方向偏移量
- * @param paddingTop 竖直方向偏移量
- * @return 加完水印的图片
- */
-public static Bitmap createWaterMaskBitmap(Bitmap src, Bitmap watermark, int paddingLeft, int paddingTop) {
-    if (src == null) {
-        return null;
-    }
-    int width = src.getWidth();
-    int height = src.getHeight();
-    //创建一个bitmap
-    Bitmap newBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);// 创建一个新的和SRC长度宽度一样的位图
-    //将该图片作为画布
-    Canvas canvas = new Canvas(newBitmap);
-    //在画布 0，0坐标上开始绘制原始图片
-    canvas.drawBitmap(src, 0, 0, null);
-    //在画布上绘制水印图片
-    canvas.drawBitmap(watermark, paddingLeft, paddingTop, null);
-    // 保存
-    canvas.save(Canvas.ALL_SAVE_FLAG);
-    // 存储
-    canvas.restore();
-    return newBitmap;
-}
-
-/**
- * 根据给定的宽和高进行拉伸
- *
- * @param origin    原图
- * @param newWidth  新图的宽
- * @param newHeight 新图的高
- * @return new Bitmap
- */
-public static Bitmap scaleBitmap(Bitmap origin, int newWidth, int newHeight) {
-    if (origin == null) {
-        return null;
-    }
-    int height = origin.getHeight();
-    int width = origin.getWidth();
-    float scaleWidth = ((float) newWidth) / width;
-    float scaleHeight = ((float) newHeight) / height;
-    Matrix matrix = new Matrix();
-    matrix.postScale(scaleWidth, scaleHeight);// 使用后乘
-    Bitmap newBM = Bitmap.createBitmap(origin, 0, 0, width, height, matrix, false);
-    if (!origin.isRecycled()) {
-        origin.recycle();
-    }
-    return newBM;
-}
-
-/**
- * 回收bitmap
- *
- * @param bitmaps 数组
- */
-public static void recycleBitmaps(Bitmap... bitmaps) {
-    if (bitmaps != null &amp;&amp; bitmaps.length &gt; 0) {
-        for (Bitmap bitmap : bitmaps) {
-            if (bitmap != null) {
-                if (!bitmap.isRecycled()) {
-                    bitmap.recycle();
-                }
-                bitmap = null;
-            }
-        }
-    }
-}
-</code></pre><p>}`</p>
+<blockquote>
+<p>音乐/storage/emulated/0/Music</p>
+</blockquote>
+<ul>
+<li><strong>DIRECTORY_PODCASTS</strong></li>
+</ul>
+<blockquote>
+<p>播客/storage/emulated/0/Podcasts</p>
+</blockquote>
+<ul>
+<li><strong>DIRECTORY_RINGTONES</strong></li>
+</ul>
+<blockquote>
+<p>来点铃声</p>
+</blockquote>
+<ul>
+<li><strong>DIRECTORY_ALARMS</strong></li>
+</ul>
+<blockquote>
+<p>闹钟/storage/emulated/0/Alarms</p>
+</blockquote>
+<ul>
+<li><strong>DIRECTORY_NOTIFICATIONS</strong></li>
+</ul>
+<blockquote>
+<p>通知/storage/emulated/0/Notifications</p>
+</blockquote>
+<ul>
+<li><strong>DIRECTORY_PICTURES</strong></li>
+</ul>
+<blockquote>
+<p>图片/storage/emulated/0/Pictures</p>
+</blockquote>
+<ul>
+<li><strong>DIRECTORY_MOVIES</strong></li>
+</ul>
+<blockquote>
+<p>电影/storage/emulated/0/Movies</p>
+</blockquote>
+<ul>
+<li><strong>DIRECTORY_DOWNLOADS</strong></li>
+</ul>
+<blockquote>
+<p>下载文件存储路径/storage/emulated/0/Download</p>
+</blockquote>
+<ul>
+<li><strong>DIRECTORY_DCIM</strong></li>
+</ul>
+<blockquote>
+<p>媒体文件/storage/emulated/0/DCIM</p>
+</blockquote>
+<ul>
+<li><strong>DIRECTORY_DOCUMENTS</strong></li>
+</ul>
+<blockquote>
+<p>文档/storage/emulated/0/Documents</p>
+</blockquote>
+<p>我们通过<strong>Environment.getExternalStoragePublicDirectory()</strong>来获取这些目录</p>
+<p><strong>私有目录：</strong></p>
+<p>外部存储中的私有目录是不会主动创建的，需要我们自己创建，私有目录应用本身无需申请动态权限，就能直接访问。我们可以在私有目录下创建我们自己的文件夹：</p>
+<ul>
+<li><strong>getExternalFilesDir(“files目录的子目录名称”)</strong></li>
+</ul>
+<p>获取应用私有目录files目录中的文件目录(storage/emulated/0/Android/data/包名/files/子目录)</p>
+<ul>
+<li><strong>getExternalCacheDir()</strong></li>
+</ul>
+<p>获取应用cache目录（/storage/emulated/0/Android/data/包名/cache）</p>
 
 
             
@@ -388,7 +310,7 @@ public static void recycleBitmaps(Bitmap... bitmaps) {
             <blockquote>
                 <p>
                 本文地址：
-                <a href="http://www.yppcat.top/2019/01/29/图片加水印/" target="_blank" rel="external">http://www.yppcat.top/2019/01/29/图片加水印/</a>
+                <a href="http://www.yppcat.top/2019/04/13/Android文件路径详解/" target="_blank" rel="external">http://www.yppcat.top/2019/04/13/Android文件路径详解/</a>
                 </p>
                 <footer><cite><a href="http://www.yppcat.top">@wtdBill笔记</a></cite></footer>
             </blockquote>
@@ -397,13 +319,20 @@ public static void recycleBitmaps(Bitmap... bitmaps) {
 <nav class="post-nav">
   
     <div class="waves-block waves-effect prev fl">
-      <a href="/2019/01/29/android性能优化/" id="post-prev" class="post-nav-link">
+      <a href="/2019/04/14/HashMap实现原理/" id="post-prev" class="post-nav-link">
         <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
-        <h4 class="title">android性能优化</h4>
+        <h4 class="title">HashMap实现原理</h4>
       </a>
     </div>
   
 
+  
+    <div class="waves-block waves-effect next fr">
+      <a href="/2019/04/12/单例模式/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">单例模式</h4>
+      </a>
+    </div>
   
 </nav>
 
@@ -412,7 +341,7 @@ public static void recycleBitmaps(Bitmap... bitmaps) {
             
 <div class="duoshuo">
 	<!-- 多说评论框 start -->
-	<div class="ds-thread" data-thread-key="图片加水印" data-title="图片加水印" data-url="http://www.yppcat.top/2019/01/29/图片加水印/index.html"></div>
+	<div class="ds-thread" data-thread-key="Android文件路径详解" data-title="Android文件路径详解" data-url="http://www.yppcat.top/2019/04/13/Android文件路径详解/index.html"></div>
 	<!-- 多说评论框 end -->
 	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
 	<script type="text/javascript">
@@ -468,10 +397,10 @@ public static void recycleBitmaps(Bitmap... bitmaps) {
 
 <script>
 var BLOG_SHARE = {
-    title: "图片加水印",
+    title: "Android文件路径详解",
     pic: "/img/header.jpg",
     summary: document.getElementsByName('summary')[0].content,
-    url: "http://www.yppcat.top/2019/01/29/图片加水印/index.html"
+    url: "http://www.yppcat.top/2019/04/13/Android文件路径详解/index.html"
 };
 </script>
 <div class="global-share" id="global-share">
