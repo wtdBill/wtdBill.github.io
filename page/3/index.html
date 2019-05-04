@@ -124,10 +124,6 @@
         </div>
         
         
-        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-share">
-            <i class="icon icon-lg icon-share-alt"></i>
-        </a>
-        
     </div>
 </header>
 <header class="content-header">
@@ -143,6 +139,130 @@
 
     <div class="container body-wrap">
       <ul class="post-list">
+  
+    <li class="post-list-item">
+        <article id="post-IntentFilter的匹配规则" class="article article-type-post" itemprop="blogPost">
+     
+
+
+  
+    <h3 class="post-title" itemprop="name">
+      <a class="post-title-link" href="/2019/02/26/IntentFilter的匹配规则/">IntentFilter的匹配规则</a>
+    </h3>
+  
+
+
+
+    <div class="post-meta">
+        <time datetime="2019-02-26T14:56:34.000Z" itemprop="datePublished" class="post-time">
+  2019-02-26
+</time>
+
+        
+
+
+    </div>
+
+    <div class="post-content" id="post-content" itemprop="postContent">
+
+    
+         IntentFilter中的过滤信息有action、category、data，一个过滤列表中的action、category、data可以有多个，只有一个Intent同时匹配action类别、category类别、data类别才算完全匹配，只有完全匹配才能成功启动目标Activity。此外，一个Activity可以有多个intent-filter，一个Intent只要能匹配任何一组intent
+    
+    
+        <a href="/2019/02/26/IntentFilter的匹配规则/" class="post-more waves-effect waves-button">
+            阅读全文...
+        </a>
+    </div>
+    
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/android/">android</a></li></ul>
+
+</article>
+
+    </li>
+  
+    <li class="post-list-item">
+        <article id="post-activity启动模式" class="article article-type-post" itemprop="blogPost">
+     
+
+
+  
+    <h3 class="post-title" itemprop="name">
+      <a class="post-title-link" href="/2019/02/20/activity启动模式/">activity启动模式和intent filter</a>
+    </h3>
+  
+
+
+
+    <div class="post-meta">
+        <time datetime="2019-02-20T14:50:26.000Z" itemprop="datePublished" class="post-time">
+  2019-02-20
+</time>
+
+        
+
+
+    </div>
+
+    <div class="post-content" id="post-content" itemprop="postContent">
+
+    
+         Activity的启动模式： 
+ 1.standard : 标准模式，每次打开都会新建一个实例，而且会处于启动当前activity的activity的任务栈中 
+ 2.singleTop : 栈顶复用模式，在这种模式下，如果新的activity已经位于任务栈的栈顶，那么此activity不会被创建，同时它的onNewIntent会被调用，此时它的生命周期不会被调用。 
+ 3.singleTask
+    
+    
+        <a href="/2019/02/20/activity启动模式/" class="post-more waves-effect waves-button">
+            阅读全文...
+        </a>
+    </div>
+    
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/android/">android</a></li></ul>
+
+</article>
+
+    </li>
+  
+    <li class="post-list-item">
+        <article id="post-activity生命周期相关" class="article article-type-post" itemprop="blogPost">
+     
+
+
+  
+    <h3 class="post-title" itemprop="name">
+      <a class="post-title-link" href="/2019/02/17/activity生命周期相关/">activity生命周期相关</a>
+    </h3>
+  
+
+
+
+    <div class="post-meta">
+        <time datetime="2019-02-17T12:05:04.000Z" itemprop="datePublished" class="post-time">
+  2019-02-17
+</time>
+
+        
+
+
+    </div>
+
+    <div class="post-content" id="post-content" itemprop="postContent">
+
+    
+         (1) onCreate : 表示activity 正在被创建，这是生命周期的第一个方法。在这个方法中，我们可以做一些初始化工作，比如setContentView去加载界面布局资源、初始化activity所需数据等，还可以在异常状态重建是利用savedInstanceState 获取需要的值。 
+ (2) onRestart : 表示acticity正在重新启动。一般情况下，当当前activit
+    
+    
+        <a href="/2019/02/17/activity生命周期相关/" class="post-more waves-effect waves-button">
+            阅读全文...
+        </a>
+    </div>
+    
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/android/">android</a></li></ul>
+
+</article>
+
+    </li>
   
     <li class="post-list-item">
         <article id="post-观察者模式" class="article article-type-post" itemprop="blogPost">
@@ -326,51 +446,6 @@
   </main>
 <div class="mask" id="mask"></div>
 <a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
-
-<script>
-var BLOG_SHARE = {
-    title: "wtdBill笔记",
-    pic: "/img/header.jpg",
-    summary: document.getElementsByName('summary')[0].content,
-    url: "http://www.yppcat.top/page/3/index.html"
-};
-</script>
-<div class="global-share" id="global-share">
-    <div class="tit">分享到：</div>
-    <ul class="reset share-icons">
-      <li>
-        <a class="weibo share-sns" href="javascript:;" data-title="微博" data-service="tsina">
-          <i class="icon icon-weibo"></i>
-        </a>
-      </li>
-      <li>
-        <a class="weixin share-sns" href="javascript:;" data-title="微信" data-service="weixin">
-          <i class="icon icon-weixin"></i>
-        </a>
-      </li>
-      <li>
-        <a class="qq share-sns" href="javascript:;" data-title=" QQ" data-service="cqq">
-          <i class="icon icon-qq"></i>
-        </a>
-      </li>
-      <li>
-        <a class="facebook share-sns" href="javascript:;" data-title=" Facebook" data-service="fb">
-          <i class="icon icon-facebook"></i>
-        </a>
-      </li>
-      <li>
-        <a class="twitter share-sns" href="javascript:;" data-title=" Twitter" data-service="twitter">
-          <i class="icon icon-twitter"></i>
-        </a>
-      </li>
-      <li>
-        <a class="douban share-sns" href="javascript:;" data-title="豆瓣" data-service="douban">
-          豆
-        </a>
-      </li>
-    </ul>
- </div>
-
 
 <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
 

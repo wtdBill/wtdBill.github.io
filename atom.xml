@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.yppcat.top/"/>
-  <updated>2019-04-14T14:21:51.213Z</updated>
+  <updated>2019-04-26T14:32:39.190Z</updated>
   <id>http://www.yppcat.top/</id>
   
   <author>
@@ -15,6 +15,71 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Linux命令</title>
+    <link href="http://www.yppcat.top/2019/04/26/Linux%E5%91%BD%E4%BB%A4/"/>
+    <id>http://www.yppcat.top/2019/04/26/Linux命令/</id>
+    <published>2019-04-26T14:16:17.000Z</published>
+    <updated>2019-04-26T14:32:39.190Z</updated>
+    
+    <content type="html"><![CDATA[<p><strong>用户相关命令：</strong></p><p>创建用户：</p><p>useradd ypp : 新建一个ypp用户</p><p>passwd ypp : 设置ypp密码</p><p>切换用户:</p><p>su – ypp : 切换到ypp用户</p><p>修改密码:</p><p>passwd : 修改当前用户密码</p><p>passwd ypp : 修改ypp用户密码</p><p>查看创建的用户信息：</p><p>cat /etc/passwd</p><p>查看组信息:</p><p>cat /etc/group</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;&lt;strong&gt;用户相关命令：&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;创建用户：&lt;/p&gt;
+&lt;p&gt;useradd ypp : 新建一个ypp用户&lt;/p&gt;
+&lt;p&gt;passwd ypp : 设置ypp密码&lt;/p&gt;
+&lt;p&gt;切换用户:&lt;/p&gt;
+&lt;p&gt;su – ypp : 切换到ypp用户&lt;
+      
+    
+    </summary>
+    
+    
+      <category term="Linux" scheme="http://www.yppcat.top/tags/Linux/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>职业规划</title>
+    <link href="http://www.yppcat.top/2019/04/26/%E8%81%8C%E4%B8%9A%E8%A7%84%E5%88%92/"/>
+    <id>http://www.yppcat.top/2019/04/26/职业规划/</id>
+    <published>2019-04-26T13:03:44.000Z</published>
+    <updated>2019-04-26T13:59:05.364Z</updated>
+    
+    <content type="html"><![CDATA[<p>　　从开始工作到现在，我好像都没有过什么具体的职业规划。刚开始毕业，找到工作就开始做，之后因为不适应那样的工作环境以及追求更好的待遇，还有不愿意出差而选择了离职。之后找工作的过程也显得很仓促，秉着不去外包的原则，也因为毕业时间毕竟很短，面临着生存压力，我很仓促地进了一家创业公司。在那里，我觉得并不理想，我在那里干了整整一年，但是说起技术上的成长几乎没有，身体健康状况也下降了很多（９９６）。　更让我自己失望的是，面对领导的涨薪留下来的要求，我居然同意了。但是让我个人比较庆幸的是，公司很快出了问题，将我们这一大批员工都裁掉了，我得以重新找工作。</p><p>　　在这将近一个月的找工作时间里，我算了一下，一共面试了七家公司，收到了３个offer。总结一下，前面两家公司因为是做p2p的，所以我工资要的很高，这应该是我没有收到offer的原因，但是说实话，我个人是对p2p公司存在偏见的，所以没有收到倒也并不失望。第三家是在上海面试的，因为那几天突然迸发出去上海发展的念头，结果面试结果很惨。盲目乐观让我吃了很大的亏，这家是个上市公司（乐心），面试的时候因为自己没有准备，连散列表的存储结构和散列碰撞都没有解释出来，之后问了关于蓝牙、ＮＤＫ方面的我就更不知道了，so Game Over。之后我痛下心来准备面试，整整一个星期，我把自己关在房间里，甚至连外面是白天还是黑夜都不知道。之后我参加了南京另一家（首屏）的面试，面试过程出乎意料的简单，一份简单的面试题，然后看了下简历，问了下具体的工作内容以及涉及的方面，然后我就回去了，过了三天收到了offer。下面我还参加了另一家的（天派）的面试，这家是做车载系统的，说实话我并不喜欢这个方面。我想去的是移动互联网公司，这个毕竟和我心里的想法有差距。面试也是先做一份面试题，这个面试题还有点难度，类似学校里的考试题目，后面还有三道算法题，我做的也很快，但是自我感觉并不是很好，之后就是主管面试吧，问了一些Android基础知识，以及在校的学习内容，与其他公司不同的是，这家公司注重稳定性，问了下是否能长期发展，在南京是否有同学之类的。之后就是技术负责人面试，问了下做过的项目，然后我详细的问了公司的产品和项目。最后就是HR面试，问了下期望薪资，还有离职的原因等，我就回去等消息了，说实话这家的offer来的有点慢，４天后才收到消息，我甚至认为是我面试被pass了。之后的另一家面试就很简单了，没有笔试题，和技术负责人在他的办公室里问了我一些技术相关的问题，但是谈到薪资福利这些待遇以及加班的情况时，我明显觉得这家比较坑。回去之后我也没有收到这家的offer。或许我看不上的也看不上我吧，haha。让我印象最深的就是最后一家（百家云），去面试先是部门负责人面，问了下做过的项目，然后问了下多线程等知识点，然后手写了一道算法题让我做，做完之后才是最恶心的，让我做一份在线笔试题，而且是要面部识别（脸一直要放在屏幕中间，转个头都会提示你识别失败，警告），我感觉这个对我的自尊心打击很大，而且到这个环节已经到中午了，他们都去吃饭了，我在那里做题目，so Ｉgive up，我和边上的人事说了下就交卷走人了。没想到的是，人事下午加我微信说晚上十点半CEO要和我微信视频面试，然后又改成了九点半。我其实本来是放弃了的，但是我还是想看看面试会发生什么，视频面试时，我做了下自我介绍，然后他问我有什么要问他的吗，我说没有，然后就挂了。意外的是，第二天，人事和我说我面试过了，然后和我说工资的事，开始压我的工资，我心里默默笑了一下，觉得这样的公司让我很厌恶，直接拒绝了，然后她又和我说工资可以商量，说还有其他的福利，我还是坚定的拒绝了，我觉得就算去了可能也会吃其他方面的亏吧。最后决定了去上面面试的那家公司（天派），虽然这不是互联网行业，但是知识是不变的，这里不仅做应用开发，还做FrameWork的开发，我想我可以学习到底层的东西吧。</p><p>　　对于未来的职业规划，我想No Study No Future，工作这两年来，我学了一些东西，但是学的越多越发现需要学习的越多。我想能够在接下来的时间里能够系统的学习一遍基础方向的东西，涉及到的有计算机组成原理、Linux操作系统、HTTP详解、NDK、音视频以及FrameWork这些知识，此外也要跟进Android的新技术，包括新知识的学习，Kotlin、Vue、golang、Spring全家桶等，这些是为了能够让我全面发展。我想技术是不断更新的，但是只要我还在工作，还在学习那么就不会被时代淘汰，希望现在的努力能够帮我渡过中年危机。至于未来的发展，我想能够在接下来的三年内工作上不要有变动，能够减少外界的干扰因素，学习自己想要的知识。至于未来嘛，我还是希望能够进入互联网的公司，我希望能够做出用户量庞大的应用（ｈａｈａ，那也是很多人的追求吧）。</p><p>　　工作之外，我想能够发展一下自己的业余爱好，我比较迷漫威，所以看的电影多了，对量子物理也产生了兴趣，希望能够阅读一些相关的书籍了解下。此外，关于体育运动方面，我想找一个羽毛球友，能陪我每周打两个小时羽毛球。还有，我要戒掉一些坏的习惯，沉迷游戏、爱发呆、小心眼等。</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;　　从开始工作到现在，我好像都没有过什么具体的职业规划。刚开始毕业，找到工作就开始做，之后因为不适应那样的工作环境以及追求更好的待遇，还有不愿意出差而选择了离职。之后找工作的过程也显得很仓促，秉着不去外包的原则，也因为毕业时间毕竟很短，面临着生存压力，我很仓促地进了一家创业
+      
+    
+    </summary>
+    
+    
+      <category term="Career" scheme="http://www.yppcat.top/tags/Career/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>NDK入门-NDK简介</title>
+    <link href="http://www.yppcat.top/2019/04/17/NDK%E5%85%A5%E9%97%A8-NDK%E7%AE%80%E4%BB%8B/"/>
+    <id>http://www.yppcat.top/2019/04/17/NDK入门-NDK简介/</id>
+    <published>2019-04-17T12:21:45.000Z</published>
+    <updated>2019-04-17T12:21:45.161Z</updated>
+    
+    <summary type="html">
+    
+    </summary>
+    
+    
+  </entry>
   
   <entry>
     <title>HashMap实现原理</title>
@@ -436,81 +501,6 @@
     
     
       <category term="设计模式" scheme="http://www.yppcat.top/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>RxJava操作符</title>
-    <link href="http://www.yppcat.top/2019/01/30/RxJava%E6%93%8D%E4%BD%9C%E7%AC%A6/"/>
-    <id>http://www.yppcat.top/2019/01/30/RxJava操作符/</id>
-    <published>2019-01-30T12:12:08.000Z</published>
-    <updated>2019-01-30T12:18:56.000Z</updated>
-    
-    <content type="html"><![CDATA[<p><a href="https://www.jianshu.com/p/cd984dd5aae8" target="_blank" rel="noopener">RxJava操作符详解</a></p>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;p&gt;&lt;a href=&quot;https://www.jianshu.com/p/cd984dd5aae8&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;RxJava操作符详解&lt;/a&gt;&lt;/p&gt;
-
-      
-    
-    </summary>
-    
-    
-      <category term="安卓资源" scheme="http://www.yppcat.top/tags/%E5%AE%89%E5%8D%93%E8%B5%84%E6%BA%90/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>android性能优化</title>
-    <link href="http://www.yppcat.top/2019/01/29/android%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/"/>
-    <id>http://www.yppcat.top/2019/01/29/android性能优化/</id>
-    <published>2019-01-29T13:36:14.000Z</published>
-    <updated>2019-01-29T14:38:14.000Z</updated>
-    
-    <content type="html"><![CDATA[<p>1.优化布局</p><p>（1）减少布局嵌套，VIew树的高度不超过10层，使用RelativeLayout可以提高渲染的效率</p><p>（2）使用<include>标签重用布局</include></p><p>（3）使用ViewStub延迟加载</p><p>（4）<a href="https://github.com/romainguy/ViewServer" target="_blank" rel="noopener">github开源工具检测布局</a></p><p>2.内存优化</p><p>获取应用程序最大内存//128MB</p><p>int maxMemory=(int)(Runtime.getRuntime().maxMemory()/1024);</p><p>获取手机堆内存大小  MB</p><p>int memClass=((ActivityManager)getSystemService(Context.ACTIVITY_SERVICE)).getMemoryClass();</p><p>int maxMemory=(int)(Runtime.getRuntime().maxMemory()/1024);//得到应用程序最大内存的kb大小</p><p>Log.d(TAG, maxMemory+””);</p><p>int memClass=((ActivityManager)getSystemService(Context.ACTIVITY_SERVICE)).getMemoryClass();//得到手机最大堆内存的大小，java heap最大值</p><p>Log.d(TAG, memClass+””);</p><p>Runtime runtime=Runtime.getRuntime();</p><p>//字节大小</p><p>long maxHeap=runtime.maxMemory();//最大java heap最大值</p><p>Log.d(TAG, “maxMemory”+maxHeap+””);</p><p>long freeMemory=runtime.freeMemory();//获取<strong>申请但未使用</strong>java heap,单位byte</p><p>Log.d(TAG, “freeMemory”+freeMemory);</p><p>long usedMemory=runtime.totalMemory();//获取已经申请的全部内存</p><p>Log.d(TAG, “totalMemory”+usedMemory);</p><p>long haveusedMemory=runtime.totalMemory()-runtime.freeMemory();//已经使用的heap内存</p><p>Log.d(TAG, “haveusedMemory”+haveusedMemory);</p><p>long availableMemory=runtime.maxMemory()-runtime.totalMemory()+runtime.freeMemory();//当前可new出来的最大内存</p><p>Log.d(TAG, “availableMemory”+availableMemory);</p><p>（1）堆内存：堆内存用来存放new创建的对象和数组，由虚拟机的垃圾回收器GC管理。调用System.gc()方法可以建议系统回收，但是开发者无法控制。</p><p>（2）Bitmap优化  在Bitmap对象使用结束时及时调用bitmap.recycle()方法释放资源；通过内存缓存（LruCache）和磁盘缓存（DiskLruCache）更好的使用（推荐使用Glide框架）</p><p>（3）代码优化</p><p>常量使用static修饰符</p><p>static方法可以提高访问速度</p><p>尽量使用局部变量代替成员变量（as自带提醒）</p><p>减少对象的使用，尽量使用基础类型  eg: Sting s;   better than String s = new String();(装拆箱)</p><p>不使用枚举！！（很消耗内存）  减少使用Iterator</p><p>Cursor、Receiver、Sensor、File等内存大户的创建、回收、注册和解注册</p><p>避免使用IOC注解？？？（待理解）</p><p>利用SurfaceView代替View来进行绘图操作</p><p>View inflate后及时缓存  不用每次都去解析视图</p><p>3.Lint工具</p><p>4.Android Studio自带的Mrmory Monitor工具</p><p>5.<a href="https://blog.csdn.net/u011240877/article/details/54347396" target="_blank" rel="noopener">使用TraceView工具优化</a></p><p>6.<a href="https://blog.csdn.net/zxm317122667/article/details/52162764" target="_blank" rel="noopener">使用MAT工具分析应用内存</a></p><p>7.<a href="https://www.jianshu.com/p/2ff0f2a5571c" target="_blank" rel="noopener">使用Dumpsys分析系统状态</a></p>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;p&gt;1.优化布局&lt;/p&gt;
-&lt;p&gt;（1）减少布局嵌套，VIew树的高度不超过10层，使用RelativeLayout可以提高渲染的效率&lt;/p&gt;
-&lt;p&gt;（2）使用&lt;include&gt;标签重用布局&lt;/include&gt;&lt;/p&gt;
-&lt;p&gt;（3）使用ViewStub延迟加载&lt;/p&gt;
-&lt;p&gt;（4
-      
-    
-    </summary>
-    
-    
-      <category term="android" scheme="http://www.yppcat.top/tags/android/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>图片加水印</title>
-    <link href="http://www.yppcat.top/2019/01/29/%E5%9B%BE%E7%89%87%E5%8A%A0%E6%B0%B4%E5%8D%B0/"/>
-    <id>http://www.yppcat.top/2019/01/29/图片加水印/</id>
-    <published>2019-01-28T16:05:20.000Z</published>
-    <updated>2019-01-28T16:26:34.000Z</updated>
-    
-    <content type="html"><![CDATA[<p>关于一些对于图片添加水印的处理，具体方法如下：</p><p>`package yppcat.morethread;<br>import android.graphics.Bitmap;<br>import android.graphics.BitmapFactory;<br>import android.graphics.Canvas;<br>import android.graphics.Matrix;<br>import android.util.Log;<br>import android.view.View;</p><p>import java.io.File;<br>import java.io.FileOutputStream;</p><p>/**</p><ul><li>Created by 殷朋朋 on 19-1-28.<br> */</li></ul><p>public class BitmapUtils {<br>    private static final String TAG = “BitmapUtils”;<br>    /**</p><pre><code> * view转成bitmap (此方法在低分辨率手机上有可能出现返回null,可选用下面的重载方法) * * @param view 指定的view * @return 图片大小和view大小相同 */public static Bitmap convertViewToBitmap(View view) {    view.measure(View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED), View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));    view.layout(0, 0, view.getMeasuredWidth(), view.getMeasuredHeight());    view.buildDrawingCache();    Bitmap bitmap = view.getDrawingCache();    if (bitmap == null) {        Log.d(TAG, &quot;bitmap is null&quot;);        return null;    }    return bitmap;}/** * view 转换bitmap * @param view 指定的view * @param width 图片的宽 * @param height 图片的高 * @return 图片 */public static Bitmap convertViewToBitmap(View view, int width, int height) {    Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);    view.draw(new Canvas(bitmap));    if (bitmap == null) {        Log.d(TAG, &quot;bitmap is null&quot;);        return null;    }    return bitmap;}/** * 创建水印bitmap * * @param src       原图 * @param watermark 水印图 * @return 加完水印的图片 */public static Bitmap createWatermarkBitmap(Bitmap src, Bitmap watermark) {    if (src == null || watermark == null) {        return null;    }    int w = src.getWidth(); //获取图片的宽高    int h = src.getHeight();    int ww = watermark.getWidth();  //获取水印宽高    int wh = watermark.getHeight();    Bitmap newb = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);//创建一个新的和SRC长度宽度一样的位图    Canvas cv = new Canvas(newb);    cv.drawBitmap(src, 0, 0, null);//在 0，0坐标开始画入src    cv.drawBitmap(watermark, w - ww - 5, h - wh - 5, null);//在src的右下角画入水印  位置可自定义    cv.save(Canvas.ALL_SAVE_FLAG);//保存    cv.restore();//存储    return newb;}/** * 创建水印bitmap * @param src 原图 */public static Bitmap createWatermarkBitmap(Bitmap src) {    Bitmap watermark = BitmapFactory.decodeResource(App.getContext().getResources(), R.mipmap.water_mark);    return createWatermarkBitmap(src, watermark);}/** * 将bitmap保存到本地 * @param path 文件目录 * @param mBitmap 图片 * @param quality 图片质量 0-100 * @return 是否保存成功 */public static boolean saveBitmap(String path, Bitmap mBitmap, int quality) {    File f = new File(path);    if (f.exists())        f.delete();    try {        FileOutputStream out = new FileOutputStream(f);        mBitmap.compress(Bitmap.CompressFormat.PNG, quality, out);        out.flush();        out.close();        return true;    } catch (Exception e) {        e.printStackTrace();    }    return false;}/** *  * @param src 原图 * @param watermark 水印图片 * @param paddingLeft 水平方向偏移量 * @param paddingTop 竖直方向偏移量 * @return 加完水印的图片 */public static Bitmap createWaterMaskBitmap(Bitmap src, Bitmap watermark, int paddingLeft, int paddingTop) {    if (src == null) {        return null;    }    int width = src.getWidth();    int height = src.getHeight();    //创建一个bitmap    Bitmap newBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);// 创建一个新的和SRC长度宽度一样的位图    //将该图片作为画布    Canvas canvas = new Canvas(newBitmap);    //在画布 0，0坐标上开始绘制原始图片    canvas.drawBitmap(src, 0, 0, null);    //在画布上绘制水印图片    canvas.drawBitmap(watermark, paddingLeft, paddingTop, null);    // 保存    canvas.save(Canvas.ALL_SAVE_FLAG);    // 存储    canvas.restore();    return newBitmap;}/** * 根据给定的宽和高进行拉伸 * * @param origin    原图 * @param newWidth  新图的宽 * @param newHeight 新图的高 * @return new Bitmap */public static Bitmap scaleBitmap(Bitmap origin, int newWidth, int newHeight) {    if (origin == null) {        return null;    }    int height = origin.getHeight();    int width = origin.getWidth();    float scaleWidth = ((float) newWidth) / width;    float scaleHeight = ((float) newHeight) / height;    Matrix matrix = new Matrix();    matrix.postScale(scaleWidth, scaleHeight);// 使用后乘    Bitmap newBM = Bitmap.createBitmap(origin, 0, 0, width, height, matrix, false);    if (!origin.isRecycled()) {        origin.recycle();    }    return newBM;}/** * 回收bitmap * * @param bitmaps 数组 */public static void recycleBitmaps(Bitmap... bitmaps) {    if (bitmaps != null &amp;&amp; bitmaps.length &gt; 0) {        for (Bitmap bitmap : bitmaps) {            if (bitmap != null) {                if (!bitmap.isRecycled()) {                    bitmap.recycle();                }                bitmap = null;            }        }    }}</code></pre><p>}`</p>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;p&gt;关于一些对于图片添加水印的处理，具体方法如下：&lt;/p&gt;
-&lt;p&gt;`package yppcat.morethread;&lt;br&gt;import android.graphics.Bitmap;&lt;br&gt;import android.graphics.BitmapFactory;&lt;b
-      
-    
-    </summary>
-    
-    
-      <category term="android" scheme="http://www.yppcat.top/tags/android/"/>
     
   </entry>
   

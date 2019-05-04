@@ -3,25 +3,25 @@
 <head><meta name="generator" content="Hexo 3.8.0">
   <meta charset="utf-8">
   
-  <title>activity启动模式和intent filter | wtdBill笔记 | wtdbill</title>
+  <title>Linux命令 | wtdBill笔记 | wtdbill</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   
   <meta name="theme-color" content="#3F51B5">
   
   
-  <meta name="keywords" content="android">
-  <meta name="description" content="Activity的启动模式： 1.standard : 标准模式，每次打开都会新建一个实例，而且会处于启动当前activity的activity的任务栈中 2.singleTop : 栈顶复用模式，在这种模式下，如果新的activity已经位于任务栈的栈顶，那么此activity不会被创建，同时它的onNewIntent会被调用，此时它的生命周期不会被调用。 3.singleTask ：栈内复用模">
-<meta name="keywords" content="android">
+  <meta name="keywords" content="Linux">
+  <meta name="description" content="用户相关命令： 创建用户： useradd ypp : 新建一个ypp用户 passwd ypp : 设置ypp密码 切换用户: su – ypp : 切换到ypp用户 修改密码: passwd : 修改当前用户密码 passwd ypp : 修改ypp用户密码 查看创建的用户信息： cat /etc/passwd 查看组信息: cat /etc/group">
+<meta name="keywords" content="Linux">
 <meta property="og:type" content="article">
-<meta property="og:title" content="activity启动模式和intent filter">
-<meta property="og:url" content="http://www.yppcat.top/2019/02/20/activity启动模式/index.html">
+<meta property="og:title" content="Linux命令">
+<meta property="og:url" content="http://www.yppcat.top/2019/04/26/Linux命令/index.html">
 <meta property="og:site_name" content="wtdBill笔记">
-<meta property="og:description" content="Activity的启动模式： 1.standard : 标准模式，每次打开都会新建一个实例，而且会处于启动当前activity的activity的任务栈中 2.singleTop : 栈顶复用模式，在这种模式下，如果新的activity已经位于任务栈的栈顶，那么此activity不会被创建，同时它的onNewIntent会被调用，此时它的生命周期不会被调用。 3.singleTask ：栈内复用模">
+<meta property="og:description" content="用户相关命令： 创建用户： useradd ypp : 新建一个ypp用户 passwd ypp : 设置ypp密码 切换用户: su – ypp : 切换到ypp用户 修改密码: passwd : 修改当前用户密码 passwd ypp : 修改ypp用户密码 查看创建的用户信息： cat /etc/passwd 查看组信息: cat /etc/group">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-02-26T14:55:10.000Z">
+<meta property="og:updated_time" content="2019-04-26T14:32:39.190Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="activity启动模式和intent filter">
-<meta name="twitter:description" content="Activity的启动模式： 1.standard : 标准模式，每次打开都会新建一个实例，而且会处于启动当前activity的activity的任务栈中 2.singleTop : 栈顶复用模式，在这种模式下，如果新的activity已经位于任务栈的栈顶，那么此activity不会被创建，同时它的onNewIntent会被调用，此时它的生命周期不会被调用。 3.singleTask ：栈内复用模">
+<meta name="twitter:title" content="Linux命令">
+<meta name="twitter:description" content="用户相关命令： 创建用户： useradd ypp : 新建一个ypp用户 passwd ypp : 设置ypp密码 切换用户: su – ypp : 切换到ypp用户 修改密码: passwd : 修改当前用户密码 passwd ypp : 修改ypp用户密码 查看创建的用户信息： cat /etc/passwd 查看组信息: cat /etc/group">
   
     <link rel="alternative" href="/atom.xml" title="wtdBill笔记" type="application/atom+xml">
   
@@ -112,7 +112,7 @@
         <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
           <i class="icon icon-lg icon-navicon"></i>
         </a>
-        <div class="flex-col header-title ellipsis">activity启动模式和intent filter</div>
+        <div class="flex-col header-title ellipsis">Linux命令</div>
         
         <div class="search-wrap" id="search-wrap">
             <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
@@ -129,11 +129,11 @@
 </header>
 <header class="content-header">
   <div class="container">
-    <h1 class="author">activity启动模式和intent filter</h1>
+    <h1 class="author">Linux命令</h1>
     <h5 class="subtitle">
         
-            <time datetime="2019-02-20T14:50:26.000Z" itemprop="datePublished" class="page-time">
-  2019-02-20
+            <time datetime="2019-04-26T14:16:17.000Z" itemprop="datePublished" class="page-time">
+  2019-04-26
 </time>
 
 
@@ -143,10 +143,10 @@
 </header>
 
     <div class="container body-wrap">
-      <article id="post-activity启动模式" class="article article-type-post" itemprop="blogPost">
+      <article id="post-Linux命令" class="article article-type-post" itemprop="blogPost">
     <div class="post-meta flex-row">
         
-	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/android/">android</a></li></ul>
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Linux/">Linux</a></li></ul>
 
     </div>
     <div class="post-body">
@@ -164,16 +164,19 @@
         <div class="post-main">
 
             <div class="post-content" id="post-content" itemprop="postContent">
-            <p>Activity的启动模式：</p>
-<p>1.standard : 标准模式，每次打开都会新建一个实例，而且会处于启动当前activity的activity的任务栈中</p>
-<p>2.singleTop : 栈顶复用模式，在这种模式下，如果新的activity已经位于任务栈的栈顶，那么此activity不会被创建，同时它的onNewIntent会被调用，此时它的生命周期不会被调用。</p>
-<p>3.singleTask ：栈内复用模式，这是一种单实例模式，只要activity在一个栈中存在，那么多次启动此activity都不会被重新创建，并且调用其onNewIntent。当一个activity具有这种模式，系统会首先寻找当前activity是否在当前任务栈中是否存在当前activity 的实例，如果没有则重新创建     </p>
-<p>4.singleInstance : 单实例模式。这是一种加强的singleTask模式，它除了具有singleTask模式的所有特性之外，还加强了一点，那就是具有此种模式的activity只能单独的位于一个任务栈中，换句话说，比如Activity A 是singleInstance模式，当A启动后，系统会为它创建一个新的任务栈，然后A独自在这个新的任务栈中，由于栈内的复用性，后续的请求均不会创建新的Activity，除非这个独特的任务栈被系统销毁了。</p>
-<p>此外，对于singleTask模式的Activity，还可以通过TaskAffinity来指定Activity启动所在的任务栈的名字，未指定情况下会出现在和包名相同的任务栈中。</p>
-<p>可通过一下两种方式来指定activity 的启动模式：</p>
-<p>1.<code>&lt;activity android:name=&quot;.Main2Activity&quot;    android:launchMode=&quot;singleTop&quot;&gt;</code></p>
-<p>2.<code>Intent intent = new Intent(this,Main2Activity.class);intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);startActivity(intent);</code></p>
-<p>此外增加FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS这个标记的Activity不会出现在历史的Activity的列表中，等同于在XML中指定Activity的属性android:excludeFromRecents=”true”。</p>
+            <p><strong>用户相关命令：</strong></p>
+<p>创建用户：</p>
+<p>useradd ypp : 新建一个ypp用户</p>
+<p>passwd ypp : 设置ypp密码</p>
+<p>切换用户:</p>
+<p>su – ypp : 切换到ypp用户</p>
+<p>修改密码:</p>
+<p>passwd : 修改当前用户密码</p>
+<p>passwd ypp : 修改ypp用户密码</p>
+<p>查看创建的用户信息：</p>
+<p>cat /etc/passwd</p>
+<p>查看组信息:</p>
+<p>cat /etc/group</p>
 
 
             
@@ -185,7 +188,7 @@
             <blockquote>
                 <p>
                 本文地址：
-                <a href="http://www.yppcat.top/2019/02/20/activity启动模式/" target="_blank" rel="external">http://www.yppcat.top/2019/02/20/activity启动模式/</a>
+                <a href="http://www.yppcat.top/2019/04/26/Linux命令/" target="_blank" rel="external">http://www.yppcat.top/2019/04/26/Linux命令/</a>
                 </p>
                 <footer><cite><a href="http://www.yppcat.top">@wtdBill笔记</a></cite></footer>
             </blockquote>
@@ -193,19 +196,12 @@
             
 <nav class="post-nav">
   
-    <div class="waves-block waves-effect prev fl">
-      <a href="/2019/02/26/IntentFilter的匹配规则/" id="post-prev" class="post-nav-link">
-        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
-        <h4 class="title">IntentFilter的匹配规则</h4>
-      </a>
-    </div>
-  
 
   
     <div class="waves-block waves-effect next fr">
-      <a href="/2019/02/17/activity生命周期相关/" id="post-next" class="post-nav-link">
+      <a href="/2019/04/26/职业规划/" id="post-next" class="post-nav-link">
         <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
-        <h4 class="title">activity生命周期相关</h4>
+        <h4 class="title">职业规划</h4>
       </a>
     </div>
   
@@ -216,7 +212,7 @@
             
 <div class="duoshuo">
 	<!-- 多说评论框 start -->
-	<div class="ds-thread" data-thread-key="activity启动模式" data-title="activity启动模式和intent filter" data-url="http://www.yppcat.top/2019/02/20/activity启动模式/index.html"></div>
+	<div class="ds-thread" data-thread-key="Linux命令" data-title="Linux命令" data-url="http://www.yppcat.top/2019/04/26/Linux命令/index.html"></div>
 	<!-- 多说评论框 end -->
 	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
 	<script type="text/javascript">
