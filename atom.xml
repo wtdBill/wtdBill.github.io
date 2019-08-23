@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.yppcat.top/"/>
-  <updated>2019-08-22T14:50:31.995Z</updated>
+  <updated>2019-08-23T14:36:57.087Z</updated>
   <id>http://www.yppcat.top/</id>
   
   <author>
@@ -15,6 +15,31 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Activity和Fragment通信</title>
+    <link href="http://www.yppcat.top/2019/08/23/Activity%E5%92%8CFragment%E9%80%9A%E4%BF%A1/"/>
+    <id>http://www.yppcat.top/2019/08/23/Activity和Fragment通信/</id>
+    <published>2019-08-23T14:19:48.000Z</published>
+    <updated>2019-08-23T14:36:57.087Z</updated>
+    
+    <content type="html"><![CDATA[<p>Activity和Fragment通信的几种方式：</p><p>1.接口的方式：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">class MainFragment : Fragment() &#123;</span><br><span class="line"></span><br><span class="line">    private lateinit var name : String</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    fun setName(name : String)&#123;</span><br><span class="line">        this.name = name</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    override fun onCreateView(</span><br><span class="line">        inflater: LayoutInflater, container: ViewGroup?,</span><br><span class="line">        savedInstanceState: Bundle?</span><br><span class="line">    ): View? &#123;</span><br><span class="line">        return inflater.inflate(R.layout.fragment_main, container, false)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">class MainActivity : AppCompatActivity() &#123;</span><br><span class="line"></span><br><span class="line">    private lateinit var mainFragment: MainFragment</span><br><span class="line"></span><br><span class="line">    override fun onCreate(savedInstanceState: Bundle?) &#123;</span><br><span class="line">        super.onCreate(savedInstanceState)</span><br><span class="line">        setContentView(R.layout.activity_main)</span><br><span class="line"></span><br><span class="line">        mainFragment = MainFragment()</span><br><span class="line">        mainFragment.setName(&quot;Hello&quot;)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>2.Bundle的方式：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">class MainFragment private constructor() : Fragment() &#123;</span><br><span class="line"></span><br><span class="line">    private lateinit var name: String</span><br><span class="line">    private lateinit var mainFragment: MainFragment</span><br><span class="line"></span><br><span class="line">    companion object &#123;</span><br><span class="line">        private lateinit var mainFragment: MainFragment</span><br><span class="line"></span><br><span class="line">        fun newInstance(bundle: Bundle): MainFragment &#123;</span><br><span class="line">            mainFragment = MainFragment()</span><br><span class="line">            mainFragment.arguments = bundle</span><br><span class="line">            return mainFragment</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure><p>3.广播方式</p><p>4.eventBus、RxBus等事件</p><p>5.文件（File、SharedPreference方式等）</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;Activity和Fragment通信的几种方式：&lt;/p&gt;
+&lt;p&gt;1.接口的方式：&lt;/p&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/sp
+      
+    
+    </summary>
+    
+    
+      <category term="面试" scheme="http://www.yppcat.top/tags/%E9%9D%A2%E8%AF%95/"/>
+    
+  </entry>
   
   <entry>
     <title>自定义 Handler 时如何有效地避免内存泄漏问题</title>
@@ -477,30 +502,6 @@
       
         &lt;p&gt;在安卓中，我们可以使用内容提供器ContentResolver来获取其他应用程序的数据：&lt;/p&gt;
 &lt;p&gt;&lt;code&gt;Cursor cursor = getContentResolver().query(ContactsContract.CommonDataKinds.Pho
-      
-    
-    </summary>
-    
-    
-      <category term="android" scheme="http://www.yppcat.top/tags/android/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>app冷热启动及优化</title>
-    <link href="http://www.yppcat.top/2019/03/08/app%E5%86%B7%E7%83%AD%E5%90%AF%E5%8A%A8%E5%8F%8A%E4%BC%98%E5%8C%96/"/>
-    <id>http://www.yppcat.top/2019/03/08/app冷热启动及优化/</id>
-    <published>2019-03-08T14:35:49.000Z</published>
-    <updated>2019-03-08T15:08:14.000Z</updated>
-    
-    <content type="html"><![CDATA[<p>冷启动：当启动应用时，后台没有该应用的进程，这时系统会重新创建一个新的进程分配给该应用，这个启动方式就是冷启动。 </p><p>特点：冷启动因为系统会重新创建一个新的进程分配给它，所以会先创建和初始化Application类，再创建和初始化MainActivity类（包括一系列的测量、布局、绘制），最后显示在界面上。</p><p>热启动：当启动应用时，后台已有该应用的进程（例：按back键、home键，应用虽然会退出，但是该应用的进程是依然会保留在后台，可进入任务列表查看），所以在已有进程的情况下，这种启动会从已有的进程中来启动应用，这个方式叫热启动。</p><p>特点：热启动因为会从已有的进程中来启动，所以热启动就不会走Application这步了，而是直接走MainActivity（包括一系列的测量、布局、绘制），所以热启动的过程只需要创建和初始化一个MainActivity就行了，而不必创建和初始化Application，因为一个应用从新进程的创建到进程的销毁，Application只会初始化一次。</p><p>冷启动优化方案：</p><p>1.使用背景图：</p><p>在style文件下定义如下主题：</p><p><code>&lt;style name=&quot;AppWelcome&quot; parent=&quot;AppTheme&quot;&gt; &lt;item name=&quot;android:windowBackground&quot;&gt;@mipmap/bg_welcome_start&lt;/item&gt; &lt;/style&gt;</code></p><p>然后在Manifest中将启动页的主题设置为当前主题：</p><p><code>android:theme=&quot;@style/AppWelcome&quot;</code></p><p>2.使用透明背景和全屏：</p><p><code>&lt;style name=&quot;AppTransparent&quot; parent=&quot;AppTheme&quot;&gt;    &lt;item name=&quot;android:windowFullscreen&quot;&gt;true&lt;/item&gt;    &lt;item name=&quot;android:windowIsTranslucent&quot;&gt;true&lt;/item&gt;&lt;/style&gt;</code></p><p>或者：</p><p><code>&lt;style name=&quot;APPWel&quot; parent=&quot;android:Theme.Translucent.NoTitleBar.Fullscreen&quot; /&gt;</code></p><p>这种就和微信的处理方式是一样的，APP启动时会有一种因为系统卡顿造成启动较慢的假象。</p><p>3.如下几点建议：</p><p>尽量不要让Application参与业务的操作  </p><p>尽量不要在APPlication进行耗时操作，比如有些开发者会在自己的APP里一系列文件夹或文件（比如我自己），这些I/O操作应该放到”确实该使用的时候再去创建”亦或者是数据库的一些操作</p><p> 尽量不要以静态变量的方式在Application中保存数据等。  4、减少LaunchActivity的View层级，减少View测量绘制时间</p><p>此外，可以通过如下方式测量APP冷启动和热启动的时间：</p><p><code>adb shell am start -W [packageName]/[packageName.launchActivity]</code></p>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;p&gt;冷启动：当启动应用时，后台没有该应用的进程，这时系统会重新创建一个新的进程分配给该应用，这个启动方式就是冷启动。 &lt;/p&gt;
-&lt;p&gt;特点：冷启动因为系统会重新创建一个新的进程分配给它，所以会先创建和初始化Application类，再创建和初始化MainActivity类（包括
       
     
     </summary>
