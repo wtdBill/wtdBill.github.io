@@ -3,25 +3,25 @@
 <head><meta name="generator" content="Hexo 3.8.0">
   <meta charset="utf-8">
   
-  <title>Activity和Fragment通信 | wtdBill笔记 | wtdbill</title>
+  <title>内存泄漏的原因和解决方式 | wtdBill笔记 | wtdbill</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   
   <meta name="theme-color" content="#3F51B5">
   
   
   <meta name="keywords" content="面试">
-  <meta name="description" content="Activity和Fragment通信的几种方式： 1.接口的方式： 1234567891011121314151617class MainFragment : Fragment() &amp;#123;    private lateinit var name : String    fun setName(name : String)&amp;#123;        this.name = name">
+  <meta name="description" content="1.Handler引起的内存泄漏（生命周期长的持有了生命周期短的引用） 2.Bitmap对象使用结束没有使用recycle释放内存 12val bitmap = BitmapFactory.decodeResource(resources,R.drawable.ic_launcher)bitmap.recycle() 3.cursor的释放 12val cursor = contentResolv">
 <meta name="keywords" content="面试">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Activity和Fragment通信">
-<meta property="og:url" content="http://www.yppcat.top/2019/08/23/Activity和Fragment通信/index.html">
+<meta property="og:title" content="内存泄漏的原因和解决方式">
+<meta property="og:url" content="http://www.yppcat.top/2019/08/26/内存泄漏的原因和解决方式/index.html">
 <meta property="og:site_name" content="wtdBill笔记">
-<meta property="og:description" content="Activity和Fragment通信的几种方式： 1.接口的方式： 1234567891011121314151617class MainFragment : Fragment() &amp;#123;    private lateinit var name : String    fun setName(name : String)&amp;#123;        this.name = name">
+<meta property="og:description" content="1.Handler引起的内存泄漏（生命周期长的持有了生命周期短的引用） 2.Bitmap对象使用结束没有使用recycle释放内存 12val bitmap = BitmapFactory.decodeResource(resources,R.drawable.ic_launcher)bitmap.recycle() 3.cursor的释放 12val cursor = contentResolv">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-08-23T14:36:57.087Z">
+<meta property="og:updated_time" content="2019-08-27T14:26:14.925Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Activity和Fragment通信">
-<meta name="twitter:description" content="Activity和Fragment通信的几种方式： 1.接口的方式： 1234567891011121314151617class MainFragment : Fragment() &amp;#123;    private lateinit var name : String    fun setName(name : String)&amp;#123;        this.name = name">
+<meta name="twitter:title" content="内存泄漏的原因和解决方式">
+<meta name="twitter:description" content="1.Handler引起的内存泄漏（生命周期长的持有了生命周期短的引用） 2.Bitmap对象使用结束没有使用recycle释放内存 12val bitmap = BitmapFactory.decodeResource(resources,R.drawable.ic_launcher)bitmap.recycle() 3.cursor的释放 12val cursor = contentResolv">
   
     <link rel="alternative" href="/atom.xml" title="wtdBill笔记" type="application/atom+xml">
   
@@ -112,7 +112,7 @@
         <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
           <i class="icon icon-lg icon-navicon"></i>
         </a>
-        <div class="flex-col header-title ellipsis">Activity和Fragment通信</div>
+        <div class="flex-col header-title ellipsis">内存泄漏的原因和解决方式</div>
         
         <div class="search-wrap" id="search-wrap">
             <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
@@ -129,11 +129,11 @@
 </header>
 <header class="content-header">
   <div class="container">
-    <h1 class="author">Activity和Fragment通信</h1>
+    <h1 class="author">内存泄漏的原因和解决方式</h1>
     <h5 class="subtitle">
         
-            <time datetime="2019-08-23T14:19:48.000Z" itemprop="datePublished" class="page-time">
-  2019-08-23
+            <time datetime="2019-08-26T13:39:00.000Z" itemprop="datePublished" class="page-time">
+  2019-08-26
 </time>
 
 
@@ -143,7 +143,7 @@
 </header>
 
     <div class="container body-wrap">
-      <article id="post-Activity和Fragment通信" class="article article-type-post" itemprop="blogPost">
+      <article id="post-内存泄漏的原因和解决方式" class="article article-type-post" itemprop="blogPost">
     <div class="post-meta flex-row">
         
 	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/面试/">面试</a></li></ul>
@@ -164,16 +164,14 @@
         <div class="post-main">
 
             <div class="post-content" id="post-content" itemprop="postContent">
-            <p>Activity和Fragment通信的几种方式：</p>
-<p>1.接口的方式：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">class MainFragment : Fragment() &#123;</span><br><span class="line"></span><br><span class="line">    private lateinit var name : String</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    fun setName(name : String)&#123;</span><br><span class="line">        this.name = name</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    override fun onCreateView(</span><br><span class="line">        inflater: LayoutInflater, container: ViewGroup?,</span><br><span class="line">        savedInstanceState: Bundle?</span><br><span class="line">    ): View? &#123;</span><br><span class="line">        return inflater.inflate(R.layout.fragment_main, container, false)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">class MainActivity : AppCompatActivity() &#123;</span><br><span class="line"></span><br><span class="line">    private lateinit var mainFragment: MainFragment</span><br><span class="line"></span><br><span class="line">    override fun onCreate(savedInstanceState: Bundle?) &#123;</span><br><span class="line">        super.onCreate(savedInstanceState)</span><br><span class="line">        setContentView(R.layout.activity_main)</span><br><span class="line"></span><br><span class="line">        mainFragment = MainFragment()</span><br><span class="line">        mainFragment.setName(&quot;Hello&quot;)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>2.Bundle的方式：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">class MainFragment private constructor() : Fragment() &#123;</span><br><span class="line"></span><br><span class="line">    private lateinit var name: String</span><br><span class="line">    private lateinit var mainFragment: MainFragment</span><br><span class="line"></span><br><span class="line">    companion object &#123;</span><br><span class="line">        private lateinit var mainFragment: MainFragment</span><br><span class="line"></span><br><span class="line">        fun newInstance(bundle: Bundle): MainFragment &#123;</span><br><span class="line">            mainFragment = MainFragment()</span><br><span class="line">            mainFragment.arguments = bundle</span><br><span class="line">            return mainFragment</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
-<p>3.广播方式</p>
-<p>4.eventBus、RxBus等事件</p>
-<p>5.文件（File、SharedPreference方式等）</p>
-
+            <p>1.<a href="https://www.yppcat.top/2019/08/22/%E8%87%AA%E5%AE%9A%E4%B9%89-Handler-%E6%97%B6%E5%A6%82%E4%BD%95%E6%9C%89%E6%95%88%E5%9C%B0%E9%81%BF%E5%85%8D%E5%86%85%E5%AD%98%E6%B3%84%E6%BC%8F%E9%97%AE%E9%A2%98/">Handler引起的内存泄漏</a>（生命周期长的持有了生命周期短的引用）</p>
+<p>2.Bitmap对象使用结束没有使用recycle释放内存</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">val bitmap = BitmapFactory.decodeResource(resources,R.drawable.ic_launcher)</span><br><span class="line">bitmap.recycle()</span><br></pre></td></tr></table></figure>
+<p>3.cursor的释放</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">val cursor = contentResolver.query(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,null,null,null,null)</span><br><span class="line">cursor?.close()</span><br></pre></td></tr></table></figure>
+<p>4.BroadcastReceiver、EventBus、RxBus等注册未取消监听</p>
+<p>5.单例模式构造引用的context对象：</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Utils</span> <span class="keyword">private</span> <span class="keyword">constructor</span></span>(<span class="keyword">private</span> <span class="keyword">val</span> context: Context) &#123;    <span class="keyword">companion</span> <span class="keyword">object</span> &#123;        <span class="keyword">private</span> <span class="keyword">var</span> instance: Utils? = <span class="literal">null</span>        <span class="function"><span class="keyword">fun</span> <span class="title">getInstance</span><span class="params">(context: <span class="type">Context</span>)</span></span>: Utils &#123;            <span class="keyword">if</span> (instance == <span class="literal">null</span>) &#123;                synchronized(Utils::<span class="class"><span class="keyword">class</span>.<span class="title">java</span>) </span>&#123;                    instance = Utils(context.applicationContext)                &#125;            &#125;            <span class="keyword">return</span> instance!!        &#125;    &#125;&#125;</span><br></pre></td></tr></table></figure>
 
             
             <div class="post-reward">
@@ -184,7 +182,7 @@
             <blockquote>
                 <p>
                 本文地址：
-                <a href="http://www.yppcat.top/2019/08/23/Activity和Fragment通信/" target="_blank" rel="external">http://www.yppcat.top/2019/08/23/Activity和Fragment通信/</a>
+                <a href="http://www.yppcat.top/2019/08/26/内存泄漏的原因和解决方式/" target="_blank" rel="external">http://www.yppcat.top/2019/08/26/内存泄漏的原因和解决方式/</a>
                 </p>
                 <footer><cite><a href="http://www.yppcat.top">@wtdBill笔记</a></cite></footer>
             </blockquote>
@@ -192,19 +190,12 @@
             
 <nav class="post-nav">
   
-    <div class="waves-block waves-effect prev fl">
-      <a href="/2019/08/26/内存泄漏的原因和解决方式/" id="post-prev" class="post-nav-link">
-        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
-        <h4 class="title">内存泄漏的原因和解决方式</h4>
-      </a>
-    </div>
-  
 
   
     <div class="waves-block waves-effect next fr">
-      <a href="/2019/08/22/自定义-Handler-时如何有效地避免内存泄漏问题/" id="post-next" class="post-nav-link">
+      <a href="/2019/08/23/Activity和Fragment通信/" id="post-next" class="post-nav-link">
         <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
-        <h4 class="title">自定义 Handler 时如何有效地避免内存泄漏问题</h4>
+        <h4 class="title">Activity和Fragment通信</h4>
       </a>
     </div>
   
@@ -215,7 +206,7 @@
             
 <div class="duoshuo">
 	<!-- 多说评论框 start -->
-	<div class="ds-thread" data-thread-key="Activity和Fragment通信" data-title="Activity和Fragment通信" data-url="http://www.yppcat.top/2019/08/23/Activity和Fragment通信/index.html"></div>
+	<div class="ds-thread" data-thread-key="内存泄漏的原因和解决方式" data-title="内存泄漏的原因和解决方式" data-url="http://www.yppcat.top/2019/08/26/内存泄漏的原因和解决方式/index.html"></div>
 	<!-- 多说评论框 end -->
 	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
 	<script type="text/javascript">
