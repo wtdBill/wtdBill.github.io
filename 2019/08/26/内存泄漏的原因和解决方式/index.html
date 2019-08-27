@@ -18,7 +18,7 @@
 <meta property="og:site_name" content="wtdBill笔记">
 <meta property="og:description" content="1.Handler引起的内存泄漏（生命周期长的持有了生命周期短的引用） 2.Bitmap对象使用结束没有使用recycle释放内存 12val bitmap = BitmapFactory.decodeResource(resources,R.drawable.ic_launcher)bitmap.recycle() 3.cursor的释放 12val cursor = contentResolv">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-08-27T14:26:14.925Z">
+<meta property="og:updated_time" content="2019-08-27T14:44:59.039Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="内存泄漏的原因和解决方式">
 <meta name="twitter:description" content="1.Handler引起的内存泄漏（生命周期长的持有了生命周期短的引用） 2.Bitmap对象使用结束没有使用recycle释放内存 12val bitmap = BitmapFactory.decodeResource(resources,R.drawable.ic_launcher)bitmap.recycle() 3.cursor的释放 12val cursor = contentResolv">
@@ -170,8 +170,24 @@
 <p>3.cursor的释放</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">val cursor = contentResolver.query(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,null,null,null,null)</span><br><span class="line">cursor?.close()</span><br></pre></td></tr></table></figure>
 <p>4.BroadcastReceiver、EventBus、RxBus等注册未取消监听</p>
-<p>5.单例模式构造引用的context对象：</p>
-<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Utils</span> <span class="keyword">private</span> <span class="keyword">constructor</span></span>(<span class="keyword">private</span> <span class="keyword">val</span> context: Context) &#123;    <span class="keyword">companion</span> <span class="keyword">object</span> &#123;        <span class="keyword">private</span> <span class="keyword">var</span> instance: Utils? = <span class="literal">null</span>        <span class="function"><span class="keyword">fun</span> <span class="title">getInstance</span><span class="params">(context: <span class="type">Context</span>)</span></span>: Utils &#123;            <span class="keyword">if</span> (instance == <span class="literal">null</span>) &#123;                synchronized(Utils::<span class="class"><span class="keyword">class</span>.<span class="title">java</span>) </span>&#123;                    instance = Utils(context.applicationContext)                &#125;            &#125;            <span class="keyword">return</span> instance!!        &#125;    &#125;&#125;</span><br></pre></td></tr></table></figure>
+<p>5.单例模式构造引用的context对象：<br>public class Utils {</p>
+<pre><code>private static Utils instance;
+private Context context;
+
+public static Utils getInstance(Context context) {
+    if (instance == null) {
+        synchronized (Utils.class) {
+            instance = new Utils(context.getApplicationContext());
+        }
+    }
+    return instance;
+}
+
+private Utils(Context context) {
+    this.context = context;
+}
+</code></pre><p>}</p>
+
 
             
             <div class="post-reward">
