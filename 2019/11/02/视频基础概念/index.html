@@ -3,25 +3,25 @@
 <head><meta name="generator" content="Hexo 3.8.0">
   <meta charset="utf-8">
   
-  <title>wtdBill笔记 | wtdbill</title>
+  <title>视频基础概念 | wtdBill笔记 | wtdbill</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   
   <meta name="theme-color" content="#3F51B5">
   
   
-  <meta name="keywords" content="wtdBill笔记">
-  <meta name="description" content="重新入门">
-<meta name="keywords" content="wtdBill笔记">
-<meta property="og:type" content="website">
-<meta property="og:title" content="wtdBill笔记">
-<meta property="og:url" content="http://www.yppcat.top/tags/index.html">
+  <meta name="keywords" content="音视频">
+  <meta name="description" content="1.H264 : IBP帧概念 2.GOF : 两个I帧的间隔（一组帧） 3.SPS ： 序列参数集，一组帧的存放帧数、参考帧数目。。。 4.PPS ： 图像参数集，存放编码模式选择标识、片组数目。。。  编码器 ：x264、x265(cpu占用过高)、openH264(svc分层传输，硬编不兼容)、vp8、vp9 H264压缩：帧内压缩、帧间压缩、整数离散余弦变换（傅里叶变换）、CABAC压缩">
+<meta name="keywords" content="音视频">
+<meta property="og:type" content="article">
+<meta property="og:title" content="视频基础概念">
+<meta property="og:url" content="http://www.yppcat.top/2019/11/02/视频基础概念/index.html">
 <meta property="og:site_name" content="wtdBill笔记">
-<meta property="og:description" content="重新入门">
+<meta property="og:description" content="1.H264 : IBP帧概念 2.GOF : 两个I帧的间隔（一组帧） 3.SPS ： 序列参数集，一组帧的存放帧数、参考帧数目。。。 4.PPS ： 图像参数集，存放编码模式选择标识、片组数目。。。  编码器 ：x264、x265(cpu占用过高)、openH264(svc分层传输，硬编不兼容)、vp8、vp9 H264压缩：帧内压缩、帧间压缩、整数离散余弦变换（傅里叶变换）、CABAC压缩">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-01-24T12:44:24.000Z">
+<meta property="og:updated_time" content="2019-11-03T02:53:37.048Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="wtdBill笔记">
-<meta name="twitter:description" content="重新入门">
+<meta name="twitter:title" content="视频基础概念">
+<meta name="twitter:description" content="1.H264 : IBP帧概念 2.GOF : 两个I帧的间隔（一组帧） 3.SPS ： 序列参数集，一组帧的存放帧数、参考帧数目。。。 4.PPS ： 图像参数集，存放编码模式选择标识、片组数目。。。  编码器 ：x264、x265(cpu占用过高)、openH264(svc分层传输，硬编不兼容)、vp8、vp9 H264压缩：帧内压缩、帧间压缩、整数离散余弦变换（傅里叶变换）、CABAC压缩">
   
     <link rel="alternative" href="/atom.xml" title="wtdBill笔记" type="application/atom+xml">
   
@@ -33,7 +33,7 @@
 <body>
   <div id="loading" class="active"></div>
 
-  <nav id="menu"  >
+  <nav id="menu" class="hide" >
    <div class="inner flex-row-vertical">
   <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
       <i class="icon icon-lg icon-close"></i>
@@ -64,7 +64,7 @@
             </a>
           </li>
       
-          <li class="waves-block waves-effect active">
+          <li class="waves-block waves-effect">
             <a href="/tags">
               <i class="icon icon-lg icon-tags"></i>
               Tags
@@ -112,7 +112,7 @@
         <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
           <i class="icon icon-lg icon-navicon"></i>
         </a>
-        <div class="flex-col header-title ellipsis">wtdBill笔记</div>
+        <div class="flex-col header-title ellipsis">视频基础概念</div>
         
         <div class="search-wrap" id="search-wrap">
             <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
@@ -129,11 +129,11 @@
 </header>
 <header class="content-header">
   <div class="container">
-    <h1 class="author">wtdBill笔记</h1>
+    <h1 class="author">视频基础概念</h1>
     <h5 class="subtitle">
         
-            <time datetime="2019-08-18T04:50:31.171Z" itemprop="datePublished" class="page-time">
-  2019-08-18
+            <time datetime="2019-11-02T12:57:16.000Z" itemprop="datePublished" class="page-time">
+  2019-11-02
 </time>
 
 
@@ -143,10 +143,119 @@
 </header>
 
     <div class="container body-wrap">
-      <section class="tags-wrap">
-  <h2 class="tags-title">笔记分类</h2>
-  <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/C-学习笔记/">#C++学习笔记</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Career/">#Career</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/">#Java</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Kotlin/">#Kotlin</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/">#Linux</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/android/">#android</a><span class="tag-list-count">13</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/安卓资源/">#安卓资源</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数据结构/">#数据结构</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/设计模式/">#设计模式</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/面试/">#面试</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/音视频/">#音视频</a><span class="tag-list-count">1</span></li></ul>  
-</section>
+      <article id="post-视频基础概念" class="article article-type-post" itemprop="blogPost">
+    <div class="post-meta flex-row">
+        
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/音视频/">音视频</a></li></ul>
+
+    </div>
+    <div class="post-body">
+        <aside class="post-widget" id="post-widget">
+
+            
+
+            
+            <nav class="post-toc-wrap" id="post-toc">
+            
+            </nav>
+            
+        </aside>
+
+        <div class="post-main">
+
+            <div class="post-content" id="post-content" itemprop="postContent">
+            <p>1.H264 : IBP帧概念</p>
+<p>2.GOF : 两个I帧的间隔（一组帧）</p>
+<p>3.SPS ： 序列参数集，一组帧的存放帧数、参考帧数目。。。</p>
+<p>4.PPS ： 图像参数集，存放编码模式选择标识、片组数目。。。</p>
+<p> 编码器 ：x264、x265(cpu占用过高)、openH264(svc分层传输，硬编不兼容)、vp8、vp9</p>
+<p>H264压缩：帧内压缩、帧间压缩、整数离散余弦变换（傅里叶变换）、CABAC压缩</p>
+<p>H264编码分层</p>
+<p>码流：SODB、RBSP、EBSP、NALU</p>
+<p>YUV图像存储格式</p>
+
+
+            
+            <div class="post-reward">
+                <a id="rewardBtn" href="javascript:;" class="post-reward-btn waves-effect waves-circle waves-light">赏</a>
+            </div>
+            
+            
+            <blockquote>
+                <p>
+                本文地址：
+                <a href="http://www.yppcat.top/2019/11/02/视频基础概念/" target="_blank" rel="external">http://www.yppcat.top/2019/11/02/视频基础概念/</a>
+                </p>
+                <footer><cite><a href="http://www.yppcat.top">@wtdBill笔记</a></cite></footer>
+            </blockquote>
+            </div>
+            
+<nav class="post-nav">
+  
+
+  
+    <div class="waves-block waves-effect next fr">
+      <a href="/2019/08/26/内存泄漏的原因和解决方式/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">内存泄漏的原因和解决方式</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+            
+            
+<div class="duoshuo">
+	<!-- 多说评论框 start -->
+	<div class="ds-thread" data-thread-key="视频基础概念" data-title="视频基础概念" data-url="http://www.yppcat.top/2019/11/02/视频基础概念/index.html"></div>
+	<!-- 多说评论框 end -->
+	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+	<script type="text/javascript">
+	var duoshuoQuery = {short_name:"ysblog"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+	<!-- 多说公共JS代码 end -->
+</div>
+
+
+
+
+
+        </div>
+    </div>
+</article>
+
+<div id="reward" class="reward-lay">
+    <a class="reward-off" id="rewardOff" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        谢谢老板~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <ul class="reward-items">
+        
+        <li>
+            <img src="/img/wechat.jpg" title="微信打赏二维码" alt="微信打赏二维码">
+            <p>微信</p>
+        </li>
+        
+
+        
+        <li>
+            <img src="/img/alipay.jpg" title="支付宝打赏二维码" alt="支付宝打赏二维码">
+            <p>支付宝</p>
+        </li>
+        
+    </ul>
+</div>
 
     </div>
   </main>

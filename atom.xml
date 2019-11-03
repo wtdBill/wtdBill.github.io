@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.yppcat.top/"/>
-  <updated>2019-08-27T14:44:59.039Z</updated>
+  <updated>2019-11-03T02:53:37.048Z</updated>
   <id>http://www.yppcat.top/</id>
   
   <author>
@@ -15,6 +15,33 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>视频基础概念</title>
+    <link href="http://www.yppcat.top/2019/11/02/%E8%A7%86%E9%A2%91%E5%9F%BA%E7%A1%80%E6%A6%82%E5%BF%B5/"/>
+    <id>http://www.yppcat.top/2019/11/02/视频基础概念/</id>
+    <published>2019-11-02T12:57:16.000Z</published>
+    <updated>2019-11-03T02:53:37.048Z</updated>
+    
+    <content type="html"><![CDATA[<p>1.H264 : IBP帧概念</p><p>2.GOF : 两个I帧的间隔（一组帧）</p><p>3.SPS ： 序列参数集，一组帧的存放帧数、参考帧数目。。。</p><p>4.PPS ： 图像参数集，存放编码模式选择标识、片组数目。。。</p><p> 编码器 ：x264、x265(cpu占用过高)、openH264(svc分层传输，硬编不兼容)、vp8、vp9</p><p>H264压缩：帧内压缩、帧间压缩、整数离散余弦变换（傅里叶变换）、CABAC压缩</p><p>H264编码分层</p><p>码流：SODB、RBSP、EBSP、NALU</p><p>YUV图像存储格式</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;1.H264 : IBP帧概念&lt;/p&gt;
+&lt;p&gt;2.GOF : 两个I帧的间隔（一组帧）&lt;/p&gt;
+&lt;p&gt;3.SPS ： 序列参数集，一组帧的存放帧数、参考帧数目。。。&lt;/p&gt;
+&lt;p&gt;4.PPS ： 图像参数集，存放编码模式选择标识、片组数目。。。&lt;/p&gt;
+&lt;p&gt; 编码器 ：x
+      
+    
+    </summary>
+    
+    
+      <category term="音视频" scheme="http://www.yppcat.top/tags/%E9%9F%B3%E8%A7%86%E9%A2%91/"/>
+    
+  </entry>
   
   <entry>
     <title>内存泄漏的原因和解决方式</title>
@@ -476,31 +503,6 @@
 &lt;p&gt;安卓中常见的容易导致内存泄露的原因有以下几种：&lt;/p&gt;
 &lt;p&gt;1.非静态内部类的使用；&lt;/p&gt;
 &lt;
-      
-    
-    </summary>
-    
-    
-      <category term="android" scheme="http://www.yppcat.top/tags/android/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>安卓序列化</title>
-    <link href="http://www.yppcat.top/2019/03/12/%E5%AE%89%E5%8D%93%E5%BA%8F%E5%88%97%E5%8C%96/"/>
-    <id>http://www.yppcat.top/2019/03/12/安卓序列化/</id>
-    <published>2019-03-12T14:06:12.000Z</published>
-    <updated>2019-03-13T15:42:44.000Z</updated>
-    
-    <content type="html"><![CDATA[<p>Serializable是 序列化的意思，表示将一个对象转换成可存储或可传输的状态。序列化后的对象可以在网络上进行传输，也可以存储到本地。至于序列化的方式，只需要让一个类实现该接口即可。</p><p>eg:</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">public class Student implements Serializable &#123;</span><br><span class="line">    public static final long serialVersionUID = 1L;  </span><br><span class="line">    private String name;</span><br><span class="line">    private int age;</span><br><span class="line"></span><br><span class="line">    public String getName() &#123;</span><br><span class="line">        return name;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void setName(String name) &#123;</span><br><span class="line">        this.name = name;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public int getAge() &#123;</span><br><span class="line">        return age;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void setAge(int age) &#123;</span><br><span class="line">        this.age = age;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>上面的serialVersionUID不写同样可以实现序列化，serialVersionUID实现序列化时，会把当前类的serialVersionUID写入序列化的文件中，当反序列化时系统会去检测文件中的serialVersionUID，看它是否和当前类的serialVersionUID是否一致，如果一致则可以成功反序列化，否则则说明当前类和序列化的类相比发生了某些变化，这时候反序列化失败。一般来说，我们都是要手动指定serialVersionUID的值。此外静态从成员变量属于类不属于对象，所以不会参与序列化的过程，其次用transient关键字标记的成员不参与序列化过程。</p><p>此外我们还可以使用Parcelable接口来实现：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line">public class Person implements Parcelable&#123;</span><br><span class="line">    private String name;</span><br><span class="line">    private int age;</span><br><span class="line">    public Person(String name,int age)&#123;</span><br><span class="line">        this.name = name;</span><br><span class="line">        this.age = age;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    protected Person(Parcel in) &#123;</span><br><span class="line">        //读取name 和 age</span><br><span class="line">        name = in.readString();</span><br><span class="line">        age = in.readInt();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public static final Creator&lt;Person&gt; CREATOR = new Creator&lt;Person&gt;() &#123;</span><br><span class="line">        @Override</span><br><span class="line">        public Person createFromParcel(Parcel in) &#123;</span><br><span class="line">            //实现反序列化</span><br><span class="line">            return new Person(in);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        @Override</span><br><span class="line">        public Person[] newArray(int size) &#123;</span><br><span class="line">            return new Person[size];</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    public String getName() &#123;</span><br><span class="line">        return name;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void setName(String name) &#123;</span><br><span class="line">        this.name = name;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public int getAge() &#123;</span><br><span class="line">        return age;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void setAge(int age) &#123;</span><br><span class="line">        this.age = age;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public int describeContents() &#123;</span><br><span class="line">        return 0;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public void writeToParcel(Parcel dest, int flags) &#123;</span><br><span class="line">        //序列化 写出name 和 age</span><br><span class="line">        dest.writeString(name);</span><br><span class="line">        dest.writeInt(age);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>以上具体的几个方法说明如下：</p><p>createFromParcel(Parcel in)：从序列化的对象中创建原始对象</p><p>newArray(int size)：创建指定长度的原始数组</p><p>Person(Parc el in)：从序列化的对象中创建原始对象</p><p>writeToParcel(Parcel out,int flags)：将当前对象写入序列化结构中，其中flags标识由两种值：0和1。为1标识当前对象需要作为返回值返回，不能立即释放资源，几乎所有情况为0;</p><p>describeContents：返回当前对象内容描述。如果含有文件描述符，返回1，否则返回0，几乎所有的情况都返回0</p><p>w相比较而言，Serializable是java中的序列化接口，虽然使用简单，但是开销很大，序列化和反序列化要实现大量的II/O操作。而Parcelable是Android中的序列化方式，因此更适合用在Android平台上，虽然使用麻烦，但是效率很高。</p>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;p&gt;Serializable是 序列化的意思，表示将一个对象转换成可存储或可传输的状态。序列化后的对象可以在网络上进行传输，也可以存储到本地。至于序列化的方式，只需要让一个类实现该接口即可。&lt;/p&gt;
-&lt;p&gt;eg:&lt;/p&gt;
-&lt;figure class=&quot;highlight pla
       
     
     </summary>

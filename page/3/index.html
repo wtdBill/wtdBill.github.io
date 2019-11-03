@@ -141,6 +141,50 @@
       <ul class="post-list">
   
     <li class="post-list-item">
+        <article id="post-apk优化方式" class="article article-type-post" itemprop="blogPost">
+     
+
+
+  
+    <h3 class="post-title" itemprop="name">
+      <a class="post-title-link" href="/2019/04/02/apk优化方式/">apk优化方式</a>
+    </h3>
+  
+
+
+
+    <div class="post-meta">
+        <time datetime="2019-04-02T13:49:34.000Z" itemprop="datePublished" class="post-time">
+  2019-04-02
+</time>
+
+        
+
+
+    </div>
+
+    <div class="post-content" id="post-content" itemprop="postContent">
+
+    
+         apk优化的几种方式： 
+ 1.svg图片的使用 
+ 强调点：在安卓5.0 以下是不支持这种方式的，需要做以下兼容： 
+ 在app的build.gradle目录下的defaultConfig中添加 
+      1   2       //将svg图片生成指定的png图片   vectorDrawables.generatedDensities(&apos;xhdpi&apos;,&apos;x
+    
+    
+        <a href="/2019/04/02/apk优化方式/" class="post-more waves-effect waves-button">
+            阅读全文...
+        </a>
+    </div>
+    
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/android/">android</a></li></ul>
+
+</article>
+
+    </li>
+  
+    <li class="post-list-item">
         <article id="post-java反射" class="article article-type-post" itemprop="blogPost">
      
 
@@ -428,49 +472,6 @@
     
     
         <a href="/2019/02/26/IntentFilter的匹配规则/" class="post-more waves-effect waves-button">
-            阅读全文...
-        </a>
-    </div>
-    
-	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/android/">android</a></li></ul>
-
-</article>
-
-    </li>
-  
-    <li class="post-list-item">
-        <article id="post-activity启动模式" class="article article-type-post" itemprop="blogPost">
-     
-
-
-  
-    <h3 class="post-title" itemprop="name">
-      <a class="post-title-link" href="/2019/02/20/activity启动模式/">activity启动模式和intent filter</a>
-    </h3>
-  
-
-
-
-    <div class="post-meta">
-        <time datetime="2019-02-20T14:50:26.000Z" itemprop="datePublished" class="post-time">
-  2019-02-20
-</time>
-
-        
-
-
-    </div>
-
-    <div class="post-content" id="post-content" itemprop="postContent">
-
-    
-         Activity的启动模式： 
- 1.standard : 标准模式，每次打开都会新建一个实例，而且会处于启动当前activity的activity的任务栈中 
- 2.singleTop : 栈顶复用模式，在这种模式下，如果新的activity已经位于任务栈的栈顶，那么此activity不会被创建，同时它的onNewIntent会被调用，此时它的生命周期不会被调用。 
- 3.singleTask
-    
-    
-        <a href="/2019/02/20/activity启动模式/" class="post-more waves-effect waves-button">
             阅读全文...
         </a>
     </div>
