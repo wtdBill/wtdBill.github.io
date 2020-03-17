@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.yppcat.top/"/>
-  <updated>2019-11-03T02:53:37.048Z</updated>
+  <updated>2020-03-17T13:57:48.202Z</updated>
   <id>http://www.yppcat.top/</id>
   
   <author>
@@ -15,6 +15,33 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Ndk开发步骤</title>
+    <link href="http://www.yppcat.top/2020/03/17/Ndk%E5%BC%80%E5%8F%91%E6%AD%A5%E9%AA%A4/"/>
+    <id>http://www.yppcat.top/2020/03/17/Ndk开发步骤/</id>
+    <published>2020-03-17T13:41:13.000Z</published>
+    <updated>2020-03-17T13:57:48.202Z</updated>
+    
+    <content type="html"><![CDATA[<p>step1:</p><p><img src="E:\hexo\blog\source\_posts\Ndk开发步骤\step1.png" alt=""></p><p>step2 :</p><p>javah -c ../jni com\yppcat\ndk\NdkSimple.java 生成需要的头文件</p><p>step3:</p><p>拷贝jni.h和jni_md.h到vs中</p><p><img src="E:\hexo\blog\source\_posts\Ndk开发步骤\step2.png" alt=""></p><p>step4:</p><p>生成需要的方法</p><p><img src="E:\hexo\blog\source\_posts\Ndk开发步骤\step3.png" alt=""></p><p>step5:加载本地路径运行</p><p><img src="E:\hexo\blog\source\_posts\Ndk开发步骤\step4.png" alt=""></p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;step1:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;E:\hexo\blog\source\_posts\Ndk开发步骤\step1.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+&lt;p&gt;step2 :&lt;/p&gt;
+&lt;p&gt;javah -c ../jni com\yppcat\ndk\NdkSi
+      
+    
+    </summary>
+    
+    
+      <category term="NDK" scheme="http://www.yppcat.top/tags/NDK/"/>
+    
+  </entry>
   
   <entry>
     <title>视频基础概念</title>
@@ -483,32 +510,6 @@
     
     
       <category term="数据结构" scheme="http://www.yppcat.top/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>安卓内存泄漏</title>
-    <link href="http://www.yppcat.top/2019/03/20/%E5%AE%89%E5%8D%93%E5%86%85%E5%AD%98%E6%B3%84%E6%BC%8F/"/>
-    <id>http://www.yppcat.top/2019/03/20/安卓内存泄漏/</id>
-    <published>2019-03-20T12:44:05.000Z</published>
-    <updated>2019-03-20T13:09:28.000Z</updated>
-    
-    <content type="html"><![CDATA[<p>内存泄漏（Memory Leak）是指程序中己动态分配的堆内存由于某种原因程序未释放或无法释放，造成系统内存的浪费，导致程序运行速度减慢甚至系统崩溃等严重后果。</p><p>安卓中常见的容易导致内存泄露的原因有以下几种：</p><p>1.非静态内部类的使用；</p><p>eg:</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">class MyAdapter extends FragmentPagerAdapter&#123;</span><br><span class="line"></span><br><span class="line">    public MyAdapter(FragmentManager fm) &#123;</span><br><span class="line">        super(fm);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public Fragment getItem(int position) &#123;</span><br><span class="line">        return null;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public int getCount() &#123;</span><br><span class="line">        return 0;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>以上的例子使我们在开发中常用的使用内部类，但是这样写会导致内部类一直持有外部类（Activity等）的引用，所以如果当activity退出时， 此内部类依然持有按错activity 的引用，导致activity无法回收，则会导致activity的内存泄漏。</p><p>2.非静态handler的使用：</p><p>eg:</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Handler handler = new Handler()&#123;</span><br><span class="line">    @Override</span><br><span class="line">    public void handleMessage(Message msg) &#123;</span><br><span class="line">        super.handleMessage(msg);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure><p>以上是我们常见的handler 的构造，as也会提示我们会有内存泄露的问题。原因呢？建议去过一遍Handler的源码，回调的handlerMessage方法中的message对象有个target属性指向的就是当前的Handler，所以如果存在message，那么因为它持有了Handler对象，而Handler对象又是当前类的匿名内部类，持有当前类的引用，导致当前类无法释放，从而造成了内存泄漏。</p><p>3.eventBus未取消注册</p><p>4.Rxbus未取消注册</p><p>5.广播为取消注册</p><p>以上三种情况类似，这里就不过多介绍。</p><p>6.不规范的单例导致的内存泄漏：</p><p>eg：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">public class Utils &#123;</span><br><span class="line">    private Context context;</span><br><span class="line">    private static Utils utils;</span><br><span class="line"></span><br><span class="line">    private Utils(Context context) &#123;</span><br><span class="line">        this.context = context;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public static Utils getInstance(Context context) &#123;</span><br><span class="line">        if (utils == null) &#123;</span><br><span class="line">            synchronized (Utils.class) &#123;</span><br><span class="line">                if (utils == null) &#123;</span><br><span class="line">                    utils = new Utils(context);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        return utils;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>以上的单例模式每次在使用的时候会传入一个Context对象，因为单利对象是一直存在的，使用完并不会被释放，所有导致持有的context不会被释放，context一般是Activity，所以就导致了Activity的内存泄漏。正确的写法如下：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">public class Utils &#123;</span><br><span class="line">    private Context context;</span><br><span class="line">    private static Utils utils;</span><br><span class="line"></span><br><span class="line">    private Utils(Context context) &#123;</span><br><span class="line">        this.context = context;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public static Utils getInstance(Context context) &#123;</span><br><span class="line">        if (utils == null) &#123;</span><br><span class="line">            synchronized (Utils.class) &#123;</span><br><span class="line">                if (utils == null) &#123;</span><br><span class="line">                    utils = new Utils(context.getApplicationContext());</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        return utils;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;p&gt;内存泄漏（Memory Leak）是指程序中己动态分配的堆内存由于某种原因程序未释放或无法释放，造成系统内存的浪费，导致程序运行速度减慢甚至系统崩溃等严重后果。&lt;/p&gt;
-&lt;p&gt;安卓中常见的容易导致内存泄露的原因有以下几种：&lt;/p&gt;
-&lt;p&gt;1.非静态内部类的使用；&lt;/p&gt;
-&lt;
-      
-    
-    </summary>
-    
-    
-      <category term="android" scheme="http://www.yppcat.top/tags/android/"/>
     
   </entry>
   
