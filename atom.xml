@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.yppcat.top/"/>
-  <updated>2020-03-17T13:57:48.202Z</updated>
+  <updated>2020-03-17T14:04:29.000Z</updated>
   <id>http://www.yppcat.top/</id>
   
   <author>
@@ -21,19 +21,18 @@
     <link href="http://www.yppcat.top/2020/03/17/Ndk%E5%BC%80%E5%8F%91%E6%AD%A5%E9%AA%A4/"/>
     <id>http://www.yppcat.top/2020/03/17/Ndk开发步骤/</id>
     <published>2020-03-17T13:41:13.000Z</published>
-    <updated>2020-03-17T13:57:48.202Z</updated>
+    <updated>2020-03-17T14:04:29.000Z</updated>
     
-    <content type="html"><![CDATA[<p>step1:</p><p><img src="E:\hexo\blog\source\_posts\Ndk开发步骤\step1.png" alt=""></p><p>step2 :</p><p>javah -c ../jni com\yppcat\ndk\NdkSimple.java 生成需要的头文件</p><p>step3:</p><p>拷贝jni.h和jni_md.h到vs中</p><p><img src="E:\hexo\blog\source\_posts\Ndk开发步骤\step2.png" alt=""></p><p>step4:</p><p>生成需要的方法</p><p><img src="E:\hexo\blog\source\_posts\Ndk开发步骤\step3.png" alt=""></p><p>step5:加载本地路径运行</p><p><img src="E:\hexo\blog\source\_posts\Ndk开发步骤\step4.png" alt=""></p>]]></content>
+    <content type="html"><![CDATA[<p>step1:</p><img src="/2020/03/17/Ndk开发步骤/step1.png" title="[Ndk开发步骤]"><p>step2 :</p><p>javah -c ../jni com\yppcat\ndk\NdkSimple.java 生成需要的头文件</p><p>step3:</p><p>拷贝jni.h和jni_md.h到vs中</p><img src="/2020/03/17/Ndk开发步骤/step2.png" title="[Ndk开发步骤]"><p>step4:</p><p>生成需要的方法</p><img src="/2020/03/17/Ndk开发步骤/step3.png" title="[Ndk开发步骤]"><p>step5:加载本地路径运行</p><img src="/2020/03/17/Ndk开发步骤/step4.png" title="[Ndk开发步骤]">]]></content>
     
     <summary type="html">
     
       
       
         &lt;p&gt;step1:&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;E:\hexo\blog\source\_posts\Ndk开发步骤\step1.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+&lt;img src=&quot;/2020/03/17/Ndk开发步骤/step1.png&quot; title=&quot;[Ndk开发步骤]&quot;&gt;
 &lt;p&gt;step2 :&lt;/p&gt;
-&lt;p&gt;javah -c ../jni com\yppcat\ndk\NdkSi
+&lt;p&gt;javah -c ../jni com\yppcat\ndk\NdkSimple.java 生成
       
     
     </summary>
