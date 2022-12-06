@@ -66,108 +66,6 @@
       </tags>
   </entry>
   <entry>
-    <title>Android文件路径详解</title>
-    <url>/2019/04/13/Android%E6%96%87%E4%BB%B6%E8%B7%AF%E5%BE%84%E8%AF%A6%E8%A7%A3/</url>
-    <content><![CDATA[<p>Android磁盘存储可以分为两类，内部存储和外部存储。</p>
-<p><strong>内部存储：</strong>内部存储不是内存，是位于系统磁盘中一个独特的位置。/data/文件夹就是内部存储，内部存储中一般存储一些应用数据，如apk,sharedpreference,database数据，webView缓存和图片缓存等。内部存储中还有一个文件夹，每个应用都有一个，里面中的数据在应用卸载之后就会删除。结构如：/data/data/你的应用报名/。其次还有一个/data/app/的文件夹，这里面存储着我们手机上安装的ａｐｋ文件。</p>
-<p><strong>特点：</strong></p>
-<p>内部存储的文件和目录只能被我们的app自己访问，别的app不能访问。</p>
-<p>内部存储中的私有目录，当用户卸载app之后，该文件目录中关于该应用的信息就会被删除。</p>
-<p>内部存储是可用的。</p>
-<p>内部存储大小有限，不适合存储大量数据。</p>
-<p>只有root的手机，才能从手机文件管理器看见，否则都是隐藏的。</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">getCacheDir().getAbsolutePath();///data/data/包名/cache</span><br></pre></td></tr></table></figure>
-<p>常见的内部存储中有这些目录:</p>
-<p>/data/app/</p>
-<p>/data/data/包名/shared_prefs</p>
-<p>/data/data/包名/cache</p>
-<p>/data/data/包名/databases</p>
-<p>/data/data/包名/files</p>
-<p><strong>外部存储：</strong>外部存储并不是指拓展的ＳＤ卡，不管有无外接设备，每个Android手机都有外部存储。</p>
-<p>一般的mnt或者storage目录。外部存储中分两类目录，私有目录和公有目录，私有目录的数据会随着应用的卸载而删除，公有目录不会。</p>
-<p><strong>特点：</strong></p>
-<p>公有目录任何程序都可以访问，私有目录自身可以访问。</p>
-<p>并不一定是可用的，因为SD卡会被挂载。</p>
-<p>外部存储中的私有目录中的数据会随着应用的卸载而删除，而公有目录不会。</p>
-<p><strong>公有目录：</strong></p>
-<p>公有目录是任何程序都可以</p>
-<ul>
-<li><strong>DIRECTORY_MUSIC</strong></li>
-</ul>
-<blockquote>
-<p>音乐/storage/emulated/0/Music</p>
-</blockquote>
-<ul>
-<li><strong>DIRECTORY_PODCASTS</strong></li>
-</ul>
-<blockquote>
-<p>播客/storage/emulated/0/Podcasts</p>
-</blockquote>
-<ul>
-<li><strong>DIRECTORY_RINGTONES</strong></li>
-</ul>
-<blockquote>
-<p>来点铃声</p>
-</blockquote>
-<ul>
-<li><strong>DIRECTORY_ALARMS</strong></li>
-</ul>
-<blockquote>
-<p>闹钟/storage/emulated/0/Alarms</p>
-</blockquote>
-<ul>
-<li><strong>DIRECTORY_NOTIFICATIONS</strong></li>
-</ul>
-<blockquote>
-<p>通知/storage/emulated/0/Notifications</p>
-</blockquote>
-<ul>
-<li><strong>DIRECTORY_PICTURES</strong></li>
-</ul>
-<blockquote>
-<p>图片/storage/emulated/0/Pictures</p>
-</blockquote>
-<ul>
-<li><strong>DIRECTORY_MOVIES</strong></li>
-</ul>
-<blockquote>
-<p>电影/storage/emulated/0/Movies</p>
-</blockquote>
-<ul>
-<li><strong>DIRECTORY_DOWNLOADS</strong></li>
-</ul>
-<blockquote>
-<p>下载文件存储路径/storage/emulated/0/Download</p>
-</blockquote>
-<ul>
-<li><strong>DIRECTORY_DCIM</strong></li>
-</ul>
-<blockquote>
-<p>媒体文件/storage/emulated/0/DCIM</p>
-</blockquote>
-<ul>
-<li><strong>DIRECTORY_DOCUMENTS</strong></li>
-</ul>
-<blockquote>
-<p>文档/storage/emulated/0/Documents</p>
-</blockquote>
-<p>我们通过<strong>Environment.getExternalStoragePublicDirectory()</strong>来获取这些目录</p>
-<p><strong>私有目录：</strong></p>
-<p>外部存储中的私有目录是不会主动创建的，需要我们自己创建，私有目录应用本身无需申请动态权限，就能直接访问。我们可以在私有目录下创建我们自己的文件夹：</p>
-<ul>
-<li><strong>getExternalFilesDir(“files目录的子目录名称”)</strong></li>
-</ul>
-<p>获取应用私有目录files目录中的文件目录(storage/emulated/0/Android/data/包名/files/子目录)</p>
-<ul>
-<li><strong>getExternalCacheDir()</strong></li>
-</ul>
-<p>获取应用cache目录（/storage/emulated/0/Android/data/包名/cache）</p>
-]]></content>
-      <tags>
-        <tag>android</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Activity和Fragment通信</title>
     <url>/2019/08/23/Activity%E5%92%8CFragment%E9%80%9A%E4%BF%A1/</url>
     <content><![CDATA[<p>Activity和Fragment通信的几种方式：</p>
@@ -466,6 +364,108 @@
 </action></category></category>]]></content>
       <tags>
         <tag>面试</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Android文件路径详解</title>
+    <url>/2019/04/13/Android%E6%96%87%E4%BB%B6%E8%B7%AF%E5%BE%84%E8%AF%A6%E8%A7%A3/</url>
+    <content><![CDATA[<p>Android磁盘存储可以分为两类，内部存储和外部存储。</p>
+<p><strong>内部存储：</strong>内部存储不是内存，是位于系统磁盘中一个独特的位置。/data/文件夹就是内部存储，内部存储中一般存储一些应用数据，如apk,sharedpreference,database数据，webView缓存和图片缓存等。内部存储中还有一个文件夹，每个应用都有一个，里面中的数据在应用卸载之后就会删除。结构如：/data/data/你的应用报名/。其次还有一个/data/app/的文件夹，这里面存储着我们手机上安装的ａｐｋ文件。</p>
+<p><strong>特点：</strong></p>
+<p>内部存储的文件和目录只能被我们的app自己访问，别的app不能访问。</p>
+<p>内部存储中的私有目录，当用户卸载app之后，该文件目录中关于该应用的信息就会被删除。</p>
+<p>内部存储是可用的。</p>
+<p>内部存储大小有限，不适合存储大量数据。</p>
+<p>只有root的手机，才能从手机文件管理器看见，否则都是隐藏的。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">getCacheDir().getAbsolutePath();///data/data/包名/cache</span><br></pre></td></tr></table></figure>
+<p>常见的内部存储中有这些目录:</p>
+<p>/data/app/</p>
+<p>/data/data/包名/shared_prefs</p>
+<p>/data/data/包名/cache</p>
+<p>/data/data/包名/databases</p>
+<p>/data/data/包名/files</p>
+<p><strong>外部存储：</strong>外部存储并不是指拓展的ＳＤ卡，不管有无外接设备，每个Android手机都有外部存储。</p>
+<p>一般的mnt或者storage目录。外部存储中分两类目录，私有目录和公有目录，私有目录的数据会随着应用的卸载而删除，公有目录不会。</p>
+<p><strong>特点：</strong></p>
+<p>公有目录任何程序都可以访问，私有目录自身可以访问。</p>
+<p>并不一定是可用的，因为SD卡会被挂载。</p>
+<p>外部存储中的私有目录中的数据会随着应用的卸载而删除，而公有目录不会。</p>
+<p><strong>公有目录：</strong></p>
+<p>公有目录是任何程序都可以</p>
+<ul>
+<li><strong>DIRECTORY_MUSIC</strong></li>
+</ul>
+<blockquote>
+<p>音乐/storage/emulated/0/Music</p>
+</blockquote>
+<ul>
+<li><strong>DIRECTORY_PODCASTS</strong></li>
+</ul>
+<blockquote>
+<p>播客/storage/emulated/0/Podcasts</p>
+</blockquote>
+<ul>
+<li><strong>DIRECTORY_RINGTONES</strong></li>
+</ul>
+<blockquote>
+<p>来点铃声</p>
+</blockquote>
+<ul>
+<li><strong>DIRECTORY_ALARMS</strong></li>
+</ul>
+<blockquote>
+<p>闹钟/storage/emulated/0/Alarms</p>
+</blockquote>
+<ul>
+<li><strong>DIRECTORY_NOTIFICATIONS</strong></li>
+</ul>
+<blockquote>
+<p>通知/storage/emulated/0/Notifications</p>
+</blockquote>
+<ul>
+<li><strong>DIRECTORY_PICTURES</strong></li>
+</ul>
+<blockquote>
+<p>图片/storage/emulated/0/Pictures</p>
+</blockquote>
+<ul>
+<li><strong>DIRECTORY_MOVIES</strong></li>
+</ul>
+<blockquote>
+<p>电影/storage/emulated/0/Movies</p>
+</blockquote>
+<ul>
+<li><strong>DIRECTORY_DOWNLOADS</strong></li>
+</ul>
+<blockquote>
+<p>下载文件存储路径/storage/emulated/0/Download</p>
+</blockquote>
+<ul>
+<li><strong>DIRECTORY_DCIM</strong></li>
+</ul>
+<blockquote>
+<p>媒体文件/storage/emulated/0/DCIM</p>
+</blockquote>
+<ul>
+<li><strong>DIRECTORY_DOCUMENTS</strong></li>
+</ul>
+<blockquote>
+<p>文档/storage/emulated/0/Documents</p>
+</blockquote>
+<p>我们通过<strong>Environment.getExternalStoragePublicDirectory()</strong>来获取这些目录</p>
+<p><strong>私有目录：</strong></p>
+<p>外部存储中的私有目录是不会主动创建的，需要我们自己创建，私有目录应用本身无需申请动态权限，就能直接访问。我们可以在私有目录下创建我们自己的文件夹：</p>
+<ul>
+<li><strong>getExternalFilesDir(“files目录的子目录名称”)</strong></li>
+</ul>
+<p>获取应用私有目录files目录中的文件目录(storage/emulated/0/Android/data/包名/files/子目录)</p>
+<ul>
+<li><strong>getExternalCacheDir()</strong></li>
+</ul>
+<p>获取应用cache目录（/storage/emulated/0/Android/data/包名/cache）</p>
+]]></content>
+      <tags>
+        <tag>android</tag>
       </tags>
   </entry>
   <entry>
@@ -913,6 +913,24 @@
       </tags>
   </entry>
   <entry>
+    <title>HashMap实现原理</title>
+    <url>/2019/04/14/HashMap%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86/</url>
+    <content><![CDATA[<p><a href="https://blog.csdn.net/mbshqqb/article/details/79799009" target="_blank" rel="noopener">HashMap原理</a></p>
+<p>几个注意点：</p>
+<p><strong>哈希冲突：</strong>当插入的Entry越来越多时，不同的Key值通过哈希函数算出来的index值肯定会有冲突，此时就可以利用链表来解决。 其实HaspMap数组的每一个元素不止是一个Entry对象，也是一个链表的头节点，每一个Entry对象通过Next指针指向下一个Entry对象，这样，当新的Entry的hash值与之前的存在冲突时，只需要插入到对应点链表即可。要注意的是，新来的Entry节点采用的是“头插法”，而不是直接插入在链表的尾部，这是因为HashMap的发明者认为，新插入的节点被查找的可能性更大。</p>
+<p><strong>get的几个步骤：</strong></p>
+<p>第一步，算出Key值“apple”的hash值，假设为2。</p>
+<p> 第二步，在数组中查找索引为2的位置，此时找到头节点为Entry6，Entry6的Key值是banana，不是我们要找的值。</p>
+<p> 第三步，查找Entry6的Next节点，这里为Entry1，它的Key值为apple，是我们要查找的值，这样就找到了对应的键值对，结束。</p>
+<p><a href="https://coolshell.cn/articles/9606.html" target="_blank" rel="noopener">HashMap死锁：</a></p>
+<p>HashMap设计了一个阈值，其值为容量的0.75，当HashMap所用容量超过了阈值后，就会自动扩充其容量。</p>
+<p>在多线程的情况下，当重新调整HashMap大小的时候，就会存在条件竞争，因为如果两个线程都发现HashMap需要重新调整大小了，它们会同时试着调整大小。在调整大小的过程中，存储在链表中的元素的次序会反过来，因为移动到新的bucket位置的时候，HashMap并不会将元素放在链表的尾部，而是放在头部，这是为了避免尾部遍历。如果条件竞争发生了，那么就会产生死循环了。</p>
+]]></content>
+      <tags>
+        <tag>Java</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>GC及调优</title>
     <url>/2022/11/18/GC%E5%8F%8A%E8%B0%83%E4%BC%98/</url>
     <content><![CDATA[<h2 id="GC核心概述"><a href="#GC核心概述" class="headerlink" title="GC核心概述"></a><strong>GC核心概述</strong></h2><p><strong>Java自动化内存管理</strong></p>
@@ -1033,26 +1051,8 @@
       </tags>
   </entry>
   <entry>
-    <title>HashMap实现原理</title>
-    <url>/2019/04/14/HashMap%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86/</url>
-    <content><![CDATA[<p><a href="https://blog.csdn.net/mbshqqb/article/details/79799009" target="_blank" rel="noopener">HashMap原理</a></p>
-<p>几个注意点：</p>
-<p><strong>哈希冲突：</strong>当插入的Entry越来越多时，不同的Key值通过哈希函数算出来的index值肯定会有冲突，此时就可以利用链表来解决。 其实HaspMap数组的每一个元素不止是一个Entry对象，也是一个链表的头节点，每一个Entry对象通过Next指针指向下一个Entry对象，这样，当新的Entry的hash值与之前的存在冲突时，只需要插入到对应点链表即可。要注意的是，新来的Entry节点采用的是“头插法”，而不是直接插入在链表的尾部，这是因为HashMap的发明者认为，新插入的节点被查找的可能性更大。</p>
-<p><strong>get的几个步骤：</strong></p>
-<p>第一步，算出Key值“apple”的hash值，假设为2。</p>
-<p> 第二步，在数组中查找索引为2的位置，此时找到头节点为Entry6，Entry6的Key值是banana，不是我们要找的值。</p>
-<p> 第三步，查找Entry6的Next节点，这里为Entry1，它的Key值为apple，是我们要查找的值，这样就找到了对应的键值对，结束。</p>
-<p><a href="https://coolshell.cn/articles/9606.html" target="_blank" rel="noopener">HashMap死锁：</a></p>
-<p>HashMap设计了一个阈值，其值为容量的0.75，当HashMap所用容量超过了阈值后，就会自动扩充其容量。</p>
-<p>在多线程的情况下，当重新调整HashMap大小的时候，就会存在条件竞争，因为如果两个线程都发现HashMap需要重新调整大小了，它们会同时试着调整大小。在调整大小的过程中，存储在链表中的元素的次序会反过来，因为移动到新的bucket位置的时候，HashMap并不会将元素放在链表的尾部，而是放在头部，这是为了避免尾部遍历。如果条件竞争发生了，那么就会产生死循环了。</p>
-]]></content>
-      <tags>
-        <tag>Java</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>IO加解密核心与dex文件改造过程分析</title>
-    <url>/2022/12/06/IO%E5%8A%A0%E8%A7%A3%E5%AF%86%E6%A0%B8%E5%BF%83%E4%B8%8Edex%E6%96%87%E4%BB%B6%E6%94%B9%E9%80%A0%E8%BF%87%E7%A8%8B%E5%88%86%E6%9E%90/</url>
+    <url>/2022/12/06/IO%E5%8A%A0%E8%A7%A3%E5%AF%86%E6%A0%B8%E5%BF%83%E4%B8%8Edex%E6%96%87%E4%BB%B6/</url>
     <content><![CDATA[<p><strong>IO及序列化</strong></p>
 <p>IO及序列化学习完成后，我能用用他们做什么？<br>数据的加解密<br>文件的读写<br>网络数据的传输</p>
 <p><strong>加解密的核心原理</strong></p>
@@ -1066,14 +1066,14 @@
 <p><strong>ECC算法：</strong><br>ECC 也是一种 非对称加密算法，主要优势是在某些情况下，它比其他的方法使用 更小的密钥，比如 RSA 加密算法，提供 相当的或更高等级 的安全级别。不过一个缺点是 加密和解密操作 的实现比其他机制 时间长 (相比 RSA 算法，该算法对 CPU 消耗严重)。。</p>
 <p><strong>各算法比较</strong></p>
 <p><strong>散列</strong></p>
-<img src="/2022/12/06/IO加解密核心与dex文件改造过程分析/image-20221206203731247.png" title="[IO加解密核心与dex文件改造过程分析]">
+
 <p><strong>对称加密算法</strong></p>
-<img src="/2022/12/06/IO加解密核心与dex文件改造过程分析/image-20221206203753881.png" title="[IO加解密核心与dex文件改造过程分析]">
+
 <p><strong>非对称算法</strong></p>
-<img src="/2022/12/06/IO加解密核心与dex文件改造过程分析/image-20221206203809988.png" title="[IO加解密核心与dex文件改造过程分析]">
+
 <p><strong>大厂中加密思想：算法自定义，数学与性能的考虑，CPU利用与汇编底层的融合</strong></p>
-<h2 id="APK反编译原理及实战"><a href="#APK反编译原理及实战" class="headerlink" title="APK反编译原理及实战"></a><strong>APK反编译原理及实战</strong></h2><img src="/2022/12/06/IO加解密核心与dex文件改造过程分析/image-20221206203920035.png" title="[IO加解密核心与dex文件改造过程分析]">
-<img src="/2022/12/06/IO加解密核心与dex文件改造过程分析/image-20221206203911695.png" title="[IO加解密核心与dex文件改造过程分析]">
+<h2 id="APK反编译原理及实战"><a href="#APK反编译原理及实战" class="headerlink" title="APK反编译原理及实战"></a><strong>APK反编译原理及实战</strong></h2>
+
 <p><strong>加固的总体思想</strong></p>
 <p>一个程序员的故事：<br>辛辛苦苦找到一个对象，婚后家里主权为大，老婆管钱，导致这程序员木有经费去做一些爱做的事情。然而这个程序员很努力，平时除了上班，还能够做点外包，赚点外快。 所以他就想到了把工资卡上交，而把赚到的外快放到了自己的小金库。从此过上了性福生活。<br>结果被你反手一掏，小金库没了，从此欲哭无泪。<br>钱 = 代码<br>金库 = 编译过程<br>反手一套 = 破解过程</p>
 <p><strong>加固基本原理</strong></p>
@@ -1084,11 +1084,11 @@
 <p><strong>Dex文件加 载流程</strong></p>
 <p>加壳后的文件是不能直接用的，dex文件是加密的， 所以我们需要对他进行解密，解密后的dex文件如何 加载？</p>
 <p><strong>APK加载流程</strong></p>
-<img src="/2022/12/06/IO加解密核心与dex文件改造过程分析/image-20221206204129808.png" title="[IO加解密核心与dex文件改造过程分析]">
+
 <p><strong>加壳步骤</strong></p>
 <p>1、制作原始项目的apk，这里称作original.apk；<br>2、制作一个壳项目（具体功能见ps），编译通过后得到它的classes.dex文件，这里称作shell.dex，而壳项目的apk称作shell.apk（需要签名）；<br>3、制作一个加壳工具（java工程就可以），按照以下流程工作：<br>1）读取original.apk的byte流，并加密；<br>2）读取shell.dex的byte流；<br>3）new一个新的byte数组，长度为1）和2）的长度之和+4，因为我们要在shell.dex中保存original.apk的长度；<br>4）在new byte数组中写入2），写入1），写入1）的长度；<br>5）根据dex文件的结构，修改checksum文件头、Signature文件头和file_size文件头，最终生成一个新的classes.dex；<br>4、替换掉2中的shell.apk中的classes.dex，并使用工具重新签名；<br>5、生成的新签名apk就是我们加壳过的apk了。</p>
 <p><strong>脱壳流程</strong></p>
-<img src="/2022/12/06/IO加解密核心与dex文件改造过程分析/image-20221206204213005.png" title="[IO加解密核心与dex文件改造过程分析]">]]></content>
+]]></content>
       <tags>
         <tag>IO</tag>
       </tags>
@@ -1469,41 +1469,6 @@
       </tags>
   </entry>
   <entry>
-    <title>Java线程状态</title>
-    <url>/2020/07/17/Java%E7%BA%BF%E7%A8%8B%E7%8A%B6%E6%80%81/</url>
-    <content><![CDATA[<h3 id="线程的-6-种状态"><a href="#线程的-6-种状态" class="headerlink" title="线程的 6 种状态"></a>线程的 6 种状态</h3><p>就像生物从出生到长大、最终死亡的过程一样，线程也有自己的生命周期，在 Java 中线程的生命周期中一共有 6 种状态。</p>
-<p><strong>New（新创建）</strong></p>
-<p><strong>Runnable（可运行）</strong></p>
-<p><strong>Blocked（被阻塞）</strong></p>
-<p><strong>Waiting（等待）</strong></p>
-<p><strong>Timed Waiting（计时等待）</strong></p>
-<p><strong>Terminated（被终止）</strong></p>
-<p>如果想要确定线程当前的状态，可以通过 getState() 方法，并且线程在任何时刻只可能处于 1 种状态。</p>
-<h4 id="New-新创建"><a href="#New-新创建" class="headerlink" title="New 新创建"></a>New 新创建</h4><p>New 表示线程被创建但尚未启动的状态：当我们用 new Thread() 新建一个线程时，如果线程没有开始运行 start() 方法，所以也没有开始执行 run() 方法里面的代码，那么此时它的状态就是 New。而一旦线程调用了 start()，它的状态就会从 New 变成 Runnable。</p>
-<h4 id="Runnable-可运行"><a href="#Runnable-可运行" class="headerlink" title="Runnable 可运行"></a>Runnable 可运行</h4><p>Java 中的 Runable 状态对应操作系统线程状态中的两种状态，分别是 Running 和 Ready，也就是说，Java 中处于 Runnable 状态的线程有可能正在执行，也有可能没有正在执行，正在等待被分配 CPU 资源。</p>
-<p>所以，如果一个正在运行的线程是 Runnable 状态，当它运行到任务的一半时，执行该线程的 CPU 被调度去做其他事情，导致该线程暂时不运行，它的状态依然不变，还是 Runnable，因为它有可能随时被调度回来继续执行任务。</p>
-<h4 id="Blocked-被阻塞"><a href="#Blocked-被阻塞" class="headerlink" title="Blocked 被阻塞"></a>Blocked 被阻塞</h4><p>从 Runnable 状态进入 Blocked 状态只有一种可能，<strong>就是进入 synchronized 保护的代码时没有抢到 monitor 锁</strong>，无论是进入 synchronized 代码块，还是 synchronized 方法，都是一样。</p>
-<h4 id="Waiting-等待"><a href="#Waiting-等待" class="headerlink" title="Waiting 等待"></a>Waiting 等待</h4><p>我们再看看 Waiting 状态，线程进入 Waiting 状态有三种可能性。</p>
-<p>没有设置 Timeout 参数的 Object.wait() 方法。</p>
-<p>没有设置 Timeout 参数的 Thread.join() 方法。</p>
-<p>LockSupport.park() 方法。</p>
-<p>刚才强调过，Blocked 仅仅针对 synchronized monitor 锁，可是在 Java 中还有很多其他的锁，比如 ReentrantLock，如果线程在获取这种锁时没有抢到该锁就会进入 Waiting 状态，因为本质上它执行了 LockSupport.park() 方法，所以会进入 Waiting 状态。同样，Object.wait() 和 Thread.join() 也会让线程进入 Waiting 状态。</p>
-<p><strong>Blocked 与 Waiting 的区别是 Blocked 在等待其他线程释放 monitor 锁，而 Waiting 则是在等待某个条件，比如 join 的线程执行完毕，或者是 notify()/notifyAll() 。</strong></p>
-<h4 id="Timed-Waiting-限期等待"><a href="#Timed-Waiting-限期等待" class="headerlink" title="Timed Waiting 限期等待"></a>Timed Waiting 限期等待</h4><p>在 Waiting 上面是 Timed Waiting 状态，这两个状态是非常相似的，区别仅在于有没有时间限制，Timed Waiting 会等待超时，由系统自动唤醒，或者在超时前被唤醒信号唤醒。</p>
-<p>以下情况会让线程进入 Timed Waiting 状态。</p>
-<p>设置了时间参数的 Thread.sleep(long millis) 方法；</p>
-<p>设置了时间参数的 Object.wait(long timeout) 方法；</p>
-<p>设置了时间参数的 Thread.join(long millis) 方法；</p>
-<p>设置了时间参数的 LockSupport.parkNanos(long nanos) 方法和 LockSupport.parkUntil(long deadline) 方法。</p>
-<h4 id="Terminated-终止"><a href="#Terminated-终止" class="headerlink" title="Terminated 终止"></a>Terminated 终止</h4><p>再来看看最后一种状态，Terminated 终止状态，要想进入这个状态有两种可能。</p>
-<p>run() 方法执行完毕，线程正常退出。</p>
-<p>出现一个没有捕获的异常，终止了 run() 方法，最终导致意外终止。</p>
-]]></content>
-      <tags>
-        <tag>Java</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>JVM底层核心技术解析</title>
     <url>/2022/11/09/JVM%E5%BA%95%E5%B1%82%E6%A0%B8%E5%BF%83%E6%8A%80%E6%9C%AF%E8%A7%A3%E6%9E%90/</url>
     <content><![CDATA[<h1 id="JVM是一种规范"><a href="#JVM是一种规范" class="headerlink" title="JVM是一种规范"></a><strong>JVM是一种规范</strong></h1><h2 id="JVM从编译到执行"><a href="#JVM从编译到执行" class="headerlink" title="JVM从编译到执行"></a><strong>JVM从编译到执行</strong></h2><h3 id="Java程序的执行过程"><a href="#Java程序的执行过程" class="headerlink" title="Java程序的执行过程"></a><strong>Java程序的执行过程</strong></h3><p>一个 Java 程序，首先经过 javac 编译成 .class 文件，然后 JVM 将其加载到方法区，执行引擎将会执行这些字节码。执行时，会翻译成操作系统相关的函数。JVM 作为 .class 文件的翻译存在，输入字节码，调用操作系统函数。</p>
@@ -1768,6 +1733,41 @@
       </tags>
   </entry>
   <entry>
+    <title>Java线程状态</title>
+    <url>/2020/07/17/Java%E7%BA%BF%E7%A8%8B%E7%8A%B6%E6%80%81/</url>
+    <content><![CDATA[<h3 id="线程的-6-种状态"><a href="#线程的-6-种状态" class="headerlink" title="线程的 6 种状态"></a>线程的 6 种状态</h3><p>就像生物从出生到长大、最终死亡的过程一样，线程也有自己的生命周期，在 Java 中线程的生命周期中一共有 6 种状态。</p>
+<p><strong>New（新创建）</strong></p>
+<p><strong>Runnable（可运行）</strong></p>
+<p><strong>Blocked（被阻塞）</strong></p>
+<p><strong>Waiting（等待）</strong></p>
+<p><strong>Timed Waiting（计时等待）</strong></p>
+<p><strong>Terminated（被终止）</strong></p>
+<p>如果想要确定线程当前的状态，可以通过 getState() 方法，并且线程在任何时刻只可能处于 1 种状态。</p>
+<h4 id="New-新创建"><a href="#New-新创建" class="headerlink" title="New 新创建"></a>New 新创建</h4><p>New 表示线程被创建但尚未启动的状态：当我们用 new Thread() 新建一个线程时，如果线程没有开始运行 start() 方法，所以也没有开始执行 run() 方法里面的代码，那么此时它的状态就是 New。而一旦线程调用了 start()，它的状态就会从 New 变成 Runnable。</p>
+<h4 id="Runnable-可运行"><a href="#Runnable-可运行" class="headerlink" title="Runnable 可运行"></a>Runnable 可运行</h4><p>Java 中的 Runable 状态对应操作系统线程状态中的两种状态，分别是 Running 和 Ready，也就是说，Java 中处于 Runnable 状态的线程有可能正在执行，也有可能没有正在执行，正在等待被分配 CPU 资源。</p>
+<p>所以，如果一个正在运行的线程是 Runnable 状态，当它运行到任务的一半时，执行该线程的 CPU 被调度去做其他事情，导致该线程暂时不运行，它的状态依然不变，还是 Runnable，因为它有可能随时被调度回来继续执行任务。</p>
+<h4 id="Blocked-被阻塞"><a href="#Blocked-被阻塞" class="headerlink" title="Blocked 被阻塞"></a>Blocked 被阻塞</h4><p>从 Runnable 状态进入 Blocked 状态只有一种可能，<strong>就是进入 synchronized 保护的代码时没有抢到 monitor 锁</strong>，无论是进入 synchronized 代码块，还是 synchronized 方法，都是一样。</p>
+<h4 id="Waiting-等待"><a href="#Waiting-等待" class="headerlink" title="Waiting 等待"></a>Waiting 等待</h4><p>我们再看看 Waiting 状态，线程进入 Waiting 状态有三种可能性。</p>
+<p>没有设置 Timeout 参数的 Object.wait() 方法。</p>
+<p>没有设置 Timeout 参数的 Thread.join() 方法。</p>
+<p>LockSupport.park() 方法。</p>
+<p>刚才强调过，Blocked 仅仅针对 synchronized monitor 锁，可是在 Java 中还有很多其他的锁，比如 ReentrantLock，如果线程在获取这种锁时没有抢到该锁就会进入 Waiting 状态，因为本质上它执行了 LockSupport.park() 方法，所以会进入 Waiting 状态。同样，Object.wait() 和 Thread.join() 也会让线程进入 Waiting 状态。</p>
+<p><strong>Blocked 与 Waiting 的区别是 Blocked 在等待其他线程释放 monitor 锁，而 Waiting 则是在等待某个条件，比如 join 的线程执行完毕，或者是 notify()/notifyAll() 。</strong></p>
+<h4 id="Timed-Waiting-限期等待"><a href="#Timed-Waiting-限期等待" class="headerlink" title="Timed Waiting 限期等待"></a>Timed Waiting 限期等待</h4><p>在 Waiting 上面是 Timed Waiting 状态，这两个状态是非常相似的，区别仅在于有没有时间限制，Timed Waiting 会等待超时，由系统自动唤醒，或者在超时前被唤醒信号唤醒。</p>
+<p>以下情况会让线程进入 Timed Waiting 状态。</p>
+<p>设置了时间参数的 Thread.sleep(long millis) 方法；</p>
+<p>设置了时间参数的 Object.wait(long timeout) 方法；</p>
+<p>设置了时间参数的 Thread.join(long millis) 方法；</p>
+<p>设置了时间参数的 LockSupport.parkNanos(long nanos) 方法和 LockSupport.parkUntil(long deadline) 方法。</p>
+<h4 id="Terminated-终止"><a href="#Terminated-终止" class="headerlink" title="Terminated 终止"></a>Terminated 终止</h4><p>再来看看最后一种状态，Terminated 终止状态，要想进入这个状态有两种可能。</p>
+<p>run() 方法执行完毕，线程正常退出。</p>
+<p>出现一个没有捕获的异常，终止了 run() 方法，最终导致意外终止。</p>
+]]></content>
+      <tags>
+        <tag>Java</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Linux命令</title>
     <url>/2019/04/26/Linux%E5%91%BD%E4%BB%A4/</url>
     <content><![CDATA[<p><strong>用户相关命令：</strong></p>
@@ -1989,6 +1989,35 @@
 <p>8.androidStudio中webp插件的使用：</p>
 <p>右键png或jepg图片convert to webp可以压缩需要的图片</p>
 <p>9.资源混淆、压缩对齐（待详解～～～）</p>
+]]></content>
+      <tags>
+        <tag>android</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>app冷热启动及优化</title>
+    <url>/2019/03/08/app%E5%86%B7%E7%83%AD%E5%90%AF%E5%8A%A8%E5%8F%8A%E4%BC%98%E5%8C%96/</url>
+    <content><![CDATA[<p>冷启动：当启动应用时，后台没有该应用的进程，这时系统会重新创建一个新的进程分配给该应用，这个启动方式就是冷启动。 </p>
+<p>特点：冷启动因为系统会重新创建一个新的进程分配给它，所以会先创建和初始化Application类，再创建和初始化MainActivity类（包括一系列的测量、布局、绘制），最后显示在界面上。</p>
+<p>热启动：当启动应用时，后台已有该应用的进程（例：按back键、home键，应用虽然会退出，但是该应用的进程是依然会保留在后台，可进入任务列表查看），所以在已有进程的情况下，这种启动会从已有的进程中来启动应用，这个方式叫热启动。</p>
+<p>特点：热启动因为会从已有的进程中来启动，所以热启动就不会走Application这步了，而是直接走MainActivity（包括一系列的测量、布局、绘制），所以热启动的过程只需要创建和初始化一个MainActivity就行了，而不必创建和初始化Application，因为一个应用从新进程的创建到进程的销毁，Application只会初始化一次。</p>
+<p>冷启动优化方案：</p>
+<p>1.使用背景图：</p>
+<p>在style文件下定义如下主题：</p>
+<p><code>&lt;style name=&quot;AppWelcome&quot; parent=&quot;AppTheme&quot;&gt; &lt;item name=&quot;android:windowBackground&quot;&gt;@mipmap/bg_welcome_start&lt;/item&gt; &lt;/style&gt;</code></p>
+<p>然后在Manifest中将启动页的主题设置为当前主题：</p>
+<p><code>android:theme=&quot;@style/AppWelcome&quot;</code></p>
+<p>2.使用透明背景和全屏：</p>
+<p><code>&lt;style name=&quot;AppTransparent&quot; parent=&quot;AppTheme&quot;&gt;    &lt;item name=&quot;android:windowFullscreen&quot;&gt;true&lt;/item&gt;    &lt;item name=&quot;android:windowIsTranslucent&quot;&gt;true&lt;/item&gt;&lt;/style&gt;</code></p>
+<p>或者：</p>
+<p><code>&lt;style name=&quot;APPWel&quot; parent=&quot;android:Theme.Translucent.NoTitleBar.Fullscreen&quot; /&gt;</code></p>
+<p>这种就和微信的处理方式是一样的，APP启动时会有一种因为系统卡顿造成启动较慢的假象。</p>
+<p>3.如下几点建议：</p>
+<p>尽量不要让Application参与业务的操作  </p>
+<p>尽量不要在APPlication进行耗时操作，比如有些开发者会在自己的APP里一系列文件夹或文件（比如我自己），这些I/O操作应该放到”确实该使用的时候再去创建”亦或者是数据库的一些操作</p>
+<p> 尽量不要以静态变量的方式在Application中保存数据等。  4、减少LaunchActivity的View层级，减少View测量绘制时间</p>
+<p>此外，可以通过如下方式测量APP冷启动和热启动的时间：</p>
+<p><code>adb shell am start -W [packageName]/[packageName.launchActivity]</code></p>
 ]]></content>
       <tags>
         <tag>android</tag>
@@ -2430,54 +2459,6 @@
       </tags>
   </entry>
   <entry>
-    <title>app冷热启动及优化</title>
-    <url>/2019/03/08/app%E5%86%B7%E7%83%AD%E5%90%AF%E5%8A%A8%E5%8F%8A%E4%BC%98%E5%8C%96/</url>
-    <content><![CDATA[<p>冷启动：当启动应用时，后台没有该应用的进程，这时系统会重新创建一个新的进程分配给该应用，这个启动方式就是冷启动。 </p>
-<p>特点：冷启动因为系统会重新创建一个新的进程分配给它，所以会先创建和初始化Application类，再创建和初始化MainActivity类（包括一系列的测量、布局、绘制），最后显示在界面上。</p>
-<p>热启动：当启动应用时，后台已有该应用的进程（例：按back键、home键，应用虽然会退出，但是该应用的进程是依然会保留在后台，可进入任务列表查看），所以在已有进程的情况下，这种启动会从已有的进程中来启动应用，这个方式叫热启动。</p>
-<p>特点：热启动因为会从已有的进程中来启动，所以热启动就不会走Application这步了，而是直接走MainActivity（包括一系列的测量、布局、绘制），所以热启动的过程只需要创建和初始化一个MainActivity就行了，而不必创建和初始化Application，因为一个应用从新进程的创建到进程的销毁，Application只会初始化一次。</p>
-<p>冷启动优化方案：</p>
-<p>1.使用背景图：</p>
-<p>在style文件下定义如下主题：</p>
-<p><code>&lt;style name=&quot;AppWelcome&quot; parent=&quot;AppTheme&quot;&gt; &lt;item name=&quot;android:windowBackground&quot;&gt;@mipmap/bg_welcome_start&lt;/item&gt; &lt;/style&gt;</code></p>
-<p>然后在Manifest中将启动页的主题设置为当前主题：</p>
-<p><code>android:theme=&quot;@style/AppWelcome&quot;</code></p>
-<p>2.使用透明背景和全屏：</p>
-<p><code>&lt;style name=&quot;AppTransparent&quot; parent=&quot;AppTheme&quot;&gt;    &lt;item name=&quot;android:windowFullscreen&quot;&gt;true&lt;/item&gt;    &lt;item name=&quot;android:windowIsTranslucent&quot;&gt;true&lt;/item&gt;&lt;/style&gt;</code></p>
-<p>或者：</p>
-<p><code>&lt;style name=&quot;APPWel&quot; parent=&quot;android:Theme.Translucent.NoTitleBar.Fullscreen&quot; /&gt;</code></p>
-<p>这种就和微信的处理方式是一样的，APP启动时会有一种因为系统卡顿造成启动较慢的假象。</p>
-<p>3.如下几点建议：</p>
-<p>尽量不要让Application参与业务的操作  </p>
-<p>尽量不要在APPlication进行耗时操作，比如有些开发者会在自己的APP里一系列文件夹或文件（比如我自己），这些I/O操作应该放到”确实该使用的时候再去创建”亦或者是数据库的一些操作</p>
-<p> 尽量不要以静态变量的方式在Application中保存数据等。  4、减少LaunchActivity的View层级，减少View测量绘制时间</p>
-<p>此外，可以通过如下方式测量APP冷启动和热启动的时间：</p>
-<p><code>adb shell am start -W [packageName]/[packageName.launchActivity]</code></p>
-]]></content>
-      <tags>
-        <tag>android</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>iconify使用</title>
-    <url>/2019/05/14/iconify%E4%BD%BF%E7%94%A8/</url>
-    <content><![CDATA[<p>先引入：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">compile &apos;com.joanzapata.iconify:android-iconify-ionicons:2.2.2&apos; // (v2.0.1)</span><br><span class="line">compile &apos;com.joanzapata.iconify:android-iconify-fontawesome:2.2.2&apos; // (v4.5)</span><br></pre></td></tr></table></figure>
-<p>在Applciation初始化：</p>
-<p><code>Iconify.with(FontAwesomeModule())        .with(FontEcModule())</code></p>
-<p>自定义module使用：先创建继承自IconFontDescriptor的类</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">class FontEcModule : IconFontDescriptor&#123;</span><br><span class="line">    override fun ttfFileName(): String &#123;</span><br><span class="line">        return &quot;iconfont.ttf&quot;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    override fun characters(): Array&lt;EcIcons&gt; &#123;</span><br><span class="line">        return EcIcons.values()</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>上面的ttf文件是放在assets目录下的，之后定义枚举的Icon</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">public enum EcIcons implements Icon &#123;</span><br><span class="line">    icon_shuidi(&apos;\ue600&apos;)</span><br><span class="line"></span><br><span class="line">    ;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    private char character;</span><br><span class="line"></span><br><span class="line">    EcIcons(char character) &#123;</span><br><span class="line">        this.character = character;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public String key() &#123;</span><br><span class="line">        return name().replace(&apos;_&apos;, &apos;-&apos;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public char character() &#123;</span><br><span class="line">        return character;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>这里有个细节，枚举中的名字是用下划线_定义的，但是在使用时要用-　</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">android:text=&quot;&#123;icon-shuidi&#125;&quot;</span><br></pre></td></tr></table></figure>
-<p>　这里的unicode编码　&#xe600;　需要将&amp;#xe删除　改为\u</p>
-]]></content>
-      <tags>
-        <tag>android</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>java反射</title>
     <url>/2019/03/28/java%E5%8F%8D%E5%B0%84/</url>
     <content><![CDATA[<p>简单来说，反射就是在运行时可以获取任意 <code>Class</code> 或 <code>Object</code> 内部所有成员属性，如成员变量、成员方法、构造函数和 Annotation。</p>
@@ -2497,6 +2478,25 @@
 ]]></content>
       <tags>
         <tag>Java</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>iconify使用</title>
+    <url>/2019/05/14/iconify%E4%BD%BF%E7%94%A8/</url>
+    <content><![CDATA[<p>先引入：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">compile &apos;com.joanzapata.iconify:android-iconify-ionicons:2.2.2&apos; // (v2.0.1)</span><br><span class="line">compile &apos;com.joanzapata.iconify:android-iconify-fontawesome:2.2.2&apos; // (v4.5)</span><br></pre></td></tr></table></figure>
+<p>在Applciation初始化：</p>
+<p><code>Iconify.with(FontAwesomeModule())        .with(FontEcModule())</code></p>
+<p>自定义module使用：先创建继承自IconFontDescriptor的类</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">class FontEcModule : IconFontDescriptor&#123;</span><br><span class="line">    override fun ttfFileName(): String &#123;</span><br><span class="line">        return &quot;iconfont.ttf&quot;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    override fun characters(): Array&lt;EcIcons&gt; &#123;</span><br><span class="line">        return EcIcons.values()</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上面的ttf文件是放在assets目录下的，之后定义枚举的Icon</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">public enum EcIcons implements Icon &#123;</span><br><span class="line">    icon_shuidi(&apos;\ue600&apos;)</span><br><span class="line"></span><br><span class="line">    ;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    private char character;</span><br><span class="line"></span><br><span class="line">    EcIcons(char character) &#123;</span><br><span class="line">        this.character = character;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public String key() &#123;</span><br><span class="line">        return name().replace(&apos;_&apos;, &apos;-&apos;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public char character() &#123;</span><br><span class="line">        return character;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这里有个细节，枚举中的名字是用下划线_定义的，但是在使用时要用-　</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">android:text=&quot;&#123;icon-shuidi&#125;&quot;</span><br></pre></td></tr></table></figure>
+<p>　这里的unicode编码　&#xe600;　需要将&amp;#xe删除　改为\u</p>
+]]></content>
+      <tags>
+        <tag>android</tag>
       </tags>
   </entry>
   <entry>
@@ -3094,72 +3094,6 @@ public static void recycleBitmaps(Bitmap... bitmaps) {
       </tags>
   </entry>
   <entry>
-    <title>线程池</title>
-    <url>/2022/12/03/%E7%BA%BF%E7%A8%8B%E6%B1%A0/</url>
-    <content><![CDATA[<p><strong>异步模式之工作线程</strong></p>
-<p>让有限的工作线程轮流异步处理无限多的任务，也可以将其归类为分工模式，他的典型实现就是线程池，也体现了经典设计模式中的享元模式</p>
-<p>例如,海底捞的服务员（线程），轮流处理每位顾客的点餐（任务），如果每位顾客都配一个专属服务员，则成本太过高昂</p>
-<p>注意：不同任务类型应该使用不同的线程池，这样能够避免饥饿现象，且效率上得到合理分配</p>
-<p>线程饥饿现象：<br>    本质上是在出现多任务混合在同一个池中，如果出现相互影响的状况出现类似死锁的问题</p>
-<p><strong>享元设计模式</strong></p>
-<p>本质：运用内存共享的原理，去有效支撑大量的细颗粒度的对象</p>
-<p>享元工厂：一个享元工厂，用来创建并管理对象，他主要是用来确保合理地共享对象，当用户请求一个对象是，由工厂提供一个已创建的对象示例或者创建一个</p>
-<p>享元对象：一个重复的对象</p>
-<p>使用场景：如果一个程序对于某个对象进行大量应用，且使用生命周期短，可以考虑采取享元模式进行复用</p>
-<p><strong>线程数量与核心数</strong></p>
-<p>处理器核数：<br>    线程核心数是一种执行资源，资源数量就是核的个数，应用程序的线程数就是服务请求数，而操作系统的作用如何调配有限的资源来服务更多的请求，这就是进程调度的概念。<br>一般情况下，服务其你去线程会“相对公平”的分配到核上运行，并且在时间片上轮流使用，这就是所谓的并发执行。</p>
-<p>比如系统有4个核，如果<br>3个线程，分配到3个核上<br>8个线程，每个核分配两个线程执行<br>10个线程，有些核跑3个有些跑2个</p>
-<p>所以，并非线程数量越大，速度越快，线程数量太过于庞大会导致各种内存问题，因为一个线程的开辟还会涉及到线程上下文的应用</p>
-<p><strong>创建多少线程合适？</strong></p>
-<img src="/2022/12/03/线程池/image-20221203195303524.png" title="[线程池]">
-<p><strong>CPU密集型运算：</strong><br>    通常采用CPU核数 + 1 能够实现最优的CPU利用率，+1是保证当线程由于页缺失故障（操作系统）或其他原因导致暂停时，额外的这个线程就能顶上去，保证CPU始终周期不被浪费</p>
-<p><strong>I/O密集型运算：</strong><br>    CPU不总是处于繁忙状态，例如，当你执行业务计算时，这时候会使用CPU资源，但当你执行IO操作、或者远程的RPC调用时，包括进行数据库操作等，这个时候CPU会闲下来，你可以利用多线程提高他的利用率</p>
-<p><strong>经验公式如下：</strong><br><strong>线程数 = 核数 <em> 期望CPU利用率 </em> 总时间（CPU计算时间+等待时间） / CPU计算时间</strong></p>
-<p>例如：4核CPU，计算时间是50%，其他等待时间是50%，期望CPU被100%利用，套用公式<br>    4 <em> 100% </em> 100% / 50% = 8</p>
-<p><strong>自定义线程池</strong></p>
-<p>由主线程往一个队列中去添加任务，由线程池控制线程去进行消费</p>
-<img src="/2022/12/03/线程池/image-20221203195417333.png" title="[线程池]">
-<p><strong>JDK中提供的线程池</strong></p>
-<img src="/2022/12/03/线程池/image-20221203195509261.png" title="[线程池]">
-<p><strong>ThreadPoolExecutor</strong></p>
-<p><strong>状态模型：</strong></p>
-<img src="/2022/12/03/线程池/image-20221203195533485.png" title="[线程池]">
-<p><strong>构造方法</strong></p>
-<img src="/2022/12/03/线程池/image-20221203195601076.png" title="[线程池]">
-<p><strong>工作模式</strong></p>
-<img src="/2022/12/03/线程池/image-20221203195622021.png" title="[线程池]">
-<p><strong>JDK中的拒绝策略</strong></p>
-<p>ThreadPoolExecutor自己已经提供了四个拒绝策略，分别是</p>
-<p>CallerRunsPolicy：在任务被拒绝添加后，会调用当前线程池的所在的线程去执行被拒绝的任务。这个策略的缺点就是可能会阻塞主线程。</p>
-<p>AbortPolicy：默认的拒绝策略就是AbortPolicy。直接抛出异常。抛出个RejectedExecutionException异常，也不执行这个任务了</p>
-<p>DiscardPolicy：这个东西什么都没干。</p>
-<p>DiscardOldestPolicy：当任务呗拒绝添加时，会抛弃任务队列中最旧的任务也就是最先加入队列的，再把这个新任务添加进去。</p>
-<p><strong>变量压缩合并的好处</strong></p>
-<img src="/2022/12/03/线程池/image-20221203195711488.png" title="[线程池]">
-<p><strong>合并算法</strong></p>
-<p>目的：将另个整数值打包到一个整数值下</p>
-<p>步骤：<br>    1.拆分短位与长位数值      短位=常量（状态）         长位 = 动态值（长度）<br>    2.打包算法   :<br>        长位 &amp; ~ mask | 短位 &amp; mask<br>    mask为分界位，如 一个整数值 短位占用3位，则长位占用29位，mask作用是用来对于短位数值进行换算，所有，如果短位需要占用三位则需要用111&lt;&lt;29位来占据前三位作为等值</p>
-<p><strong>ThreadPoolExecutor与当前自定义的区别</strong></p>
-<p>1.救急线程的应用<br>    提升性能</p>
-<p>2.状态设置<br>    对于线程池的管理</p>
-<p>3.原子合并<br>    利用位运算，进行CAS的优化</p>
-<p>4.工厂模式的应用</p>
-<p><strong>Timer缺点</strong></p>
-<p>Timer的优点在于简单易用，但是由于所有任务都是同一线程来调度执行，所有任务是串行，如果前面任务有延迟，会影响后面任务执行</p>
-<p>解决办法：<br>    ScheduledExecutorService<br>    线程池的调度</p>
-<p><strong>fork/join线程池</strong></p>
-<p>fork/join是JDK 1.7后加入的心得线程池实现，他主要体现是分治思想，适用于能够进行任务拆分的CPU密集型运算</p>
-<p>他是为了处理大数据诞生的</p>
-<p>所谓任务拆分，是将一个大任务拆分为算法上相同的小任务，直至不能拆分可以直接求解。跟递归相关的一些计算，如归并排序、斐波拉切数列，都可以进行分治完成</p>
-<p>Fork/Join在分治的基础上加入了多线程，可以把每个任务的分解和合并交给不同的线程来完成，进一步提升运算效率</p>
-<p>Fork/Join 默认会创建于CPU核心数大小相同的线程池</p>
-<p>最常见业务，对于文件夹的操作</p>
-]]></content>
-      <tags>
-        <tag>JUC</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>序列化</title>
     <url>/2022/12/06/%E5%BA%8F%E5%88%97%E5%8C%96/</url>
     <content><![CDATA[<p><strong>序列化定义以及相关概念</strong></p>
@@ -3241,6 +3175,72 @@ public static void recycleBitmaps(Bitmap... bitmaps) {
 ]]></content>
       <tags>
         <tag>IO</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>线程池</title>
+    <url>/2022/12/03/%E7%BA%BF%E7%A8%8B%E6%B1%A0/</url>
+    <content><![CDATA[<p><strong>异步模式之工作线程</strong></p>
+<p>让有限的工作线程轮流异步处理无限多的任务，也可以将其归类为分工模式，他的典型实现就是线程池，也体现了经典设计模式中的享元模式</p>
+<p>例如,海底捞的服务员（线程），轮流处理每位顾客的点餐（任务），如果每位顾客都配一个专属服务员，则成本太过高昂</p>
+<p>注意：不同任务类型应该使用不同的线程池，这样能够避免饥饿现象，且效率上得到合理分配</p>
+<p>线程饥饿现象：<br>    本质上是在出现多任务混合在同一个池中，如果出现相互影响的状况出现类似死锁的问题</p>
+<p><strong>享元设计模式</strong></p>
+<p>本质：运用内存共享的原理，去有效支撑大量的细颗粒度的对象</p>
+<p>享元工厂：一个享元工厂，用来创建并管理对象，他主要是用来确保合理地共享对象，当用户请求一个对象是，由工厂提供一个已创建的对象示例或者创建一个</p>
+<p>享元对象：一个重复的对象</p>
+<p>使用场景：如果一个程序对于某个对象进行大量应用，且使用生命周期短，可以考虑采取享元模式进行复用</p>
+<p><strong>线程数量与核心数</strong></p>
+<p>处理器核数：<br>    线程核心数是一种执行资源，资源数量就是核的个数，应用程序的线程数就是服务请求数，而操作系统的作用如何调配有限的资源来服务更多的请求，这就是进程调度的概念。<br>一般情况下，服务其你去线程会“相对公平”的分配到核上运行，并且在时间片上轮流使用，这就是所谓的并发执行。</p>
+<p>比如系统有4个核，如果<br>3个线程，分配到3个核上<br>8个线程，每个核分配两个线程执行<br>10个线程，有些核跑3个有些跑2个</p>
+<p>所以，并非线程数量越大，速度越快，线程数量太过于庞大会导致各种内存问题，因为一个线程的开辟还会涉及到线程上下文的应用</p>
+<p><strong>创建多少线程合适？</strong></p>
+<img src="/2022/12/03/线程池/image-20221203195303524.png" title="[线程池]">
+<p><strong>CPU密集型运算：</strong><br>    通常采用CPU核数 + 1 能够实现最优的CPU利用率，+1是保证当线程由于页缺失故障（操作系统）或其他原因导致暂停时，额外的这个线程就能顶上去，保证CPU始终周期不被浪费</p>
+<p><strong>I/O密集型运算：</strong><br>    CPU不总是处于繁忙状态，例如，当你执行业务计算时，这时候会使用CPU资源，但当你执行IO操作、或者远程的RPC调用时，包括进行数据库操作等，这个时候CPU会闲下来，你可以利用多线程提高他的利用率</p>
+<p><strong>经验公式如下：</strong><br><strong>线程数 = 核数 <em> 期望CPU利用率 </em> 总时间（CPU计算时间+等待时间） / CPU计算时间</strong></p>
+<p>例如：4核CPU，计算时间是50%，其他等待时间是50%，期望CPU被100%利用，套用公式<br>    4 <em> 100% </em> 100% / 50% = 8</p>
+<p><strong>自定义线程池</strong></p>
+<p>由主线程往一个队列中去添加任务，由线程池控制线程去进行消费</p>
+<img src="/2022/12/03/线程池/image-20221203195417333.png" title="[线程池]">
+<p><strong>JDK中提供的线程池</strong></p>
+<img src="/2022/12/03/线程池/image-20221203195509261.png" title="[线程池]">
+<p><strong>ThreadPoolExecutor</strong></p>
+<p><strong>状态模型：</strong></p>
+<img src="/2022/12/03/线程池/image-20221203195533485.png" title="[线程池]">
+<p><strong>构造方法</strong></p>
+<img src="/2022/12/03/线程池/image-20221203195601076.png" title="[线程池]">
+<p><strong>工作模式</strong></p>
+<img src="/2022/12/03/线程池/image-20221203195622021.png" title="[线程池]">
+<p><strong>JDK中的拒绝策略</strong></p>
+<p>ThreadPoolExecutor自己已经提供了四个拒绝策略，分别是</p>
+<p>CallerRunsPolicy：在任务被拒绝添加后，会调用当前线程池的所在的线程去执行被拒绝的任务。这个策略的缺点就是可能会阻塞主线程。</p>
+<p>AbortPolicy：默认的拒绝策略就是AbortPolicy。直接抛出异常。抛出个RejectedExecutionException异常，也不执行这个任务了</p>
+<p>DiscardPolicy：这个东西什么都没干。</p>
+<p>DiscardOldestPolicy：当任务呗拒绝添加时，会抛弃任务队列中最旧的任务也就是最先加入队列的，再把这个新任务添加进去。</p>
+<p><strong>变量压缩合并的好处</strong></p>
+<img src="/2022/12/03/线程池/image-20221203195711488.png" title="[线程池]">
+<p><strong>合并算法</strong></p>
+<p>目的：将另个整数值打包到一个整数值下</p>
+<p>步骤：<br>    1.拆分短位与长位数值      短位=常量（状态）         长位 = 动态值（长度）<br>    2.打包算法   :<br>        长位 &amp; ~ mask | 短位 &amp; mask<br>    mask为分界位，如 一个整数值 短位占用3位，则长位占用29位，mask作用是用来对于短位数值进行换算，所有，如果短位需要占用三位则需要用111&lt;&lt;29位来占据前三位作为等值</p>
+<p><strong>ThreadPoolExecutor与当前自定义的区别</strong></p>
+<p>1.救急线程的应用<br>    提升性能</p>
+<p>2.状态设置<br>    对于线程池的管理</p>
+<p>3.原子合并<br>    利用位运算，进行CAS的优化</p>
+<p>4.工厂模式的应用</p>
+<p><strong>Timer缺点</strong></p>
+<p>Timer的优点在于简单易用，但是由于所有任务都是同一线程来调度执行，所有任务是串行，如果前面任务有延迟，会影响后面任务执行</p>
+<p>解决办法：<br>    ScheduledExecutorService<br>    线程池的调度</p>
+<p><strong>fork/join线程池</strong></p>
+<p>fork/join是JDK 1.7后加入的心得线程池实现，他主要体现是分治思想，适用于能够进行任务拆分的CPU密集型运算</p>
+<p>他是为了处理大数据诞生的</p>
+<p>所谓任务拆分，是将一个大任务拆分为算法上相同的小任务，直至不能拆分可以直接求解。跟递归相关的一些计算，如归并排序、斐波拉切数列，都可以进行分治完成</p>
+<p>Fork/Join在分治的基础上加入了多线程，可以把每个任务的分解和合并交给不同的线程来完成，进一步提升运算效率</p>
+<p>Fork/Join 默认会创建于CPU核心数大小相同的线程池</p>
+<p>最常见业务，对于文件夹的操作</p>
+]]></content>
+      <tags>
+        <tag>JUC</tag>
       </tags>
   </entry>
   <entry>
