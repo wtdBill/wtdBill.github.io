@@ -124,6 +124,48 @@
       <ul class="post-list">
   
     <li class="post-list-item">
+        <article id="post-HashMap实现原理" class="article article-type-post" itemprop="blogPost">
+     
+
+
+  
+    <h3 class="post-title" itemprop="name">
+      <a class="post-title-link" href="/2019/04/14/HashMap实现原理/">HashMap实现原理</a>
+    </h3>
+  
+
+
+
+    <div class="post-meta">
+        <time datetime="2019-04-14T14:15:21.000Z" itemprop="datePublished" class="post-time">
+  2019-04-14
+</time>
+
+        
+
+
+    </div>
+
+    <div class="post-content" id="post-content" itemprop="postContent">
+
+    
+          HashMap原理  
+ 几个注意点： 
+  哈希冲突： 当插入的Entry越来越多时，不同的Key值通过哈希函数算出来的index值肯定会有冲突，此时就可以利用链表来解决。 其实HaspMap数组的每一个元素不止是一个Entry对象，也是一个链表的头节点，每一个Entry对象通过Next指针指向下一个Entry对象，这样，当新的Entry的hash值与之前的存在冲突时，只需要插入到对应点链表
+    
+    
+        <a href="/2019/04/14/HashMap实现原理/" class="post-more waves-effect waves-button">
+            阅读全文...
+        </a>
+    </div>
+    
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Java/">Java</a></li></ul>
+
+</article>
+
+    </li>
+  
+    <li class="post-list-item">
         <article id="post-Android文件路径详解" class="article article-type-post" itemprop="blogPost">
      
 
@@ -418,52 +460,6 @@
     </div>
     
 	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Java/">Java</a></li></ul>
-
-</article>
-
-    </li>
-  
-    <li class="post-list-item">
-        <article id="post-表" class="article article-type-post" itemprop="blogPost">
-     
-
-
-  
-    <h3 class="post-title" itemprop="name">
-      <a class="post-title-link" href="/2019/03/25/表/">表</a>
-    </h3>
-  
-
-
-
-    <div class="post-meta">
-        <time datetime="2019-03-25T14:22:11.000Z" itemprop="datePublished" class="post-time">
-  2019-03-25
-</time>
-
-        
-
-
-    </div>
-
-    <div class="post-content" id="post-content" itemprop="postContent">
-
-    
-         1.数组 
- 特点： 
- 在内存中，数组是一块连续的区域。  
- 数组需要预留空间，在使用前要先申请占内存的大小，可能会浪费内存空间。 
- 插入数据和删除数据效率低，插入数据时，这个位置后面的数据在内存中都要向后移。删除数据时，这个数据后面的数据都要往前移动。 
- 随机读取效率很高。因为数组是连续的，知道每一个数据的内存地址，可以直接找到给地址的数据。 
- 并且不利于扩展，数组定义的空间不够时要
-    
-    
-        <a href="/2019/03/25/表/" class="post-more waves-effect waves-button">
-            阅读全文...
-        </a>
-    </div>
-    
-	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/数据结构/">数据结构</a></li></ul>
 
 </article>
 

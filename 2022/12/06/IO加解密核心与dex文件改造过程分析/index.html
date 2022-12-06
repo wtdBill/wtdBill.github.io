@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  <title>IO加解密核心与dex文件改造过程分析 | Eric笔记 | Eric笔记</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="theme-color" content="#3F51B5">
+  
+  
+  <meta name="keywords" content="IO">
+  <meta name="description" content="IO及序列化 IO及序列化学习完成后，我能用用他们做什么？数据的加解密文件的读写网络数据的传输 加解密的核心原理 加密原理其实很简单，通俗的说就是打乱所加密文件的内容，举个简单例子：你的桌面图标是不是可以按顺序排列，按时间排列，按大小排列，按内容排列？对的就是这个原理 加密就是打乱信息内容，比如把第一个字放在最后，在吧最后一个字放在前面，按照一定的算法，给一个自己编写的函数，比如递归加密，异或加密">
+<meta name="keywords" content="IO">
+<meta property="og:type" content="article">
+<meta property="og:title" content="IO加解密核心与dex文件改造过程分析">
+<meta property="og:url" content="http://www.yppcat.top/2022/12/06/IO加解密核心与dex文件改造过程分析/index.html">
+<meta property="og:site_name" content="Eric笔记">
+<meta property="og:description" content="IO及序列化 IO及序列化学习完成后，我能用用他们做什么？数据的加解密文件的读写网络数据的传输 加解密的核心原理 加密原理其实很简单，通俗的说就是打乱所加密文件的内容，举个简单例子：你的桌面图标是不是可以按顺序排列，按时间排列，按大小排列，按内容排列？对的就是这个原理 加密就是打乱信息内容，比如把第一个字放在最后，在吧最后一个字放在前面，按照一定的算法，给一个自己编写的函数，比如递归加密，异或加密">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="http://www.yppcat.top/2022/12/06/IO加解密核心与dex文件改造过程分析/image-20221206203731247.png">
+<meta property="og:image" content="http://www.yppcat.top/2022/12/06/IO加解密核心与dex文件改造过程分析/image-20221206203753881.png">
+<meta property="og:image" content="http://www.yppcat.top/2022/12/06/IO加解密核心与dex文件改造过程分析/image-20221206203809988.png">
+<meta property="og:image" content="http://www.yppcat.top/2022/12/06/IO加解密核心与dex文件改造过程分析/image-20221206203920035.png">
+<meta property="og:image" content="http://www.yppcat.top/2022/12/06/IO加解密核心与dex文件改造过程分析/image-20221206203911695.png">
+<meta property="og:image" content="http://www.yppcat.top/2022/12/06/IO加解密核心与dex文件改造过程分析/image-20221206204129808.png">
+<meta property="og:image" content="http://www.yppcat.top/2022/12/06/IO加解密核心与dex文件改造过程分析/image-20221206204213005.png">
+<meta property="og:updated_time" content="2022-12-06T12:45:21.299Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="IO加解密核心与dex文件改造过程分析">
+<meta name="twitter:description" content="IO及序列化 IO及序列化学习完成后，我能用用他们做什么？数据的加解密文件的读写网络数据的传输 加解密的核心原理 加密原理其实很简单，通俗的说就是打乱所加密文件的内容，举个简单例子：你的桌面图标是不是可以按顺序排列，按时间排列，按大小排列，按内容排列？对的就是这个原理 加密就是打乱信息内容，比如把第一个字放在最后，在吧最后一个字放在前面，按照一定的算法，给一个自己编写的函数，比如递归加密，异或加密">
+<meta name="twitter:image" content="http://www.yppcat.top/2022/12/06/IO加解密核心与dex文件改造过程分析/image-20221206203731247.png">
+  
+    <link rel="alternative" href="/atom.xml" title="Eric笔记" type="application/atom+xml">
+  
+  <meta name="summary" content="">
+  <link rel="shortcut icon" href="/favicon.ico">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="loading" class="active"></div>
+
+  <nav id="menu" class="hide" >
+   <div class="inner flex-row-vertical">
+  <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+      <i class="icon icon-lg icon-close"></i>
+  </a>
+  <div class="brand-wrap">
+    <div class="brand">
+      <a href="/" class="avatar"><img src="/img/header.jpg"></a>
+      <hgroup class="introduce">
+        <h5 class="nickname">Eric笔记</h5>
+        <a href="mailto:1246275955@qq.com" title="1246275955@qq.com" class="mail">1246275955@qq.com</a>
+      </hgroup>
+    </div>
+  </div>
+  <div class="scroll-wrap flex-col">
+    <ul class="nav">
+      
+          <li class="waves-block waves-effect">
+            <a href="/">
+              <i class="icon icon-lg icon-home"></i>
+              主页
+            </a>
+          </li>
+      
+          <li class="waves-block waves-effect">
+            <a href="/archives">
+              <i class="icon icon-lg icon-archives"></i>
+              Archives
+            </a>
+          </li>
+      
+          <li class="waves-block waves-effect">
+            <a href="/tags">
+              <i class="icon icon-lg icon-tags"></i>
+              Tags
+            </a>
+          </li>
+      
+          <li class="waves-block waves-effect">
+            <a href="https://github.com/wtdBill" target="_blank">
+              <i class="icon icon-lg icon-github"></i>
+              Github
+            </a>
+          </li>
+      
+    </ul>
+
+    <footer class="footer">
+  <p><a rel="license" target="_blank" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0;vertical-align:middle;" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFAAAAAPCAMAAABEF7i9AAAAllBMVEUAAAD///+rsapERER3d3eIiIjMzMzu7u4iIiKUmZO6v7rKzsoODg4RERFVVVUNDQ0NDg0PEA8zMzNLTEtbXltmZmZydnF9gn2AgICPkI+ZmZmqqqq7u7vFxsXIzMgNDQwZGRkgICAhISEkJSMnKCcuMC4xMzE5Ozk7PTtBQkFCQkJDQ0Nna2eGhoaHh4ezuLLGysbd3d1wVGpAAAAA4UlEQVR42q2T1xqCMAyFk7QsBQeKA9x7j/d/OSm22CpX0nzcpA1/T05aAOuBVkMAScQFHLnEwoCo2f1TnQIGoVMewjZEjVFN4GH1Ue1Cn2jWqwfsOOj6wDwGvotsl/c8lv7KIq1eLOsT0HMFHMIE/RZyHnlphryT9zyV+8WH5e8yQw3wnQvgAFxPTKUVi555SHR/lOfLMgVTeDlSfN+TaoUsiTyeIm+bCkHvCA2FUKG48LDtYBZBknsYP/G8NTw0gaaHyuQf4H5pecrB/FYCT2sL9zAfy1Xyjou6L8X2W7YcLyBZCRtnq/zfAAAAAElFTkSuQmCC"></a></p>
+  <p>Eric笔记 &copy; 2022</p>
+  <p>Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme
+  <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a></p>
+  <a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-2x icon-rss-square"></i></a>
+</footer>
+
+  </div>
+</div>
+
+  </nav>
+  <main id="main">
+    <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">IO加解密核心与dex文件改造过程分析</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input " autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+    </div>
+</header>
+<header class="content-header">
+  <div class="container">
+    <h1 class="author">IO加解密核心与dex文件改造过程分析</h1>
+    <h5 class="subtitle">
+        
+            <time datetime="2022-12-06T12:33:42.000Z" itemprop="datePublished" class="page-time">
+  2022-12-06
+</time>
+
+
+        
+    </h5>
+  </div>
+</header>
+
+    <div class="container body-wrap">
+      <article id="post-IO加解密核心与dex文件改造过程分析" class="article article-type-post" itemprop="blogPost">
+    <div class="post-meta flex-row">
+        
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/IO/">IO</a></li></ul>
+
+    </div>
+    <div class="post-body">
+        <aside class="post-widget" id="post-widget">
+
+            
+
+            
+            <nav class="post-toc-wrap" id="post-toc">
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#APK反编译原理及实战"><span class="post-toc-number">1.</span> <span class="post-toc-text">APK反编译原理及实战</span></a></li></ol>
+            </nav>
+            
+        </aside>
+
+        <div class="post-main">
+
+            <div class="post-content" id="post-content" itemprop="postContent">
+            <p><strong>IO及序列化</strong></p>
+<p>IO及序列化学习完成后，我能用用他们做什么？<br>数据的加解密<br>文件的读写<br>网络数据的传输</p>
+<p><strong>加解密的核心原理</strong></p>
+<p>加密原理其实很简单，通俗的说就是打乱所加密文件的内容，举个简单例子：你的桌面图标是不是可以按顺序排列，按时间排列，按大小排列，按内容排列？对的就是这个原理 加密就是打乱信息内容，比如把第一个字放在最后，在吧最后一个字放在前面，按照一定的算法，给一个自己编写的函数，比如递归加密，异或加密等等，解密的时候倒过来解密，异或加密，倒过来解密就是先或在异。 有的加密，把内容打乱后在进行2次整体加密。。完了后在加…… 其实不用加密软软件：我根据加密的原理自己手动加密，一个简单的方法。。你把文件后缀名改掉，比如JPG，改成CHM,log.WIN等等。。个人倾向改成系统问价后缀，然后把改了的文件在压缩，，压缩后在吧压缩文件后缀RAR在改掉、、，，恶心吧。。多改几次。。别人怎么能打开？当然你的指导顺序在改回来。。一般我是最后改成INF或者COM系统后缀放在C盘的系统问文件夹下面。。。一般别人也不会动、。</p>
+<p><strong>数字签名-哈希散列</strong></p>
+<p><strong>MD5算法:</strong><br>MD5 用的是 哈希函数，它的典型应用是对一段信息产生 信息摘要，以 防止被篡改。严格来说，MD5 不是一种 加密算法 而是 摘要算法。无论是多长的输入，MD5 都会输出长度为 128bits 的一个串 (通常用 16 进制 表示为 32 个字符)。。<br>对称加密和非对称加密<br>加密算法分 对称加密 和 非对称加密，其中对称加密算法的加密与解密 密钥相同，非对称加密算法的加密密钥与解密 密钥不同，此外，还有一类 不需要密钥 的 散列算法。</p>
+<p><strong>SHA1算法：</strong><br>HA1 是和 MD5 一样流行的 消息摘要算法，然而 SHA1 比 MD5 的 安全性更强。对于长度小于 2 ^ 64 位的消息，SHA1 会产生一个 160 位的 消息摘要。基于 MD5、SHA1 的信息摘要特性以及 不可逆 (一般而言)，可以被应用在检查 文件完整性 以及 数字签名 等场景。</p>
+<p><strong>对称加密与非对称加密</strong></p>
+<p><strong>AES算法:</strong><br>AES 加密算法是密码学中的 高级加密标准，该加密算法采用 对称分组密码体制，密钥长度的最少支持为 128 位、 192 位、256 位，分组长度 128 位，算法应易于各种硬件和软件实现。这种加密算法是美国联邦政府采用的 区块加密标准。</p>
+<p><strong>RSA算法：</strong><br>RSA 加密算法是目前最有影响力的 公钥加密算法，并且被普遍认为是目前 最优秀的公钥方案 之一。RSA 是第一个能同时用于 加密 和 数字签名 的算法，它能够 抵抗 到目前为止已知的 所有密码攻击，已被 ISO 推荐为公钥数据加密标准。</p>
+<p><strong>ECC算法：</strong><br>ECC 也是一种 非对称加密算法，主要优势是在某些情况下，它比其他的方法使用 更小的密钥，比如 RSA 加密算法，提供 相当的或更高等级 的安全级别。不过一个缺点是 加密和解密操作 的实现比其他机制 时间长 (相比 RSA 算法，该算法对 CPU 消耗严重)。。</p>
+<p><strong>各算法比较</strong></p>
+<p><strong>散列</strong></p>
+<img src="/2022/12/06/IO加解密核心与dex文件改造过程分析/image-20221206203731247.png" title="[IO加解密核心与dex文件改造过程分析]">
+<p><strong>对称加密算法</strong></p>
+<img src="/2022/12/06/IO加解密核心与dex文件改造过程分析/image-20221206203753881.png" title="[IO加解密核心与dex文件改造过程分析]">
+<p><strong>非对称算法</strong></p>
+<img src="/2022/12/06/IO加解密核心与dex文件改造过程分析/image-20221206203809988.png" title="[IO加解密核心与dex文件改造过程分析]">
+<p><strong>大厂中加密思想：算法自定义，数学与性能的考虑，CPU利用与汇编底层的融合</strong></p>
+<h2 id="APK反编译原理及实战"><a href="#APK反编译原理及实战" class="headerlink" title="APK反编译原理及实战"></a><strong>APK反编译原理及实战</strong></h2><img src="/2022/12/06/IO加解密核心与dex文件改造过程分析/image-20221206203920035.png" title="[IO加解密核心与dex文件改造过程分析]">
+<img src="/2022/12/06/IO加解密核心与dex文件改造过程分析/image-20221206203911695.png" title="[IO加解密核心与dex文件改造过程分析]">
+<p><strong>加固的总体思想</strong></p>
+<p>一个程序员的故事：<br>辛辛苦苦找到一个对象，婚后家里主权为大，老婆管钱，导致这程序员木有经费去做一些爱做的事情。然而这个程序员很努力，平时除了上班，还能够做点外包，赚点外快。 所以他就想到了把工资卡上交，而把赚到的外快放到了自己的小金库。从此过上了性福生活。<br>结果被你反手一掏，小金库没了，从此欲哭无泪。<br>钱 = 代码<br>金库 = 编译过程<br>反手一套 = 破解过程</p>
+<p><strong>加固基本原理</strong></p>
+<p><strong>Dex文件 是什么？</strong></p>
+<p>加固的目的是保护dex，直接而言就是对dex文件进 行操作，对dex文件动刀子，必须知道dex文件是什 么，能否直接动刀子。什么是源dex？什么是壳dex？</p>
+<p><strong>Apk打包 流程</strong></p>
+<p>加壳是在原来apk的基础上加一层保护壳，dex文件 修改了就需要重新打包，否则apk安装不了。这就需 要我们详细学习apk如何打包的，</p>
+<p><strong>Dex文件加 载流程</strong></p>
+<p>加壳后的文件是不能直接用的，dex文件是加密的， 所以我们需要对他进行解密，解密后的dex文件如何 加载？</p>
+<p><strong>APK加载流程</strong></p>
+<img src="/2022/12/06/IO加解密核心与dex文件改造过程分析/image-20221206204129808.png" title="[IO加解密核心与dex文件改造过程分析]">
+<p><strong>加壳步骤</strong></p>
+<p>1、制作原始项目的apk，这里称作original.apk；<br>2、制作一个壳项目（具体功能见ps），编译通过后得到它的classes.dex文件，这里称作shell.dex，而壳项目的apk称作shell.apk（需要签名）；<br>3、制作一个加壳工具（java工程就可以），按照以下流程工作：<br>1）读取original.apk的byte流，并加密；<br>2）读取shell.dex的byte流；<br>3）new一个新的byte数组，长度为1）和2）的长度之和+4，因为我们要在shell.dex中保存original.apk的长度；<br>4）在new byte数组中写入2），写入1），写入1）的长度；<br>5）根据dex文件的结构，修改checksum文件头、Signature文件头和file_size文件头，最终生成一个新的classes.dex；<br>4、替换掉2中的shell.apk中的classes.dex，并使用工具重新签名；<br>5、生成的新签名apk就是我们加壳过的apk了。</p>
+<p><strong>脱壳流程</strong></p>
+<img src="/2022/12/06/IO加解密核心与dex文件改造过程分析/image-20221206204213005.png" title="[IO加解密核心与dex文件改造过程分析]">
+
+            
+            <div class="post-reward">
+                <a id="rewardBtn" href="javascript:;" class="post-reward-btn waves-effect waves-circle waves-light">赏</a>
+            </div>
+            
+            
+            <blockquote>
+                <p>
+                本文地址：
+                <a href="http://www.yppcat.top/2022/12/06/IO加解密核心与dex文件改造过程分析/" target="_blank" rel="external">http://www.yppcat.top/2022/12/06/IO加解密核心与dex文件改造过程分析/</a>
+                </p>
+                <footer><cite><a href="http://www.yppcat.top">@Eric笔记</a></cite></footer>
+            </blockquote>
+            </div>
+            
+<nav class="post-nav">
+  
+
+  
+    <div class="waves-block waves-effect next fr">
+      <a href="/2022/12/06/序列化/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">序列化</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+            
+            
+<div class="duoshuo">
+	<!-- 多说评论框 start -->
+	<div class="ds-thread" data-thread-key="IO加解密核心与dex文件改造过程分析" data-title="IO加解密核心与dex文件改造过程分析" data-url="http://www.yppcat.top/2022/12/06/IO加解密核心与dex文件改造过程分析/index.html"></div>
+	<!-- 多说评论框 end -->
+	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+	<script type="text/javascript">
+	var duoshuoQuery = {short_name:"ysblog"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+	<!-- 多说公共JS代码 end -->
+</div>
+
+
+
+
+
+        </div>
+    </div>
+</article>
+
+<div id="reward" class="reward-lay">
+    <a class="reward-off" id="rewardOff" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        谢谢老板~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <ul class="reward-items">
+        
+        <li>
+            <img src="/img/wechat.jpg" title="微信打赏二维码" alt="微信打赏二维码">
+            <p>微信</p>
+        </li>
+        
+
+        
+    </ul>
+</div>
+
+    </div>
+  </main>
+<div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+<script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+
+<script src="/js/main.js"></script>
+
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<script type="text/template" id="search-tpl">
+<li class="item">
+    <a href="/{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</script>
+
+<script src="/js/search.js"></script>
+
+
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script type="text/javascript" async src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>
