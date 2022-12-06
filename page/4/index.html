@@ -124,49 +124,6 @@
       <ul class="post-list">
   
     <li class="post-list-item">
-        <article id="post-内存泄漏的原因和解决方式" class="article article-type-post" itemprop="blogPost">
-     
-
-
-  
-    <h3 class="post-title" itemprop="name">
-      <a class="post-title-link" href="/2019/08/26/内存泄漏的原因和解决方式/">内存泄漏的原因和解决方式</a>
-    </h3>
-  
-
-
-
-    <div class="post-meta">
-        <time datetime="2019-08-26T13:39:00.000Z" itemprop="datePublished" class="post-time">
-  2019-08-26
-</time>
-
-        
-
-
-    </div>
-
-    <div class="post-content" id="post-content" itemprop="postContent">
-
-    
-         1. Handler引起的内存泄漏 （生命周期长的持有了生命周期短的引用） 
- 2.Bitmap对象使用结束没有使用recycle释放内存 
-      1   2       val bitmap = BitmapFactory.decodeResource(resources,R.drawable.ic_launcher)   bitmap.recycle()       
- 3.curso
-    
-    
-        <a href="/2019/08/26/内存泄漏的原因和解决方式/" class="post-more waves-effect waves-button">
-            阅读全文...
-        </a>
-    </div>
-    
-	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/面试/">面试</a></li></ul>
-
-</article>
-
-    </li>
-  
-    <li class="post-list-item">
         <article id="post-Activity和Fragment通信" class="article article-type-post" itemprop="blogPost">
      
 
@@ -467,6 +424,48 @@
         </a>
     </div>
     
+</article>
+
+    </li>
+  
+    <li class="post-list-item">
+        <article id="post-HashMap实现原理" class="article article-type-post" itemprop="blogPost">
+     
+
+
+  
+    <h3 class="post-title" itemprop="name">
+      <a class="post-title-link" href="/2019/04/14/HashMap实现原理/">HashMap实现原理</a>
+    </h3>
+  
+
+
+
+    <div class="post-meta">
+        <time datetime="2019-04-14T14:15:21.000Z" itemprop="datePublished" class="post-time">
+  2019-04-14
+</time>
+
+        
+
+
+    </div>
+
+    <div class="post-content" id="post-content" itemprop="postContent">
+
+    
+          HashMap原理  
+ 几个注意点： 
+  哈希冲突： 当插入的Entry越来越多时，不同的Key值通过哈希函数算出来的index值肯定会有冲突，此时就可以利用链表来解决。 其实HaspMap数组的每一个元素不止是一个Entry对象，也是一个链表的头节点，每一个Entry对象通过Next指针指向下一个Entry对象，这样，当新的Entry的hash值与之前的存在冲突时，只需要插入到对应点链表
+    
+    
+        <a href="/2019/04/14/HashMap实现原理/" class="post-more waves-effect waves-button">
+            阅读全文...
+        </a>
+    </div>
+    
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Java/">Java</a></li></ul>
+
 </article>
 
     </li>

@@ -124,47 +124,6 @@
       <ul class="post-list">
   
     <li class="post-list-item">
-        <article id="post-kotlin笔记-标准函数" class="article article-type-post" itemprop="blogPost">
-     
-
-
-  
-    <h3 class="post-title" itemprop="name">
-      <a class="post-title-link" href="/2021/12/08/kotlin笔记-标准函数/">kotlin笔记-标准函数</a>
-    </h3>
-  
-
-
-
-    <div class="post-meta">
-        <time datetime="2021-12-08T14:59:06.000Z" itemprop="datePublished" class="post-time">
-  2021-12-08
-</time>
-
-        
-
-
-    </div>
-
-    <div class="post-content" id="post-content" itemprop="postContent">
-
-    
-           let函数会将参数传入到lambda作用域中，返回作用域的最后一行       1   2   3   4        val  res = listOf( 1 , 2 , 3 ).first().let &#123;       it * it   &#125;   println(res)       
-   also函数会返回接收者对象，作用域和功能类似，传入参数       1  
-    
-    
-        <a href="/2021/12/08/kotlin笔记-标准函数/" class="post-more waves-effect waves-button">
-            阅读全文...
-        </a>
-    </div>
-    
-	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/kotlin/">kotlin</a></li></ul>
-
-</article>
-
-    </li>
-  
-    <li class="post-list-item">
         <article id="post-kotlin笔记" class="article article-type-post" itemprop="blogPost">
      
 
@@ -467,6 +426,49 @@
     </div>
     
 	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/音视频/">音视频</a></li></ul>
+
+</article>
+
+    </li>
+  
+    <li class="post-list-item">
+        <article id="post-内存泄漏的原因和解决方式" class="article article-type-post" itemprop="blogPost">
+     
+
+
+  
+    <h3 class="post-title" itemprop="name">
+      <a class="post-title-link" href="/2019/08/26/内存泄漏的原因和解决方式/">内存泄漏的原因和解决方式</a>
+    </h3>
+  
+
+
+
+    <div class="post-meta">
+        <time datetime="2019-08-26T13:39:00.000Z" itemprop="datePublished" class="post-time">
+  2019-08-26
+</time>
+
+        
+
+
+    </div>
+
+    <div class="post-content" id="post-content" itemprop="postContent">
+
+    
+         1. Handler引起的内存泄漏 （生命周期长的持有了生命周期短的引用） 
+ 2.Bitmap对象使用结束没有使用recycle释放内存 
+      1   2       val bitmap = BitmapFactory.decodeResource(resources,R.drawable.ic_launcher)   bitmap.recycle()       
+ 3.curso
+    
+    
+        <a href="/2019/08/26/内存泄漏的原因和解决方式/" class="post-more waves-effect waves-button">
+            阅读全文...
+        </a>
+    </div>
+    
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/面试/">面试</a></li></ul>
 
 </article>
 

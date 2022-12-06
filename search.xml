@@ -504,6 +504,53 @@
       </tags>
   </entry>
   <entry>
+    <title>C++学习笔记-数据处理</title>
+    <url>/2019/06/16/C-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/</url>
+    <content><![CDATA[<p>1.整型：</p>
+<p>short至少表示1６位</p>
+<p>int至少与short一样长（可能16位，可能32位）</p>
+<p>long至少32位，且至少与int一样长</p>
+<p>long long至少64位，且至少与long一样长</p>
+<p>可通过sizeof()方法查看具体类型的最大值:</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">cout &lt;&lt; &quot;int is&quot; &lt;&lt; sizeof(int) &lt;&lt; &quot;bytes&quot; &lt;&lt; INT_MAX &lt;&lt; endl;</span><br></pre></td></tr></table></figure>
+<p>2.无符号类型：</p>
+<p>eg：unsigned short change;</p>
+<p>short表示的范围是-32767到+32767，上述所表示的范围是0-65535，优点是可以增大变量能够存储的最大值。此外 unsigned int 可以简写为unsigned。</p>
+<p>３.char类型</p>
+<p>char类型专门存储字符（数字和字母），是一种整型。eg : char s = ‘s’;</p>
+<p>signed char 和 unsigned char的区别：</p>
+<p>将char作为数值类型时，同上面的整型（表示的范围0-255），在表示字符时可以直接使用char。</p>
+<p>4.bool类型</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">bool is_ready = true;</span><br></pre></td></tr></table></figure>
+<p>其中true被转换成１，false被转换成０</p>
+<p>5.const限定符</p>
+<p>类似Java中的static final的用法，定义常量且在程序的多处用到。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">const int msg = 0;</span><br></pre></td></tr></table></figure>
+<p>６.浮点数</p>
+<p>浮点数可以表示带小数的数字，计算机存储时将这样的值分为两个部分存储，一部分表示值，另一部分用于对值进行放大和缩小。</p>
+<p>浮点类型有float(至少32位),double(至少48位且不少于float),long double(至少和double一样多)</p>
+<p>两种写法：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">float f = 12.34;</span><br><span class="line">float ss = 3.65E6;</span><br></pre></td></tr></table></figure>
+<p>后者表示的是3.65与1000000相乘的结果，前者表示具体的值。表示小数还可以写：3.65E-4表示3.65/10000</p>
+<p>优点：可以表示的范围大得多。</p>
+<p>缺点：运算速度较慢，精度降低。</p>
+<p>７.运算符：</p>
+<p>+,-,*,/,%等不具体说</p>
+<p>类型转换：转换float会导致精度丢失的问题，将long转换成short这种类型时原来的值可能超出目标范围，只复制右边的值。</p>
+<p>强制转换：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">cout &lt;&lt; int(&apos;Q&apos;);</span><br><span class="line">cout &lt;&lt; (int) &apos;Q&apos;;</span><br></pre></td></tr></table></figure>
+<p>强制转换会有危险，用以下方式较好：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">cout &lt;&lt; static_cast&lt;int &gt;(&apos;Q&apos;);</span><br></pre></td></tr></table></figure>
+<p>static_cast用于将一种数值转换为另一种数值。</p>
+<p>8.auto关键字</p>
+<p>auto关键字用于声明变量时不指定变量和的类型，编译器将把变量的类型设置成与初始值相同。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">auto x = 0.99;</span><br><span class="line">auto y = &quot;hello&quot;;</span><br></pre></td></tr></table></figure>
+]]></content>
+      <tags>
+        <tag>C++学习笔记</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>BIO与NIO</title>
     <url>/2022/12/05/BIO%E4%B8%8ENIO/</url>
     <content><![CDATA[<p><strong>android 人员对于IO的诉求</strong></p>
@@ -574,53 +621,6 @@
 ]]></content>
       <tags>
         <tag>IO</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>C++学习笔记-数据处理</title>
-    <url>/2019/06/16/C-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/</url>
-    <content><![CDATA[<p>1.整型：</p>
-<p>short至少表示1６位</p>
-<p>int至少与short一样长（可能16位，可能32位）</p>
-<p>long至少32位，且至少与int一样长</p>
-<p>long long至少64位，且至少与long一样长</p>
-<p>可通过sizeof()方法查看具体类型的最大值:</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">cout &lt;&lt; &quot;int is&quot; &lt;&lt; sizeof(int) &lt;&lt; &quot;bytes&quot; &lt;&lt; INT_MAX &lt;&lt; endl;</span><br></pre></td></tr></table></figure>
-<p>2.无符号类型：</p>
-<p>eg：unsigned short change;</p>
-<p>short表示的范围是-32767到+32767，上述所表示的范围是0-65535，优点是可以增大变量能够存储的最大值。此外 unsigned int 可以简写为unsigned。</p>
-<p>３.char类型</p>
-<p>char类型专门存储字符（数字和字母），是一种整型。eg : char s = ‘s’;</p>
-<p>signed char 和 unsigned char的区别：</p>
-<p>将char作为数值类型时，同上面的整型（表示的范围0-255），在表示字符时可以直接使用char。</p>
-<p>4.bool类型</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">bool is_ready = true;</span><br></pre></td></tr></table></figure>
-<p>其中true被转换成１，false被转换成０</p>
-<p>5.const限定符</p>
-<p>类似Java中的static final的用法，定义常量且在程序的多处用到。</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">const int msg = 0;</span><br></pre></td></tr></table></figure>
-<p>６.浮点数</p>
-<p>浮点数可以表示带小数的数字，计算机存储时将这样的值分为两个部分存储，一部分表示值，另一部分用于对值进行放大和缩小。</p>
-<p>浮点类型有float(至少32位),double(至少48位且不少于float),long double(至少和double一样多)</p>
-<p>两种写法：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">float f = 12.34;</span><br><span class="line">float ss = 3.65E6;</span><br></pre></td></tr></table></figure>
-<p>后者表示的是3.65与1000000相乘的结果，前者表示具体的值。表示小数还可以写：3.65E-4表示3.65/10000</p>
-<p>优点：可以表示的范围大得多。</p>
-<p>缺点：运算速度较慢，精度降低。</p>
-<p>７.运算符：</p>
-<p>+,-,*,/,%等不具体说</p>
-<p>类型转换：转换float会导致精度丢失的问题，将long转换成short这种类型时原来的值可能超出目标范围，只复制右边的值。</p>
-<p>强制转换：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">cout &lt;&lt; int(&apos;Q&apos;);</span><br><span class="line">cout &lt;&lt; (int) &apos;Q&apos;;</span><br></pre></td></tr></table></figure>
-<p>强制转换会有危险，用以下方式较好：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">cout &lt;&lt; static_cast&lt;int &gt;(&apos;Q&apos;);</span><br></pre></td></tr></table></figure>
-<p>static_cast用于将一种数值转换为另一种数值。</p>
-<p>8.auto关键字</p>
-<p>auto关键字用于声明变量时不指定变量和的类型，编译器将把变量的类型设置成与初始值相同。</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">auto x = 0.99;</span><br><span class="line">auto y = &quot;hello&quot;;</span><br></pre></td></tr></table></figure>
-]]></content>
-      <tags>
-        <tag>C++学习笔记</tag>
       </tags>
   </entry>
   <entry>
@@ -913,24 +913,6 @@
       </tags>
   </entry>
   <entry>
-    <title>HashMap实现原理</title>
-    <url>/2019/04/14/HashMap%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86/</url>
-    <content><![CDATA[<p><a href="https://blog.csdn.net/mbshqqb/article/details/79799009" target="_blank" rel="noopener">HashMap原理</a></p>
-<p>几个注意点：</p>
-<p><strong>哈希冲突：</strong>当插入的Entry越来越多时，不同的Key值通过哈希函数算出来的index值肯定会有冲突，此时就可以利用链表来解决。 其实HaspMap数组的每一个元素不止是一个Entry对象，也是一个链表的头节点，每一个Entry对象通过Next指针指向下一个Entry对象，这样，当新的Entry的hash值与之前的存在冲突时，只需要插入到对应点链表即可。要注意的是，新来的Entry节点采用的是“头插法”，而不是直接插入在链表的尾部，这是因为HashMap的发明者认为，新插入的节点被查找的可能性更大。</p>
-<p><strong>get的几个步骤：</strong></p>
-<p>第一步，算出Key值“apple”的hash值，假设为2。</p>
-<p> 第二步，在数组中查找索引为2的位置，此时找到头节点为Entry6，Entry6的Key值是banana，不是我们要找的值。</p>
-<p> 第三步，查找Entry6的Next节点，这里为Entry1，它的Key值为apple，是我们要查找的值，这样就找到了对应的键值对，结束。</p>
-<p><a href="https://coolshell.cn/articles/9606.html" target="_blank" rel="noopener">HashMap死锁：</a></p>
-<p>HashMap设计了一个阈值，其值为容量的0.75，当HashMap所用容量超过了阈值后，就会自动扩充其容量。</p>
-<p>在多线程的情况下，当重新调整HashMap大小的时候，就会存在条件竞争，因为如果两个线程都发现HashMap需要重新调整大小了，它们会同时试着调整大小。在调整大小的过程中，存储在链表中的元素的次序会反过来，因为移动到新的bucket位置的时候，HashMap并不会将元素放在链表的尾部，而是放在头部，这是为了避免尾部遍历。如果条件竞争发生了，那么就会产生死循环了。</p>
-]]></content>
-      <tags>
-        <tag>Java</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>GC及调优</title>
     <url>/2022/11/18/GC%E5%8F%8A%E8%B0%83%E4%BC%98/</url>
     <content><![CDATA[<h2 id="GC核心概述"><a href="#GC核心概述" class="headerlink" title="GC核心概述"></a><strong>GC核心概述</strong></h2><p><strong>Java自动化内存管理</strong></p>
@@ -1051,46 +1033,21 @@
       </tags>
   </entry>
   <entry>
-    <title>IO加解密核心与dex文件改造过程分析</title>
-    <url>/2022/12/06/IO%E5%8A%A0%E8%A7%A3%E5%AF%86%E6%A0%B8%E5%BF%83%E4%B8%8Edex%E6%96%87%E4%BB%B6/</url>
-    <content><![CDATA[<p><strong>IO及序列化</strong></p>
-<p>IO及序列化学习完成后，我能用用他们做什么？<br>数据的加解密<br>文件的读写<br>网络数据的传输</p>
-<p><strong>加解密的核心原理</strong></p>
-<p>加密原理其实很简单，通俗的说就是打乱所加密文件的内容，举个简单例子：你的桌面图标是不是可以按顺序排列，按时间排列，按大小排列，按内容排列？对的就是这个原理 加密就是打乱信息内容，比如把第一个字放在最后，在吧最后一个字放在前面，按照一定的算法，给一个自己编写的函数，比如递归加密，异或加密等等，解密的时候倒过来解密，异或加密，倒过来解密就是先或在异。 有的加密，把内容打乱后在进行2次整体加密。。完了后在加…… 其实不用加密软软件：我根据加密的原理自己手动加密，一个简单的方法。。你把文件后缀名改掉，比如JPG，改成CHM,log.WIN等等。。个人倾向改成系统问价后缀，然后把改了的文件在压缩，，压缩后在吧压缩文件后缀RAR在改掉、、，，恶心吧。。多改几次。。别人怎么能打开？当然你的指导顺序在改回来。。一般我是最后改成INF或者COM系统后缀放在C盘的系统问文件夹下面。。。一般别人也不会动、。</p>
-<p><strong>数字签名-哈希散列</strong></p>
-<p><strong>MD5算法:</strong><br>MD5 用的是 哈希函数，它的典型应用是对一段信息产生 信息摘要，以 防止被篡改。严格来说，MD5 不是一种 加密算法 而是 摘要算法。无论是多长的输入，MD5 都会输出长度为 128bits 的一个串 (通常用 16 进制 表示为 32 个字符)。。<br>对称加密和非对称加密<br>加密算法分 对称加密 和 非对称加密，其中对称加密算法的加密与解密 密钥相同，非对称加密算法的加密密钥与解密 密钥不同，此外，还有一类 不需要密钥 的 散列算法。</p>
-<p><strong>SHA1算法：</strong><br>HA1 是和 MD5 一样流行的 消息摘要算法，然而 SHA1 比 MD5 的 安全性更强。对于长度小于 2 ^ 64 位的消息，SHA1 会产生一个 160 位的 消息摘要。基于 MD5、SHA1 的信息摘要特性以及 不可逆 (一般而言)，可以被应用在检查 文件完整性 以及 数字签名 等场景。</p>
-<p><strong>对称加密与非对称加密</strong></p>
-<p><strong>AES算法:</strong><br>AES 加密算法是密码学中的 高级加密标准，该加密算法采用 对称分组密码体制，密钥长度的最少支持为 128 位、 192 位、256 位，分组长度 128 位，算法应易于各种硬件和软件实现。这种加密算法是美国联邦政府采用的 区块加密标准。</p>
-<p><strong>RSA算法：</strong><br>RSA 加密算法是目前最有影响力的 公钥加密算法，并且被普遍认为是目前 最优秀的公钥方案 之一。RSA 是第一个能同时用于 加密 和 数字签名 的算法，它能够 抵抗 到目前为止已知的 所有密码攻击，已被 ISO 推荐为公钥数据加密标准。</p>
-<p><strong>ECC算法：</strong><br>ECC 也是一种 非对称加密算法，主要优势是在某些情况下，它比其他的方法使用 更小的密钥，比如 RSA 加密算法，提供 相当的或更高等级 的安全级别。不过一个缺点是 加密和解密操作 的实现比其他机制 时间长 (相比 RSA 算法，该算法对 CPU 消耗严重)。。</p>
-<p><strong>各算法比较</strong></p>
-<p><strong>散列</strong></p>
-
-<p><strong>对称加密算法</strong></p>
-
-<p><strong>非对称算法</strong></p>
-
-<p><strong>大厂中加密思想：算法自定义，数学与性能的考虑，CPU利用与汇编底层的融合</strong></p>
-<h2 id="APK反编译原理及实战"><a href="#APK反编译原理及实战" class="headerlink" title="APK反编译原理及实战"></a><strong>APK反编译原理及实战</strong></h2>
-
-<p><strong>加固的总体思想</strong></p>
-<p>一个程序员的故事：<br>辛辛苦苦找到一个对象，婚后家里主权为大，老婆管钱，导致这程序员木有经费去做一些爱做的事情。然而这个程序员很努力，平时除了上班，还能够做点外包，赚点外快。 所以他就想到了把工资卡上交，而把赚到的外快放到了自己的小金库。从此过上了性福生活。<br>结果被你反手一掏，小金库没了，从此欲哭无泪。<br>钱 = 代码<br>金库 = 编译过程<br>反手一套 = 破解过程</p>
-<p><strong>加固基本原理</strong></p>
-<p><strong>Dex文件 是什么？</strong></p>
-<p>加固的目的是保护dex，直接而言就是对dex文件进 行操作，对dex文件动刀子，必须知道dex文件是什 么，能否直接动刀子。什么是源dex？什么是壳dex？</p>
-<p><strong>Apk打包 流程</strong></p>
-<p>加壳是在原来apk的基础上加一层保护壳，dex文件 修改了就需要重新打包，否则apk安装不了。这就需 要我们详细学习apk如何打包的，</p>
-<p><strong>Dex文件加 载流程</strong></p>
-<p>加壳后的文件是不能直接用的，dex文件是加密的， 所以我们需要对他进行解密，解密后的dex文件如何 加载？</p>
-<p><strong>APK加载流程</strong></p>
-
-<p><strong>加壳步骤</strong></p>
-<p>1、制作原始项目的apk，这里称作original.apk；<br>2、制作一个壳项目（具体功能见ps），编译通过后得到它的classes.dex文件，这里称作shell.dex，而壳项目的apk称作shell.apk（需要签名）；<br>3、制作一个加壳工具（java工程就可以），按照以下流程工作：<br>1）读取original.apk的byte流，并加密；<br>2）读取shell.dex的byte流；<br>3）new一个新的byte数组，长度为1）和2）的长度之和+4，因为我们要在shell.dex中保存original.apk的长度；<br>4）在new byte数组中写入2），写入1），写入1）的长度；<br>5）根据dex文件的结构，修改checksum文件头、Signature文件头和file_size文件头，最终生成一个新的classes.dex；<br>4、替换掉2中的shell.apk中的classes.dex，并使用工具重新签名；<br>5、生成的新签名apk就是我们加壳过的apk了。</p>
-<p><strong>脱壳流程</strong></p>
+    <title>HashMap实现原理</title>
+    <url>/2019/04/14/HashMap%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86/</url>
+    <content><![CDATA[<p><a href="https://blog.csdn.net/mbshqqb/article/details/79799009" target="_blank" rel="noopener">HashMap原理</a></p>
+<p>几个注意点：</p>
+<p><strong>哈希冲突：</strong>当插入的Entry越来越多时，不同的Key值通过哈希函数算出来的index值肯定会有冲突，此时就可以利用链表来解决。 其实HaspMap数组的每一个元素不止是一个Entry对象，也是一个链表的头节点，每一个Entry对象通过Next指针指向下一个Entry对象，这样，当新的Entry的hash值与之前的存在冲突时，只需要插入到对应点链表即可。要注意的是，新来的Entry节点采用的是“头插法”，而不是直接插入在链表的尾部，这是因为HashMap的发明者认为，新插入的节点被查找的可能性更大。</p>
+<p><strong>get的几个步骤：</strong></p>
+<p>第一步，算出Key值“apple”的hash值，假设为2。</p>
+<p> 第二步，在数组中查找索引为2的位置，此时找到头节点为Entry6，Entry6的Key值是banana，不是我们要找的值。</p>
+<p> 第三步，查找Entry6的Next节点，这里为Entry1，它的Key值为apple，是我们要查找的值，这样就找到了对应的键值对，结束。</p>
+<p><a href="https://coolshell.cn/articles/9606.html" target="_blank" rel="noopener">HashMap死锁：</a></p>
+<p>HashMap设计了一个阈值，其值为容量的0.75，当HashMap所用容量超过了阈值后，就会自动扩充其容量。</p>
+<p>在多线程的情况下，当重新调整HashMap大小的时候，就会存在条件竞争，因为如果两个线程都发现HashMap需要重新调整大小了，它们会同时试着调整大小。在调整大小的过程中，存储在链表中的元素的次序会反过来，因为移动到新的bucket位置的时候，HashMap并不会将元素放在链表的尾部，而是放在头部，这是为了避免尾部遍历。如果条件竞争发生了，那么就会产生死循环了。</p>
 ]]></content>
       <tags>
-        <tag>IO</tag>
+        <tag>Java</tag>
       </tags>
   </entry>
   <entry>
@@ -1868,6 +1825,26 @@
       </tags>
   </entry>
   <entry>
+    <title>activity生命周期相关</title>
+    <url>/2019/02/17/activity%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E7%9B%B8%E5%85%B3/</url>
+    <content><![CDATA[<p>(1) onCreate : 表示activity 正在被创建，这是生命周期的第一个方法。在这个方法中，我们可以做一些初始化工作，比如setContentView去加载界面布局资源、初始化activity所需数据等，还可以在异常状态重建是利用savedInstanceState 获取需要的值。</p>
+<p>(2) onRestart : 表示acticity正在重新启动。一般情况下，当当前activity从不可见重新变为可见状态时，onRestart就会被调用。这种情形一般是用户行为导致的，比如用户按Home切换到桌面或者用户打开了一个新的activity，这是当前的activity就会暂停，也就是onPause和onStop被执行了，接着用户又回到了这个activity，就会出现这种情况。</p>
+<p>(3) onStart : 表示activity正在被启动，即将开始，这是activity已经可见了，但是还没有出现在前台，还无法和用户交互。这个时候其实可以理解为activity已经显示出来了，但是我们还看不到。</p>
+<p>(4) onResume : 表示activity已经可见了，并且出现在前台病开始活动。要注意这个和onStart的对比，onStart和onResume都表示activity已经可见，但是onStart的时候activity还在后台，onResume的时候activity才显示到前台。</p>
+<p>(5) onPause : 表示activity正在停止，正常情况下，紧接着onStop就会被调用。在特殊情况下，如果这个时候快速再回到当前的activity，那么onResume就会被调用。在此时用户可以一些数据存储、停止动画的操作，但是注意不能太耗时，因为这会影响到新activity的显示，onPause必须先执行完，新activity的onResume才会执行。</p>
+<p>(6) onStop : 表示activity即将停止，可以做一些稍微重量级的回收工作，同样不能太耗时。</p>
+<p>(7) onDestroy : 表示activity即将被销毁，这是activity生命周期中的最后一个回调，在这里，我们可以做一些回收工作和最终的资源释放。</p>
+<p>常见activity生命周期的几种情况：</p>
+<p>(1) activity正常启动时，onCreate -&gt; onStart -&gt; onResume</p>
+<p>(2) 打开新的activity或者切换到桌面时：onPause -&gt; onStop，在这里当activity采用透明主题时比较特殊，不会回调onStop</p>
+<p>(3) 当在上面情况再返回当前activity时，onRestart -&gt; onStart -&gt; onResume</p>
+<p>(4) back键返回时 onPasue -&gt; onStop -&gt; onDestroy</p>
+]]></content>
+      <tags>
+        <tag>android</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>activity启动模式和intent filter</title>
     <url>/2019/02/20/activity%E5%90%AF%E5%8A%A8%E6%A8%A1%E5%BC%8F/</url>
     <content><![CDATA[<p>Activity的启动模式：</p>
@@ -1886,20 +1863,38 @@
       </tags>
   </entry>
   <entry>
-    <title>activity生命周期相关</title>
-    <url>/2019/02/17/activity%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E7%9B%B8%E5%85%B3/</url>
-    <content><![CDATA[<p>(1) onCreate : 表示activity 正在被创建，这是生命周期的第一个方法。在这个方法中，我们可以做一些初始化工作，比如setContentView去加载界面布局资源、初始化activity所需数据等，还可以在异常状态重建是利用savedInstanceState 获取需要的值。</p>
-<p>(2) onRestart : 表示acticity正在重新启动。一般情况下，当当前activity从不可见重新变为可见状态时，onRestart就会被调用。这种情形一般是用户行为导致的，比如用户按Home切换到桌面或者用户打开了一个新的activity，这是当前的activity就会暂停，也就是onPause和onStop被执行了，接着用户又回到了这个activity，就会出现这种情况。</p>
-<p>(3) onStart : 表示activity正在被启动，即将开始，这是activity已经可见了，但是还没有出现在前台，还无法和用户交互。这个时候其实可以理解为activity已经显示出来了，但是我们还看不到。</p>
-<p>(4) onResume : 表示activity已经可见了，并且出现在前台病开始活动。要注意这个和onStart的对比，onStart和onResume都表示activity已经可见，但是onStart的时候activity还在后台，onResume的时候activity才显示到前台。</p>
-<p>(5) onPause : 表示activity正在停止，正常情况下，紧接着onStop就会被调用。在特殊情况下，如果这个时候快速再回到当前的activity，那么onResume就会被调用。在此时用户可以一些数据存储、停止动画的操作，但是注意不能太耗时，因为这会影响到新activity的显示，onPause必须先执行完，新activity的onResume才会执行。</p>
-<p>(6) onStop : 表示activity即将停止，可以做一些稍微重量级的回收工作，同样不能太耗时。</p>
-<p>(7) onDestroy : 表示activity即将被销毁，这是activity生命周期中的最后一个回调，在这里，我们可以做一些回收工作和最终的资源释放。</p>
-<p>常见activity生命周期的几种情况：</p>
-<p>(1) activity正常启动时，onCreate -&gt; onStart -&gt; onResume</p>
-<p>(2) 打开新的activity或者切换到桌面时：onPause -&gt; onStop，在这里当activity采用透明主题时比较特殊，不会回调onStop</p>
-<p>(3) 当在上面情况再返回当前activity时，onRestart -&gt; onStart -&gt; onResume</p>
-<p>(4) back键返回时 onPasue -&gt; onStop -&gt; onDestroy</p>
+    <title>apk优化方式</title>
+    <url>/2019/04/02/apk%E4%BC%98%E5%8C%96%E6%96%B9%E5%BC%8F/</url>
+    <content><![CDATA[<p>apk优化的几种方式：</p>
+<p>1.svg图片的使用</p>
+<p>强调点：在安卓5.0 以下是不支持这种方式的，需要做以下兼容：</p>
+<p>在app的build.gradle目录下的defaultConfig中添加</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">//将svg图片生成指定的png图片</span><br><span class="line">vectorDrawables.generatedDensities(&apos;xhdpi&apos;,&apos;xxhdpi&apos;,&apos;xxxhdpi&apos;)</span><br></pre></td></tr></table></figure>
+<p>或者添加</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">//使用support-v7兼容</span><br><span class="line">vectorDrawables.useSupportLibrary = true</span><br></pre></td></tr></table></figure>
+<p>2.使用tint着色器来给png图片增加颜色</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;ImageView</span><br><span class="line">    android:layout_width=&quot;wrap_content&quot;</span><br><span class="line">    android:layout_height=&quot;wrap_content&quot;</span><br><span class="line">    android:src=&quot;@drawable/test&quot;/&gt;</span><br><span class="line"></span><br><span class="line">&lt;ImageView</span><br><span class="line">    android:layout_width=&quot;wrap_content&quot;</span><br><span class="line">    android:layout_height=&quot;wrap_content&quot;</span><br><span class="line">    android:src=&quot;@drawable/test&quot;</span><br><span class="line">    android:tint=&quot;@android:color/holo_green_dark&quot; /&gt;</span><br></pre></td></tr></table></figure>
+<p>也可以增加类似的点击效果：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;ImageView</span><br><span class="line">    android:layout_width=&quot;wrap_content&quot;</span><br><span class="line">    android:layout_height=&quot;wrap_content&quot;</span><br><span class="line">    android:src=&quot;@drawable/test&quot;</span><br><span class="line">    android:tint=&quot;@color/color&quot; /&gt;</span><br></pre></td></tr></table></figure>
+<p>color的selector：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;selector xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;&gt;</span><br><span class="line">    &lt;item android:state_pressed=&quot;true&quot; android:color=&quot;@android:color/holo_green_dark&quot;/&gt;</span><br><span class="line">    &lt;item android:color=&quot;@android:color/transparent&quot; /&gt;</span><br><span class="line"></span><br><span class="line">&lt;/selector&gt;</span><br></pre></td></tr></table></figure>
+<p>3.打包时只保留中文语言：</p>
+<p>在app的build.gradle目录下的defaultConfig中添加</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">resConfigs(&apos;zh-rCN&apos;,&apos;ko&apos;)//中文和韩语</span><br></pre></td></tr></table></figure>
+<p>4.打包时将只打包需要的so库：</p>
+<p>在app的build.gradle目录下的defaultConfig中添加</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ndk&#123;</span><br><span class="line">    abiFilters(&apos;armeabi&apos;,&apos;armeabi-v7a&apos;)//这两种是常见的手机架构</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>5.删除无用的资源（Lint工具检查）</p>
+<p>Analyze-&gt;Run Inspection by name-&gt;搜索unused resource 删除</p>
+<p>6.混淆的使用：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">release &#123;</span><br><span class="line">    //开启代码混淆</span><br><span class="line">    minifyEnabled true</span><br><span class="line">    proguardFiles getDefaultProguardFile(&apos;proguard-android.txt&apos;), &apos;proguard-rules.pro&apos;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>7.资源压缩：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">release &#123;</span><br><span class="line">    //开启代码混淆</span><br><span class="line">    minifyEnabled true</span><br><span class="line">    //资源压缩</span><br><span class="line">    shrinkResources true</span><br><span class="line">    proguardFiles getDefaultProguardFile(&apos;proguard-android.txt&apos;), &apos;proguard-rules.pro&apos;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>此外还可以通过指定的方式不压缩某些资源，在res目录下新建raw文件夹，新建keep.xml文件：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;</span><br><span class="line">&lt;resources xmlns:tools=&quot;http://schemas.android.com/tools&quot;</span><br><span class="line">    tools:discard=&quot;@color/color&quot;</span><br><span class="line">    tools:keep=&quot;@layout/activity_main&quot; //指定不压缩的资源</span><br><span class="line">    tools:shrinkMode=&quot;strict&quot;&gt;</span><br><span class="line"></span><br><span class="line">&lt;/resources&gt;</span><br></pre></td></tr></table></figure>
+<p>8.androidStudio中webp插件的使用：</p>
+<p>右键png或jepg图片convert to webp可以压缩需要的图片</p>
+<p>9.资源混淆、压缩对齐（待详解～～～）</p>
 ]]></content>
       <tags>
         <tag>android</tag>
@@ -1957,44 +1952,6 @@
       </tags>
   </entry>
   <entry>
-    <title>apk优化方式</title>
-    <url>/2019/04/02/apk%E4%BC%98%E5%8C%96%E6%96%B9%E5%BC%8F/</url>
-    <content><![CDATA[<p>apk优化的几种方式：</p>
-<p>1.svg图片的使用</p>
-<p>强调点：在安卓5.0 以下是不支持这种方式的，需要做以下兼容：</p>
-<p>在app的build.gradle目录下的defaultConfig中添加</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">//将svg图片生成指定的png图片</span><br><span class="line">vectorDrawables.generatedDensities(&apos;xhdpi&apos;,&apos;xxhdpi&apos;,&apos;xxxhdpi&apos;)</span><br></pre></td></tr></table></figure>
-<p>或者添加</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">//使用support-v7兼容</span><br><span class="line">vectorDrawables.useSupportLibrary = true</span><br></pre></td></tr></table></figure>
-<p>2.使用tint着色器来给png图片增加颜色</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;ImageView</span><br><span class="line">    android:layout_width=&quot;wrap_content&quot;</span><br><span class="line">    android:layout_height=&quot;wrap_content&quot;</span><br><span class="line">    android:src=&quot;@drawable/test&quot;/&gt;</span><br><span class="line"></span><br><span class="line">&lt;ImageView</span><br><span class="line">    android:layout_width=&quot;wrap_content&quot;</span><br><span class="line">    android:layout_height=&quot;wrap_content&quot;</span><br><span class="line">    android:src=&quot;@drawable/test&quot;</span><br><span class="line">    android:tint=&quot;@android:color/holo_green_dark&quot; /&gt;</span><br></pre></td></tr></table></figure>
-<p>也可以增加类似的点击效果：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;ImageView</span><br><span class="line">    android:layout_width=&quot;wrap_content&quot;</span><br><span class="line">    android:layout_height=&quot;wrap_content&quot;</span><br><span class="line">    android:src=&quot;@drawable/test&quot;</span><br><span class="line">    android:tint=&quot;@color/color&quot; /&gt;</span><br></pre></td></tr></table></figure>
-<p>color的selector：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;selector xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;&gt;</span><br><span class="line">    &lt;item android:state_pressed=&quot;true&quot; android:color=&quot;@android:color/holo_green_dark&quot;/&gt;</span><br><span class="line">    &lt;item android:color=&quot;@android:color/transparent&quot; /&gt;</span><br><span class="line"></span><br><span class="line">&lt;/selector&gt;</span><br></pre></td></tr></table></figure>
-<p>3.打包时只保留中文语言：</p>
-<p>在app的build.gradle目录下的defaultConfig中添加</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">resConfigs(&apos;zh-rCN&apos;,&apos;ko&apos;)//中文和韩语</span><br></pre></td></tr></table></figure>
-<p>4.打包时将只打包需要的so库：</p>
-<p>在app的build.gradle目录下的defaultConfig中添加</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ndk&#123;</span><br><span class="line">    abiFilters(&apos;armeabi&apos;,&apos;armeabi-v7a&apos;)//这两种是常见的手机架构</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>5.删除无用的资源（Lint工具检查）</p>
-<p>Analyze-&gt;Run Inspection by name-&gt;搜索unused resource 删除</p>
-<p>6.混淆的使用：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">release &#123;</span><br><span class="line">    //开启代码混淆</span><br><span class="line">    minifyEnabled true</span><br><span class="line">    proguardFiles getDefaultProguardFile(&apos;proguard-android.txt&apos;), &apos;proguard-rules.pro&apos;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>7.资源压缩：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">release &#123;</span><br><span class="line">    //开启代码混淆</span><br><span class="line">    minifyEnabled true</span><br><span class="line">    //资源压缩</span><br><span class="line">    shrinkResources true</span><br><span class="line">    proguardFiles getDefaultProguardFile(&apos;proguard-android.txt&apos;), &apos;proguard-rules.pro&apos;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>此外还可以通过指定的方式不压缩某些资源，在res目录下新建raw文件夹，新建keep.xml文件：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;</span><br><span class="line">&lt;resources xmlns:tools=&quot;http://schemas.android.com/tools&quot;</span><br><span class="line">    tools:discard=&quot;@color/color&quot;</span><br><span class="line">    tools:keep=&quot;@layout/activity_main&quot; //指定不压缩的资源</span><br><span class="line">    tools:shrinkMode=&quot;strict&quot;&gt;</span><br><span class="line"></span><br><span class="line">&lt;/resources&gt;</span><br></pre></td></tr></table></figure>
-<p>8.androidStudio中webp插件的使用：</p>
-<p>右键png或jepg图片convert to webp可以压缩需要的图片</p>
-<p>9.资源混淆、压缩对齐（待详解～～～）</p>
-]]></content>
-      <tags>
-        <tag>android</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>app冷热启动及优化</title>
     <url>/2019/03/08/app%E5%86%B7%E7%83%AD%E5%90%AF%E5%8A%A8%E5%8F%8A%E4%BC%98%E5%8C%96/</url>
     <content><![CDATA[<p>冷启动：当启动应用时，后台没有该应用的进程，这时系统会重新创建一个新的进程分配给该应用，这个启动方式就是冷启动。 </p>
@@ -2021,6 +1978,148 @@
 ]]></content>
       <tags>
         <tag>android</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>iconify使用</title>
+    <url>/2019/05/14/iconify%E4%BD%BF%E7%94%A8/</url>
+    <content><![CDATA[<p>先引入：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">compile &apos;com.joanzapata.iconify:android-iconify-ionicons:2.2.2&apos; // (v2.0.1)</span><br><span class="line">compile &apos;com.joanzapata.iconify:android-iconify-fontawesome:2.2.2&apos; // (v4.5)</span><br></pre></td></tr></table></figure>
+<p>在Applciation初始化：</p>
+<p><code>Iconify.with(FontAwesomeModule())        .with(FontEcModule())</code></p>
+<p>自定义module使用：先创建继承自IconFontDescriptor的类</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">class FontEcModule : IconFontDescriptor&#123;</span><br><span class="line">    override fun ttfFileName(): String &#123;</span><br><span class="line">        return &quot;iconfont.ttf&quot;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    override fun characters(): Array&lt;EcIcons&gt; &#123;</span><br><span class="line">        return EcIcons.values()</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上面的ttf文件是放在assets目录下的，之后定义枚举的Icon</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">public enum EcIcons implements Icon &#123;</span><br><span class="line">    icon_shuidi(&apos;\ue600&apos;)</span><br><span class="line"></span><br><span class="line">    ;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    private char character;</span><br><span class="line"></span><br><span class="line">    EcIcons(char character) &#123;</span><br><span class="line">        this.character = character;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public String key() &#123;</span><br><span class="line">        return name().replace(&apos;_&apos;, &apos;-&apos;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public char character() &#123;</span><br><span class="line">        return character;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这里有个细节，枚举中的名字是用下划线_定义的，但是在使用时要用-　</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">android:text=&quot;&#123;icon-shuidi&#125;&quot;</span><br></pre></td></tr></table></figure>
+<p>　这里的unicode编码　&#xe600;　需要将&amp;#xe删除　改为\u</p>
+]]></content>
+      <tags>
+        <tag>android</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>java反射</title>
+    <url>/2019/03/28/java%E5%8F%8D%E5%B0%84/</url>
+    <content><![CDATA[<p>简单来说，反射就是在运行时可以获取任意 <code>Class</code> 或 <code>Object</code> 内部所有成员属性，如成员变量、成员方法、构造函数和 Annotation。</p>
+<p>首先，我们定义一个注解：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">@Target(ElementType.METHOD)</span><br><span class="line">@Retention(RetentionPolicy.RUNTIME)</span><br><span class="line">public @interface Invoke &#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p> 对于注解中的参数，有以下解释：</p>
+<p>@Target : 注解所修饰的对象范围</p>
+<p>@Inherited ：表示注解可以被继承</p>
+<p>@Documented ：表示这个注解应该被JavaDoc工具记录</p>
+<p>@Retention ：用来声明注解的保留策略</p>
+<p>其中@Target和@Retention有以下的一些参数：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">public enum ElementType &#123;</span><br><span class="line"></span><br><span class="line">    TYPE, 能修饰类，接口和枚举类型</span><br><span class="line"></span><br><span class="line">    FIELD, 能修饰成员变量</span><br><span class="line"> </span><br><span class="line">    METHOD, 能修饰方法</span><br><span class="line"></span><br><span class="line">    PARAMETER, 能修饰参数</span><br><span class="line"></span><br><span class="line">    CONSTRUCTOR, 能修饰构造方法</span><br><span class="line"></span><br><span class="line">    LOCAL_VARIABLE, 能修饰局部变量</span><br><span class="line"> </span><br><span class="line">    ANNOTATION_TYPE, 能修饰注解</span><br><span class="line"></span><br><span class="line">    PACKAGE, 能修饰包</span><br><span class="line"></span><br><span class="line">    TYPE_PARAMETER, 类型参数声明</span><br><span class="line"></span><br><span class="line">    TYPE_USE 使用类型</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">public enum RetentionPolicy &#123;</span><br><span class="line">    </span><br><span class="line">    SOURCE, 源码级注解，只会保留在.java源码中，编译后被丢弃，不会保留在.class中</span><br><span class="line"></span><br><span class="line">    CLASS, 编译时注解。注解信息会保留在.java源码以及.class中。当程序运行时，JVM会丢弃该注解信息</span><br><span class="line"></span><br><span class="line">    RUNTIME 运行时注解。当运行Java程序时，JVM也会保留该注解信息，可以通过反射获取该注解信息</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>下面，我们来定义一个该注解使用的类：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">public class UserBean &#123;</span><br><span class="line"></span><br><span class="line">    private String name;</span><br><span class="line">    public int age;</span><br><span class="line"></span><br><span class="line">    public UserBean(String name, int age) &#123;</span><br><span class="line">        this.name = name;</span><br><span class="line">        this.age = age;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Invoke</span><br><span class="line">    public static void logd() &#123;</span><br><span class="line">        Log.e(&quot;test&quot;, &quot;this is static class&quot;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Invoke</span><br><span class="line">    public void publicMethod(String user) &#123;</span><br><span class="line">        Log.e(&quot;test&quot;, &quot;this is public&quot; + user);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Invoke</span><br><span class="line">    private void privateMethod() &#123;</span><br><span class="line">        Log.e(&quot;test&quot;, &quot;this is private method&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上面说过，运行时注解可以通过反射的方式处理：</p>
+]]></content>
+      <tags>
+        <tag>Java</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>kotlin特殊的函数和调用</title>
+    <url>/2019/04/04/kotlin%E7%89%B9%E6%AE%8A%E7%9A%84%E5%87%BD%E6%95%B0%E5%92%8C%E8%B0%83%E7%94%A8/</url>
+    <content><![CDATA[<p>1.扩展函数的使用：</p>
+<p>新建.kt文件，并编写如下</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">fun Fragment.showToast(content: String): Toast &#123;</span><br><span class="line">    val toast = Toast.makeText(this.activity?.applicationContext, content, Toast.LENGTH_SHORT)</span><br><span class="line">    toast.show()</span><br><span class="line">    return toast</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>图上的showToast就是一个扩展函数，可以直接访问被扩展的其他方法和属性，相当于在Fragment类中添加了这样的方法再去访问一样，此外，扩展函数不能访问私有的和受保护的成员。扩展函数不存在重写，在Kotlin中会被当做静态的函数对待。通过以下方导入：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">import ktmvp.yppcat.ktmvp.utils.showToast</span><br></pre></td></tr></table></figure>
+<p>之后在Fragment可以这样使用：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">showToast(errorMessage)</span><br></pre></td></tr></table></figure>
+<p>2.可变参数：让函数支持任意数量的参数</p>
+<p>在Java中：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"> private void getName(String... params) &#123;</span><br><span class="line">        Log.e(&quot;test&quot;, Arrays.toString(params));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Kotlin中：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">private fun getName(vararg params: String) &#123;</span><br><span class="line">    val list = listOf(&quot;aa&quot;, *params)</span><br><span class="line">    print(list)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>java中的…被vararg修饰符替代，此外*表示的是展开运算符</p>
+]]></content>
+      <tags>
+        <tag>Kotlin</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>kotlin笔记-列表</title>
+    <url>/2021/12/08/kotlin%E7%AC%94%E8%AE%B0/</url>
+    <content><![CDATA[<h4 id="kotlin普通列表"><a href="#kotlin普通列表" class="headerlink" title="kotlin普通列表"></a>kotlin普通列表</h4><figure class="highlight kotlin"><table><tr><td class="code"><pre><span class="line"><span class="keyword">val</span> list = listOf(<span class="string">"jack"</span>, <span class="string">"lucy"</span>, <span class="string">"black"</span>)</span><br><span class="line">println(list.getOrElse(<span class="number">4</span>) &#123; <span class="string">"UnKnown"</span> &#125;)</span><br><span class="line">println(list.getOrNull(<span class="number">4</span>) ?: <span class="string">"UnKnown"</span>)</span><br><span class="line">println(list[<span class="number">2</span>])</span><br></pre></td></tr></table></figure>
+<h4 id="list的for-each循环"><a href="#list的for-each循环" class="headerlink" title="list的for each循环"></a>list的for each循环</h4><figure class="highlight kotlin"><table><tr><td class="code"><pre><span class="line"><span class="keyword">val</span> list = listOf(<span class="string">"jack"</span>, <span class="string">"jimmy"</span>, <span class="string">"jason"</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> (s <span class="keyword">in</span> list) &#123;</span><br><span class="line">    println(s)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">list.forEach &#123;</span><br><span class="line">    println(it)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">list.forEachIndexed &#123; index, s -&gt;</span><br><span class="line">    println(<span class="string">"<span class="variable">$index</span>  <span class="variable">$s</span>"</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//此处的_参数被过滤掉，name proxy依次赋值0 1个元素</span></span><br><span class="line"><span class="keyword">val</span> (name,_,proxy) = listOf(<span class="string">"jack"</span>,<span class="string">"jimmy"</span>,<span class="string">"jason"</span>,<span class="string">"jacky"</span>)</span><br><span class="line">println(<span class="string">"name = <span class="variable">$name</span>   proxy = <span class="variable">$proxy</span>"</span>)</span><br></pre></td></tr></table></figure>
+<h4 id="map列表"><a href="#map列表" class="headerlink" title="map列表"></a>map列表</h4><figure class="highlight kotlin"><table><tr><td class="code"><pre><span class="line"><span class="comment">//此处用了infix函数</span></span><br><span class="line"><span class="keyword">val</span> map = mapOf(<span class="string">"jack"</span> to <span class="number">20</span>, <span class="string">"jimmy"</span> to <span class="number">18</span>, <span class="string">"jason"</span> to <span class="number">24</span>)</span><br><span class="line">println(map)</span><br><span class="line"></span><br><span class="line"><span class="comment">//pair是map的子元素</span></span><br><span class="line"><span class="keyword">val</span> sMap = mapOf(Pair(<span class="string">"jack"</span>, <span class="number">20</span>), Pair(<span class="string">"jimmy"</span>, <span class="number">18</span>), Pair(<span class="string">"json"</span>, <span class="number">24</span>))</span><br><span class="line">println(map[<span class="string">"jack"</span>])</span><br><span class="line">println(sMap[<span class="string">"jimmy"</span>])</span><br><span class="line"></span><br><span class="line"><span class="comment">//</span></span><br><span class="line">println(map.getOrElse(<span class="string">"jimmy"</span>) &#123; <span class="string">"UnKnown"</span> &#125;)</span><br><span class="line">println(map.getOrDefault(<span class="string">"jason"</span>) &#123; <span class="string">"UnKnown"</span> &#125;)</span><br><span class="line"></span><br><span class="line"><span class="comment">//map的遍历</span></span><br><span class="line">map.forEach &#123;</span><br><span class="line">    println(<span class="string">"<span class="subst">$&#123;it.key&#125;</span>  <span class="subst">$&#123;it.value&#125;</span>"</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//map的遍历</span></span><br><span class="line">map.forEach &#123; (key, value) -&gt;</span><br><span class="line">    println(<span class="string">"key = <span class="variable">$key</span>  value = <span class="variable">$value</span>"</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="kotlin可变列表MutableList"><a href="#kotlin可变列表MutableList" class="headerlink" title="kotlin可变列表MutableList"></a>kotlin可变列表MutableList</h4><figure class="highlight kotlin"><table><tr><td class="code"><pre><span class="line"><span class="keyword">val</span> mutableList = mutableListOf(<span class="string">"jack"</span>, <span class="string">"jimmy"</span>, <span class="string">"jacky"</span>)</span><br><span class="line">mutableList.add(<span class="string">"jason"</span>)</span><br><span class="line">mutableList.remove(<span class="string">"jack"</span>)</span><br><span class="line">println(mutableList)</span><br><span class="line"></span><br><span class="line">listOf(<span class="string">"a"</span>, <span class="string">"b"</span>, <span class="string">"c"</span>).toMutableList()</span><br><span class="line">mutableListOf(<span class="string">"m"</span>, <span class="string">"n"</span>, <span class="string">"o"</span>).toList()</span><br></pre></td></tr></table></figure>
+<h4 id="kotlin可变列表MutableMap"><a href="#kotlin可变列表MutableMap" class="headerlink" title="kotlin可变列表MutableMap"></a>kotlin可变列表MutableMap</h4><figure class="highlight kotlin"><table><tr><td class="code"><pre><span class="line"><span class="keyword">val</span> mutableMap = mutableMapOf(<span class="string">"Jack"</span> to <span class="number">20</span>, <span class="string">"Jason"</span> to <span class="number">18</span>, <span class="string">"Jacky"</span> to <span class="number">30</span>)</span><br><span class="line"><span class="comment">//此处用到了操作符重载</span></span><br><span class="line">mutableMap += <span class="string">"jimmy"</span> to <span class="number">1000</span></span><br><span class="line">mutableMap.put(<span class="string">"lucas"</span>, <span class="number">31</span>)</span><br><span class="line">mutableMap[<span class="string">"lucy"</span>] = <span class="number">30</span></span><br><span class="line"></span><br><span class="line">mutableMap.getOrPut(<span class="string">"lily"</span>)&#123; <span class="number">100</span> &#125;</span><br><span class="line"><span class="keyword">val</span> i = mutableMap.getOrPut(<span class="string">"jimmy"</span>)&#123; <span class="number">100</span> &#125;</span><br><span class="line"></span><br><span class="line">println(mutableMap)</span><br><span class="line">println(i)</span><br></pre></td></tr></table></figure>
+<p>set列表</p>
+<figure class="highlight kotlin"><table><tr><td class="code"><pre><span class="line"><span class="keyword">val</span> mutableSet = mutableSetOf(<span class="string">"Kotlin"</span>, <span class="string">"Java"</span>, <span class="string">"Scala"</span>)</span><br><span class="line">mutableSet += <span class="string">"Groovy"</span></span><br><span class="line"></span><br><span class="line">println(listOf(<span class="string">"Jack"</span>, <span class="string">"Jason"</span>, <span class="string">"Jacky"</span>,<span class="string">"Jacky"</span>).toSet().toList())</span><br><span class="line"></span><br><span class="line"><span class="comment">//去重的快捷函数</span></span><br><span class="line">println(listOf(<span class="string">"Jack"</span>, <span class="string">"Jason"</span>, <span class="string">"Jacky"</span>,<span class="string">"Jacky"</span>).distinct())</span><br></pre></td></tr></table></figure>
+]]></content>
+      <tags>
+        <tag>Kotlin</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>kotlin笔记-标准函数</title>
+    <url>/2021/12/08/kotlin%E7%AC%94%E8%AE%B0-%E6%A0%87%E5%87%86%E5%87%BD%E6%95%B0/</url>
+    <content><![CDATA[<h4 id="let函数会将参数传入到lambda作用域中，返回作用域的最后一行"><a href="#let函数会将参数传入到lambda作用域中，返回作用域的最后一行" class="headerlink" title="let函数会将参数传入到lambda作用域中，返回作用域的最后一行"></a>let函数会将参数传入到lambda作用域中，返回作用域的最后一行</h4><figure class="highlight kotlin"><table><tr><td class="code"><pre><span class="line"><span class="keyword">val</span> res = listOf(<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>).first().let &#123;</span><br><span class="line">    it * it</span><br><span class="line">&#125;</span><br><span class="line">println(res)</span><br></pre></td></tr></table></figure>
+<h4 id="also函数会返回接收者对象，作用域和功能类似，传入参数"><a href="#also函数会返回接收者对象，作用域和功能类似，传入参数" class="headerlink" title="also函数会返回接收者对象，作用域和功能类似，传入参数"></a>also函数会返回接收者对象，作用域和功能类似，传入参数</h4><figure class="highlight kotlin"><table><tr><td class="code"><pre><span class="line"><span class="keyword">val</span> s = <span class="string">"hello"</span></span><br><span class="line"><span class="keyword">var</span> m = <span class="string">""</span></span><br><span class="line">s.also &#123;</span><br><span class="line">    println(it)</span><br><span class="line">&#125;.also &#123;</span><br><span class="line">    m = it.uppercase()</span><br><span class="line">&#125;</span><br><span class="line">println(m)</span><br></pre></td></tr></table></figure>
+<h4 id="apply函数会返回接受者对象并执行lambda中的内容，作用域中不需要再写当前参数"><a href="#apply函数会返回接受者对象并执行lambda中的内容，作用域中不需要再写当前参数" class="headerlink" title="apply函数会返回接受者对象并执行lambda中的内容，作用域中不需要再写当前参数"></a>apply函数会返回接受者对象并执行lambda中的内容，作用域中不需要再写当前参数</h4><figure class="highlight kotlin"><table><tr><td class="code"><pre><span class="line"><span class="keyword">val</span> s = <span class="string">"hello"</span>.apply &#123;</span><br><span class="line">    capitalize()</span><br><span class="line">&#125;</span><br><span class="line">println(s)</span><br></pre></td></tr></table></figure>
+<h4 id="run函数和apply作用域一样，但是返回lambda的结果，此外run还可以用来执行函数-链式调用也可以"><a href="#run函数和apply作用域一样，但是返回lambda的结果，此外run还可以用来执行函数-链式调用也可以" class="headerlink" title="run函数和apply作用域一样，但是返回lambda的结果，此外run还可以用来执行函数(链式调用也可以)"></a>run函数和apply作用域一样，但是返回lambda的结果，此外run还可以用来执行函数(链式调用也可以)</h4><figure class="highlight kotlin"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">fun</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">val</span> res = <span class="string">"hello"</span>.run &#123;</span><br><span class="line">        length</span><br><span class="line">    &#125;</span><br><span class="line">    println(res)</span><br><span class="line"></span><br><span class="line">    <span class="string">"The people of china"</span></span><br><span class="line">        .run(::isTooLong)</span><br><span class="line">        .run(::showMessage)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">fun</span> <span class="title">isTooLong</span><span class="params">(name : <span class="type">String</span>)</span></span> =  name.length &gt;= <span class="number">10</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">fun</span> <span class="title">showMessage</span><span class="params">(isLong: <span class="type">Boolean</span>)</span></span> :String&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">if</span> (isLong)&#123;</span><br><span class="line">        println(<span class="string">"name is too long"</span>)</span><br><span class="line">        <span class="string">"name is too long"</span></span><br><span class="line">    &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">        println(<span class="string">"Please rename"</span>)</span><br><span class="line">        <span class="string">"Please rename"</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="with函数功能和run一样，但是需要将值参作为第一个参数传入"><a href="#with函数功能和run一样，但是需要将值参作为第一个参数传入" class="headerlink" title="with函数功能和run一样，但是需要将值参作为第一个参数传入"></a>with函数功能和run一样，但是需要将值参作为第一个参数传入</h4><figure class="highlight kotlin"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">fun</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">val</span> isTooLong = with(<span class="string">"The people of China"</span>)&#123;</span><br><span class="line">        length &gt; <span class="number">10</span></span><br><span class="line">    &#125;</span><br><span class="line">    println(isTooLong)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="takeIf函数的lambda作用域和let相似，此函数需要在lambda作用域中给出true或者false-，true返回当前的对象，false返回Null"><a href="#takeIf函数的lambda作用域和let相似，此函数需要在lambda作用域中给出true或者false-，true返回当前的对象，false返回Null" class="headerlink" title="takeIf函数的lambda作用域和let相似，此函数需要在lambda作用域中给出true或者false ，true返回当前的对象，false返回Null"></a>takeIf函数的lambda作用域和let相似，此函数需要在lambda作用域中给出true或者false ，true返回当前的对象，false返回Null</h4><h4 id="takeUnless对于lambda的结果处理与之相反"><a href="#takeUnless对于lambda的结果处理与之相反" class="headerlink" title="takeUnless对于lambda的结果处理与之相反"></a>takeUnless对于lambda的结果处理与之相反</h4><figure class="highlight kotlin"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">fun</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> isLong = <span class="string">"The people of China"</span></span><br><span class="line">        .takeIf &#123; it.length &gt;= <span class="number">10</span> &#125;</span><br><span class="line">        ?.length</span><br><span class="line">    println(isLong)</span><br><span class="line"></span><br><span class="line">    <span class="comment">//等价于上面</span></span><br><span class="line">    <span class="keyword">val</span> str = <span class="string">"The people of China"</span></span><br><span class="line">    isLong = <span class="keyword">if</span> (str.length &gt;= <span class="number">10</span>) &#123;</span><br><span class="line">        str.length</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="literal">null</span></span><br><span class="line">    &#125;</span><br><span class="line">    println(isLong)</span><br><span class="line"></span><br><span class="line">    isLong = str</span><br><span class="line">        .takeUnless &#123; it.length &lt;= <span class="number">10</span> &#125;</span><br><span class="line">        ?.length</span><br><span class="line">    println(isLong)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
+      <tags>
+        <tag>kotlin</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>内存泄漏的原因和解决方式</title>
+    <url>/2019/08/26/%E5%86%85%E5%AD%98%E6%B3%84%E6%BC%8F%E7%9A%84%E5%8E%9F%E5%9B%A0%E5%92%8C%E8%A7%A3%E5%86%B3%E6%96%B9%E5%BC%8F/</url>
+    <content><![CDATA[<p>1.<a href="https://www.yppcat.top/2019/08/22/%E8%87%AA%E5%AE%9A%E4%B9%89-Handler-%E6%97%B6%E5%A6%82%E4%BD%95%E6%9C%89%E6%95%88%E5%9C%B0%E9%81%BF%E5%85%8D%E5%86%85%E5%AD%98%E6%B3%84%E6%BC%8F%E9%97%AE%E9%A2%98/">Handler引起的内存泄漏</a>（生命周期长的持有了生命周期短的引用）</p>
+<p>2.Bitmap对象使用结束没有使用recycle释放内存</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">val bitmap = BitmapFactory.decodeResource(resources,R.drawable.ic_launcher)</span><br><span class="line">bitmap.recycle()</span><br></pre></td></tr></table></figure>
+<p>3.cursor的释放</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">val cursor = contentResolver.query(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,null,null,null,null)</span><br><span class="line">cursor?.close()</span><br></pre></td></tr></table></figure>
+<p>4.BroadcastReceiver、EventBus、RxBus等注册未取消监听</p>
+<p>5.单例模式构造引用的context对象：<br>public class Utils {</p>
+<pre><code>private static Utils instance;
+private Context context;
+
+public static Utils getInstance(Context context) {
+    if (instance == null) {
+        synchronized (Utils.class) {
+            instance = new Utils(context.getApplicationContext());
+        }
+    }
+    return instance;
+}
+
+private Utils(Context context) {
+    this.context = context;
+}
+</code></pre><p>}</p>
+]]></content>
+      <tags>
+        <tag>面试</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>单例模式</title>
+    <url>/2019/04/12/%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F/</url>
+    <content><![CDATA[<p>单例模式：保证一个类仅有一个实例，并提供一个访问它的全局访问点。</p>
+<p>单例模式的６中写法：</p>
+<p><strong>饿汉模式：</strong>在类加载时就完成了初始化，所以加载较慢，但是对象的获取速度快，避免了多线程同步问题。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">public class SingleTon &#123;</span><br><span class="line"></span><br><span class="line">    private static SingleTon instance = new SingleTon();</span><br><span class="line"></span><br><span class="line">    private SingleTon() &#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public static SingleTon getInstance() &#123;</span><br><span class="line">        return instance;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>懒汉模式：</strong>线程不安全，节约了资源，在多线程时不能正常工作。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">public class SingleTon &#123;</span><br><span class="line"></span><br><span class="line">    private static SingleTon instance;</span><br><span class="line"></span><br><span class="line">    private SingleTon() &#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public static SingleTon getInstance() &#123;</span><br><span class="line">        if (instance == null) &#123;</span><br><span class="line">            return new SingleTon();</span><br><span class="line">        &#125;</span><br><span class="line">        return instance;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>线程安全的懒汉模式：</strong>能够在多线程下工作，但是每次调用getInstance都需要进行同步，造成的同步开销较大。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">public class SingleTon &#123;</span><br><span class="line"></span><br><span class="line">    private static SingleTon instance;</span><br><span class="line"></span><br><span class="line">    private SingleTon() &#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public static synchronized SingleTon getInstance() &#123;</span><br><span class="line">        if (instance == null) &#123;</span><br><span class="line">            return new SingleTon();</span><br><span class="line">        &#125;</span><br><span class="line">        return instance;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>双重检查模式:　</strong>避免了不必要的同步，同时避免创建多余的实例，volatile稍微影响了性能。　第一次加载稍慢，有可能出现失效的问题。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">public class SingleTon &#123;</span><br><span class="line"></span><br><span class="line">    private volatile static SingleTon instance;</span><br><span class="line"></span><br><span class="line">    private SingleTon() &#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public static synchronized SingleTon getInstance() &#123;</span><br><span class="line">        if (instance == null) &#123;</span><br><span class="line">            synchronized (SingleTon.class) &#123;</span><br><span class="line">                if (instance == null) &#123;</span><br><span class="line">                    instance = new SingleTon();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        return instance;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>静态内部类单例模式：</strong>第一次加载时不会初始化sInstance,只有第一次调用getInstance方法时才会加载SingleTonHolder并初始化sInstance。不仅能保证线程安全，也能保证SingleTon类的唯一性。（推荐使用）</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">public class SingleTon &#123;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    private SingleTon() &#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public static SingleTon getInstance() &#123;</span><br><span class="line">        return SingleTonHolder.sInstance;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    private static class SingleTonHolder &#123;</span><br><span class="line">        private static final SingleTon sInstance = new SingleTon();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>枚举单例：</strong>　线程安全，且在任何情况下都是单例，但是可读性不高。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">public enum  SingleTon &#123;</span><br><span class="line"></span><br><span class="line">    INSTANCE;</span><br><span class="line">    </span><br><span class="line">    public void doSomeThing()&#123;</span><br><span class="line">        </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
+      <tags>
+        <tag>Java</tag>
       </tags>
   </entry>
   <entry>
@@ -2456,148 +2555,6 @@
 ]]></content>
       <tags>
         <tag>JVM</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>java反射</title>
-    <url>/2019/03/28/java%E5%8F%8D%E5%B0%84/</url>
-    <content><![CDATA[<p>简单来说，反射就是在运行时可以获取任意 <code>Class</code> 或 <code>Object</code> 内部所有成员属性，如成员变量、成员方法、构造函数和 Annotation。</p>
-<p>首先，我们定义一个注解：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">@Target(ElementType.METHOD)</span><br><span class="line">@Retention(RetentionPolicy.RUNTIME)</span><br><span class="line">public @interface Invoke &#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p> 对于注解中的参数，有以下解释：</p>
-<p>@Target : 注解所修饰的对象范围</p>
-<p>@Inherited ：表示注解可以被继承</p>
-<p>@Documented ：表示这个注解应该被JavaDoc工具记录</p>
-<p>@Retention ：用来声明注解的保留策略</p>
-<p>其中@Target和@Retention有以下的一些参数：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">public enum ElementType &#123;</span><br><span class="line"></span><br><span class="line">    TYPE, 能修饰类，接口和枚举类型</span><br><span class="line"></span><br><span class="line">    FIELD, 能修饰成员变量</span><br><span class="line"> </span><br><span class="line">    METHOD, 能修饰方法</span><br><span class="line"></span><br><span class="line">    PARAMETER, 能修饰参数</span><br><span class="line"></span><br><span class="line">    CONSTRUCTOR, 能修饰构造方法</span><br><span class="line"></span><br><span class="line">    LOCAL_VARIABLE, 能修饰局部变量</span><br><span class="line"> </span><br><span class="line">    ANNOTATION_TYPE, 能修饰注解</span><br><span class="line"></span><br><span class="line">    PACKAGE, 能修饰包</span><br><span class="line"></span><br><span class="line">    TYPE_PARAMETER, 类型参数声明</span><br><span class="line"></span><br><span class="line">    TYPE_USE 使用类型</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">public enum RetentionPolicy &#123;</span><br><span class="line">    </span><br><span class="line">    SOURCE, 源码级注解，只会保留在.java源码中，编译后被丢弃，不会保留在.class中</span><br><span class="line"></span><br><span class="line">    CLASS, 编译时注解。注解信息会保留在.java源码以及.class中。当程序运行时，JVM会丢弃该注解信息</span><br><span class="line"></span><br><span class="line">    RUNTIME 运行时注解。当运行Java程序时，JVM也会保留该注解信息，可以通过反射获取该注解信息</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>下面，我们来定义一个该注解使用的类：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">public class UserBean &#123;</span><br><span class="line"></span><br><span class="line">    private String name;</span><br><span class="line">    public int age;</span><br><span class="line"></span><br><span class="line">    public UserBean(String name, int age) &#123;</span><br><span class="line">        this.name = name;</span><br><span class="line">        this.age = age;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Invoke</span><br><span class="line">    public static void logd() &#123;</span><br><span class="line">        Log.e(&quot;test&quot;, &quot;this is static class&quot;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Invoke</span><br><span class="line">    public void publicMethod(String user) &#123;</span><br><span class="line">        Log.e(&quot;test&quot;, &quot;this is public&quot; + user);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Invoke</span><br><span class="line">    private void privateMethod() &#123;</span><br><span class="line">        Log.e(&quot;test&quot;, &quot;this is private method&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>上面说过，运行时注解可以通过反射的方式处理：</p>
-]]></content>
-      <tags>
-        <tag>Java</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>iconify使用</title>
-    <url>/2019/05/14/iconify%E4%BD%BF%E7%94%A8/</url>
-    <content><![CDATA[<p>先引入：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">compile &apos;com.joanzapata.iconify:android-iconify-ionicons:2.2.2&apos; // (v2.0.1)</span><br><span class="line">compile &apos;com.joanzapata.iconify:android-iconify-fontawesome:2.2.2&apos; // (v4.5)</span><br></pre></td></tr></table></figure>
-<p>在Applciation初始化：</p>
-<p><code>Iconify.with(FontAwesomeModule())        .with(FontEcModule())</code></p>
-<p>自定义module使用：先创建继承自IconFontDescriptor的类</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">class FontEcModule : IconFontDescriptor&#123;</span><br><span class="line">    override fun ttfFileName(): String &#123;</span><br><span class="line">        return &quot;iconfont.ttf&quot;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    override fun characters(): Array&lt;EcIcons&gt; &#123;</span><br><span class="line">        return EcIcons.values()</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>上面的ttf文件是放在assets目录下的，之后定义枚举的Icon</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">public enum EcIcons implements Icon &#123;</span><br><span class="line">    icon_shuidi(&apos;\ue600&apos;)</span><br><span class="line"></span><br><span class="line">    ;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    private char character;</span><br><span class="line"></span><br><span class="line">    EcIcons(char character) &#123;</span><br><span class="line">        this.character = character;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public String key() &#123;</span><br><span class="line">        return name().replace(&apos;_&apos;, &apos;-&apos;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public char character() &#123;</span><br><span class="line">        return character;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>这里有个细节，枚举中的名字是用下划线_定义的，但是在使用时要用-　</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">android:text=&quot;&#123;icon-shuidi&#125;&quot;</span><br></pre></td></tr></table></figure>
-<p>　这里的unicode编码　&#xe600;　需要将&amp;#xe删除　改为\u</p>
-]]></content>
-      <tags>
-        <tag>android</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>kotlin特殊的函数和调用</title>
-    <url>/2019/04/04/kotlin%E7%89%B9%E6%AE%8A%E7%9A%84%E5%87%BD%E6%95%B0%E5%92%8C%E8%B0%83%E7%94%A8/</url>
-    <content><![CDATA[<p>1.扩展函数的使用：</p>
-<p>新建.kt文件，并编写如下</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">fun Fragment.showToast(content: String): Toast &#123;</span><br><span class="line">    val toast = Toast.makeText(this.activity?.applicationContext, content, Toast.LENGTH_SHORT)</span><br><span class="line">    toast.show()</span><br><span class="line">    return toast</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>图上的showToast就是一个扩展函数，可以直接访问被扩展的其他方法和属性，相当于在Fragment类中添加了这样的方法再去访问一样，此外，扩展函数不能访问私有的和受保护的成员。扩展函数不存在重写，在Kotlin中会被当做静态的函数对待。通过以下方导入：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">import ktmvp.yppcat.ktmvp.utils.showToast</span><br></pre></td></tr></table></figure>
-<p>之后在Fragment可以这样使用：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">showToast(errorMessage)</span><br></pre></td></tr></table></figure>
-<p>2.可变参数：让函数支持任意数量的参数</p>
-<p>在Java中：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"> private void getName(String... params) &#123;</span><br><span class="line">        Log.e(&quot;test&quot;, Arrays.toString(params));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>Kotlin中：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">private fun getName(vararg params: String) &#123;</span><br><span class="line">    val list = listOf(&quot;aa&quot;, *params)</span><br><span class="line">    print(list)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>java中的…被vararg修饰符替代，此外*表示的是展开运算符</p>
-]]></content>
-      <tags>
-        <tag>Kotlin</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>kotlin笔记-标准函数</title>
-    <url>/2021/12/08/kotlin%E7%AC%94%E8%AE%B0-%E6%A0%87%E5%87%86%E5%87%BD%E6%95%B0/</url>
-    <content><![CDATA[<h4 id="let函数会将参数传入到lambda作用域中，返回作用域的最后一行"><a href="#let函数会将参数传入到lambda作用域中，返回作用域的最后一行" class="headerlink" title="let函数会将参数传入到lambda作用域中，返回作用域的最后一行"></a>let函数会将参数传入到lambda作用域中，返回作用域的最后一行</h4><figure class="highlight kotlin"><table><tr><td class="code"><pre><span class="line"><span class="keyword">val</span> res = listOf(<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>).first().let &#123;</span><br><span class="line">    it * it</span><br><span class="line">&#125;</span><br><span class="line">println(res)</span><br></pre></td></tr></table></figure>
-<h4 id="also函数会返回接收者对象，作用域和功能类似，传入参数"><a href="#also函数会返回接收者对象，作用域和功能类似，传入参数" class="headerlink" title="also函数会返回接收者对象，作用域和功能类似，传入参数"></a>also函数会返回接收者对象，作用域和功能类似，传入参数</h4><figure class="highlight kotlin"><table><tr><td class="code"><pre><span class="line"><span class="keyword">val</span> s = <span class="string">"hello"</span></span><br><span class="line"><span class="keyword">var</span> m = <span class="string">""</span></span><br><span class="line">s.also &#123;</span><br><span class="line">    println(it)</span><br><span class="line">&#125;.also &#123;</span><br><span class="line">    m = it.uppercase()</span><br><span class="line">&#125;</span><br><span class="line">println(m)</span><br></pre></td></tr></table></figure>
-<h4 id="apply函数会返回接受者对象并执行lambda中的内容，作用域中不需要再写当前参数"><a href="#apply函数会返回接受者对象并执行lambda中的内容，作用域中不需要再写当前参数" class="headerlink" title="apply函数会返回接受者对象并执行lambda中的内容，作用域中不需要再写当前参数"></a>apply函数会返回接受者对象并执行lambda中的内容，作用域中不需要再写当前参数</h4><figure class="highlight kotlin"><table><tr><td class="code"><pre><span class="line"><span class="keyword">val</span> s = <span class="string">"hello"</span>.apply &#123;</span><br><span class="line">    capitalize()</span><br><span class="line">&#125;</span><br><span class="line">println(s)</span><br></pre></td></tr></table></figure>
-<h4 id="run函数和apply作用域一样，但是返回lambda的结果，此外run还可以用来执行函数-链式调用也可以"><a href="#run函数和apply作用域一样，但是返回lambda的结果，此外run还可以用来执行函数-链式调用也可以" class="headerlink" title="run函数和apply作用域一样，但是返回lambda的结果，此外run还可以用来执行函数(链式调用也可以)"></a>run函数和apply作用域一样，但是返回lambda的结果，此外run还可以用来执行函数(链式调用也可以)</h4><figure class="highlight kotlin"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">fun</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">val</span> res = <span class="string">"hello"</span>.run &#123;</span><br><span class="line">        length</span><br><span class="line">    &#125;</span><br><span class="line">    println(res)</span><br><span class="line"></span><br><span class="line">    <span class="string">"The people of china"</span></span><br><span class="line">        .run(::isTooLong)</span><br><span class="line">        .run(::showMessage)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">fun</span> <span class="title">isTooLong</span><span class="params">(name : <span class="type">String</span>)</span></span> =  name.length &gt;= <span class="number">10</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">fun</span> <span class="title">showMessage</span><span class="params">(isLong: <span class="type">Boolean</span>)</span></span> :String&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">if</span> (isLong)&#123;</span><br><span class="line">        println(<span class="string">"name is too long"</span>)</span><br><span class="line">        <span class="string">"name is too long"</span></span><br><span class="line">    &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">        println(<span class="string">"Please rename"</span>)</span><br><span class="line">        <span class="string">"Please rename"</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h4 id="with函数功能和run一样，但是需要将值参作为第一个参数传入"><a href="#with函数功能和run一样，但是需要将值参作为第一个参数传入" class="headerlink" title="with函数功能和run一样，但是需要将值参作为第一个参数传入"></a>with函数功能和run一样，但是需要将值参作为第一个参数传入</h4><figure class="highlight kotlin"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">fun</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">val</span> isTooLong = with(<span class="string">"The people of China"</span>)&#123;</span><br><span class="line">        length &gt; <span class="number">10</span></span><br><span class="line">    &#125;</span><br><span class="line">    println(isTooLong)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h4 id="takeIf函数的lambda作用域和let相似，此函数需要在lambda作用域中给出true或者false-，true返回当前的对象，false返回Null"><a href="#takeIf函数的lambda作用域和let相似，此函数需要在lambda作用域中给出true或者false-，true返回当前的对象，false返回Null" class="headerlink" title="takeIf函数的lambda作用域和let相似，此函数需要在lambda作用域中给出true或者false ，true返回当前的对象，false返回Null"></a>takeIf函数的lambda作用域和let相似，此函数需要在lambda作用域中给出true或者false ，true返回当前的对象，false返回Null</h4><h4 id="takeUnless对于lambda的结果处理与之相反"><a href="#takeUnless对于lambda的结果处理与之相反" class="headerlink" title="takeUnless对于lambda的结果处理与之相反"></a>takeUnless对于lambda的结果处理与之相反</h4><figure class="highlight kotlin"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">fun</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> isLong = <span class="string">"The people of China"</span></span><br><span class="line">        .takeIf &#123; it.length &gt;= <span class="number">10</span> &#125;</span><br><span class="line">        ?.length</span><br><span class="line">    println(isLong)</span><br><span class="line"></span><br><span class="line">    <span class="comment">//等价于上面</span></span><br><span class="line">    <span class="keyword">val</span> str = <span class="string">"The people of China"</span></span><br><span class="line">    isLong = <span class="keyword">if</span> (str.length &gt;= <span class="number">10</span>) &#123;</span><br><span class="line">        str.length</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="literal">null</span></span><br><span class="line">    &#125;</span><br><span class="line">    println(isLong)</span><br><span class="line"></span><br><span class="line">    isLong = str</span><br><span class="line">        .takeUnless &#123; it.length &lt;= <span class="number">10</span> &#125;</span><br><span class="line">        ?.length</span><br><span class="line">    println(isLong)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
-      <tags>
-        <tag>kotlin</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>kotlin笔记-列表</title>
-    <url>/2021/12/08/kotlin%E7%AC%94%E8%AE%B0/</url>
-    <content><![CDATA[<h4 id="kotlin普通列表"><a href="#kotlin普通列表" class="headerlink" title="kotlin普通列表"></a>kotlin普通列表</h4><figure class="highlight kotlin"><table><tr><td class="code"><pre><span class="line"><span class="keyword">val</span> list = listOf(<span class="string">"jack"</span>, <span class="string">"lucy"</span>, <span class="string">"black"</span>)</span><br><span class="line">println(list.getOrElse(<span class="number">4</span>) &#123; <span class="string">"UnKnown"</span> &#125;)</span><br><span class="line">println(list.getOrNull(<span class="number">4</span>) ?: <span class="string">"UnKnown"</span>)</span><br><span class="line">println(list[<span class="number">2</span>])</span><br></pre></td></tr></table></figure>
-<h4 id="list的for-each循环"><a href="#list的for-each循环" class="headerlink" title="list的for each循环"></a>list的for each循环</h4><figure class="highlight kotlin"><table><tr><td class="code"><pre><span class="line"><span class="keyword">val</span> list = listOf(<span class="string">"jack"</span>, <span class="string">"jimmy"</span>, <span class="string">"jason"</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> (s <span class="keyword">in</span> list) &#123;</span><br><span class="line">    println(s)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">list.forEach &#123;</span><br><span class="line">    println(it)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">list.forEachIndexed &#123; index, s -&gt;</span><br><span class="line">    println(<span class="string">"<span class="variable">$index</span>  <span class="variable">$s</span>"</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//此处的_参数被过滤掉，name proxy依次赋值0 1个元素</span></span><br><span class="line"><span class="keyword">val</span> (name,_,proxy) = listOf(<span class="string">"jack"</span>,<span class="string">"jimmy"</span>,<span class="string">"jason"</span>,<span class="string">"jacky"</span>)</span><br><span class="line">println(<span class="string">"name = <span class="variable">$name</span>   proxy = <span class="variable">$proxy</span>"</span>)</span><br></pre></td></tr></table></figure>
-<h4 id="map列表"><a href="#map列表" class="headerlink" title="map列表"></a>map列表</h4><figure class="highlight kotlin"><table><tr><td class="code"><pre><span class="line"><span class="comment">//此处用了infix函数</span></span><br><span class="line"><span class="keyword">val</span> map = mapOf(<span class="string">"jack"</span> to <span class="number">20</span>, <span class="string">"jimmy"</span> to <span class="number">18</span>, <span class="string">"jason"</span> to <span class="number">24</span>)</span><br><span class="line">println(map)</span><br><span class="line"></span><br><span class="line"><span class="comment">//pair是map的子元素</span></span><br><span class="line"><span class="keyword">val</span> sMap = mapOf(Pair(<span class="string">"jack"</span>, <span class="number">20</span>), Pair(<span class="string">"jimmy"</span>, <span class="number">18</span>), Pair(<span class="string">"json"</span>, <span class="number">24</span>))</span><br><span class="line">println(map[<span class="string">"jack"</span>])</span><br><span class="line">println(sMap[<span class="string">"jimmy"</span>])</span><br><span class="line"></span><br><span class="line"><span class="comment">//</span></span><br><span class="line">println(map.getOrElse(<span class="string">"jimmy"</span>) &#123; <span class="string">"UnKnown"</span> &#125;)</span><br><span class="line">println(map.getOrDefault(<span class="string">"jason"</span>) &#123; <span class="string">"UnKnown"</span> &#125;)</span><br><span class="line"></span><br><span class="line"><span class="comment">//map的遍历</span></span><br><span class="line">map.forEach &#123;</span><br><span class="line">    println(<span class="string">"<span class="subst">$&#123;it.key&#125;</span>  <span class="subst">$&#123;it.value&#125;</span>"</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//map的遍历</span></span><br><span class="line">map.forEach &#123; (key, value) -&gt;</span><br><span class="line">    println(<span class="string">"key = <span class="variable">$key</span>  value = <span class="variable">$value</span>"</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h4 id="kotlin可变列表MutableList"><a href="#kotlin可变列表MutableList" class="headerlink" title="kotlin可变列表MutableList"></a>kotlin可变列表MutableList</h4><figure class="highlight kotlin"><table><tr><td class="code"><pre><span class="line"><span class="keyword">val</span> mutableList = mutableListOf(<span class="string">"jack"</span>, <span class="string">"jimmy"</span>, <span class="string">"jacky"</span>)</span><br><span class="line">mutableList.add(<span class="string">"jason"</span>)</span><br><span class="line">mutableList.remove(<span class="string">"jack"</span>)</span><br><span class="line">println(mutableList)</span><br><span class="line"></span><br><span class="line">listOf(<span class="string">"a"</span>, <span class="string">"b"</span>, <span class="string">"c"</span>).toMutableList()</span><br><span class="line">mutableListOf(<span class="string">"m"</span>, <span class="string">"n"</span>, <span class="string">"o"</span>).toList()</span><br></pre></td></tr></table></figure>
-<h4 id="kotlin可变列表MutableMap"><a href="#kotlin可变列表MutableMap" class="headerlink" title="kotlin可变列表MutableMap"></a>kotlin可变列表MutableMap</h4><figure class="highlight kotlin"><table><tr><td class="code"><pre><span class="line"><span class="keyword">val</span> mutableMap = mutableMapOf(<span class="string">"Jack"</span> to <span class="number">20</span>, <span class="string">"Jason"</span> to <span class="number">18</span>, <span class="string">"Jacky"</span> to <span class="number">30</span>)</span><br><span class="line"><span class="comment">//此处用到了操作符重载</span></span><br><span class="line">mutableMap += <span class="string">"jimmy"</span> to <span class="number">1000</span></span><br><span class="line">mutableMap.put(<span class="string">"lucas"</span>, <span class="number">31</span>)</span><br><span class="line">mutableMap[<span class="string">"lucy"</span>] = <span class="number">30</span></span><br><span class="line"></span><br><span class="line">mutableMap.getOrPut(<span class="string">"lily"</span>)&#123; <span class="number">100</span> &#125;</span><br><span class="line"><span class="keyword">val</span> i = mutableMap.getOrPut(<span class="string">"jimmy"</span>)&#123; <span class="number">100</span> &#125;</span><br><span class="line"></span><br><span class="line">println(mutableMap)</span><br><span class="line">println(i)</span><br></pre></td></tr></table></figure>
-<p>set列表</p>
-<figure class="highlight kotlin"><table><tr><td class="code"><pre><span class="line"><span class="keyword">val</span> mutableSet = mutableSetOf(<span class="string">"Kotlin"</span>, <span class="string">"Java"</span>, <span class="string">"Scala"</span>)</span><br><span class="line">mutableSet += <span class="string">"Groovy"</span></span><br><span class="line"></span><br><span class="line">println(listOf(<span class="string">"Jack"</span>, <span class="string">"Jason"</span>, <span class="string">"Jacky"</span>,<span class="string">"Jacky"</span>).toSet().toList())</span><br><span class="line"></span><br><span class="line"><span class="comment">//去重的快捷函数</span></span><br><span class="line">println(listOf(<span class="string">"Jack"</span>, <span class="string">"Jason"</span>, <span class="string">"Jacky"</span>,<span class="string">"Jacky"</span>).distinct())</span><br></pre></td></tr></table></figure>
-]]></content>
-      <tags>
-        <tag>Kotlin</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>内存泄漏的原因和解决方式</title>
-    <url>/2019/08/26/%E5%86%85%E5%AD%98%E6%B3%84%E6%BC%8F%E7%9A%84%E5%8E%9F%E5%9B%A0%E5%92%8C%E8%A7%A3%E5%86%B3%E6%96%B9%E5%BC%8F/</url>
-    <content><![CDATA[<p>1.<a href="https://www.yppcat.top/2019/08/22/%E8%87%AA%E5%AE%9A%E4%B9%89-Handler-%E6%97%B6%E5%A6%82%E4%BD%95%E6%9C%89%E6%95%88%E5%9C%B0%E9%81%BF%E5%85%8D%E5%86%85%E5%AD%98%E6%B3%84%E6%BC%8F%E9%97%AE%E9%A2%98/">Handler引起的内存泄漏</a>（生命周期长的持有了生命周期短的引用）</p>
-<p>2.Bitmap对象使用结束没有使用recycle释放内存</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">val bitmap = BitmapFactory.decodeResource(resources,R.drawable.ic_launcher)</span><br><span class="line">bitmap.recycle()</span><br></pre></td></tr></table></figure>
-<p>3.cursor的释放</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">val cursor = contentResolver.query(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,null,null,null,null)</span><br><span class="line">cursor?.close()</span><br></pre></td></tr></table></figure>
-<p>4.BroadcastReceiver、EventBus、RxBus等注册未取消监听</p>
-<p>5.单例模式构造引用的context对象：<br>public class Utils {</p>
-<pre><code>private static Utils instance;
-private Context context;
-
-public static Utils getInstance(Context context) {
-    if (instance == null) {
-        synchronized (Utils.class) {
-            instance = new Utils(context.getApplicationContext());
-        }
-    }
-    return instance;
-}
-
-private Utils(Context context) {
-    this.context = context;
-}
-</code></pre><p>}</p>
-]]></content>
-      <tags>
-        <tag>面试</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>单例模式</title>
-    <url>/2019/04/12/%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F/</url>
-    <content><![CDATA[<p>单例模式：保证一个类仅有一个实例，并提供一个访问它的全局访问点。</p>
-<p>单例模式的６中写法：</p>
-<p><strong>饿汉模式：</strong>在类加载时就完成了初始化，所以加载较慢，但是对象的获取速度快，避免了多线程同步问题。</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">public class SingleTon &#123;</span><br><span class="line"></span><br><span class="line">    private static SingleTon instance = new SingleTon();</span><br><span class="line"></span><br><span class="line">    private SingleTon() &#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public static SingleTon getInstance() &#123;</span><br><span class="line">        return instance;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><strong>懒汉模式：</strong>线程不安全，节约了资源，在多线程时不能正常工作。</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">public class SingleTon &#123;</span><br><span class="line"></span><br><span class="line">    private static SingleTon instance;</span><br><span class="line"></span><br><span class="line">    private SingleTon() &#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public static SingleTon getInstance() &#123;</span><br><span class="line">        if (instance == null) &#123;</span><br><span class="line">            return new SingleTon();</span><br><span class="line">        &#125;</span><br><span class="line">        return instance;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><strong>线程安全的懒汉模式：</strong>能够在多线程下工作，但是每次调用getInstance都需要进行同步，造成的同步开销较大。</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">public class SingleTon &#123;</span><br><span class="line"></span><br><span class="line">    private static SingleTon instance;</span><br><span class="line"></span><br><span class="line">    private SingleTon() &#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public static synchronized SingleTon getInstance() &#123;</span><br><span class="line">        if (instance == null) &#123;</span><br><span class="line">            return new SingleTon();</span><br><span class="line">        &#125;</span><br><span class="line">        return instance;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><strong>双重检查模式:　</strong>避免了不必要的同步，同时避免创建多余的实例，volatile稍微影响了性能。　第一次加载稍慢，有可能出现失效的问题。</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">public class SingleTon &#123;</span><br><span class="line"></span><br><span class="line">    private volatile static SingleTon instance;</span><br><span class="line"></span><br><span class="line">    private SingleTon() &#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public static synchronized SingleTon getInstance() &#123;</span><br><span class="line">        if (instance == null) &#123;</span><br><span class="line">            synchronized (SingleTon.class) &#123;</span><br><span class="line">                if (instance == null) &#123;</span><br><span class="line">                    instance = new SingleTon();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        return instance;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><strong>静态内部类单例模式：</strong>第一次加载时不会初始化sInstance,只有第一次调用getInstance方法时才会加载SingleTonHolder并初始化sInstance。不仅能保证线程安全，也能保证SingleTon类的唯一性。（推荐使用）</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">public class SingleTon &#123;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    private SingleTon() &#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public static SingleTon getInstance() &#123;</span><br><span class="line">        return SingleTonHolder.sInstance;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    private static class SingleTonHolder &#123;</span><br><span class="line">        private static final SingleTon sInstance = new SingleTon();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><strong>枚举单例：</strong>　线程安全，且在任何情况下都是单例，但是可读性不高。</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">public enum  SingleTon &#123;</span><br><span class="line"></span><br><span class="line">    INSTANCE;</span><br><span class="line">    </span><br><span class="line">    public void doSomeThing()&#123;</span><br><span class="line">        </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
-      <tags>
-        <tag>Java</tag>
       </tags>
   </entry>
   <entry>
