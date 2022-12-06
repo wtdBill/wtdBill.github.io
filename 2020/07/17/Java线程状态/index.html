@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  <title>Java线程状态 | Eric笔记 | Eric笔记</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="theme-color" content="#3F51B5">
+  
+  
+  <meta name="keywords" content="Java">
+  <meta name="description" content="线程的 6 种状态就像生物从出生到长大、最终死亡的过程一样，线程也有自己的生命周期，在 Java 中线程的生命周期中一共有 6 种状态。 New（新创建） Runnable（可运行） Blocked（被阻塞） Waiting（等待） Timed Waiting（计时等待） Terminated（被终止） 如果想要确定线程当前的状态，可以通过 getState() 方法，并且线程在任何时刻只可能处于">
+<meta name="keywords" content="Java">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java线程状态">
+<meta property="og:url" content="http://www.yppcat.top/2020/07/17/Java线程状态/index.html">
+<meta property="og:site_name" content="Eric笔记">
+<meta property="og:description" content="线程的 6 种状态就像生物从出生到长大、最终死亡的过程一样，线程也有自己的生命周期，在 Java 中线程的生命周期中一共有 6 种状态。 New（新创建） Runnable（可运行） Blocked（被阻塞） Waiting（等待） Timed Waiting（计时等待） Terminated（被终止） 如果想要确定线程当前的状态，可以通过 getState() 方法，并且线程在任何时刻只可能处于">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2020-07-17T06:06:05.484Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Java线程状态">
+<meta name="twitter:description" content="线程的 6 种状态就像生物从出生到长大、最终死亡的过程一样，线程也有自己的生命周期，在 Java 中线程的生命周期中一共有 6 种状态。 New（新创建） Runnable（可运行） Blocked（被阻塞） Waiting（等待） Timed Waiting（计时等待） Terminated（被终止） 如果想要确定线程当前的状态，可以通过 getState() 方法，并且线程在任何时刻只可能处于">
+  
+    <link rel="alternative" href="/atom.xml" title="Eric笔记" type="application/atom+xml">
+  
+  <meta name="summary" content="">
+  <link rel="shortcut icon" href="/favicon.ico">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="loading" class="active"></div>
+
+  <nav id="menu" class="hide" >
+   <div class="inner flex-row-vertical">
+  <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+      <i class="icon icon-lg icon-close"></i>
+  </a>
+  <div class="brand-wrap">
+    <div class="brand">
+      <a href="/" class="avatar"><img src="/img/header.jpg"></a>
+      <hgroup class="introduce">
+        <h5 class="nickname">Eric笔记</h5>
+        <a href="mailto:1246275955@qq.com" title="1246275955@qq.com" class="mail">1246275955@qq.com</a>
+      </hgroup>
+    </div>
+  </div>
+  <div class="scroll-wrap flex-col">
+    <ul class="nav">
+      
+          <li class="waves-block waves-effect">
+            <a href="/">
+              <i class="icon icon-lg icon-home"></i>
+              主页
+            </a>
+          </li>
+      
+          <li class="waves-block waves-effect">
+            <a href="/archives">
+              <i class="icon icon-lg icon-archives"></i>
+              Archives
+            </a>
+          </li>
+      
+          <li class="waves-block waves-effect">
+            <a href="/tags">
+              <i class="icon icon-lg icon-tags"></i>
+              Tags
+            </a>
+          </li>
+      
+          <li class="waves-block waves-effect">
+            <a href="https://github.com/wtdBill" target="_blank">
+              <i class="icon icon-lg icon-github"></i>
+              Github
+            </a>
+          </li>
+      
+    </ul>
+
+    <footer class="footer">
+  <p><a rel="license" target="_blank" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0;vertical-align:middle;" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFAAAAAPCAMAAABEF7i9AAAAllBMVEUAAAD///+rsapERER3d3eIiIjMzMzu7u4iIiKUmZO6v7rKzsoODg4RERFVVVUNDQ0NDg0PEA8zMzNLTEtbXltmZmZydnF9gn2AgICPkI+ZmZmqqqq7u7vFxsXIzMgNDQwZGRkgICAhISEkJSMnKCcuMC4xMzE5Ozk7PTtBQkFCQkJDQ0Nna2eGhoaHh4ezuLLGysbd3d1wVGpAAAAA4UlEQVR42q2T1xqCMAyFk7QsBQeKA9x7j/d/OSm22CpX0nzcpA1/T05aAOuBVkMAScQFHLnEwoCo2f1TnQIGoVMewjZEjVFN4GH1Ue1Cn2jWqwfsOOj6wDwGvotsl/c8lv7KIq1eLOsT0HMFHMIE/RZyHnlphryT9zyV+8WH5e8yQw3wnQvgAFxPTKUVi555SHR/lOfLMgVTeDlSfN+TaoUsiTyeIm+bCkHvCA2FUKG48LDtYBZBknsYP/G8NTw0gaaHyuQf4H5pecrB/FYCT2sL9zAfy1Xyjou6L8X2W7YcLyBZCRtnq/zfAAAAAElFTkSuQmCC"></a></p>
+  <p>Eric笔记 &copy; 2022</p>
+  <p>Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme
+  <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a></p>
+  <a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-2x icon-rss-square"></i></a>
+</footer>
+
+  </div>
+</div>
+
+  </nav>
+  <main id="main">
+    <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">Java线程状态</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input " autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+    </div>
+</header>
+<header class="content-header">
+  <div class="container">
+    <h1 class="author">Java线程状态</h1>
+    <h5 class="subtitle">
+        
+            <time datetime="2020-07-17T05:32:23.000Z" itemprop="datePublished" class="page-time">
+  2020-07-17
+</time>
+
+
+        
+    </h5>
+  </div>
+</header>
+
+    <div class="container body-wrap">
+      <article id="post-Java线程状态" class="article article-type-post" itemprop="blogPost">
+    <div class="post-meta flex-row">
+        
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Java/">Java</a></li></ul>
+
+    </div>
+    <div class="post-body">
+        <aside class="post-widget" id="post-widget">
+
+            
+
+            
+            <nav class="post-toc-wrap" id="post-toc">
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#线程的-6-种状态"><span class="post-toc-number">1.</span> <span class="post-toc-text">线程的 6 种状态</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#New-新创建"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">New 新创建</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#Runnable-可运行"><span class="post-toc-number">1.2.</span> <span class="post-toc-text">Runnable 可运行</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#Blocked-被阻塞"><span class="post-toc-number">1.3.</span> <span class="post-toc-text">Blocked 被阻塞</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#Waiting-等待"><span class="post-toc-number">1.4.</span> <span class="post-toc-text">Waiting 等待</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#Timed-Waiting-限期等待"><span class="post-toc-number">1.5.</span> <span class="post-toc-text">Timed Waiting 限期等待</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#Terminated-终止"><span class="post-toc-number">1.6.</span> <span class="post-toc-text">Terminated 终止</span></a></li></ol></li></ol>
+            </nav>
+            
+        </aside>
+
+        <div class="post-main">
+
+            <div class="post-content" id="post-content" itemprop="postContent">
+            <h3 id="线程的-6-种状态"><a href="#线程的-6-种状态" class="headerlink" title="线程的 6 种状态"></a>线程的 6 种状态</h3><p>就像生物从出生到长大、最终死亡的过程一样，线程也有自己的生命周期，在 Java 中线程的生命周期中一共有 6 种状态。</p>
+<p><strong>New（新创建）</strong></p>
+<p><strong>Runnable（可运行）</strong></p>
+<p><strong>Blocked（被阻塞）</strong></p>
+<p><strong>Waiting（等待）</strong></p>
+<p><strong>Timed Waiting（计时等待）</strong></p>
+<p><strong>Terminated（被终止）</strong></p>
+<p>如果想要确定线程当前的状态，可以通过 getState() 方法，并且线程在任何时刻只可能处于 1 种状态。</p>
+<h4 id="New-新创建"><a href="#New-新创建" class="headerlink" title="New 新创建"></a>New 新创建</h4><p>New 表示线程被创建但尚未启动的状态：当我们用 new Thread() 新建一个线程时，如果线程没有开始运行 start() 方法，所以也没有开始执行 run() 方法里面的代码，那么此时它的状态就是 New。而一旦线程调用了 start()，它的状态就会从 New 变成 Runnable。</p>
+<h4 id="Runnable-可运行"><a href="#Runnable-可运行" class="headerlink" title="Runnable 可运行"></a>Runnable 可运行</h4><p>Java 中的 Runable 状态对应操作系统线程状态中的两种状态，分别是 Running 和 Ready，也就是说，Java 中处于 Runnable 状态的线程有可能正在执行，也有可能没有正在执行，正在等待被分配 CPU 资源。</p>
+<p>所以，如果一个正在运行的线程是 Runnable 状态，当它运行到任务的一半时，执行该线程的 CPU 被调度去做其他事情，导致该线程暂时不运行，它的状态依然不变，还是 Runnable，因为它有可能随时被调度回来继续执行任务。</p>
+<h4 id="Blocked-被阻塞"><a href="#Blocked-被阻塞" class="headerlink" title="Blocked 被阻塞"></a>Blocked 被阻塞</h4><p>从 Runnable 状态进入 Blocked 状态只有一种可能，<strong>就是进入 synchronized 保护的代码时没有抢到 monitor 锁</strong>，无论是进入 synchronized 代码块，还是 synchronized 方法，都是一样。</p>
+<h4 id="Waiting-等待"><a href="#Waiting-等待" class="headerlink" title="Waiting 等待"></a>Waiting 等待</h4><p>我们再看看 Waiting 状态，线程进入 Waiting 状态有三种可能性。</p>
+<p>没有设置 Timeout 参数的 Object.wait() 方法。</p>
+<p>没有设置 Timeout 参数的 Thread.join() 方法。</p>
+<p>LockSupport.park() 方法。</p>
+<p>刚才强调过，Blocked 仅仅针对 synchronized monitor 锁，可是在 Java 中还有很多其他的锁，比如 ReentrantLock，如果线程在获取这种锁时没有抢到该锁就会进入 Waiting 状态，因为本质上它执行了 LockSupport.park() 方法，所以会进入 Waiting 状态。同样，Object.wait() 和 Thread.join() 也会让线程进入 Waiting 状态。</p>
+<p><strong>Blocked 与 Waiting 的区别是 Blocked 在等待其他线程释放 monitor 锁，而 Waiting 则是在等待某个条件，比如 join 的线程执行完毕，或者是 notify()/notifyAll() 。</strong></p>
+<h4 id="Timed-Waiting-限期等待"><a href="#Timed-Waiting-限期等待" class="headerlink" title="Timed Waiting 限期等待"></a>Timed Waiting 限期等待</h4><p>在 Waiting 上面是 Timed Waiting 状态，这两个状态是非常相似的，区别仅在于有没有时间限制，Timed Waiting 会等待超时，由系统自动唤醒，或者在超时前被唤醒信号唤醒。</p>
+<p>以下情况会让线程进入 Timed Waiting 状态。</p>
+<p>设置了时间参数的 Thread.sleep(long millis) 方法；</p>
+<p>设置了时间参数的 Object.wait(long timeout) 方法；</p>
+<p>设置了时间参数的 Thread.join(long millis) 方法；</p>
+<p>设置了时间参数的 LockSupport.parkNanos(long nanos) 方法和 LockSupport.parkUntil(long deadline) 方法。</p>
+<h4 id="Terminated-终止"><a href="#Terminated-终止" class="headerlink" title="Terminated 终止"></a>Terminated 终止</h4><p>再来看看最后一种状态，Terminated 终止状态，要想进入这个状态有两种可能。</p>
+<p>run() 方法执行完毕，线程正常退出。</p>
+<p>出现一个没有捕获的异常，终止了 run() 方法，最终导致意外终止。</p>
+
+
+            
+            <div class="post-reward">
+                <a id="rewardBtn" href="javascript:;" class="post-reward-btn waves-effect waves-circle waves-light">赏</a>
+            </div>
+            
+            
+            <blockquote>
+                <p>
+                本文地址：
+                <a href="http://www.yppcat.top/2020/07/17/Java线程状态/" target="_blank" rel="external">http://www.yppcat.top/2020/07/17/Java线程状态/</a>
+                </p>
+                <footer><cite><a href="http://www.yppcat.top">@Eric笔记</a></cite></footer>
+            </blockquote>
+            </div>
+            
+<nav class="post-nav">
+  
+    <div class="waves-block waves-effect prev fl">
+      <a href="/2020/07/27/Okhttp源码分析/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">Okhttp源码分析</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next fr">
+      <a href="/2020/03/18/JNIEnv实现原理/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">JNIEnv实现原理</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+            
+            
+<div class="duoshuo">
+	<!-- 多说评论框 start -->
+	<div class="ds-thread" data-thread-key="Java线程状态" data-title="Java线程状态" data-url="http://www.yppcat.top/2020/07/17/Java线程状态/index.html"></div>
+	<!-- 多说评论框 end -->
+	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+	<script type="text/javascript">
+	var duoshuoQuery = {short_name:"ysblog"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+	<!-- 多说公共JS代码 end -->
+</div>
+
+
+
+
+
+        </div>
+    </div>
+</article>
+
+<div id="reward" class="reward-lay">
+    <a class="reward-off" id="rewardOff" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        谢谢老板~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <ul class="reward-items">
+        
+        <li>
+            <img src="/img/wechat.jpg" title="微信打赏二维码" alt="微信打赏二维码">
+            <p>微信</p>
+        </li>
+        
+
+        
+    </ul>
+</div>
+
+    </div>
+  </main>
+<div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+<script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+
+<script src="/js/main.js"></script>
+
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<script type="text/template" id="search-tpl">
+<li class="item">
+    <a href="/{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</script>
+
+<script src="/js/search.js"></script>
+
+
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script type="text/javascript" async src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

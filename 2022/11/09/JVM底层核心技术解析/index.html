@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  <title>JVM底层核心技术解析 | Eric笔记 | Eric笔记</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="theme-color" content="#3F51B5">
+  
+  
+  <meta name="keywords" content="JVM">
+  <meta name="description" content="JVM是一种规范JVM从编译到执行Java程序的执行过程一个 Java 程序，首先经过 javac 编译成 .class 文件，然后 JVM 将其加载到方法区，执行引擎将会执行这些字节码。执行时，会翻译成操作系统相关的函数。JVM 作为 .class 文件的翻译存在，输入字节码，调用操作系统函数。 过程如下：Java 文件-&amp;gt;编译器&amp;gt;字节码-&amp;gt;JVM-&amp;gt;机器码。 JVM 全">
+<meta name="keywords" content="JVM">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JVM底层核心技术解析">
+<meta property="og:url" content="http://www.yppcat.top/2022/11/09/JVM底层核心技术解析/index.html">
+<meta property="og:site_name" content="Eric笔记">
+<meta property="og:description" content="JVM是一种规范JVM从编译到执行Java程序的执行过程一个 Java 程序，首先经过 javac 编译成 .class 文件，然后 JVM 将其加载到方法区，执行引擎将会执行这些字节码。执行时，会翻译成操作系统相关的函数。JVM 作为 .class 文件的翻译存在，输入字节码，调用操作系统函数。 过程如下：Java 文件-&amp;gt;编译器&amp;gt;字节码-&amp;gt;JVM-&amp;gt;机器码。 JVM 全">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="http://www.yppcat.top/2022/11/09/JVM底层核心技术解析/ad8d9f5b17ea81c364a1718838c6dd89-92934.jpg">
+<meta property="og:image" content="http://www.yppcat.top/2022/11/09/JVM底层核心技术解析/735171f135788cb149872d2894bdcd64-17673.jpg">
+<meta property="og:image" content="http://www.yppcat.top/2022/11/09/JVM底层核心技术解析/13e6e882363296551801ac7664da2d01-12425.jpg">
+<meta property="og:image" content="http://www.yppcat.top/2022/11/09/JVM底层核心技术解析/05f552a197a27c4b1837393af6326239-29369.jpg">
+<meta property="og:image" content="http://www.yppcat.top/2022/11/09/JVM底层核心技术解析/a7a84689533093632b75630d3dfc56f9-34956.jpg">
+<meta property="og:image" content="http://www.yppcat.top/2022/11/09/JVM底层核心技术解析/5e66ad2ec20a2980e06994b83f70d521-7936.jpg">
+<meta property="og:image" content="http://www.yppcat.top/2022/11/09/JVM底层核心技术解析/a92daf320c248a0517a6cbec2d71ae0f-12022.jpg">
+<meta property="og:image" content="http://www.yppcat.top/2022/11/09/JVM底层核心技术解析/d1dfa7f3cfb910982f2ebd88c049e92d-16513.jpg">
+<meta property="og:image" content="http://www.yppcat.top/2022/11/09/JVM底层核心技术解析/1c29dad9106f63452cb3b9a3c492bf9c-20448.jpg">
+<meta property="og:image" content="http://www.yppcat.top/2022/11/09/JVM底层核心技术解析/83c91a9c69cf358f05447cd3ba20d012-35177.jpg">
+<meta property="og:image" content="http://www.yppcat.top/2022/11/09/JVM底层核心技术解析/cd16745c0ee8153207bf28463c301129-23745.jpg">
+<meta property="og:image" content="http://www.yppcat.top/2022/11/09/JVM底层核心技术解析/10a57513a293d00c5d5d6e29b212afc5-45523.jpg">
+<meta property="og:image" content="http://www.yppcat.top/2022/11/09/JVM底层核心技术解析/daa42c744e7377298fead4d084203fed-61705.jpg">
+<meta property="og:image" content="http://www.yppcat.top/2022/11/09/JVM底层核心技术解析/a8fef8e29f5028c19f753261d52b83a7-39481.jpg">
+<meta property="og:image" content="http://www.yppcat.top/2022/11/09/JVM底层核心技术解析/9349a35c4b34745f4918ef4b58dd0459-26553.jpg">
+<meta property="og:image" content="http://www.yppcat.top/2022/11/09/JVM底层核心技术解析/3c6974751e54c7b4d224827b88369b5f-11743.jpg">
+<meta property="og:image" content="http://www.yppcat.top/2022/11/09/JVM底层核心技术解析/63edccc6d7db50a92e6681593abc5720-5997.jpg">
+<meta property="og:image" content="http://www.yppcat.top/2022/11/09/JVM底层核心技术解析/972524a754061847dcb85d0c6129268e-70596.jpg">
+<meta property="og:image" content="http://www.yppcat.top/2022/11/09/JVM底层核心技术解析/f4f9bffa8663aba6bb3b4f2474f7cd87-20526.jpg">
+<meta property="og:image" content="http://www.yppcat.top/2022/11/09/JVM底层核心技术解析/e1a3c3cf44b4825c9172b1b5fe78d0f3-25393.jpg">
+<meta property="og:image" content="http://www.yppcat.top/2022/11/09/JVM底层核心技术解析/e957dc2da3e0ac75429f5a7e5a5184d3-22751.jpg">
+<meta property="og:image" content="http://www.yppcat.top/2022/11/09/JVM底层核心技术解析/d46a2e3e648f83d171545d34d377e681-102103.jpg">
+<meta property="og:image" content="http://www.yppcat.top/2022/11/09/JVM底层核心技术解析/4d1d74845f0a34b73e8193d7b5784223-82593.jpg">
+<meta property="og:image" content="http://www.yppcat.top/2022/11/09/JVM底层核心技术解析/7fac4ceb927b05636b62636a12fb7e2e-13027.jpg">
+<meta property="og:image" content="http://www.yppcat.top/2022/11/09/JVM底层核心技术解析/5258c23ee3108a8f8dc496996eacf213-11926.jpg">
+<meta property="og:image" content="http://www.yppcat.top/2022/11/09/JVM底层核心技术解析/d6b2e658c74b70b0c1d477362a69d585-16588.jpg">
+<meta property="og:image" content="http://www.yppcat.top/2022/11/09/JVM底层核心技术解析/759ba88e8789a5275272d0c753c36a6a-13115.jpg">
+<meta property="og:image" content="http://www.yppcat.top/2022/11/09/JVM底层核心技术解析/6e29bd2ce5bb7b4194994091e3c45778-20554.jpg">
+<meta property="og:image" content="http://www.yppcat.top/2022/11/09/JVM底层核心技术解析/e42a3f8615b77b2f065e50432dfb0e18-19229.jpg">
+<meta property="og:image" content="http://www.yppcat.top/2022/11/09/JVM底层核心技术解析/4dcc3bd040afcd1858b58b59a8630663-17928.jpg">
+<meta property="og:image" content="http://www.yppcat.top/2022/11/09/JVM底层核心技术解析/338f73e91d40a9bd8d8de5ca53a2fef8-45517.jpg">
+<meta property="og:image" content="http://www.yppcat.top/2022/11/09/JVM底层核心技术解析/2a0c2da12ba6ff6f7b2887a8f66e9be7-44739.jpg">
+<meta property="og:image" content="http://www.yppcat.top/2022/11/09/JVM底层核心技术解析/1b3a05077d2032d32186e5c81aba5506-42815.jpg">
+<meta property="og:image" content="http://www.yppcat.top/2022/11/09/JVM底层核心技术解析/8efd59b6f0f59d930b6fe38acddc02b6-47248.jpg">
+<meta property="og:image" content="http://www.yppcat.top/2022/11/09/JVM底层核心技术解析/4c6bfd03a825f0b40b060dae8b215980-51026.jpg">
+<meta property="og:image" content="http://www.yppcat.top/2022/11/09/JVM底层核心技术解析/3cd487a42ebfb24dab04c7f144c3faf5-16637.jpg">
+<meta property="og:image" content="http://www.yppcat.top/2022/11/09/JVM底层核心技术解析/6925a2e9209edcbbd52f1535bab0e006-31070.jpg">
+<meta property="og:image" content="http://www.yppcat.top/2022/11/09/JVM底层核心技术解析/9cf31d54b5196400f336fa63657479fd-45130.jpg">
+<meta property="og:image" content="http://www.yppcat.top/2022/11/09/JVM底层核心技术解析/b60c7d10ff3c1df96fe57092009d8ccd-75765.jpg">
+<meta property="og:image" content="http://www.yppcat.top/2022/11/09/JVM底层核心技术解析/e965af2e87c19418fc47fdd25d1988ee-144704.jpg">
+<meta property="og:image" content="http://www.yppcat.top/2022/11/09/JVM底层核心技术解析/e1e87ae486afe54e701ee4daf1157dee-49321.jpg">
+<meta property="og:image" content="http://www.yppcat.top/2022/11/09/JVM底层核心技术解析/dee835ad76430928ce2944aa73d4366c-58150.jpg">
+<meta property="og:image" content="http://www.yppcat.top/2022/11/09/JVM底层核心技术解析/fe5c9f776176ce218d32920b78bd9927-18312.jpg">
+<meta property="og:updated_time" content="2022-11-09T12:28:19.068Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="JVM底层核心技术解析">
+<meta name="twitter:description" content="JVM是一种规范JVM从编译到执行Java程序的执行过程一个 Java 程序，首先经过 javac 编译成 .class 文件，然后 JVM 将其加载到方法区，执行引擎将会执行这些字节码。执行时，会翻译成操作系统相关的函数。JVM 作为 .class 文件的翻译存在，输入字节码，调用操作系统函数。 过程如下：Java 文件-&amp;gt;编译器&amp;gt;字节码-&amp;gt;JVM-&amp;gt;机器码。 JVM 全">
+<meta name="twitter:image" content="http://www.yppcat.top/2022/11/09/JVM底层核心技术解析/ad8d9f5b17ea81c364a1718838c6dd89-92934.jpg">
+  
+    <link rel="alternative" href="/atom.xml" title="Eric笔记" type="application/atom+xml">
+  
+  <meta name="summary" content="">
+  <link rel="shortcut icon" href="/favicon.ico">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="loading" class="active"></div>
+
+  <nav id="menu" class="hide" >
+   <div class="inner flex-row-vertical">
+  <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+      <i class="icon icon-lg icon-close"></i>
+  </a>
+  <div class="brand-wrap">
+    <div class="brand">
+      <a href="/" class="avatar"><img src="/img/header.jpg"></a>
+      <hgroup class="introduce">
+        <h5 class="nickname">Eric笔记</h5>
+        <a href="mailto:1246275955@qq.com" title="1246275955@qq.com" class="mail">1246275955@qq.com</a>
+      </hgroup>
+    </div>
+  </div>
+  <div class="scroll-wrap flex-col">
+    <ul class="nav">
+      
+          <li class="waves-block waves-effect">
+            <a href="/">
+              <i class="icon icon-lg icon-home"></i>
+              主页
+            </a>
+          </li>
+      
+          <li class="waves-block waves-effect">
+            <a href="/archives">
+              <i class="icon icon-lg icon-archives"></i>
+              Archives
+            </a>
+          </li>
+      
+          <li class="waves-block waves-effect">
+            <a href="/tags">
+              <i class="icon icon-lg icon-tags"></i>
+              Tags
+            </a>
+          </li>
+      
+          <li class="waves-block waves-effect">
+            <a href="https://github.com/wtdBill" target="_blank">
+              <i class="icon icon-lg icon-github"></i>
+              Github
+            </a>
+          </li>
+      
+    </ul>
+
+    <footer class="footer">
+  <p><a rel="license" target="_blank" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0;vertical-align:middle;" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFAAAAAPCAMAAABEF7i9AAAAllBMVEUAAAD///+rsapERER3d3eIiIjMzMzu7u4iIiKUmZO6v7rKzsoODg4RERFVVVUNDQ0NDg0PEA8zMzNLTEtbXltmZmZydnF9gn2AgICPkI+ZmZmqqqq7u7vFxsXIzMgNDQwZGRkgICAhISEkJSMnKCcuMC4xMzE5Ozk7PTtBQkFCQkJDQ0Nna2eGhoaHh4ezuLLGysbd3d1wVGpAAAAA4UlEQVR42q2T1xqCMAyFk7QsBQeKA9x7j/d/OSm22CpX0nzcpA1/T05aAOuBVkMAScQFHLnEwoCo2f1TnQIGoVMewjZEjVFN4GH1Ue1Cn2jWqwfsOOj6wDwGvotsl/c8lv7KIq1eLOsT0HMFHMIE/RZyHnlphryT9zyV+8WH5e8yQw3wnQvgAFxPTKUVi555SHR/lOfLMgVTeDlSfN+TaoUsiTyeIm+bCkHvCA2FUKG48LDtYBZBknsYP/G8NTw0gaaHyuQf4H5pecrB/FYCT2sL9zAfy1Xyjou6L8X2W7YcLyBZCRtnq/zfAAAAAElFTkSuQmCC"></a></p>
+  <p>Eric笔记 &copy; 2022</p>
+  <p>Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme
+  <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a></p>
+  <a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-2x icon-rss-square"></i></a>
+</footer>
+
+  </div>
+</div>
+
+  </nav>
+  <main id="main">
+    <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">JVM底层核心技术解析</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input " autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+    </div>
+</header>
+<header class="content-header">
+  <div class="container">
+    <h1 class="author">JVM底层核心技术解析</h1>
+    <h5 class="subtitle">
+        
+            <time datetime="2022-11-09T00:24:50.000Z" itemprop="datePublished" class="page-time">
+  2022-11-09
+</time>
+
+
+        
+    </h5>
+  </div>
+</header>
+
+    <div class="container body-wrap">
+      <article id="post-JVM底层核心技术解析" class="article article-type-post" itemprop="blogPost">
+    <div class="post-meta flex-row">
+        
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JVM/">JVM</a></li></ul>
+
+    </div>
+    <div class="post-body">
+        <aside class="post-widget" id="post-widget">
+
+            
+
+            
+            <nav class="post-toc-wrap" id="post-toc">
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#JVM是一种规范"><span class="post-toc-number">1.</span> <span class="post-toc-text">JVM是一种规范</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#JVM从编译到执行"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">JVM从编译到执行</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#Java程序的执行过程"><span class="post-toc-number">1.1.1.</span> <span class="post-toc-text">Java程序的执行过程</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#JVM、JRE、JDK的关系"><span class="post-toc-number">1.1.2.</span> <span class="post-toc-text">JVM、JRE、JDK的关系</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#从跨平台到跨语言"><span class="post-toc-number">1.2.</span> <span class="post-toc-text">从跨平台到跨语言</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#JVM的发展（非重点）"><span class="post-toc-number">1.3.</span> <span class="post-toc-text">JVM的发展（非重点）</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#常见的JVM实现"><span class="post-toc-number">1.3.1.</span> <span class="post-toc-text">常见的JVM实现</span></a></li></ol></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#JVM的内存区域"><span class="post-toc-number">2.</span> <span class="post-toc-text">JVM的内存区域</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#运行时数据区域"><span class="post-toc-number">2.1.</span> <span class="post-toc-text">运行时数据区域</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#JAVA方法的运行与虚拟机栈"><span class="post-toc-number">3.</span> <span class="post-toc-text">JAVA方法的运行与虚拟机栈</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#虚拟机栈"><span class="post-toc-number">3.0.1.</span> <span class="post-toc-text">虚拟机栈</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#程序计数器"><span class="post-toc-number">3.0.2.</span> <span class="post-toc-text">程序计数器</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#栈帧执行对内存区域的影响"><span class="post-toc-number">3.1.</span> <span class="post-toc-text">栈帧执行对内存区域的影响</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#运行时数据区及JVM的整体内存结构"><span class="post-toc-number">3.2.</span> <span class="post-toc-text">运行时数据区及JVM的整体内存结构</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#本地方法栈"><span class="post-toc-number">3.2.1.</span> <span class="post-toc-text">本地方法栈</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#方法区"><span class="post-toc-number">3.2.2.</span> <span class="post-toc-text">方法区</span></a></li></ol></li></ol><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#JVM整体知识模块"><span class="post-toc-number">4.</span> <span class="post-toc-text">JVM整体知识模块</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#元空间"><span class="post-toc-number">4.0.0.1.</span> <span class="post-toc-text">元空间</span></a></li></ol></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#运行时常量池"><span class="post-toc-number">4.0.1.</span> <span class="post-toc-text">运行时常量池</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#堆"><span class="post-toc-number">4.0.2.</span> <span class="post-toc-text">堆</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#直接内存（堆外内存）"><span class="post-toc-number">4.0.3.</span> <span class="post-toc-text">直接内存（堆外内存）</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#深入理解JVM的内存区域"><span class="post-toc-number">5.</span> <span class="post-toc-text">深入理解JVM的内存区域</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#深入理解运行时数据区"><span class="post-toc-number">5.1.</span> <span class="post-toc-text">深入理解运行时数据区</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#从底层深入理解运行时数据区"><span class="post-toc-number">5.2.</span> <span class="post-toc-text">从底层深入理解运行时数据区</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#堆空间分代划分"><span class="post-toc-number">5.2.1.</span> <span class="post-toc-text">堆空间分代划分</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#GC概念"><span class="post-toc-number">5.2.2.</span> <span class="post-toc-text">GC概念</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#JHSDB工具"><span class="post-toc-number">5.2.3.</span> <span class="post-toc-text">JHSDB工具</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#JDK1-8的开启方式"><span class="post-toc-number">5.2.3.1.</span> <span class="post-toc-text">JDK1.8的开启方式</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#JDK1-9及以后的开启方式"><span class="post-toc-number">5.2.3.2.</span> <span class="post-toc-text">JDK1.9及以后的开启方式</span></a></li></ol></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#代码改造"><span class="post-toc-number">5.2.4.</span> <span class="post-toc-text">代码改造</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#JHSDB中查看对象"><span class="post-toc-number">5.2.5.</span> <span class="post-toc-text">JHSDB中查看对象</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#实例代码启动"><span class="post-toc-number">5.2.5.1.</span> <span class="post-toc-text">实例代码启动</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#JHSDB中查看对象-1"><span class="post-toc-number">5.2.5.2.</span> <span class="post-toc-text">JHSDB中查看对象</span></a></li></ol></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#JHSDB中查看栈"><span class="post-toc-number">5.2.6.</span> <span class="post-toc-text">JHSDB中查看栈</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#内存溢出（重点）"><span class="post-toc-number">5.3.</span> <span class="post-toc-text">内存溢出（重点）</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#栈溢出"><span class="post-toc-number">5.3.1.</span> <span class="post-toc-text">栈溢出</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#堆溢出"><span class="post-toc-number">5.3.2.</span> <span class="post-toc-text">堆溢出</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#方法区溢出"><span class="post-toc-number">5.3.3.</span> <span class="post-toc-text">方法区溢出</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#本机直接内存溢出"><span class="post-toc-number">5.3.4.</span> <span class="post-toc-text">本机直接内存溢出</span></a></li></ol></li></ol></li>
+            </nav>
+            
+        </aside>
+
+        <div class="post-main">
+
+            <div class="post-content" id="post-content" itemprop="postContent">
+            <h1 id="JVM是一种规范"><a href="#JVM是一种规范" class="headerlink" title="JVM是一种规范"></a><strong>JVM是一种规范</strong></h1><h2 id="JVM从编译到执行"><a href="#JVM从编译到执行" class="headerlink" title="JVM从编译到执行"></a><strong>JVM从编译到执行</strong></h2><h3 id="Java程序的执行过程"><a href="#Java程序的执行过程" class="headerlink" title="Java程序的执行过程"></a><strong>Java程序的执行过程</strong></h3><p>一个 Java 程序，首先经过 javac 编译成 .class 文件，然后 JVM 将其加载到方法区，执行引擎将会执行这些字节码。执行时，会翻译成操作系统相关的函数。JVM 作为 .class 文件的翻译存在，输入字节码，调用操作系统函数。</p>
+<p>过程如下：Java 文件-&gt;编译器&gt;字节码-&gt;JVM-&gt;机器码。</p>
+<p>JVM 全称 Java Virtual Machine，也就是我们耳熟能详的 Java 虚拟机。它能识别 .class后缀的文件，并且能够解析它的指令，最终调用操作系统上的函数，完成我们想要的操作。</p>
+<h3 id="JVM、JRE、JDK的关系"><a href="#JVM、JRE、JDK的关系" class="headerlink" title="JVM、JRE、JDK的关系"></a><strong>JVM、JRE、JDK的关系</strong></h3><p>JVM只是一个翻译，把Class翻译成机器识别的代码，但是需要注意，JVM 不会自己生成代码，需要大家编写代码，同时需要很多依赖类库，这个时候就需要用到JRE。</p>
+<p>JRE是什么，它除了包含JVM之外，提供了很多的类库（就是我们说的jar包，它可以提供一些即插即用的功能，比如读取或者操作文件，连接网络，使用I/O等等之类的）这些东西就是JRE提供的基础类库。JVM 标准加上实现的一大堆基础类库，就组成了 Java 的运行时环境JRE</p>
+<p>但对于程序员来说，JRE还不够。我写完要编译代码，还需要调试代码，还需要打包代码、有时候还需要反编译代码。所以我们会使用JDK，因为JDK还提供了一些非常好用的小工具，比如 javac（编译代码）、java、jar （打包代码）、javap（反编译&lt;反汇编&gt;）等。这个就是JDK。</p>
+<p>具体文档可以通过官网去下载：<a href="https://www.oracle.com/java/technologies/javase-jdk8-doc-downloads.html" target="_blank" rel="noopener">https://www.oracle.com/java/technologies/javase-jdk8-doc-downloads.html</a></p>
+<p>JVM的作用是：从软件层面屏蔽不同操作系统在底层硬件和指令的不同.</p>
+<p><strong>同时JVM是一个虚拟化的操作系统，类似于Linux或者Windows的操作系统，只是它架在操作class</strong></p>
+<h2 id="从跨平台到跨语言"><a href="#从跨平台到跨语言" class="headerlink" title="从跨平台到跨语言"></a><strong>从跨平台到跨语言</strong></h2><p><strong>跨平台：</strong>我们写的一个类，在不同的操作系统上（Linux、Windows、MacOS 等平台）执行，效果是一样，这个就是JVM的跨平台性。</p>
+<p>为了实现跨平台型，不同操作系统有对应的JDK的版本。</p>
+<p><a href="https://www.oracle.com/java/technologies/javase/javase-jdk8-downloads.html" target="_blank" rel="noopener">https://www.oracle.com/java/technologies/javase/javase-jdk8-downloads.html</a></p>
+<img src="/2022/11/09/JVM底层核心技术解析/ad8d9f5b17ea81c364a1718838c6dd89-92934.jpg" title="[JVM底层核心技术解析]">
+<p><strong>跨语言（语言无关性）：</strong>JVM只识别字节码，所以JVM其实跟语言是解耦的，也就是没有直接关联，JVM运行不是翻译Java文件，而是识别class文件，这个一般称之为字节码。还有像Groovy 、Kotlin、Scala等等语言，它们其实也是编译成字节码，所以它们也可以在JVM上面跑，这个就是JVM的跨语<strong>J**</strong>ava的跨语言性一定程度上奠定了非常强大的java语言生态圈**。</p>
+<h2 id="JVM的发展（非重点）"><a href="#JVM的发展（非重点）" class="headerlink" title="JVM的发展（非重点）"></a><strong>JVM的发展（非重点）</strong></h2><h3 id="常见的JVM实现"><a href="#常见的JVM实现" class="headerlink" title="常见的JVM实现"></a><strong>常见的JVM实现</strong></h3><p>对于Java开发来说，《Java虚拟机规范》才是最为官方、准确的一个文档，了解这个规范可以让我们更深入地理解JVM。我们平常说的JVM其实更多说的是HotSpot</p>
+<p><strong>规范文档如下，7版本做了中文翻译，8版本没有。</strong></p>
+<img src="/2022/11/09/JVM底层核心技术解析/735171f135788cb149872d2894bdcd64-17673.jpg" title="[JVM底层核心技术解析]">
+<p><strong>Hotspot</strong>：目前使用的最多的Java虚拟机。在命令行 java –version。它会输出你现在使用的虚拟机的名字、版本等信息、执行模式。</p>
+<img src="/2022/11/09/JVM底层核心技术解析/13e6e882363296551801ac7664da2d01-12425.jpg" title="[JVM底层核心技术解析]">
+<p><strong>Jrockit</strong>：原来属于 BEA公司，曾号称世界上最快的JVM，后被Oracle公司收购，合并于Hotspot</p>
+<p><strong>J9:</strong> IBM有自己的java虚拟机实现，它的名字叫做J9. 主要是用在IBM产品（IBM WebSphere和IBM的AIX平台上）</p>
+<p><strong>TaobaoVM:</strong> 只有一定体量、一定规模的厂商才会开发自己的虚拟机，比如淘宝有自己的VM,它实际上是Hotspot的定制版，专门为淘宝准备的，阿里、天猫都是用的这款虚拟机。</p>
+<p><strong>LiquidVM:</strong> 它是一个针对硬件的虚拟机，它下面是没有操作系统的（不是Linux也不是windows）,下面直接就是硬件，运行效率比较高。</p>
+<p><strong>zing:</strong> 它属于zual这家公司，非常牛，是一个商业产品，很贵！它的垃圾回收速度非常快（1毫秒)</p>
+<p><strong>毕昇：</strong>毕昇JDK是华为内部OpenJDK定制版Huawei JDK的开源版本，是一个高性能、可用于生产环境的OpenJDK发行版。Huawei JDK运行在华为内部500多个产品上，积累了大量使用场景和java开发者反馈的问题和诉求，解决了业务实际运行中遇到的多个问题，并在ARM架构上进行了性能优化，毕昇JDK运行在大数据等场景下可以获得更好的性能。毕昇JDK 8与Java SE标准兼容，目前仅支持Linux/AArch64平台。</p>
+<p>具体<a href="https://gitee.com/openeuler/bishengjdk-8" target="_blank" rel="noopener">https://gitee.com/openeuler/bishengjdk-8</a></p>
+<h1 id="JVM的内存区域"><a href="#JVM的内存区域" class="headerlink" title="JVM的内存区域"></a><strong>JVM的内存区域</strong></h1><h2 id="运行时数据区域"><a href="#运行时数据区域" class="headerlink" title="运行时数据区域"></a><strong>运行时数据区域</strong></h2><p><strong>运行时数据区的定义</strong>：Java虚拟机在执行Java程序的过程中会把它所管理的内存划分为若干个不同的数据区域</p>
+<p>Java 引以为豪的就是它的自动内存管理机制。相比于 C++的手动内存管理、复杂难以理解java的内存管理方便实用</p>
+<p>所以要深入理解JVM必须理解内存虚拟化的概念。</p>
+<p>在JVM中，JVM 内存主要分为堆、程序计数器、方法区、虚拟机栈和本地方法栈等。</p>
+<p>同时按照与线程的关系也可以这么划分区域：</p>
+<p>线程私有区域：一个线程拥有单独的一份内存区域。</p>
+<p>线程共享区域：被所有线程共享，且只有一份。</p>
+<p>这里还有一个直接内存，这个虽然不是运行时数据区的一部分，但是会被频繁使用。你可以理解成没有被虚拟机化的操作系统上的其他内存（比如操作系统上有8G内存，被JVM虚拟化了3G，那么还剩余5G， JVM是借助一些工具使用这5G内存的，这个内存部分称之为直接内存</p>
+<img src="/2022/11/09/JVM底层核心技术解析/05f552a197a27c4b1837393af6326239-29369.jpg" title="[JVM底层核心技术解析]">
+<h1 id="JAVA方法的运行与虚拟机栈"><a href="#JAVA方法的运行与虚拟机栈" class="headerlink" title="JAVA方法的运行与虚拟机栈"></a><strong>JAVA方法的运行与虚拟机栈</strong></h1><p><strong>虚拟机栈是用来存放线程运行java方法所需的数据，指令、返回地址。</strong></p>
+<p>其实在我们实际的代码中，一个线程是可以运行多个方法的。</p>
+<p>比如：</p>
+<img src="/2022/11/09/JVM底层核心技术解析/a7a84689533093632b75630d3dfc56f9-34956.jpg" title="[JVM底层核心技术解析]">
+<p>这段代码很简单，就是起一个main方法，在main方法运行中调用A方法，A方法中调用B方法B方法调用了C方法</p>
+<p>我们把代码跑起来，线程1来运行这段代码， 线程1跑起来，就会有一个对应 的虚拟机栈，同时在执行每个方法的时候都会打包成一个栈帧。</p>
+<p>比如main开始运行，打包一个栈帧送入到虚拟机栈。</p>
+<img src="/2022/11/09/JVM底层核心技术解析/5e66ad2ec20a2980e06994b83f70d521-7936.jpg" title="[JVM底层核心技术解析]">
+<img src="/2022/11/09/JVM底层核心技术解析/a92daf320c248a0517a6cbec2d71ae0f-12022.jpg" title="[JVM底层核心技术解析]">
+<img src="/2022/11/09/JVM底层核心技术解析/d1dfa7f3cfb910982f2ebd88c049e92d-16513.jpg" title="[JVM底层核心技术解析]">
+<img src="/2022/11/09/JVM底层核心技术解析/1c29dad9106f63452cb3b9a3c492bf9c-20448.jpg" title="[JVM底层核心技术解析]">
+<p>C方法运行完了，C方法出栈，接着B方法运行完了，B方法出栈、接着A方法运行完了，A方法出栈，最后main方法运行完了，main方法这个栈帧就出栈了。</p>
+<p>这个就是Java方法运行对虚拟机栈的一个影响。虚拟机栈就是用来存储线程运行方法中的数据的。而每一个方法对应一个栈帧。</p>
+<h3 id="虚拟机栈"><a href="#虚拟机栈" class="headerlink" title="虚拟机栈"></a><strong>虚拟机栈</strong></h3><p><strong>栈的数据结构：</strong>先进后出(FILO)的数据结构，</p>
+<p><strong>虚拟机栈的作用：</strong>在JVM运行过程中存储当前线程运行方法所需的数据，指令、返回地址<strong>。</strong></p>
+<p><strong>虚拟机栈是基于线程的</strong>：哪怕你只有一个 main() 方法，也是以线程的方式运行的。在线程的生命周期中，参与计算的数据会频繁地入栈和出栈，栈的生命周期是和线程一样的。</p>
+<p>虚拟机栈的大小缺省为1M，可用参数 –Xss调整大小，例如-Xss256k。</p>
+<p>参数官方文档（JDK1.8）：<a href="https://docs.oracle.com/javase/8/docs/technotes/tools/unix/java.html" target="_blank" rel="noopener">https://docs.oracle.com/javase/8/docs/technotes/tools/unix/java.html</a></p>
+<img src="/2022/11/09/JVM底层核心技术解析/83c91a9c69cf358f05447cd3ba20d012-35177.jpg" title="[JVM底层核心技术解析]">
+<p><strong>栈帧</strong>：在每个 Java 方法被调用的时候，都会创建一个栈帧，并入栈。一旦方法完成相应的调用，则出栈。</p>
+<p><strong>栈帧大体都包含四个区域</strong>：(局部变量表、操作数栈、动态连接、返回地址)</p>
+<ol>
+<li><strong>局部变量表:</strong></li>
+</ol>
+<p>顾名思义就是局部变量的表，用于存放我们的局部变量的（方法中的变量）。首先它是一个32位的长度，主要存放我们的Java的八大基础数据类型，一般32位就可以存放下，如果是64位的就使用高低位占用两个也可以存放下，如果是局部的一些对象，比如我们的Object对象，我们只需要存放它的一个引用地址即可。</p>
+<ol>
+<li><strong>操作数据栈</strong>：</li>
+</ol>
+<p>存放java方法执行的操作数的，它就是一个栈，先进后出的栈结构，操作数栈，就是用来操作的，操作的的元素可以是任意的java数据类型，所以我们知道一个方法刚刚开始的时候，这个方法的操作数栈就是空的。</p>
+<p><strong>操作数栈本质上是JVM执行引擎的一个工作</strong>区，也就是方法在执行，才会对操作数栈进行操作，如果代码不不执行，操作数栈其实就是空的。</p>
+<ol>
+<li><strong>动态连接:</strong></li>
+</ol>
+<p>Java语言特性多态（后续章节细讲，需要结合class与执行引擎一起来讲）。</p>
+<ol>
+<li><strong>返回地址:</strong></li>
+</ol>
+<p>正常返回（调用程序计数器中的地址作为返回）、异常的话（通过异常处理器表&lt;非栈帧中&gt;</p>
+<p><strong>同时，</strong>虚拟机栈这个内存也不是无限大，它有大小限制，默认情况下是1M。</p>
+<p>如果我们不断的往虚拟机栈中入栈帧，但是就是不出栈的话，那么这个虚拟机栈就会爆掉。</p>
+<img src="/2022/11/09/JVM底层核心技术解析/cd16745c0ee8153207bf28463c301129-23745.jpg" title="[JVM底层核心技术解析]">
+<h3 id="程序计数器"><a href="#程序计数器" class="headerlink" title="程序计数器"></a><strong>程序计数器</strong></h3><p>较小的内存空间，当前线程执行的字节码的行号指示器；各线程之间独立存储，互不影响。</p>
+<p>程序计数器是一块很小的内存空间，主要用来记录各个线程执行的字节码的地址，例如，分支、循环、跳转、异常、线程恢复等都依赖于计数器。</p>
+<p>由于 Java 是多线程语言，当执行的线程数量超过 CPU 核数时，线程之间会根据时间片轮询争夺 CPU 资源。如果一个线程的时间片用完了，或者是其它原因导致这个线程的 CPU 资源被提前抢夺，那么这个退出的线程就需要单独的一个程序计数器，来记录下一条运行的指令</p>
+<p>因为JVM是虚拟机，内部有完整的指令与执行的一套流程，所以在运行Java方法的时候需要使用程序计数器（记录字节码执行的地址或行号），如果是遇到本地方法（native方法），这个方法不是JVM来具体执行，所以程序计数器不需要记录了，这个是因为在操作系统层面也有一个程序计数器，这个会记录本地代码的执行的地址，</p>
+<p>另外程序计数器也是JVM中唯一不会OOM(OutOfMemory)的内存区域。</p>
+<h2 id="栈帧执行对内存区域的影响"><a href="#栈帧执行对内存区域的影响" class="headerlink" title="栈帧执行对内存区域的影响"></a><strong>栈帧执行对内存区域的影响</strong></h2><p>对class进行反汇编 javap –c XXXX.class</p>
+<p>字节码助记码解释地址：<a href="https://cloud.tencent.com/developer/article/1333540" target="_blank" rel="noopener">https://cloud.tencent.com/developer/article/1333540</a></p>
+<img src="/2022/11/09/JVM底层核心技术解析/10a57513a293d00c5d5d6e29b212afc5-45523.jpg" title="[JVM底层核心技术解析]">
+<p>在JVM中，基于解释执行的这种方式是基于栈的引擎，这个说的栈，就是操作数栈。</p>
+<p><strong>虚拟机栈：</strong></p>
+<p>每个线程私有的，线程在运行时，在执行每个方法的时候都会打包成一个栈帧，存储了局部变量表，操作数栈，动态链接，方法出口等信息，然后放入栈。每个时刻正在执行的当前方法就是虚拟机栈顶的栈桢。方法的执行就对应着栈帧在虚拟机栈中入栈和出栈的过程。</p>
+<p>栈的大小缺省为1M，可用参数 –Xss调整大小，例如-Xss256k</p>
+<p>在编译程序代码的时候，栈帧中需要多大的局部变量表，多深的操作数栈都已经完全确定了，并且写入到方法表的Code属性之中，因此一个栈帧需要分配多少内存，不会受到程序运行期变量数据的影响，而仅仅取决于具体的虚拟机实现。</p>
+<p><strong>局部变量表:</strong>顾名思义就是局部变量的表，用于存放我们的局部变量的。首先它是一个32位的长度，主要存放我们的Java的八大基础数据类型，一般32位就可以存放下，如果是64位的就使用高低位占用两个也可以存放下，如果是局部的一些对象，比如我们的Object对象，我们只需要存放它的一个引用地址即可。（基本数据类型、对象引用、returnAddress类型）</p>
+<p><strong>操作数据栈</strong>：存放我们方法执行的操作数的，它就是一个栈，先进后出的栈结构，操作数栈，就是用来操作的，操作的的元素可以是任意的java数据类型，所以我们知道一个方法刚刚开始的时候，这个方法的操作数栈就是空的，操作数栈运行方法是会一直运行入栈/出栈的操作</p>
+<p><strong>动态连接**</strong>:**Java语言特性多态（需要类加载、运行时才能确定具体的方法，后续有详细的讲解）动态分派</p>
+<p><strong>完成出口(返回地址)**</strong>:**</p>
+<p>正常返回：（调用程序计数器中的地址作为返回）</p>
+<p>三步曲：</p>
+<p>恢复上层方法的局部变量表和操作数栈、</p>
+<p>把返回值（如果有的话）压入调用者栈帧的操作数栈中、</p>
+<p>调整程序计数器的值以指向方法调用指令后面的一条指令、</p>
+<p>异常的话：（通过异常处理表&lt;非栈帧中的&gt;来确定）</p>
+<h2 id="运行时数据区及JVM的整体内存结构"><a href="#运行时数据区及JVM的整体内存结构" class="headerlink" title="运行时数据区及JVM的整体内存结构"></a><strong>运行时数据区及JVM的整体内存结构</strong></h2><h3 id="本地方法栈"><a href="#本地方法栈" class="headerlink" title="本地方法栈"></a><strong>本地方法栈</strong></h3><p>本地方法栈跟 Java 虚拟机栈的功能类似，Java 虚拟机栈用于管理 Java 函数的调用，而本地方法栈则用于管理本地方法的调用。但本地方法并不是用 Java 实现的，而是由 C 语言实现的(比如Object.hashcode方法)。</p>
+<p>本地方法栈是和虚拟机栈非常相似的一个区域，它服务的对象是 native 方法。你甚至可以认为虚拟机栈和本地方法栈是同一个区域。</p>
+<p>虚拟机规范无强制规定，各版本虚拟机自由实现 ，HotSpot直接把本地方法栈和虚拟机栈合二为一 。</p>
+<h3 id="方法区"><a href="#方法区" class="headerlink" title="方法区"></a><strong>方法区</strong></h3><p>方法区（Method Area）是可供各条线程共享的运行时内存区域。它存储了每一个类的结构信息，例如运行时常量池（Runtime Constant Pool）字段和方法数据、构造函数和普通方法的字节码内容、还包括一些在类、实例、接口初始化时用到的特殊方法</p>
+<p>方法区是JVM对内存的“逻辑划分”，在JDK1.7及之前很多开发者都习惯将方法区称为“永久代”，是因为在HotSpot 虚拟机中，设计人员使用了永久代来实现了 JVM 规范的方法区。在JDK1.8及以后使用了元空间来实现方法区。</p>
+<h1 id="JVM整体知识模块"><a href="#JVM整体知识模块" class="headerlink" title="JVM整体知识模块"></a><strong>JVM整体知识模块</strong></h1><p>  JVM能涉及非常庞大的一块知识体系，比如内存结构、垃圾回收、类加载、性能调优、JVM自身优化技术、执行引擎、类文件结构、监控工具等。</p>
+<p>但是在所有的知识体系中，都或多或少跟内存结构有一定的关系：</p>
+<p>比如垃圾回收回收的就是内存、类加载加载到的地方也是内存、性能优化也涉及到内存优化、执行引擎与内存密不可分、类文件结构与内存的设计有关系，监控工具也会监控内存。所以内存结构处于JVM中核心位置。也是属于我们入门JVM学习的最好的选择。</p>
+<h4 id="元空间"><a href="#元空间" class="headerlink" title="元空间"></a><strong>元空间</strong></h4><p>方法区与堆空间类似，也是一个共享内存区，所以方法区是线程共享的。假如两个线程都试图访问方法区中的同一个类信息，而这个类还没有装入 JVM，那么此时就只允许一个线程去加载它，另一个线程必须等待。</p>
+<p>在 HotSpot 虚拟机、Java7 版本中已经将永久代的静态变量和运行时常量池转移到了堆中，其余部分则存储在 JVM 的非堆内存中，而 Java8 版本已经将方法区中实现的永久代去掉了，并用元空间（class metadata）代替了之前的永久代，并且元空间的存储位置是本地内存。</p>
+<p><strong>元空间大小参数：</strong></p>
+<p>jdk1.7及以前（初始和最大值）：-XX:PermSize；-XX:MaxPermSize；</p>
+<p>jdk1.8以后（初始和最大值）：-XX:MetaspaceSize； -XX:MaxMetaspaceSize</p>
+<p>jdk1.8以后大小就只受本机总内存的限制（如果不设置参数的话）</p>
+<p>JVM参数参考：<a href="https://docs.oracle.com/javase/8/docs/technotes/tools/unix/java.html" target="_blank" rel="noopener">https://docs.oracle.com/javase/8/docs/technotes/tools/unix/java.html</a></p>
+<p>Java8 为什么使用元空间替代永久代，这样做有什么好处呢？</p>
+<p>官方给出的解释是：</p>
+<p>移除永久代是为了融合 HotSpot JVM 与 JRockit VM 而做出的努力，因为 JRockit 没有永久代，所以不需要配置永久代。</p>
+<p>永久代内存经常不够用或发生内存溢出，抛出异常 java.lang.OutOfMemoryError: PermGen。这是因为在 JDK1.7 版本中，指定的 PermGen 区大小为 8M，由于 PermGen 中类的元数据信息在每次 FullGC 的时候都可能被收集，回收率都偏低，成绩很难令人满意；还有为 PermGen 分配多大的空间很难确定，PermSize 的大小依赖于很多因素，比如，JVM 加载的 class 总数、常量池的大小和方法的大小等。</p>
+<h3 id="运行时常量池"><a href="#运行时常量池" class="headerlink" title="运行时常量池"></a><strong>运行时常量池</strong></h3><p>运行时常量池（Runtime Constant Pool）是每一个类或接口的常量池（Constant_Pool）的运行时表示形式，它包括了若干种不同的常量：从编译期可知的数值字面量到必须运行期解析后才能获得的方法或字段引用。</p>
+<p>运行时常量池是方法区的一部分。</p>
+<h3 id="堆"><a href="#堆" class="headerlink" title="堆"></a><strong>堆</strong></h3><p>堆是 JVM 上最大的内存区域，我们申请的几乎所有的对象，都是在这里存储的。</p>
+<p>堆空间一般是程序启动时，就申请了，但是并不一定会全部使用。堆一般设置成可伸缩的。</p>
+<p>随着对象的频繁创建，堆空间占用的越来越多，就需要不定期的对不再使用的对象进行回收。这个在 Java 中，就叫作 GC（Garbage Collection）。</p>
+<p>那一个对象创建的时候，到底是在堆上分配，还是在栈上分配呢？这和两个方面有关：对象的类型和在 Java 类中存在的位置。</p>
+<p>Java 的对象可以分为基本数据类型和普通对象。</p>
+<p>对于普通对象来说，JVM 会首先在堆上创建对象，然后在其他地方使用的其实是它的引用。比如，把这个引用保存在虚拟机栈的局部变量表中。</p>
+<p>对于基本数据类型来说（byte、short、int、long、float、double、char)，有两种情况。</p>
+<p>当你在方法体内声明了基本数据类型的对象，它就会在栈上直接分配。其他情况，都是在堆上分配。</p>
+<p><strong>堆大小参数：</strong></p>
+<p>-Xms：堆的最小值；</p>
+<p>-Xmx：堆的最大值；</p>
+<p>-Xmn：新生代的大小；</p>
+<p>-XX:NewSize；新生代最小值；</p>
+<p>-XX:MaxNewSize：新生代最大值；</p>
+<p>例如- Xmx256m</p>
+<img src="/2022/11/09/JVM底层核心技术解析/daa42c744e7377298fead4d084203fed-61705.jpg" title="[JVM底层核心技术解析]">
+<h3 id="直接内存（堆外内存）"><a href="#直接内存（堆外内存）" class="headerlink" title="直接内存（堆外内存）"></a><strong>直接内存（堆外内存）</strong></h3><p>直接内存有一种更加科学的叫法，堆外内存。</p>
+<p>JVM 在运行时，会从操作系统申请大块的堆内存，进行数据的存储；同时还有虚拟机栈、本地方法栈和程序计数器，这块称之为栈区。操作系统剩余的内存也就是堆外内存。</p>
+<p>它不是虚拟机运行时数据区的一部分，也不是java虚拟机规范中定义的内存区域；如果使用了NIO,这块区域会被频繁使用，在java堆内可以用directByteBuffer对象直接引用并操作；</p>
+<p>这块内存不受java堆大小限制，但受本机总内存的限制，可以通过-XX:MaxDirectMemorySize来设置（默认与堆内存最大值一样），所以也会出现OOM异常。</p>
+<p><strong>小结：</strong></p>
+<p>1、直接内存主要是通过 DirectByteBuffer 申请的内存，可以使用参数“MaxDirectMemorySize”来限制它的大小。</p>
+<p>2、其他堆外内存，主要是指使用了Unsafe 或者其他 JNI 手段直接直接申请的内存。</p>
+<p>堆外内存的泄漏是非常严重的，它的排查难度高、影响大，甚至会造成主机的死亡。后续章节会详细讲。</p>
+<p><strong>同时，要注意**</strong>Oracle<strong> </strong>之前<strong><a href="https://docs.google.com/document/d/1GDm_cAxYInmoHMor-AkStzWvwE9pw6tnz_CebJQxuUE/edit?pli=1" target="_blank" rel="noopener">计划在Java 9中去掉</a><a href="https://docs.google.com/document/d/1GDm_cAxYInmoHMor-AkStzWvwE9pw6tnz_CebJQxuUE/edit?pli=1" target="_blank" rel="noopener"> </a><a href="https://docs.google.com/document/d/1GDm_cAxYInmoHMor-AkStzWvwE9pw6tnz_CebJQxuUE/edit?pli=1" target="_blank" rel="noopener">sun.misc.Unsafe</a> </strong>API<strong>**。这里删除sun.misc.Unsafe的原因之一是使Java更加安全，并且有替代方案。</strong></p>
+<p><strong>目前我们主要针对的JDK1.8，JDK1.9暂时不放入讨论范围中，我们大致知道java的发展即可。</strong></p>
+<h1 id="深入理解JVM的内存区域"><a href="#深入理解JVM的内存区域" class="headerlink" title="深入理解JVM的内存区域"></a><strong>深入理解JVM的内存区域</strong></h1><h2 id="深入理解运行时数据区"><a href="#深入理解运行时数据区" class="headerlink" title="深入理解运行时数据区"></a><strong>深入理解运行时数据区</strong></h2><p>代码示例：</p>
+<img src="/2022/11/09/JVM底层核心技术解析/a8fef8e29f5028c19f753261d52b83a7-39481.jpg" title="[JVM底层核心技术解析]">
+<ol>
+<li>JVM 向操作系统申请内存：</li>
+</ol>
+<p>JVM 第一步就是通过配置参数或者默认配置参数向操作系统申请内存空间，根据内存大小找到具体的内存分配表，然后把内存段的起始地址和终止地址分配给 JVM，</p>
+<ol>
+<li>JVM 获得内存空间后，会根据配置参数分配堆、栈以及方法区的内存大小</li>
+</ol>
+<p>-Xms30m -Xmx30m -Xss1m -XX:MaxMetaspaceSize=30m</p>
+<ol>
+<li>类加载（类加载的细节后续章节会讲）：</li>
+</ol>
+<p>这里主要是把class放入方法区、还有class中的静态变量和常量也要放入方法区</p>
+<ol>
+<li>执行方法及创建对象：</li>
+</ol>
+<p>启动 main 线程，执行 main 方法，开始执行第一行代码。此时堆内存中会创建一个 student 对象，对象引用 student 就存放在栈中。</p>
+<p>后续代码中遇到new关键字，会再创建一个 student 对象，对象引用 student 就存放在栈中。</p>
+<img src="/2022/11/09/JVM底层核心技术解析/9349a35c4b34745f4918ef4b58dd0459-26553.jpg" title="[JVM底层核心技术解析]">
+<p><strong>总结一下JVM运行内存的整体流程</strong></p>
+<p>JVM在操作系统上启动，申请内存，先进行运行时数据区的初始化，然后把类加载到方法区中</p>
+<p>方法的执行和退出过程在内存上的体现上就是虚拟机栈中栈帧的入栈和出栈。</p>
+<p>同时在方法的执行过程中创建的对象一般情况下都是放在堆中，最后堆中的对象也是需要进行垃圾回收清理的。</p>
+<h2 id="从底层深入理解运行时数据区"><a href="#从底层深入理解运行时数据区" class="headerlink" title="从底层深入理解运行时数据区"></a><strong>从底层深入理解运行时数据区</strong></h2><h3 id="堆空间分代划分"><a href="#堆空间分代划分" class="headerlink" title="堆空间分代划分"></a><strong>堆空间分代划分</strong></h3><p>堆被划分为新生代和老年代（Tenured），新生代又被进一步划分为 Eden 和 Survivor 区，最后 Survivor 由 From Survivor 和 To Survivor 组成。</p>
+<p>（先需要有概念，后续对象分配和垃圾回收会细讲这块）</p>
+<img src="/2022/11/09/JVM底层核心技术解析/3c6974751e54c7b4d224827b88369b5f-11743.jpg" title="[JVM底层核心技术解析]">
+<h3 id="GC概念"><a href="#GC概念" class="headerlink" title="GC概念"></a><strong>GC概念</strong></h3><p>GC- Garbage Collection 垃圾回收，在JVM中是自动化的垃圾回收机制，我们一般不用去关注，在JVM中GC的重要区域是堆空间。</p>
+<p>我们也可以通过一些额外方式主动发起它，比如System.gc(),主动发起。（项目中切记不要使用）</p>
+<h3 id="JHSDB工具"><a href="#JHSDB工具" class="headerlink" title="JHSDB工具"></a><strong>JHSDB工具</strong></h3><p>JHSDB是一款基于服务性代理实现的进程外调试工具。</p>
+<h4 id="JDK1-8的开启方式"><a href="#JDK1-8的开启方式" class="headerlink" title="JDK1.8的开启方式"></a><strong>JDK1.8的开启方式</strong></h4><p>开启HSDB工具</p>
+<p>Jdk1.8启动JHSDB的时候必须将sawindbg.dll（一般会在JDK的目录下）复制到对应目录的jre下(注意在win上安装了JDK1.8后往往同级目录下有一个jre的目录)</p>
+<img src="/2022/11/09/JVM底层核心技术解析/63edccc6d7db50a92e6681593abc5720-5997.jpg" title="[JVM底层核心技术解析]">
+<img src="/2022/11/09/JVM底层核心技术解析/972524a754061847dcb85d0c6129268e-70596.jpg" title="[JVM底层核心技术解析]">
+<p> 然后到目录：C:\Program Files\Java\jdk1.8.0_101\lib 进入命令行，执行 java -cp .\sa-jdi.jar sun.jvm.hotspot.HSDB</p>
+<img src="/2022/11/09/JVM底层核心技术解析/f4f9bffa8663aba6bb3b4f2474f7cd87-20526.jpg" title="[JVM底层核心技术解析]">
+<h4 id="JDK1-9及以后的开启方式"><a href="#JDK1-9及以后的开启方式" class="headerlink" title="JDK1.9及以后的开启方式"></a><strong>JDK1.9及以后的开启方式</strong></h4><p>进入JDK的bin目录下，我们可以在命令行中使用 jhsdb hsdb 来启动它</p>
+<h3 id="代码改造"><a href="#代码改造" class="headerlink" title="代码改造"></a><strong>代码改造</strong></h3><p>VM参数加入：</p>
+<p>-XX:+UseConcMarkSweepGC</p>
+<img src="/2022/11/09/JVM底层核心技术解析/e1a3c3cf44b4825c9172b1b5fe78d0f3-25393.jpg" title="[JVM底层核心技术解析]">
+<p>-XX:-UseCompressedOops</p>
+<img src="/2022/11/09/JVM底层核心技术解析/e957dc2da3e0ac75429f5a7e5a5184d3-22751.jpg" title="[JVM底层核心技术解析]">
+<img src="/2022/11/09/JVM底层核心技术解析/d46a2e3e648f83d171545d34d377e681-102103.jpg" title="[JVM底层核心技术解析]">
+<h3 id="JHSDB中查看对象"><a href="#JHSDB中查看对象" class="headerlink" title="JHSDB中查看对象"></a><strong>JHSDB中查看对象</strong></h3><h4 id="实例代码启动"><a href="#实例代码启动" class="headerlink" title="实例代码启动"></a><strong>实例代码启动</strong></h4><img src="/2022/11/09/JVM底层核心技术解析/4d1d74845f0a34b73e8193d7b5784223-82593.jpg" title="[JVM底层核心技术解析]">
+<p>因为JVM启动有一个进程，需要借助一个命令 jps查找到对应程序的进程</p>
+<img src="/2022/11/09/JVM底层核心技术解析/7fac4ceb927b05636b62636a12fb7e2e-13027.jpg" title="[JVM底层核心技术解析]">
+<p>在JHSDB工具中attach上去</p>
+<img src="/2022/11/09/JVM底层核心技术解析/5258c23ee3108a8f8dc496996eacf213-11926.jpg" title="[JVM底层核心技术解析]">
+<img src="/2022/11/09/JVM底层核心技术解析/d6b2e658c74b70b0c1d477362a69d585-16588.jpg" title="[JVM底层核心技术解析]">
+<img src="/2022/11/09/JVM底层核心技术解析/759ba88e8789a5275272d0c753c36a6a-13115.jpg" title="[JVM底层核心技术解析]">
+<h4 id="JHSDB中查看对象-1"><a href="#JHSDB中查看对象-1" class="headerlink" title="JHSDB中查看对象"></a><strong>JHSDB中查看对象</strong></h4><p><strong>查看堆参数：</strong></p>
+<img src="/2022/11/09/JVM底层核心技术解析/6e29bd2ce5bb7b4194994091e3c45778-20554.jpg" title="[JVM底层核心技术解析]">
+<img src="/2022/11/09/JVM底层核心技术解析/e42a3f8615b77b2f065e50432dfb0e18-19229.jpg" title="[JVM底层核心技术解析]">
+<p>上图中可以看到实际JVM启动过程中堆中参数的对照，可以看到，在不启动内存压缩的情况这是一篇连续的内存地址</p>
+<p><strong>再来查看对象：</strong></p>
+<img src="/2022/11/09/JVM底层核心技术解析/4dcc3bd040afcd1858b58b59a8630663-17928.jpg" title="[JVM底层核心技术解析]">
+<p>这里可以看到JVM中所有的对象，都是基于class的对象</p>
+<img src="/2022/11/09/JVM底层核心技术解析/338f73e91d40a9bd8d8de5ca53a2fef8-45517.jpg" title="[JVM底层核心技术解析]">
+<p>全路径名搜索</p>
+<img src="/2022/11/09/JVM底层核心技术解析/2a0c2da12ba6ff6f7b2887a8f66e9be7-44739.jpg" title="[JVM底层核心技术解析]">
+<p>双击出现这个Teacher类的对象，两个，就是T1和T2对象。</p>
+<img src="/2022/11/09/JVM底层核心技术解析/1b3a05077d2032d32186e5c81aba5506-42815.jpg" title="[JVM底层核心技术解析]">
+<img src="/2022/11/09/JVM底层核心技术解析/8efd59b6f0f59d930b6fe38acddc02b6-47248.jpg" title="[JVM底层核心技术解析]">
+<img src="/2022/11/09/JVM底层核心技术解析/4c6bfd03a825f0b40b060dae8b215980-51026.jpg" title="[JVM底层核心技术解析]">
+<p>最后再对比一下堆中分代划分可以得出为什么T1在Eden,T2在老年代</p>
+<img src="/2022/11/09/JVM底层核心技术解析/3cd487a42ebfb24dab04c7f144c3faf5-16637.jpg" title="[JVM底层核心技术解析]">
+<h3 id="JHSDB中查看栈"><a href="#JHSDB中查看栈" class="headerlink" title="JHSDB中查看栈"></a><strong>JHSDB中查看栈</strong></h3><img src="/2022/11/09/JVM底层核心技术解析/6925a2e9209edcbbd52f1535bab0e006-31070.jpg" title="[JVM底层核心技术解析]">
+<img src="/2022/11/09/JVM底层核心技术解析/9cf31d54b5196400f336fa63657479fd-45130.jpg" title="[JVM底层核心技术解析]">
+<p>从上图中可以验证栈内存，同时也可以验证到虚拟机栈和本地方法栈在Hotspot中是合二为一</p>
+<img src="/2022/11/09/JVM底层核心技术解析/b60c7d10ff3c1df96fe57092009d8ccd-75765.jpg" title="[JVM底层核心技术解析]">
+<p>当我们通过 Java 运行以上代码时，JVM 的整个处理过程如下：</p>
+<ol>
+<li>JVM 向操作系统申请内存，JVM 第一步就是通过配置参数或者默认配置参数向操作系统申请内存空间。</li>
+<li>JVM 获得内存空间后，会根据配置参数分配堆、栈以及方法区的内存大小。</li>
+<li>完成上一个步骤后， JVM 首先会执行构造器，编译器会在.java 文件被编译成.class 文件时，收集所有类的初始化代码，包括静态变量赋值语句、静态代码块、静态方法，静态变量和常量放入方法区</li>
+<li>执行方法。启动 main 线程，执行 main 方法，开始执行第一行代码。此时堆内存中会创建一个 Teacher 对象，对象引用 student 就存放在栈中。</li>
+</ol>
+<p>执行其他方法时，具体的操作：栈帧执行对内存区域的影响。栈帧执行对内存区域的影响</p>
+<img src="/2022/11/09/JVM底层核心技术解析/e965af2e87c19418fc47fdd25d1988ee-144704.jpg" title="[JVM底层核心技术解析]">
+<img src="/2022/11/09/JVM底层核心技术解析/e1e87ae486afe54e701ee4daf1157dee-49321.jpg" title="[JVM底层核心技术解析]">
+<h2 id="内存溢出（重点）"><a href="#内存溢出（重点）" class="headerlink" title="内存溢出（重点）"></a><strong>内存溢出（重点）</strong></h2><h3 id="栈溢出"><a href="#栈溢出" class="headerlink" title="栈溢出"></a><strong>栈溢出</strong></h3><p>参数：-Xss1m， 具体默认值需要查看官网：[<a href="https://docs.oracle.com/javase/8/docs/technotes/tools/unix/java.html#BABHDABI" target="_blank" rel="noopener">https://docs.oracle.com/javase/8/docs/technotes/tools/unix/java.html#BABHDABI</a></p>
+<p><a href="https://docs.oracle.com/javase/8/docs/technotes/tools/unix/java.html /l BABHDABI" target="_blank" rel="noopener"></a></p>
+<img src="/2022/11/09/JVM底层核心技术解析/dee835ad76430928ce2944aa73d4366c-58150.jpg" title="[JVM底层核心技术解析]">
+<p>HotSpot版本中栈的大小是固定的，是不支持拓展的。</p>
+<p>java.lang.StackOverflowError一般的方法调用是很难出现的，如果出现了可能会是无限递归。</p>
+<p>虚拟机栈带给我们的启示：方法的执行因为要打包成栈桢，所以天生要比实现同样功能的循环慢，所以树的遍历算法中：递归和非递归(循环来实现)都有存在的意义。递归代码简洁，非递归代码复杂但是速度较快。</p>
+<p>OutOfMemoryError：不断建立线程，JVM申请栈内存，机器没有足够的内存。</p>
+<p><strong>同时要注意，栈区的空间JVM没有办法去限制的，因为JVM在运行过程中会有线程不断的运行，没办法限制，所以只限制单个虚拟机栈的大小。</strong></p>
+<h3 id="堆溢出"><a href="#堆溢出" class="headerlink" title="堆溢出"></a><strong>堆溢出</strong></h3><p>内存溢出：申请内存空间,超出最大堆内存空间。</p>
+<p>如果是内存溢出，则通过 调大 -Xms，-Xmx参数。</p>
+<p>如果不是内存泄漏，就是说内存中的对象却是都是必须存活的，那么久应该检查JVM的堆参数设置，与机器的内存对比，看是否还有可以调整的空间，再从代码上检查是否存在某些对象生命周期过长、持有状态时间过长、存储结构设计不合理等情况。</p>
+<h3 id="方法区溢出"><a href="#方法区溢出" class="headerlink" title="方法区溢出"></a><strong>方法区溢出</strong></h3><p><strong>（1）</strong> 运行时常量池溢出</p>
+<p><strong>（2）</strong>方法区中保存的Class对象没有被及时回收掉或者Class信息占用的内存超过了我们配置。</p>
+<p><strong>注意Class要被回收，条件比较苛刻（仅仅是可以，不代表必然，因为还有一些参数可以进行设置</strong></p>
+<ol>
+<li><p>该类所有的实例都已经被回收，也就是堆中不存在该类的任何实例。</p>
+</li>
+<li><p>加载该类的ClassLoader已经被回收。</p>
+</li>
+<li><p>该类对应的java.lang.Class对象没有在任何地方被引用，无法在任何地方通过反射访问该</p>
+<img src="/2022/11/09/JVM底层核心技术解析/fe5c9f776176ce218d32920b78bd9927-18312.jpg" title="[JVM底层核心技术解析]">
+</li>
+</ol>
+<p><strong>代码示例：</strong></p>
+<p>cglib是一个强大的，高性能，高质量的Code生成类库，它可以在运行期扩展Java类与实现Java接口。</p>
+<p>CGLIB包的底层是通过使用一个小而快的<a href="https://baike.baidu.com/item/字节码 /t _blank" target="_blank" rel="noopener">字节码</a>处理框架ASM，来转换字节码并生成新的类。除了CGLIB包，<a href="https://baike.baidu.com/item/脚本语言 /t _blank" target="_blank" rel="noopener">脚本语言</a>例如Groovy和BeanShell，也是使用ASM来生成java的字节码。当然不鼓励直接使用ASM。</p>
+<h3 id="本机直接内存溢出"><a href="#本机直接内存溢出" class="headerlink" title="本机直接内存溢出"></a><strong>本机直接内存溢出</strong></h3><p>直接内存的容量可以通过MaxDirectMemorySize来设置（默认与堆内存最大值一样），所以也会出现OOM异常；</p>
+<p>由直接内存导致的内存溢出，一个比较明显的特征是在HeapDump文件中不会看见有什么明显的异常情况，如果发生了OOM，同时Dump文件很小，可以考虑重点排查下直接内存方面的原因</p>
+<p><a href="https://j.youzan.com/0lt-j0" target="_blank" rel="noopener">
+  </a></p>
+
+
+            
+            <div class="post-reward">
+                <a id="rewardBtn" href="javascript:;" class="post-reward-btn waves-effect waves-circle waves-light">赏</a>
+            </div>
+            
+            
+            <blockquote>
+                <p>
+                本文地址：
+                <a href="http://www.yppcat.top/2022/11/09/JVM底层核心技术解析/" target="_blank" rel="external">http://www.yppcat.top/2022/11/09/JVM底层核心技术解析/</a>
+                </p>
+                <footer><cite><a href="http://www.yppcat.top">@Eric笔记</a></cite></footer>
+            </blockquote>
+            </div>
+            
+<nav class="post-nav">
+  
+    <div class="waves-block waves-effect prev fl">
+      <a href="/2022/11/15/Activity问题/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">Activity问题</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next fr">
+      <a href="/2021/12/08/kotlin笔记-标准函数/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">kotlin笔记-标准函数</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+            
+            
+<div class="duoshuo">
+	<!-- 多说评论框 start -->
+	<div class="ds-thread" data-thread-key="JVM底层核心技术解析" data-title="JVM底层核心技术解析" data-url="http://www.yppcat.top/2022/11/09/JVM底层核心技术解析/index.html"></div>
+	<!-- 多说评论框 end -->
+	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+	<script type="text/javascript">
+	var duoshuoQuery = {short_name:"ysblog"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+	<!-- 多说公共JS代码 end -->
+</div>
+
+
+
+
+
+        </div>
+    </div>
+</article>
+
+<div id="reward" class="reward-lay">
+    <a class="reward-off" id="rewardOff" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        谢谢老板~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <ul class="reward-items">
+        
+        <li>
+            <img src="/img/wechat.jpg" title="微信打赏二维码" alt="微信打赏二维码">
+            <p>微信</p>
+        </li>
+        
+
+        
+    </ul>
+</div>
+
+    </div>
+  </main>
+<div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+<script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+
+<script src="/js/main.js"></script>
+
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<script type="text/template" id="search-tpl">
+<li class="item">
+    <a href="/{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</script>
+
+<script src="/js/search.js"></script>
+
+
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script type="text/javascript" async src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

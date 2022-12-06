@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  <title>class字节码文件结构 | Eric笔记 | Eric笔记</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="theme-color" content="#3F51B5">
+  
+  
+  <meta name="keywords" content="JVM">
+  <meta name="description" content="class字节码文件结构## class字节码文件结构 | 类型      | 名称        | 说明          | 长度  | 数量         | | ————– | ——————- | ———————- | ——- | ——————— | | u4       | magic        | 魔数,识别Class文件格式 | 4个字节 | 1           | |">
+<meta name="keywords" content="JVM">
+<meta property="og:type" content="article">
+<meta property="og:title" content="class字节码文件结构">
+<meta property="og:url" content="http://www.yppcat.top/2022/11/20/class字节码文件结构/index.html">
+<meta property="og:site_name" content="Eric笔记">
+<meta property="og:description" content="class字节码文件结构## class字节码文件结构 | 类型      | 名称        | 说明          | 长度  | 数量         | | ————– | ——————- | ———————- | ——- | ——————— | | u4       | magic        | 魔数,识别Class文件格式 | 4个字节 | 1           | |">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2022-11-20T13:32:28.054Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="class字节码文件结构">
+<meta name="twitter:description" content="class字节码文件结构## class字节码文件结构 | 类型      | 名称        | 说明          | 长度  | 数量         | | ————– | ——————- | ———————- | ——- | ——————— | | u4       | magic        | 魔数,识别Class文件格式 | 4个字节 | 1           | |">
+  
+    <link rel="alternative" href="/atom.xml" title="Eric笔记" type="application/atom+xml">
+  
+  <meta name="summary" content="">
+  <link rel="shortcut icon" href="/favicon.ico">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="loading" class="active"></div>
+
+  <nav id="menu" class="hide" >
+   <div class="inner flex-row-vertical">
+  <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+      <i class="icon icon-lg icon-close"></i>
+  </a>
+  <div class="brand-wrap">
+    <div class="brand">
+      <a href="/" class="avatar"><img src="/img/header.jpg"></a>
+      <hgroup class="introduce">
+        <h5 class="nickname">Eric笔记</h5>
+        <a href="mailto:1246275955@qq.com" title="1246275955@qq.com" class="mail">1246275955@qq.com</a>
+      </hgroup>
+    </div>
+  </div>
+  <div class="scroll-wrap flex-col">
+    <ul class="nav">
+      
+          <li class="waves-block waves-effect">
+            <a href="/">
+              <i class="icon icon-lg icon-home"></i>
+              主页
+            </a>
+          </li>
+      
+          <li class="waves-block waves-effect">
+            <a href="/archives">
+              <i class="icon icon-lg icon-archives"></i>
+              Archives
+            </a>
+          </li>
+      
+          <li class="waves-block waves-effect">
+            <a href="/tags">
+              <i class="icon icon-lg icon-tags"></i>
+              Tags
+            </a>
+          </li>
+      
+          <li class="waves-block waves-effect">
+            <a href="https://github.com/wtdBill" target="_blank">
+              <i class="icon icon-lg icon-github"></i>
+              Github
+            </a>
+          </li>
+      
+    </ul>
+
+    <footer class="footer">
+  <p><a rel="license" target="_blank" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0;vertical-align:middle;" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFAAAAAPCAMAAABEF7i9AAAAllBMVEUAAAD///+rsapERER3d3eIiIjMzMzu7u4iIiKUmZO6v7rKzsoODg4RERFVVVUNDQ0NDg0PEA8zMzNLTEtbXltmZmZydnF9gn2AgICPkI+ZmZmqqqq7u7vFxsXIzMgNDQwZGRkgICAhISEkJSMnKCcuMC4xMzE5Ozk7PTtBQkFCQkJDQ0Nna2eGhoaHh4ezuLLGysbd3d1wVGpAAAAA4UlEQVR42q2T1xqCMAyFk7QsBQeKA9x7j/d/OSm22CpX0nzcpA1/T05aAOuBVkMAScQFHLnEwoCo2f1TnQIGoVMewjZEjVFN4GH1Ue1Cn2jWqwfsOOj6wDwGvotsl/c8lv7KIq1eLOsT0HMFHMIE/RZyHnlphryT9zyV+8WH5e8yQw3wnQvgAFxPTKUVi555SHR/lOfLMgVTeDlSfN+TaoUsiTyeIm+bCkHvCA2FUKG48LDtYBZBknsYP/G8NTw0gaaHyuQf4H5pecrB/FYCT2sL9zAfy1Xyjou6L8X2W7YcLyBZCRtnq/zfAAAAAElFTkSuQmCC"></a></p>
+  <p>Eric笔记 &copy; 2022</p>
+  <p>Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme
+  <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a></p>
+  <a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-2x icon-rss-square"></i></a>
+</footer>
+
+  </div>
+</div>
+
+  </nav>
+  <main id="main">
+    <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">class字节码文件结构</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input " autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+    </div>
+</header>
+<header class="content-header">
+  <div class="container">
+    <h1 class="author">class字节码文件结构</h1>
+    <h5 class="subtitle">
+        
+            <time datetime="2022-11-20T13:30:19.000Z" itemprop="datePublished" class="page-time">
+  2022-11-20
+</time>
+
+
+        
+    </h5>
+  </div>
+</header>
+
+    <div class="container body-wrap">
+      <article id="post-class字节码文件结构" class="article article-type-post" itemprop="blogPost">
+    <div class="post-meta flex-row">
+        
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JVM/">JVM</a></li></ul>
+
+    </div>
+    <div class="post-body">
+        <aside class="post-widget" id="post-widget">
+
+            
+
+            
+            <nav class="post-toc-wrap" id="post-toc">
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#class字节码文件结构"><span class="post-toc-number">1.</span> <span class="post-toc-text">class字节码文件结构</span></a></li></ol>
+            </nav>
+            
+        </aside>
+
+        <div class="post-main">
+
+            <div class="post-content" id="post-content" itemprop="postContent">
+            <h3 id="class字节码文件结构"><a href="#class字节码文件结构" class="headerlink" title="class字节码文件结构"></a>class字节码文件结构</h3><p>## class字节码文件结构</p>
+<p>| 类型      | 名称        | 说明          | 长度  | 数量         |</p>
+<p>| ————– | ——————- | ———————- | ——- | ——————— |</p>
+<p>| u4       | magic        | 魔数,识别Class文件格式 | 4个字节 | 1           |</p>
+<p>| u2       | minor_version    | 副版本号(小版本)    | 2个字节 | 1           |</p>
+<p>| u2       | major_version    | 主版本号(大版本)    | 2个字节 | 1           |</p>
+<p>| u2       | constant_pool_count | 常量池计数器      | 2个字节 | 1           |</p>
+<p>| cp_info    | constant_pool    | 常量池表        | n个字节 | constant_pool_count-1 |</p>
+<p>| u2       | access_flags    | 访问标识        | 2个字节 | 1           |</p>
+<p>| u2       | this_class     | 类索引         | 2个字节 | 1           |</p>
+<p>| u2       | super_class     | 父类索引        | 2个字节 | 1           |</p>
+<p>| u2       | interfaces_count  | 接口计数器       | 2个字节 | 1           |</p>
+<p>| u2       | interfaces     | 接口索引集合      | 2个字节 | interfaces_count   |</p>
+<p>| u2       | fields_count    | 字段计数器       | 2个字节 | 1           |</p>
+<p>| field_info   | fields       | 字段表         | n个字节 | fields_count     |</p>
+<p>| u2       | methods_count    | 方法计数器       | 2个字节 | 1           |</p>
+<p>| method_info  | methods       | 方法表         | n个字节 | methods_count     |</p>
+<p>| u2       | attributes_count  | 属性计数器       | 2个字节 | 1           |</p>
+<p>| attribute_info | attributes     | 属性表         | n个字节 | attributes_count   |</p>
+<p>## Class文件版本号和平台的对应</p>
+<p>| 主版本（十进制） | 副版本（十进制） | 编译器版本 |</p>
+<p>| —————- | —————- | ———- |</p>
+<p>| 45        | 3        | 1.1    |</p>
+<p>| 46        | 0        | 1.2    |</p>
+<p>| 47        | 0        | 1.3    |</p>
+<p>| 48        | 0        | 1.4    |</p>
+<p>| 49        | 0        | 1.5    |</p>
+<p>| 50        | 0        | 1.6    |</p>
+<p>| 51        | 0        | 1.7    |</p>
+<p>| 52        | 0        | 1.8    |</p>
+<p>| 53        | 0        | 1.9    |</p>
+<p>| 54        | 0        | 1.10    |</p>
+<p>| 55        | 0        | 1.11    |</p>
+<p>## class文件数据类型</p>
+<p>| 数据类型 | 定义                             | 说明                             |</p>
+<p>| ——– | ———————————————————— | ———————————————————— |</p>
+<p>| 无符号数 | 无符号数可以用来描述数字、索引引用、数量值或按照utf-8编码构成的字符串值。 | 其中无符号数属于基本的数据类型。 以u1、u2、u4、u8来分别代表1个字节、2个字节、4个字节和8个字节 |</p>
+<p>| 表    | 表是由多个无符号数或其他表构成的复合数据结构。        | 所有的表都以“_info”结尾。 由于表没有固定长度，所以通常会在其前面加上个数说明。 |</p>
+<p>## 类型描述符</p>
+<p>| 标志符 | 含义                         |</p>
+<p>| —— | —————————————————- |</p>
+<p>| B   | 基本数据类型byte                   |</p>
+<p>| C   | 基本数据类型char                   |</p>
+<p>| D   | 基本数据类型double                  |</p>
+<p>| F   | 基本数据类型float                  |</p>
+<p>| I   | 基本数据类型int                   |</p>
+<p>| J   | 基本数据类型long                   |</p>
+<p>| S   | 基本数据类型short                  |</p>
+<p>| Z   | 基本数据类型boolean                 |</p>
+<p>| V   | 代表void类型                     |</p>
+<p>| L   | 对象类型，比如：<code>Ljava/lang/Object;</code>         |</p>
+<p>| [   | 数组类型，代表一维数组。比如：<code>double[][][] is [[[D</code> |</p>
+<p>## 常量类型和结构</p>
+<p>| 类型               | 标志(或标识) | 描述          |</p>
+<p>| ——————————– | ———— | ———————- |</p>
+<p>| CONSTANT_utf8_info        | 1      | UTF-8编码的字符串   |</p>
+<p>| CONSTANT_Integer_info      | 3      | 整型字面量       |</p>
+<p>| CONSTANT_Float_info       | 4      | 浮点型字面量      |</p>
+<p>| CONSTANT_Long_info        | 5      | 长整型字面量      |</p>
+<p>| CONSTANT_Double_info       | 6      | 双精度浮点型字面量   |</p>
+<p>| CONSTANT_Class_info       | 7      | 类或接口的符号引用   |</p>
+<p>| CONSTANT_String_info       | 8      | 字符串类型字面量    |</p>
+<p>| CONSTANT_Fieldref_info      | 9      | 字段的符号引用     |</p>
+<p>| CONSTANT_Methodref_info     | 10      | 类中方法的符号引用   |</p>
+<p>| CONSTANT_InterfaceMethodref_info | 11      | 接口中方法的符号引用  |</p>
+<p>| CONSTANT_NameAndType_info    | 12      | 字段或方法的符号引用  |</p>
+<p>| CONSTANT_MethodHandle_info    | 15      | 表示方法句柄      |</p>
+<p>| CONSTANT_MethodType_info     | 16      | 标志方法类型      |</p>
+<p>| CONSTANT_InvokeDynamic_info   | 18      | 表示一个动态方法调用点 |</p>
+<p>## 常量类型和结构细节</p>
+<table>
+<thead>
+<tr>
+<th>常量类型和结构</th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>标志</td>
+<td>常量</td>
+<td>描述</td>
+<td>细节</td>
+<td>长度</td>
+<td>细节描述</td>
+</tr>
+<tr>
+<td>1</td>
+<td>CONSTANT_utf8_info</td>
+<td>UTF-8编码的字符串</td>
+<td>tag</td>
+<td>u1</td>
+<td>值为1</td>
+</tr>
+<tr>
+<td>length</td>
+<td>u2</td>
+<td>UTF-8编码的字符串占用的字符数</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>bytes</td>
+<td>u1</td>
+<td>长度为length的UTF-8编码的字符串</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>3</td>
+<td>CONSTANT_Integer_info</td>
+<td>整型字面量</td>
+<td>tag</td>
+<td>u1</td>
+<td>值为3</td>
+</tr>
+<tr>
+<td>bytes</td>
+<td>u4</td>
+<td>按照高位在前存储的int值</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>4</td>
+<td>CONSTANT_Float_info</td>
+<td>浮点型字面量</td>
+<td>tag</td>
+<td>u1</td>
+<td>值为4</td>
+</tr>
+<tr>
+<td>bytes</td>
+<td>u4</td>
+<td>按照高位在前存储的float值</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>5</td>
+<td>CONSTANT_Long_info</td>
+<td>长整型字面量</td>
+<td>tag</td>
+<td>u1</td>
+<td>值为5</td>
+</tr>
+<tr>
+<td>bytes</td>
+<td>u8</td>
+<td>按照高位在前存储的long值</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>6</td>
+<td>CONSTANT_Double_info</td>
+<td>双精度浮点型字面量</td>
+<td>tag</td>
+<td>u1</td>
+<td>值为6</td>
+</tr>
+<tr>
+<td>bytes</td>
+<td>u8</td>
+<td>按照高位在前存储的double值</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>7</td>
+<td>CONSTANT_Class_info</td>
+<td>类或接口的符号引用</td>
+<td>tag</td>
+<td>u1</td>
+<td>值为7</td>
+</tr>
+<tr>
+<td>index</td>
+<td>u2</td>
+<td>指向全限定名常量项的索引</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>8</td>
+<td>CONSTANT_String_info</td>
+<td>字符串类型字面量</td>
+<td>tag</td>
+<td>u1</td>
+<td>值为8</td>
+</tr>
+<tr>
+<td>index</td>
+<td>u2</td>
+<td>指向字符串字面量的索引</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>9</td>
+<td>CONSTANT_Fieldref_info</td>
+<td>字段的符号引用</td>
+<td>tag</td>
+<td>u1</td>
+<td>值为9</td>
+</tr>
+<tr>
+<td>index</td>
+<td>u2</td>
+<td>指向声明字段的类或接口描述符CONSTANT_Class_info的索引项</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>index</td>
+<td>u2</td>
+<td>指向字段描述符CONSTANT_NameAndType的索引项</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>10</td>
+<td>CONSTANT_Methodref_info</td>
+<td>类中方法的符号引用</td>
+<td>tag</td>
+<td>u1</td>
+<td>值为10</td>
+</tr>
+<tr>
+<td>index</td>
+<td>u2</td>
+<td>指向声明方法的类描述符CONSTANT_Class_Info的索引项</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>index</td>
+<td>u2</td>
+<td>指向名称及类型描述符CONSTANT_NameAndType的索引项</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>11</td>
+<td>CONSTANT_InterfaceMethodref_info</td>
+<td>接口中方法的符号引用</td>
+<td>tag</td>
+<td>u1</td>
+<td>值为11</td>
+</tr>
+<tr>
+<td>index</td>
+<td>u2</td>
+<td>指向声明方法的接口描述符CONSTANT_Class_Info的索引项</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>index</td>
+<td>u2</td>
+<td>指向名称及类型描述符CONSTANT_NameAndType的索引项</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>12</td>
+<td>CONSTANT_NameAndType_info</td>
+<td>字段或方法的符号引用</td>
+<td>tag</td>
+<td>u1</td>
+<td>值为12</td>
+</tr>
+<tr>
+<td>index</td>
+<td>u2</td>
+<td>指向该字段或方法名称常量项的索引</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>index</td>
+<td>u2</td>
+<td>指向该字段或方法描述符常量项的索引</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>15</td>
+<td>CONSTANT_MethodHandle_info</td>
+<td>表示方法句柄</td>
+<td>tag</td>
+<td>u1</td>
+<td>值为15</td>
+</tr>
+<tr>
+<td>reference_kind</td>
+<td>u1</td>
+<td>值必须在1-9之间，它决定了方法句柄的类型方法句柄类型的值表示方法句柄的字节码行为</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>reference_index</td>
+<td>u2</td>
+<td>值必须是对常量池的有效索引</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>16</td>
+<td>CONSTANT_MethodType_info</td>
+<td>标志方法类型</td>
+<td>tag</td>
+<td>u1</td>
+<td>值为16</td>
+</tr>
+<tr>
+<td>descriptor_index</td>
+<td>u2</td>
+<td>值必须是对常量池的有效索引，常量池在该索引处的项必须是CONSTANT_Utf8_info结构，表示方法的描述符</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>18</td>
+<td>CONSTANT_InvokeDynamic_info</td>
+<td>表示一个动态方法调用点</td>
+<td>tag</td>
+<td>u1</td>
+<td>值为18</td>
+</tr>
+<tr>
+<td>bootstrap_method_attr</td>
+<td>u2</td>
+<td>值必须是对当前Class文件中引导方法表的bootstrap_methods[]数组的有效索引</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>name_and_type_index</td>
+<td>u2</td>
+<td>值必须是对当前常量池的有效索引，常量池在该索引处的项必须是CONSTANT_NameAndType_Info结构，表示方法名和方法描述符</td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>## 访问标志</p>
+<p>| 标志名称    | 标志值 | 含义                             |</p>
+<p>| ————– | —— | ———————————————————— |</p>
+<p>| ACC_PUBLIC   | 0x0001 | 标志为public类型                       |</p>
+<p>| ACC_FINAL   | 0x0010 | 标志被声明为final，只有类可以设置              |</p>
+<p>| ACC_SUPER   | 0x0020 | 标志允许使用invokespecial字节码指令的新语义，JDK1.0.2之后编译出来的类的这个标志默认为真。（使用增强的方法调用父类方法） |</p>
+<p>| ACC_INTERFACE | 0x0200 | 标志这是一个接口                       |</p>
+<p>| ACC_ABSTRACT  | 0x0400 | 是否为abstract类型，对于接口或者抽象类来说，次标志值为真，其他类型为假 |</p>
+<p>| ACC_SYNTHETIC | 0x1000 | 标志此类并非由用户代码产生（即：由编译器产生的类，没有源码对应） |</p>
+<p>| ACC_ANNOTATION | 0x2000 | 标志这是一个注解                       |</p>
+<p>| ACC_ENUM    | 0x4000 | 标志这是一个枚举                       |</p>
+<p>## 字段表访问标志</p>
+<p>| 标志名称   | 标志值 | 含义            |</p>
+<p>| ————- | —— | ————————– |</p>
+<p>| ACC_PUBLIC  | 0x0001 | 字段是否为public      |</p>
+<p>| ACC_PRIVATE  | 0x0002 | 字段是否为private     |</p>
+<p>| ACC_PROTECTED | 0x0004 | 字段是否为protected    |</p>
+<p>| ACC_STATIC  | 0x0008 | 字段是否为static      |</p>
+<p>| ACC_FINAL   | 0x0010 | 字段是否为final      |</p>
+<p>| ACC_VOLATILE | 0x0040 | 字段是否为volatile     |</p>
+<p>| ACC_TRANSTENT | 0x0080 | 字段是否为transient    |</p>
+<p>| ACC_SYNCHETIC | 0x1000 | 字段是否为由编译器自动产生 |</p>
+<p>| ACC_ENUM   | 0x4000 | 字段是否为enum       |</p>
+<p>## 类索引、父类索引、接口索引</p>
+<p>| 长度 | 含义             |</p>
+<p>| —- | —————————- |</p>
+<p>| u2  | this_class          |</p>
+<p>| u2  | super_class         |</p>
+<p>| u2  | interfaces_count       |</p>
+<p>| u2  | interfaces[interfaces_count] |</p>
+<p>## 属性的通用格式</p>
+<p>| 类型 | 名称         | 数量       | 含义    |</p>
+<p>| —- | ——————– | —————- | ———- |</p>
+<p>| u2  | attribute_name_index | 1        | 属性名索引 |</p>
+<p>| u4  | attribute_length   | 1        | 属性长度  |</p>
+<p>| u1  | info         | attribute_length | 属性表   |</p>
+<p>## 数据类型和默认初始值对应</p>
+<p>| 类型   | 默认初始值 |</p>
+<p>| ——— | ———- |</p>
+<p>| byte   | (byte)0  |</p>
+<p>| short   | (short)0  |</p>
+<p>| int    | 0     |</p>
+<p>| long   | 0L     |</p>
+<p>| float   | 0.0f    |</p>
+<p>| double  | 0.0    |</p>
+<p>| char   | \u0000   |</p>
+<p>| boolean  | false   |</p>
+<p>| reference | null    |</p>
+
+
+            
+            <div class="post-reward">
+                <a id="rewardBtn" href="javascript:;" class="post-reward-btn waves-effect waves-circle waves-light">赏</a>
+            </div>
+            
+            
+            <blockquote>
+                <p>
+                本文地址：
+                <a href="http://www.yppcat.top/2022/11/20/class字节码文件结构/" target="_blank" rel="external">http://www.yppcat.top/2022/11/20/class字节码文件结构/</a>
+                </p>
+                <footer><cite><a href="http://www.yppcat.top">@Eric笔记</a></cite></footer>
+            </blockquote>
+            </div>
+            
+<nav class="post-nav">
+  
+    <div class="waves-block waves-effect prev fl">
+      <a href="/2022/11/20/JVM指令手册/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">JVM指令手册</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next fr">
+      <a href="/2022/11/20/字节码文件与类加载/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">字节码文件与类加载</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+            
+            
+<div class="duoshuo">
+	<!-- 多说评论框 start -->
+	<div class="ds-thread" data-thread-key="class字节码文件结构" data-title="class字节码文件结构" data-url="http://www.yppcat.top/2022/11/20/class字节码文件结构/index.html"></div>
+	<!-- 多说评论框 end -->
+	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+	<script type="text/javascript">
+	var duoshuoQuery = {short_name:"ysblog"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+	<!-- 多说公共JS代码 end -->
+</div>
+
+
+
+
+
+        </div>
+    </div>
+</article>
+
+<div id="reward" class="reward-lay">
+    <a class="reward-off" id="rewardOff" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        谢谢老板~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <ul class="reward-items">
+        
+        <li>
+            <img src="/img/wechat.jpg" title="微信打赏二维码" alt="微信打赏二维码">
+            <p>微信</p>
+        </li>
+        
+
+        
+    </ul>
+</div>
+
+    </div>
+  </main>
+<div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+<script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+
+<script src="/js/main.js"></script>
+
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<script type="text/template" id="search-tpl">
+<li class="item">
+    <a href="/{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</script>
+
+<script src="/js/search.js"></script>
+
+
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script type="text/javascript" async src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

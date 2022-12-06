@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  <title>GC及调优 | Eric笔记 | Eric笔记</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="theme-color" content="#3F51B5">
+  
+  
+  <meta name="keywords" content="JVM">
+  <meta name="description" content="GC核心概述Java自动化内存管理 好处：   无需开发人员手动参与内存分配与回收，降低内存泄漏与溢出风险 缺点：   弱化了开发人员在程序出现内存溢出时定位问题和解决问题的能 对于我们现在的意义：我们必须堆这些自动化技术的原理进行了解，学会如何去监控和调节 垃圾：指在程序中没有任何指针指向的对象，这个对象就是需要被回收的垃圾 内存碎片概念  存储地址空间是指对存储器编码（编码地址）的范围。所谓编">
+<meta name="keywords" content="JVM">
+<meta property="og:type" content="article">
+<meta property="og:title" content="GC及调优">
+<meta property="og:url" content="http://www.yppcat.top/2022/11/18/GC及调优/index.html">
+<meta property="og:site_name" content="Eric笔记">
+<meta property="og:description" content="GC核心概述Java自动化内存管理 好处：   无需开发人员手动参与内存分配与回收，降低内存泄漏与溢出风险 缺点：   弱化了开发人员在程序出现内存溢出时定位问题和解决问题的能 对于我们现在的意义：我们必须堆这些自动化技术的原理进行了解，学会如何去监控和调节 垃圾：指在程序中没有任何指针指向的对象，这个对象就是需要被回收的垃圾 内存碎片概念  存储地址空间是指对存储器编码（编码地址）的范围。所谓编">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="http://www.yppcat.top/2022/11/18/GC及调优/image-20221118192853538.png">
+<meta property="og:image" content="http://www.yppcat.top/2022/11/18/GC及调优/image-20221118193123263.png">
+<meta property="og:image" content="http://www.yppcat.top/2022/11/18/GC及调优/image-20221118193236025.png">
+<meta property="og:image" content="http://www.yppcat.top/2022/11/18/GC及调优/image-20221118193411647.png">
+<meta property="og:image" content="http://www.yppcat.top/2022/11/18/GC及调优/image-20221118193546205.png">
+<meta property="og:image" content="http://www.yppcat.top/2022/11/18/GC及调优/image-20221118193633262.png">
+<meta property="og:image" content="http://www.yppcat.top/2022/11/18/GC及调优/image-20221118193809294.png">
+<meta property="og:image" content="http://www.yppcat.top/2022/11/18/GC及调优/image-20221118194234450.png">
+<meta property="og:image" content="http://www.yppcat.top/2022/11/18/GC及调优/image-20221118194343343.png">
+<meta property="og:image" content="http://www.yppcat.top/2022/11/18/GC及调优/image-20221118194424868.png">
+<meta property="og:image" content="http://www.yppcat.top/2022/11/18/GC及调优/image-20221118194433609.png">
+<meta property="og:image" content="http://www.yppcat.top/2022/11/18/GC及调优/image-20221118194745187.png">
+<meta property="og:image" content="http://www.yppcat.top/2022/11/18/GC及调优/image-20221118194800255.png">
+<meta property="og:image" content="http://www.yppcat.top/2022/11/18/GC及调优/image-20221118194826422.png">
+<meta property="og:updated_time" content="2022-11-18T11:54:40.354Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="GC及调优">
+<meta name="twitter:description" content="GC核心概述Java自动化内存管理 好处：   无需开发人员手动参与内存分配与回收，降低内存泄漏与溢出风险 缺点：   弱化了开发人员在程序出现内存溢出时定位问题和解决问题的能 对于我们现在的意义：我们必须堆这些自动化技术的原理进行了解，学会如何去监控和调节 垃圾：指在程序中没有任何指针指向的对象，这个对象就是需要被回收的垃圾 内存碎片概念  存储地址空间是指对存储器编码（编码地址）的范围。所谓编">
+<meta name="twitter:image" content="http://www.yppcat.top/2022/11/18/GC及调优/image-20221118192853538.png">
+  
+    <link rel="alternative" href="/atom.xml" title="Eric笔记" type="application/atom+xml">
+  
+  <meta name="summary" content="">
+  <link rel="shortcut icon" href="/favicon.ico">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="loading" class="active"></div>
+
+  <nav id="menu" class="hide" >
+   <div class="inner flex-row-vertical">
+  <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+      <i class="icon icon-lg icon-close"></i>
+  </a>
+  <div class="brand-wrap">
+    <div class="brand">
+      <a href="/" class="avatar"><img src="/img/header.jpg"></a>
+      <hgroup class="introduce">
+        <h5 class="nickname">Eric笔记</h5>
+        <a href="mailto:1246275955@qq.com" title="1246275955@qq.com" class="mail">1246275955@qq.com</a>
+      </hgroup>
+    </div>
+  </div>
+  <div class="scroll-wrap flex-col">
+    <ul class="nav">
+      
+          <li class="waves-block waves-effect">
+            <a href="/">
+              <i class="icon icon-lg icon-home"></i>
+              主页
+            </a>
+          </li>
+      
+          <li class="waves-block waves-effect">
+            <a href="/archives">
+              <i class="icon icon-lg icon-archives"></i>
+              Archives
+            </a>
+          </li>
+      
+          <li class="waves-block waves-effect">
+            <a href="/tags">
+              <i class="icon icon-lg icon-tags"></i>
+              Tags
+            </a>
+          </li>
+      
+          <li class="waves-block waves-effect">
+            <a href="https://github.com/wtdBill" target="_blank">
+              <i class="icon icon-lg icon-github"></i>
+              Github
+            </a>
+          </li>
+      
+    </ul>
+
+    <footer class="footer">
+  <p><a rel="license" target="_blank" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0;vertical-align:middle;" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFAAAAAPCAMAAABEF7i9AAAAllBMVEUAAAD///+rsapERER3d3eIiIjMzMzu7u4iIiKUmZO6v7rKzsoODg4RERFVVVUNDQ0NDg0PEA8zMzNLTEtbXltmZmZydnF9gn2AgICPkI+ZmZmqqqq7u7vFxsXIzMgNDQwZGRkgICAhISEkJSMnKCcuMC4xMzE5Ozk7PTtBQkFCQkJDQ0Nna2eGhoaHh4ezuLLGysbd3d1wVGpAAAAA4UlEQVR42q2T1xqCMAyFk7QsBQeKA9x7j/d/OSm22CpX0nzcpA1/T05aAOuBVkMAScQFHLnEwoCo2f1TnQIGoVMewjZEjVFN4GH1Ue1Cn2jWqwfsOOj6wDwGvotsl/c8lv7KIq1eLOsT0HMFHMIE/RZyHnlphryT9zyV+8WH5e8yQw3wnQvgAFxPTKUVi555SHR/lOfLMgVTeDlSfN+TaoUsiTyeIm+bCkHvCA2FUKG48LDtYBZBknsYP/G8NTw0gaaHyuQf4H5pecrB/FYCT2sL9zAfy1Xyjou6L8X2W7YcLyBZCRtnq/zfAAAAAElFTkSuQmCC"></a></p>
+  <p>Eric笔记 &copy; 2022</p>
+  <p>Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme
+  <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a></p>
+  <a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-2x icon-rss-square"></i></a>
+</footer>
+
+  </div>
+</div>
+
+  </nav>
+  <main id="main">
+    <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">GC及调优</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input " autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+    </div>
+</header>
+<header class="content-header">
+  <div class="container">
+    <h1 class="author">GC及调优</h1>
+    <h5 class="subtitle">
+        
+            <time datetime="2022-11-18T11:25:19.000Z" itemprop="datePublished" class="page-time">
+  2022-11-18
+</time>
+
+
+        
+    </h5>
+  </div>
+</header>
+
+    <div class="container body-wrap">
+      <article id="post-GC及调优" class="article article-type-post" itemprop="blogPost">
+    <div class="post-meta flex-row">
+        
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JVM/">JVM</a></li></ul>
+
+    </div>
+    <div class="post-body">
+        <aside class="post-widget" id="post-widget">
+
+            
+
+            
+            <nav class="post-toc-wrap" id="post-toc">
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#GC核心概述"><span class="post-toc-number">1.</span> <span class="post-toc-text">GC核心概述</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-5"><a class="post-toc-link" href="#GC核心算法"><span class="post-toc-number">1.0.0.1.</span> <span class="post-toc-text">GC核心算法</span></a></li></ol></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#垃圾回收器与内存管理"><span class="post-toc-number">1.0.1.</span> <span class="post-toc-text">垃圾回收器与内存管理</span></a></li></ol>
+            </nav>
+            
+        </aside>
+
+        <div class="post-main">
+
+            <div class="post-content" id="post-content" itemprop="postContent">
+            <h2 id="GC核心概述"><a href="#GC核心概述" class="headerlink" title="GC核心概述"></a><strong>GC核心概述</strong></h2><p><strong>Java自动化内存管理</strong></p>
+<p>好处：<br>   无需开发人员手动参与内存分配与回收，降低内存泄漏与溢出风险</p>
+<p>缺点：<br>   弱化了开发人员在程序出现内存溢出时定位问题和解决问题的能</p>
+<p>对于我们现在的意义：<br>我们必须堆这些自动化技术的原理进行了解，学会如何去监控和调节</p>
+<p><strong>垃圾</strong>：指在程序中没有任何指针指向的对象，这个对象就是需要被回收的垃圾</p>
+<p><strong>内存碎片概念</strong></p>
+<img src="/2022/11/18/GC及调优/image-20221118192853538.png" title="[GC及调优]">
+<p>存储地址空间是指对存储器编码（编码地址）的范围。所谓编码就是对每一个物理存储单元（一个字节）分配一个号码，通常叫作“编址”。分配一个号码给一个存储单元的目的是为了便于找到它，完成数据的读写，这就是所谓的“寻址”（所以，有人也把地址空间称为寻址空间）。<br>地址空间的大小和物理存储器的大小并不一定相等。举个例子来说明这个问题：某层楼共有17个房间，其编号为801～817。这17个房间是物理的，而其地址空间采用了三位编码，其范围是800～899共100个地址，可见地址空间是大于实际房间数量的。</p>
+<p><strong>为什么需要GC？</strong></p>
+<p>对于系统而言，内存迟早都会被消耗完，因为不断的分配内存空间而不进行回溯，就好像不停的产生生活垃圾</p>
+<p>但是除了释放垃圾对象，也需要对于内存空间进行碎片管理，没有GC就不能保证应用程序的正常化进行</p>
+<h5 id="GC核心算法"><a href="#GC核心算法" class="headerlink" title="GC核心算法"></a><strong>GC核心算法</strong></h5><p>1.<strong>垃圾确认算法</strong>–标记阶段算法<br>    引用计数算法<br>    GCRoot可达性分析算法<br>2.<strong>清除垃圾算法</strong>–清除阶段算法<br>    标记-清除算法<br>    复制算法<br>    标记-压缩算法</p>
+<p><strong>引用计数算法</strong></p>
+<p>原理：对每一个对象保存一个整形的引用计数器属性，用于记录对象被引用的情况。</p>
+<p>例：一个对象A只要有任何一个对象引用了A则A的引用计数器就+1，当引用失效时，引用计数器就-1.只要对象A的引用计数器的值为0，即标识对象A不可能再被使用，可进行回收</p>
+<p>优点：实现简单，垃圾对象便于识别，判断效率高</p>
+<p>缺点：<br>    他需要单独的字段存储计数器，这样的做法增加的存储空间的开销<br>    每次赋值需要额外的加减法计算，增加了时间开销<br>    引用计数算法最大的问题是无法处理循环引用的情况，这是一个比较致命的缺陷</p>
+<p>引用计数算法循环引用问题</p>
+<img src="/2022/11/18/GC及调优/image-20221118193123263.png" title="[GC及调优]">
+<p><strong>可达性分析算法</strong></p>
+<p>相对于引用计数算法，他有效的解决了在引用计数算法中的循环引用问题，防止内存泄漏发生<br>这种类型的垃圾收集也叫作追踪性垃圾收集</p>
+<p>概念：</p>
+<p>可达性分析算法以跟对象集合为起点，按照从上至下的方式搜索被跟对象集合所链接的对象目标是否可达</p>
+<p>使用可达性分析算法后，内存中的存货对象会被跟对象集合直接或者间接连接着，搜索所走过的路径称之为引用链</p>
+<p>如果目标对象没有任何阴影链项链，则是不可达的，意味着该对象已经死亡，可以标记为垃圾对象。</p>
+<p>在可达性分析算法中只有能够被根对象集合直接或间接连接的对象才是存活对象。</p>
+<img src="/2022/11/18/GC及调优/image-20221118193236025.png" title="[GC及调优]">
+<p><strong>GCRoots</strong></p>
+<p>虚拟机栈汇总的引用对象<br>例：各个线程被调用的方法中使用的参数、局部变量等<br>本地方法栈内JNI引用的对象</p>
+<p>方法区中类静态属性引用对象<br>例：JAVA类的引用类型静态变量</p>
+<p>方法区中常量引用的对象<br>例：字符串常量池里面的引用</p>
+<p>所有被同步所synchronize持有的对象</p>
+<p>java虚拟机内部引用的对象<br>例：基本数据类型对应的Class对象，一些常驻的异常对象（NullPointerException等）,系统类加载器</p>
+<p>总结：一个指针，他保存了堆里面的对象，但自己又不在堆当中，那么他就是一个Root</p>
+<p><strong>标记-清除（Mark-Sweep）算法</strong></p>
+<img src="/2022/11/18/GC及调优/image-20221118193411647.png" title="[GC及调优]">
+<p>背景：<br>标记清除算法是一种非常基础和常见的垃圾收集算法，该算法被J.McCarthy等人在1960年提出并应用于Lisp语言</p>
+<p>执行过程：<br>当堆空间中有效内存空间被耗尽时，就会停止这个程序（Stop the world），然后进行两项工作，标记，清除这两部分<br><strong>标记</strong>：从引用根节点上开始遍历（可达性分析算法）标记所有被引用的对象。一般是在对象Header中记录为可达对象。<br><strong>清除</strong>：对堆内存从头到尾进行线性遍历，如果发现某个对象在其Header中没有标记为可达对象，则将其回收<br><strong>缺点</strong>：效率不高；在进行GC的时候需要停止整个应用程序，导致用户体验差；且会产生的大量的内存碎片</p>
+<p>注意：<br>在这里的清除不是去干掉具体内存中的数据，而是本身分配的是一组连续的内存编码给我们使用，清除就是在回收这些空闲地址，将他们保存在空闲地址表当中，下次有新的对象需要空间时去判断是否够用</p>
+<p><strong>复制（Copying）算法</strong></p>
+<img src="/2022/11/18/GC及调优/image-20221118193546205.png" title="[GC及调优]">
+<p>背景：<br>为了解决标记-清除算法在垃圾收集效率方面的缺陷，M.LMinsky与1963年发表了著名论文，”使用双存储区的Lisp语言垃圾收集器“，该论文中被描述的算法被人们称之为复制算法。</p>
+<p>执行过程：<br>将内存空间分为两块，每次只使用其中一块，在垃圾回收的时候，将正在使用的内存中的存活对象复制到未被使用的内存块中，之后清除正在使用的内存块，交换两个内存角色。<br>缺点：<br>1.需要两倍空间<br>2.GC需要维护对象的引用关系，时间开销加大<br>此种方案使用与垃圾对象较少，量级不大的情况</p>
+<p>应用场景</p>
+<p>在年青代中，对常规应用的垃圾回收，一次通常可以回收70%-99%的内存空间。回收性价比高。所以年青代一般采用这种</p>
+<img src="/2022/11/18/GC及调优/image-20221118193633262.png" title="[GC及调优]">
+<p><strong>标记-压缩/整理（Mark-Compact）算法</strong></p>
+<p>背景：<br>复制算法的高效是简历在存货对象少、垃圾对象多的前提下。这种情况在新生代中经常法神，但是在老年代，更常见的情况是大部分对象都是存货的。如果依然使用复制算法，由于存货对象多，复制成本也会非常高。因此基于老年代使用复制算法并不适用。</p>
+<p>执行过程：<br>第一阶段与标记清除算法一致。<br>第二阶段将所有的存货对象压缩到内存的一段，按照顺讯排放，之后清理边界外所有空间</p>
+<img src="/2022/11/18/GC及调优/image-20221118193809294.png" title="[GC及调优]">
+<p>优劣：<br>标记压缩算法的最终效果等同于标记-清除算法执行完成后在进行一次内存碎片的整理，因此，也可以把他称之为标记-清除-压缩（Mark-Sweep-Compact）算法。<br>二者本质差异在于标记清除算法是一直非移动式的回收算法，标记压缩是移动式的。是否移动回收后的存货对象是一项优缺点并存的风险决策<br>可以看到，标记的存货被整理后，按照内存地址一次排列，而未被标记的内存会被清理掉。如此一来，我们需要给新对象分配内存是，JVM只需要持有一个内存的起始地址即可，这个比维护一个空闲列表显然少了很多开销</p>
+<p><strong>三种算法的性能指标对比</strong></p>
+<table>
+<thead>
+<tr>
+<th><strong>指标</strong></th>
+<th><strong>Mark-Sweep</strong></th>
+<th><strong>Mark-Compact</strong></th>
+<th><strong>Copying</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>速度</td>
+<td>中等</td>
+<td>最慢</td>
+<td>最快</td>
+</tr>
+<tr>
+<td>空间</td>
+<td>少（会堆积碎片）</td>
+<td>少（不堆积碎片）</td>
+<td>需要两倍大小（不堆积碎片）</td>
+</tr>
+<tr>
+<td>移动对象</td>
+<td>否</td>
+<td>是</td>
+<td>是</td>
+</tr>
+</tbody>
+</table>
+<p>效率上来说，复制算法最快，但是内存浪费最多<br>而为了尽量兼顾上面三个指标，标记整理算法相对平滑一些，但是效率上不仅如此任意，他比复制算法多了一个标记阶段，比清除多了一个整理内存阶段</p>
+<p><strong>分代收集算法</strong></p>
+<p>为了满足垃圾回收的效率最优性，所以分代手机算法应运而生。<br>分代手机算法基于一个事实：不同的对象生命周期是不一样的，因此，不同生命周期的对象可以采取不同的手机方式，以便于提高回收效率。一般是把JAVA堆分为<strong>新生代</strong>和<strong>老年代</strong>，这样就可以根据各个年代的特点使用不同回收算法，相对提高效率<br>在系统运行过程汇总，会产生大量对象，其中有些对象是业务信息相关，如HTTP请求的Session、线程、Socket连接等对象，这类对象跟业务挂钩，因此生命周期长，还有一部分是运行过程汇总生成的临时变量，这些对象生命周期短，比如：String,这些对象甚至<strong>只使用一次即可回收</strong></p>
+<p>目前所有GC都采用分代收集算法进行执行<br>对象的状态经过大量的调研研究划分为年青代与老年代两个类别<br><strong>年青代</strong>：区域相对小，对象生命周期短、存活率低，且产生应用频繁<br>复制算法回收整理速度是最快的。复制算法效率只与当前存活对象大小有关，因此很实用与年青代的回收，而空间问题，因为存活率问题，所以单独开辟S0,S1两块空间处理清除后结果<br><strong>老年代</strong>：区域较大，生命周期长、存活率高，回收不及年青代频繁<br>这种情况存在大量存过对象下，复制不适用，所以一般是用清除与整理算法混合实现<br>Mark阶段的开销与存活对象的数量成正比<br>Sweep阶段的开销与所管理的大小成正比<br>Compact阶段的开销与存活对象的数据成正比</p>
+<p><strong>增量收集算法</strong></p>
+<p>上述所有算法，在垃圾回收过程中，软件都会处于一种Stop The World的状态。在STW状态下，应用程序所有线程都会挂起，暂停一切正常工作，等待垃圾回收完成，这种情况将严重影响用户体验或系统稳定。为了解决这个问题，催生出了一套增量手机算法。</p>
+<p>基本概念：<br>如果一次性将所有垃圾进行处理，需要造成系统长时间停顿，那么久可以让垃圾收集线程和应用程序线程交替执行。每次，垃圾收集线程只收集一小片区域的内存空间，接着切换到应用程序线程。一次反复，直到垃圾收集完成。</p>
+<p>总结：实际上就是通过对线程间冲突的妥善处理，允许垃圾收集线程以分阶段的方式完成标记、清理、复制等工作。</p>
+<p>使用这种方式，由于在垃圾回收过程中，间断性的还执行了应用程序代码，所以能减少停顿时间。但是因为线程切换和上下文转换的消耗，会是的垃圾回收的总体成本上升，系统吞吐量下降。</p>
+<p><strong>分区算法</strong></p>
+<img src="/2022/11/18/GC及调优/image-20221118194234450.png" title="[GC及调优]">
+<p>相同条件下，堆空间越大，一次GC时间越长，停顿时间也越长，为了更好地控制GC产生的停顿时间，将一块大的内存区域分割成多个小块，根据目标的停顿时间，每次合理地回收若干小区间，而不是整个堆空间，从而减少一次GC所产生的停顿。</p>
+<p><strong>总结 :注意，实际上GC过程要复杂的多，需要考虑的不单单是这些，还有并行与并发的兼顾，而且通常都会应用复合算法去使用</strong></p>
+<h4 id="垃圾回收器与内存管理"><a href="#垃圾回收器与内存管理" class="headerlink" title="垃圾回收器与内存管理"></a><strong>垃圾回收器与内存管理</strong></h4><p>常用7种垃圾回收器</p>
+<img src="/2022/11/18/GC及调优/image-20221118194343343.png" title="[GC及调优]">
+<p><strong>垃圾回收的并行与串行</strong></p>
+<p>并行&amp;串行：<br><strong>并行</strong>（Parallel）：只多条垃圾收集线程并行工作，但此时用户线程仍处于等待状态。<br>ParNew、Parallel Scavenge、Parallel Old<br><strong>串行</strong>（Serial）：<br>单线程执行<br>如果内存不够则程序暂停，启动JVM垃圾回收器进行垃圾回收。回收万再启动城西县城</p>
+<img src="/2022/11/18/GC及调优/image-20221118194424868.png" title="[GC及调优]">
+<img src="/2022/11/18/GC及调优/image-20221118194433609.png" title="[GC及调优]">
+<p>并行&amp;并发：<br><strong>并发</strong>：指的是多个事情在同一时间段内同时发生<br>并发的多个任务之间是相互抢占资源<br><strong>并行</strong>：指的是多个事情在同一时间点上同时发生了<br>并行的多个线程之间不相互抢占资源</p>
+<p>只有在<strong>多个CPU</strong>或者<strong>一个CPU多核</strong>的情况中，才会发生并行。<br>否则，看似相同发生的事情，实际上都是并发执行</p>
+<p>常用GC垃圾回收器对比</p>
+<img src="/2022/11/18/GC及调优/image-20221118194745187.png" title="[GC及调优]">
+<p><strong>CMS回收器</strong></p>
+<img src="/2022/11/18/GC及调优/image-20221118194800255.png" title="[GC及调优]">
+<p>初始标记：<br>这个阶段会出现STW现象，主要工作内容是标记处GCRoot能关联到的对象。（注意，这里只有GCROOT的对象，不会涉及引用链）<br>并发标记：<br>遍历GCROOT整个引用链，这个工作耗时非常长，采取了与垃圾收集器线程一起运行的方案<br>重新标记：<br>因为在上面步骤有用户线程行为，所以此处再次STW，进行重新标记，但是这部分只管重新运行后的那部分对象数据的变动。<br>并发清理：<br>清理所有标记的死亡对象，释放，这一步与用户线程同步进行<br>并发重置：</p>
+<img src="/2022/11/18/GC及调优/image-20221118194826422.png" title="[GC及调优]">
+<p><strong>评估GC的性能指标</strong></p>
+<p><strong>吞吐量</strong>：运行用户代码的时间占总运行时间的比例<br>                 总运行时间=程序运行时间+内存回收时间<br><strong>垃圾收集开销</strong>：吞吐量的补数，垃圾收集所用时间与总运行时间的比例<br><strong>暂停时间</strong>：执行垃圾收集时，程序的工作线程被暂停的时间<br><strong>收集频率</strong>：应用程序的执行，收集操作发生的次数<br><strong>内存占用</strong>：java堆区所占的内存大小</p>
+<p><strong>不可达三角</strong>：<br>    性能调优的终极概念：空间换时间、时间换空间<br>不存在完美，一般情况下抓住吞吐量与暂停时间来设计</p>
+
+
+            
+            <div class="post-reward">
+                <a id="rewardBtn" href="javascript:;" class="post-reward-btn waves-effect waves-circle waves-light">赏</a>
+            </div>
+            
+            
+            <blockquote>
+                <p>
+                本文地址：
+                <a href="http://www.yppcat.top/2022/11/18/GC及调优/" target="_blank" rel="external">http://www.yppcat.top/2022/11/18/GC及调优/</a>
+                </p>
+                <footer><cite><a href="http://www.yppcat.top">@Eric笔记</a></cite></footer>
+            </blockquote>
+            </div>
+            
+<nav class="post-nav">
+  
+    <div class="waves-block waves-effect prev fl">
+      <a href="/2022/11/20/字节码文件与类加载/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">字节码文件与类加载</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next fr">
+      <a href="/2022/11/18/Dalvik虚拟机与ART虚拟机/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">Dalvik虚拟机与ART虚拟机</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+            
+            
+<div class="duoshuo">
+	<!-- 多说评论框 start -->
+	<div class="ds-thread" data-thread-key="GC及调优" data-title="GC及调优" data-url="http://www.yppcat.top/2022/11/18/GC及调优/index.html"></div>
+	<!-- 多说评论框 end -->
+	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+	<script type="text/javascript">
+	var duoshuoQuery = {short_name:"ysblog"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+	<!-- 多说公共JS代码 end -->
+</div>
+
+
+
+
+
+        </div>
+    </div>
+</article>
+
+<div id="reward" class="reward-lay">
+    <a class="reward-off" id="rewardOff" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        谢谢老板~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <ul class="reward-items">
+        
+        <li>
+            <img src="/img/wechat.jpg" title="微信打赏二维码" alt="微信打赏二维码">
+            <p>微信</p>
+        </li>
+        
+
+        
+    </ul>
+</div>
+
+    </div>
+  </main>
+<div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+<script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+
+<script src="/js/main.js"></script>
+
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<script type="text/template" id="search-tpl">
+<li class="item">
+    <a href="/{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</script>
+
+<script src="/js/search.js"></script>
+
+
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script type="text/javascript" async src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

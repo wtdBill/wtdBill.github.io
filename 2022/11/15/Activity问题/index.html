@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  <title>Activity问题 | Eric笔记 | Eric笔记</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="theme-color" content="#3F51B5">
+  
+  
+  <meta name="keywords" content="面试">
+  <meta name="description" content="Activity的启动流程 Activity跨进程启动 https://juejin.im/post/6844903959581163528#heading-1 http://gityuan.com/2016/03/12/start-activity/ 启动流程： 点击桌面App图标，Launcher进程采用Binder IPC向system_server进程发起startActivity请求；">
+<meta name="keywords" content="面试">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Activity问题">
+<meta property="og:url" content="http://www.yppcat.top/2022/11/15/Activity问题/index.html">
+<meta property="og:site_name" content="Eric笔记">
+<meta property="og:description" content="Activity的启动流程 Activity跨进程启动 https://juejin.im/post/6844903959581163528#heading-1 http://gityuan.com/2016/03/12/start-activity/ 启动流程： 点击桌面App图标，Launcher进程采用Binder IPC向system_server进程发起startActivity请求；">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="http://www.yppcat.top/2022/11/15/Activity问题/activity.png">
+<meta property="og:updated_time" content="2022-11-15T13:07:56.548Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Activity问题">
+<meta name="twitter:description" content="Activity的启动流程 Activity跨进程启动 https://juejin.im/post/6844903959581163528#heading-1 http://gityuan.com/2016/03/12/start-activity/ 启动流程： 点击桌面App图标，Launcher进程采用Binder IPC向system_server进程发起startActivity请求；">
+<meta name="twitter:image" content="http://www.yppcat.top/2022/11/15/Activity问题/activity.png">
+  
+    <link rel="alternative" href="/atom.xml" title="Eric笔记" type="application/atom+xml">
+  
+  <meta name="summary" content="">
+  <link rel="shortcut icon" href="/favicon.ico">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="loading" class="active"></div>
+
+  <nav id="menu" class="hide" >
+   <div class="inner flex-row-vertical">
+  <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+      <i class="icon icon-lg icon-close"></i>
+  </a>
+  <div class="brand-wrap">
+    <div class="brand">
+      <a href="/" class="avatar"><img src="/img/header.jpg"></a>
+      <hgroup class="introduce">
+        <h5 class="nickname">Eric笔记</h5>
+        <a href="mailto:1246275955@qq.com" title="1246275955@qq.com" class="mail">1246275955@qq.com</a>
+      </hgroup>
+    </div>
+  </div>
+  <div class="scroll-wrap flex-col">
+    <ul class="nav">
+      
+          <li class="waves-block waves-effect">
+            <a href="/">
+              <i class="icon icon-lg icon-home"></i>
+              主页
+            </a>
+          </li>
+      
+          <li class="waves-block waves-effect">
+            <a href="/archives">
+              <i class="icon icon-lg icon-archives"></i>
+              Archives
+            </a>
+          </li>
+      
+          <li class="waves-block waves-effect">
+            <a href="/tags">
+              <i class="icon icon-lg icon-tags"></i>
+              Tags
+            </a>
+          </li>
+      
+          <li class="waves-block waves-effect">
+            <a href="https://github.com/wtdBill" target="_blank">
+              <i class="icon icon-lg icon-github"></i>
+              Github
+            </a>
+          </li>
+      
+    </ul>
+
+    <footer class="footer">
+  <p><a rel="license" target="_blank" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0;vertical-align:middle;" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFAAAAAPCAMAAABEF7i9AAAAllBMVEUAAAD///+rsapERER3d3eIiIjMzMzu7u4iIiKUmZO6v7rKzsoODg4RERFVVVUNDQ0NDg0PEA8zMzNLTEtbXltmZmZydnF9gn2AgICPkI+ZmZmqqqq7u7vFxsXIzMgNDQwZGRkgICAhISEkJSMnKCcuMC4xMzE5Ozk7PTtBQkFCQkJDQ0Nna2eGhoaHh4ezuLLGysbd3d1wVGpAAAAA4UlEQVR42q2T1xqCMAyFk7QsBQeKA9x7j/d/OSm22CpX0nzcpA1/T05aAOuBVkMAScQFHLnEwoCo2f1TnQIGoVMewjZEjVFN4GH1Ue1Cn2jWqwfsOOj6wDwGvotsl/c8lv7KIq1eLOsT0HMFHMIE/RZyHnlphryT9zyV+8WH5e8yQw3wnQvgAFxPTKUVi555SHR/lOfLMgVTeDlSfN+TaoUsiTyeIm+bCkHvCA2FUKG48LDtYBZBknsYP/G8NTw0gaaHyuQf4H5pecrB/FYCT2sL9zAfy1Xyjou6L8X2W7YcLyBZCRtnq/zfAAAAAElFTkSuQmCC"></a></p>
+  <p>Eric笔记 &copy; 2022</p>
+  <p>Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme
+  <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a></p>
+  <a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-2x icon-rss-square"></i></a>
+</footer>
+
+  </div>
+</div>
+
+  </nav>
+  <main id="main">
+    <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">Activity问题</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input " autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+    </div>
+</header>
+<header class="content-header">
+  <div class="container">
+    <h1 class="author">Activity问题</h1>
+    <h5 class="subtitle">
+        
+            <time datetime="2022-11-15T12:50:50.000Z" itemprop="datePublished" class="page-time">
+  2022-11-15
+</time>
+
+
+        
+    </h5>
+  </div>
+</header>
+
+    <div class="container body-wrap">
+      <article id="post-Activity问题" class="article article-type-post" itemprop="blogPost">
+    <div class="post-meta flex-row">
+        
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/面试/">面试</a></li></ul>
+
+    </div>
+    <div class="post-body">
+        <aside class="post-widget" id="post-widget">
+
+            
+
+            
+            <nav class="post-toc-wrap" id="post-toc">
+            
+            </nav>
+            
+        </aside>
+
+        <div class="post-main">
+
+            <div class="post-content" id="post-content" itemprop="postContent">
+            <p><strong>Activity</strong>的启动流程</p>
+<p><strong>Activity</strong>跨进程启动</p>
+<p><a href="https://juejin.im/post/6844903959581163528#heading-1" target="_blank" rel="noopener">https://juejin.im/post/6844903959581163528#heading-1</a></p>
+<p><a href="http://gityuan.com/2016/03/12/start-activity/" target="_blank" rel="noopener">http://gityuan.com/2016/03/12/start-activity/</a></p>
+<p>启动流程：</p>
+<p>点击桌面App图标，Launcher进程采用Binder IPC向system_server进程发起startActivity请求；</p>
+<p>system_server进程接收到请求后，向zygote进程发送创建进程的请求；</p>
+<p>Zygote进程fork出新的子进程，即App进程；</p>
+<p>App进程，通过Binder IPC向sytem_server进程发起attachApplication请求；</p>
+<p>system_server进程在收到请求后，进行一系列准备工作后，再通过binder IPC向App进 程发送</p>
+<p>scheduleLaunchActivity请求；</p>
+<p>App进程的binder线程（ApplicationThread）在收到请求后，通过handler向主线程发送LAUNCH_ACTIVITY消</p>
+<p>息；</p>
+<p>主线程在收到Message后，通过发射机制创建目标Activity，并回调Activity.onCreate()等方法。</p>
+<p><strong>Activity</strong>进程内启动</p>
+<p>请求进程A：startActivity—(hook插入点1) (AMP，ActivityManager代理对象)——&gt; system_server进程：</p>
+<p>AMS(ActivityManagerService)解析Activity信息、处理启动参数、scheduleLaunchActivity/mH中EXECUTE_TRANSACTION消息处理(Android</p>
+<p>P)–&gt;</p>
+<p>回到请求进程A：ApplicationThread –&gt; ActivityThread -(hook插入点2)-&gt; Activity生命周期</p>
+<img src="/2022/11/15/Activity问题/activity.png" title="[Activity问题]">
+<p><strong>1.2.onSaveInstanceState(),onRestoreInstanceState</strong>的掉用时机</p>
+<p><strong>1.2.1onSaveInstanceState(Bundle outState)</strong>会在以下情况被调用：</p>
+<p>1.2.1.1、从最近应用中选择运行其他的程序时。</p>
+<p>1.2.1.2、当用户按下HOME键时。</p>
+<p>1.2.1.3、屏幕方向切换时(无论竖屏切横屏还是横屏切竖屏都会调用)。</p>
+<p>1.2.1.4、按下电源按键（关闭屏幕显示）时。</p>
+<p>1.2.1.5、从当前activity启动一个新的activity时。</p>
+<p>onPause -&gt; onSaveInstanceState -&gt; onStop。</p>
+<p><strong>1.2.2onRestoreInstanceState(Bundle outState)</strong>会在以下情况被调用：onRestoreInstanceState(Bundle savedInstanceState)只有在activity确实是被系统回收，重新创建activity的情</p>
+<p>况下才会被调用。</p>
+<p>1.2.2.1.屏幕方向切换时，activity生命周期如下</p>
+<p>onPause -&gt; onSaveInstanceState -&gt; onStop -&gt; onDestroy -&gt; onCreate -&gt; onStart -&gt; onRestoreInstanceState</p>
+<p>-&gt; onResume</p>
+<p>1.2.2.2.在后台被回收</p>
+<p>1.2.2.3.按HOME键返回桌面,又马上点击应用图标回到原来页面时不会被回收</p>
+<p>onStart -&gt; onRestoreInstanceState -&gt; onResume</p>
+<p><strong>1.2.3</strong>源码</p>
+<p>系统会调用ActivityThread的performStopActivity方法中掉用onSaveInstanceState， </p>
+<p>将状态保存在mActivities</p>
+<p>中，mActivities维护了一个Activity的信息表，当Activity重启时候，会从mActivities中查询到对应的</p>
+<p>ActivityClientRecord。</p>
+<p>如果有信息，则调用Activity的onResoreInstanceState方法，</p>
+<p>在ActivityThread的performLaunchActivity方法中，统会判断ActivityClientRecord对象的state是否为空</p>
+<p>不为空则通过Activity的onSaveInstanceState获取其UI状态信息，通过这些信息传递给Activity的onCreate方</p>
+<p>法，</p>
+<p><strong>1.3.activity</strong>的启动模式和使用场景</p>
+<p><strong>1.3.1 android</strong>任务栈</p>
+<p>我们每次打开一个新的Activity或者退出当前Activity都会在一个称为任务栈的结构中添加或者减少一个Activity组</p>
+<p>件，一个任务栈包含了一个activity的集合。</p>
+<p>android通过ActivityRecord、TaskRecord、ActivityStack，ActivityStackSupervisor，ProcessRecord有序地管</p>
+<p>理每个activity。</p>
+<p><strong>1.3.2 Standard</strong></p>
+<p>默认模式，每次启动Activity都会创建一个新的Activity实例。</p>
+<p><strong>1.3.3 SingleTop</strong></p>
+<p>通知消息打开的页面</p>
+<p>如果要启动的Activity已经在栈顶，则不会重新创建Activity，只会调用该该Activity的onNewIntent()方法。</p>
+<p>如果要启动的Activity不在栈顶，则会重新创建该Activity的实例。</p>
+<p><strong>1.3.4 SingleTask</strong></p>
+<p>主界面</p>
+<p>如果要启动的Activity已经存在于它想要归属的栈中，那么不会创建该Activity实例，将栈中位于该Activity上的所</p>
+<p>有的Activity出栈，同时该Activity的onNewIntent()方法会被调用。</p>
+<p><strong>1.3.5SingleInstance</strong></p>
+<p>呼叫来电界面要创建在一个新栈，然后创建该Activity实例并压入新栈中，新栈中只会存在这一个Activity实例。</p>
+<p><strong>1.4.Activity A</strong>跳转<strong>Activity B</strong>，再按返回键，生命周期执行的顺序</p>
+<p><a href="https://www.sohu.com/a/402329833_611601" target="_blank" rel="noopener">https://www.sohu.com/a/402329833_611601</a></p>
+<p><a href="https://www.jianshu.com/p/6d9d830a758d" target="_blank" rel="noopener">https://www.jianshu.com/p/6d9d830a758d</a></p>
+<p>在A跳转B会执行：A onPause -&gt; B onCreate -&gt; B onStart -&gt; B onResume-&gt;A onStop</p>
+<p>在B按下返回键会执行：B onPause -&gt; A onRestart -&gt; A onStart -&gt; A onResume-&gt; B onStop -&gt; B onDestroy</p>
+<p>当A跳转到B的时候，A先执行onPause，然后居然是B再执行onCreate -&gt; onStart -&gt; onResume，最后才执行A</p>
+<p>的onStop!!!</p>
+<p>当B按下返回键，B先执行onPause，然后居然是A再执行onRestart -&gt; onStart -&gt; onResume，最后才是B执行</p>
+<p>onStop -&gt; onDestroy!!!</p>
+<p>当 B Activity 的 launchMode 为 singleInstance，singleTask 且对应的 B Activity 有可复用的实例时，生命周期</p>
+<p>回调是这样的:</p>
+<p>A.onPause -&gt; B.onNewIntent -&gt; B.onRestart -&gt; B.onStart -&gt; B.onResume -&gt; A.onStop -&gt; ( 如果 A 被移出栈的</p>
+<p>话还有一个 A.onDestory)</p>
+<p>当 B Activity 的 launchMode 为 singleTop且 B Activity 已经在栈顶时（一些特殊情况如通知栏点击、连点），</p>
+<p>此时只有 B 页面自己有生命周期变化:</p>
+<p>B.onPause -&gt; B.onNewIntent -&gt; B.onResume</p>
+<p><strong>1.5.</strong>横竖屏切换<strong>,</strong>按<strong>home</strong>键<strong>,</strong>按返回键<strong>,</strong>锁屏与解锁屏幕<strong>,</strong>跳转透明<strong>Activity</strong>界面,</p>
+<p><strong>启动一个</strong> <strong>Theme</strong> <strong>为</strong> <strong>Dialog</strong> <strong>的</strong> <strong>Activity</strong>，弹出<strong>Dialog</strong>时<strong>Activity</strong>的生命周期</p>
+<p><strong>横竖屏切换</strong>：</p>
+<p>从 Android 3.2 (API级别 13)开始</p>
+<p><a href="https://www.jianshu.com/p/dbc7e81aead2" target="_blank" rel="noopener">https://www.jianshu.com/p/dbc7e81aead2</a></p>
+<p>1、不设置Activity的androidconfifigChanges，或设置Activity的androidconfifigChanges=”orientation”，或设置</p>
+<p>Activity的android:confifigChanges=”orientation|keyboardHidden”，切屏会重新调用各个生命周期，切横屏时会执</p>
+<p>行一次，切竖屏时会执行一次。</p>
+<p>2、配置 android:confifigChanges=”orientation|keyboardHidden|screenSize”，才不会销毁 activity，且只调</p>
+<p>用 onConfifigurationChanged方法。</p>
+<p>竖屏：</p>
+<p>启动：onCreat-&gt;onStart-&gt;onResume.</p>
+<p>切换横屏时：</p>
+<p>onPause-&gt; onSaveInstanceState -&gt;onStop-&gt;onDestory</p>
+<p>onCreat-&gt;onStart-&gt;onSaveInstanceState-&gt;onResume.</p>
+<p>如果配置这个属性:androidconfifigChanges=”orientation|keyboardHidden|screenSize”</p>
+<p>就不会在调用Activity的生命周期，只会调用onConfifigurationChanged方法<strong>HOME</strong>键的执行顺序：onPause-&gt;onStop-&gt;onRestart-&gt;onStart-&gt;onResume</p>
+<p><strong>BACK</strong>键的顺序： onPause-&gt;onStop-&gt;onDestroy-&gt;onCreate-&gt;onStart-&gt;onResume</p>
+<p><strong>锁屏</strong>：锁屏时只会调用onPause()，而不会调用onStop方法，开屏后则调用onResume()。</p>
+<p><strong>弹出</strong> <strong>Dialog</strong>： </p>
+<p>直接是通过 WindowManager.addView 显示的（没有经过 AMS），所以不会对生命周期有任何</p>
+<p>影响。</p>
+<p><strong>启动</strong>theme<strong>为</strong>DialogActivity,<strong>跳转透明</strong>Activity</p>
+<p>A.onPause -&gt; B.onCrete -&gt; B.onStart -&gt; B.onResume</p>
+<p>（ Activity 不会回调 onStop，因为只有在 Activity 切到后台不可见才会回调 onStop）</p>
+<p><a href="https://www.sohu.com/a/402329833_611601" target="_blank" rel="noopener">https://www.sohu.com/a/402329833_611601</a></p>
+<p><strong>1.6.onStart</strong> <strong>和</strong> <strong>onResume</strong>、<strong>onPause</strong> 和 <strong>onStop</strong> <strong>的区别</strong></p>
+<p>onStart 和 onResume 从 Activity 可见可交互区分</p>
+<p>onStart 用户可以看到部分activity但不能与它交互 onResume()可以获得activity的焦点，能够与用户交互</p>
+<p>onStop 和 onPause 从 Activity 是否位于前台，是否有焦点区分</p>
+<p>onPause表示当前页面失去焦点。</p>
+<p>onStop表示当前页面不可见。</p>
+<p>dialog的主题页面，这个时候，打开着一个页面，就只会执行onPause，而不会执行onStop。</p>
+<p><strong>1.7.Activity</strong>之间传递数据的方式<strong>Intent</strong>是否有大小限制，如果传递的数据量</p>
+<p><strong>偏大，有哪些方案</strong></p>
+<p>startActivity-&gt;startActivityForResult-&gt;Instrumentation.execStartActivity</p>
+<p>-&gt;ActivityManger.getService().startActivity</p>
+<p>intent中携带的数据要从APP进程传输到AMS进程，再由AMS进程传输到目标Activity所在进程</p>
+<p>通过Binder来实现进程间通信</p>
+<p>1.Binder 驱动在内核空间创建一个数据接收缓存区。</p>
+<p>2.在内核空间开辟一块内核缓存区，建立内核缓存区和内核空间的数据接收缓存区之间的映射关系，以及内核中</p>
+<p>数据接收缓存区和接收进程用户空间地址的映射关系。</p>
+<p>3.发送方进程通过系统调用 copyfromuser() 将数据 copy 到内核空间的内核缓存区，由于内核缓存区和接收进程</p>
+<p>的用户空间存在内存映射，因此也就相当于把数据发送到了接收进程的用户空间，这样便完成了一次进程间的通信。</p>
+<p>为当使用Intent来传递数据时，用到了Binder机制，数据就存放在了Binder的事务缓冲区里面，而事务缓冲区是</p>
+<p>有大小限制的。普通的由Zygote孵化而来的用户进程，映射的Binder内存大小是不到1M的</p>
+<p>Binder 本身就是为了进程间频繁-灵活的通信所设计的, 并不是为了拷贝大量数据</p>
+<p>如果非 ipc</p>
+<p>单例,eventBus,Application,sqlite、shared preference、fifile 都可以;如果是 ipc</p>
+<p>1.共享内存性能还不错， </p>
+<p>通过 MemoryFile 开辟内存空间，获得 FileDescriptor； </p>
+<p>将 FileDescriptor 传递给其他</p>
+<p>进程； </p>
+<p>往共享内存写入数据； </p>
+<p>从共享内存读取数据。(<a href="https://www.jianshu.com/p/4a4bc36000fc" target="_blank" rel="noopener">https://www.jianshu.com/p/4a4bc36000fc</a>)</p>
+<p>2.Socket或者管道性能不太好，涉及到至少两次拷贝。</p>
+<p><strong>1.8.Activity</strong>的<strong>onNewIntent()</strong>方法什么时候执行</p>
+<p>果IntentActivity处于任务栈的顶端，也就是说之前打开过的Activity，现在处于onPause、onStop 状态的话，其</p>
+<p>他应用再发送Intent的话，执行顺序为：onNewIntent，onRestart，onStart，onResume。</p>
+<p>ActivityA已经启动过,处于当前应用的Activity堆栈中;</p>
+<p>当ActivityA的LaunchMode为SingleTop时，如果ActivityA在栈顶,且现在要再启动ActivityA，这时会调用</p>
+<p>onNewIntent()方法;</p>
+<p>当ActivityA的LaunchMode为SingleInstance,SingleTask时,如果已经ActivityA已经在堆栈中，那么此时再次启动</p>
+<p>会调用onNewIntent()方法;</p>
+<p><strong>1.9.</strong>显示启动和隐式启动</p>
+<p><strong>显示启动</strong></p>
+<p>1、构造方法传入Component，最常用的方式</p>
+<p>2、setComponent(componentName)方法</p>
+<p>3、setClass/setClassName方法</p>
+<p><strong>隐式启动</strong></p>
+<p><a href="https://www.jianshu.com/p/12c6253f1851" target="_blank" rel="noopener">https://www.jianshu.com/p/12c6253f1851</a></p>
+<p>隐式Intent是通过在AndroidManifest文件中设置action、data、category，让系统来筛选出合适的Activity</p>
+<p><strong>action</strong>的匹配规则</p>
+<p>Intent-fifilter action可以设置多条</p>
+<p>intent中的action只要与intent-fifilter其中的一条匹配成功即可，且intent中action最多只有一条</p>
+<p>Intent-fifilter内必须至少包含一个action。</p>
+<p><strong>category</strong>的匹配规则</p>
+<p>Intent-fifilter内必须至少包含一个category，android:name为android.intent.category.DEFAULT。</p>
+<p>intent-fifilter中，category可以有多条</p>
+<p>intent中，category也可以有多条</p>
+<p>intent中所有的category都可以在intent-fifilter中找到一样的（包括大小写）才算匹配成功</p>
+<p><strong>data</strong>的匹配规则</p>
+<p>intent-fifilter中可以设置多个data</p>
+<p>intent中只能设置一个dataintent-fifilter中指定了data，intent中就要指定其中的一个data</p>
+<p><strong>1.10.scheme</strong>使用场景<strong>,</strong>协议格式<strong>,</strong>如何使用</p>
+<p>scheme是一种页面内跳转协议，是一种非常好的实现机制，通过定义自己的scheme协议，可以非常方便跳转</p>
+<p>app中的各个页面</p>
+<p>APP根据URL跳转到另外一个APP指定页面</p>
+<p>可以通过h5页面跳转app原生页面</p>
+<p>服务器可以定制化跳转app页面</p>
+<p>Scheme链接格式样式</p>
+<p>样式scheme://host/path?query</p>
+<p>Uri.parse(“hr://test:8080/goods?goodsId=8897&amp;name=test”)</p>
+<p>hr代表Scheme协议名称</p>
+<p>test代表Scheme作用的地址域</p>
+<p>8080代表改路径的端口号</p>
+<p>/goods代表的是指定页面(路径)</p>
+<p>goodsId和name代表传递的两个参数</p>
+<p>使用</p>
+<p>掉用</p>
+<p><strong>1.11.ANR</strong> <strong>的四种场景</strong></p>
+<p>ANR 的四种场景：</p>
+<p>Service TimeOut: service 未在规定时间执行完成：前台服务 20s，后台 200s</p>
+<p><intent-filter></intent-filter></p>
+<!-- 协议部分配置 ,注意需要跟web配置相同-->
+<!--协议部分，随便设置 hr://test:8080/goods?name=test -->
+<p>&lt;data android:scheme=”hr”</p>
+<p>android:host=”test”</p>
+<p>android:path=”/goods”</p>
+<p>android:port=”8080”/&gt;</p>
+<!--下面这几行也必须得设置-->
+<category android:name="android.intent.category.DEFAULT">
+
+<category android:name="android.intent.category.BROWSABLE">
+
+<action android:name="android.intent.action.VIEW">
+
+<p></p>
+<p>Intent intent = new Intent(Intent.ACTION_VIEW,Uri.parse(“hr://test:8080/goods?name=test”));</p>
+<p>startActivity(intent);BroadCastQueue TimeOut: 未在规定时间内未处理完广播：前台广播 10s 内, 后台 60s 内</p>
+<p>ContentProvider TimeOut: publish 在 10s 内没有完成</p>
+<p>Input Dispatching timeout: 5s 内未响应键盘输入、触摸屏幕等事件</p>
+<p>我们可以看到， Activity 的生命周期回调的阻塞并不在触发 ANR 的场景里面，所以并不会直接触发 ANR。</p>
+<p>只不过死循环阻塞了主线程，如果系统再有上述的四种事件发生，就无法在相应的时间内处理从而触发 ANR。</p>
+<p><strong>1.12.onCreate</strong>和<strong>onRestoreInstance</strong>方法中恢复数据时的区别</p>
+<p>onSaveInstanceState 不一定会被调用，因为它只有在上次activity被回收了才会调用。</p>
+<p>onCreate()里的Bundle参数可能为空，一定要做非空判断。 而onRestoreInstanceState的Bundle参数一定不会</p>
+<p>是空值。</p>
+<p><strong>1.13.activty</strong>间传递数据的方式</p>
+<p>通过 Intent 传递（Intent.putExtra 的内部也是维护的一个 Bundle，因此，通过 putExtra 放入的 数据，取出时</p>
+<p>也可以通过 Bundle 去取）</p>
+<p>通过全局变量传递</p>
+<p>通过 SharedPreferences 传递</p>
+<p>通过数据库传递</p>
+<p>通过文件传递</p>
+<p><strong>1.14.</strong>跨<strong>App</strong>启动<strong>Activity</strong>的方式<strong>,</strong>注意事项</p>
+<p><a href="https://www.jianshu.com/p/ad01ac11b4f1" target="_blank" rel="noopener">https://www.jianshu.com/p/ad01ac11b4f1</a></p>
+<p><a href="https://juejin.im/post/6844904056461197326#heading-0" target="_blank" rel="noopener">https://juejin.im/post/6844904056461197326#heading-0</a></p>
+<p><strong>使用</strong>intentFilter(<strong>隐式跳转</strong>)</p>
+<p>在Manifest的Activity标签中添加：</p>
+<p>启动时：startActivity(new Intent(“com.example.test.action.BActivity”))</p>
+<p>如果有两个action属性值相同的Activity，那么在启动时手机系统会让你选择启动哪一个Activity</p>
+<p>要解决这个问题，需要给被启动的Activity再加上一个属性，</p>
+<p>然后再启动该Activity的Intent中加上一个URI，其中“app”必须与data属性的scheme的值一样，</p>
+<p>intent=new Intent(“com.zs.appb.intent.action.BeStartActivity”, Uri.parse(“app://hello”));</p>
+<p><strong>共享uid</strong>的<strong>App</strong></p>
+<p>android中uid用于标识一个应用程序，uid在应用安装时被分配，并且在应用存在于手机上期间，都不会改变。</p>
+<p>一个应用程序只能有一个uid，多个应用可以使用sharedUserId 方式共享同一个uid，前提是这些应用的签名要相</p>
+<p>同。</p>
+<p>在AndroidManifest中：manifest标签中添加android:sharedUserId=”xxxx”启动时：startActivity(new Intent().setComponent(new</p>
+<p>ComponentName(“com.example.test”,”com.example.test.XxxActivity”)));</p>
+<p><strong>使用</strong>exported</p>
+<p>一旦设置了intentFilter之后，exported就默认被设置为true了</p>
+<p>在Manifest中添加exported属性</p>
+<p>启动时：startActivity(new Intent().setComponent(new</p>
+<p>ComponentName(“com.example.zhu”,”com.example.zhu.XxxActivity”)));</p>
+<p><strong>注意</strong>(如何防止自己的<strong>Activity</strong>被外部非正常启动):</p>
+<p>如果AppB设置了android:permission=”xxx.xxx.xx”那么， </p>
+<p>就必须在你的AppA的AndroidManifast.xml中uses</p>
+<p>permission xxx.xxx.xx才能访问人家的东西。</p>
+<p>给AppA的manifest中添加权限：</p>
+<p>gei AppB中需要启动的Activity添加permission属性：</p>
+<p>android:permission=”com.example.test”</p>
+<p><strong>1.15.Activity</strong>任务栈是什么</p>
+<p>1.android任务栈又称为Task，它是一个栈结构，具有后进先出的特性，用于存放我们的Activity组件。</p>
+<p>2.我们每次打开一个新的Activity或者退出当前Activity都会在一个称为任务栈的结构中添加或者减少一个Activity</p>
+<p>组件， </p>
+<p>一个任务栈包含了一个activity的集合, 只有在任务栈栈顶的activity才可以跟用户进行交互。</p>
+<p>3.在我们退出应用程序时，必须把所有的任务栈中所有的activity清除出栈时,任务栈才会被销毁。当然任务栈也</p>
+<p>可以移动到后台, 并且保留了每一个activity的状态. 可以有序的给用户列出它们的任务, 同时也不会丢失Activity的状态</p>
+<p>信息。</p>
+<p>4.对应AMS中的ActivityRecord、TaskRecord、ActivityStack(AMS中的总结)</p>
+<p><strong>1.16.</strong>有哪些<strong>Activity</strong>常用的标记位Flags</p>
+<p>FLAG_ACTIVITY_NEW_TASK</p>
+<p>此标记位作用是为Activity指定“singleTask”启动模式，其效果和在XML中指定相同</p>
+<p>android:launchMode=”singleTask”</p>
+<p>FLAG_ACTIVITY_SINGLE_TOP</p>
+<p>此标记位作用是为Activity指定“singleTop”启动模式，其效果和在XML中指定相同</p>
+<p>android:launchMode=”singleTop”</p>
+<p>FLAG_ACTIVITY_CLEAR_TOP</p>
+<p>具有此标记位的Activity，当它启动时，在同一个任务栈中位于它上面的Activity都要出栈。此标记位一般会和</p>
+<p>singleTask启动模式一起出现，此情况下，若被启动的Activity实例存在，则系统会调用它的onNewIntent。</p>
+<p><strong>1.17.Activity</strong>的数据是怎么保存的<strong>,</strong>进程被<strong>Kill</strong>后<strong>,</strong>保存的数据怎么恢复的</p>
+<p><a href="https://www.wanandroid.com/wenda/show/12574在Activity的onSaveInstanceState方法回调时，put到参数outState（Bundle）里面。outState就是" target="_blank" rel="noopener">https://www.wanandroid.com/wenda/show/12574在Activity的onSaveInstanceState方法回调时，put到参数outState（Bundle）里面。outState就是</a></p>
+<p>ActivityClientRecord的state。</p>
+<p>ActivityClientRecord实例，都存放在ActivityThread的mActivities里面。</p>
+<p>Activity变得不可见时（onSaveInstanceState和onStop回调之后），在应用进程这边会通过</p>
+<p>ActivityTaskManagerService的activityStopped方法，把刚刚在onSaveInstanceState中满载了数据的Bundle对象，</p>
+<p>传到系统服务进程那边！ </p>
+<p>然后（在系统服务进程这边），会进一步将这个Bundle对象，赋值到对应ActivityRecord的</p>
+<p>icicle上</p>
+<p>ActivityRecord是用来记录对应Activity的各种信息的，如theme，启动模式、当前是否可见等等（为了排版更简</p>
+<p>洁，上图只列出来一个icicle），它里面还有很多管理Activity状态的相关方法；</p>
+<p>TaskRecord就是大家耳熟能详的任务栈（从上图可以看出并不真的是栈）了，它的主要职责就是管理</p>
+<p>ActivityRecord。每当Activity启动时，会先找到合适的TaskRecord（或创建新实例），然后将该Activity所对应的</p>
+<p>ActivityRecord添加到TaskRecord的mActivities中；</p>
+<p>ActivityStack管理着TaskRecord，当新TaskRecord被创建后，会被添加到它mTaskHistory里面。</p>
+</action></category></category>
+
+            
+            <div class="post-reward">
+                <a id="rewardBtn" href="javascript:;" class="post-reward-btn waves-effect waves-circle waves-light">赏</a>
+            </div>
+            
+            
+            <blockquote>
+                <p>
+                本文地址：
+                <a href="http://www.yppcat.top/2022/11/15/Activity问题/" target="_blank" rel="external">http://www.yppcat.top/2022/11/15/Activity问题/</a>
+                </p>
+                <footer><cite><a href="http://www.yppcat.top">@Eric笔记</a></cite></footer>
+            </blockquote>
+            </div>
+            
+<nav class="post-nav">
+  
+    <div class="waves-block waves-effect prev fl">
+      <a href="/2022/11/15/堆内存解析/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">堆内存解析</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next fr">
+      <a href="/2022/11/09/JVM底层核心技术解析/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">JVM底层核心技术解析</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+            
+            
+<div class="duoshuo">
+	<!-- 多说评论框 start -->
+	<div class="ds-thread" data-thread-key="Activity问题" data-title="Activity问题" data-url="http://www.yppcat.top/2022/11/15/Activity问题/index.html"></div>
+	<!-- 多说评论框 end -->
+	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+	<script type="text/javascript">
+	var duoshuoQuery = {short_name:"ysblog"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+	<!-- 多说公共JS代码 end -->
+</div>
+
+
+
+
+
+        </div>
+    </div>
+</article>
+
+<div id="reward" class="reward-lay">
+    <a class="reward-off" id="rewardOff" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        谢谢老板~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <ul class="reward-items">
+        
+        <li>
+            <img src="/img/wechat.jpg" title="微信打赏二维码" alt="微信打赏二维码">
+            <p>微信</p>
+        </li>
+        
+
+        
+    </ul>
+</div>
+
+    </div>
+  </main>
+<div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+<script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+
+<script src="/js/main.js"></script>
+
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<script type="text/template" id="search-tpl">
+<li class="item">
+    <a href="/{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</script>
+
+<script src="/js/search.js"></script>
+
+
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script type="text/javascript" async src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

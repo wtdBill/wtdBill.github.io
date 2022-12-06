@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  <title>CAS与原子变量 | Eric笔记 | Eric笔记</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="theme-color" content="#3F51B5">
+  
+  
+  <meta name="keywords" content="JUC">
+  <meta name="description" content="为什么无锁状态下的运行效率会高？ 单纯的CAS理论： 单纯的CAS理论只是为了完成一次比较确认值的同步与代码块的同步并没有关系 CAS理论应用下的锁实现原理：利用volatile变量与CAS理论保证在一定时间段内变量结果的一致性同步对于线程进行阻塞 CAS无锁状态下与synchronize有锁状态下的本质区别无锁情况下，即使重试失败，线程始终在高速运行，没有停歇，而synchronized会让线程">
+<meta name="keywords" content="JUC">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CAS与原子变量">
+<meta property="og:url" content="http://www.yppcat.top/2022/11/27/CAS与原子变量/index.html">
+<meta property="og:site_name" content="Eric笔记">
+<meta property="og:description" content="为什么无锁状态下的运行效率会高？ 单纯的CAS理论： 单纯的CAS理论只是为了完成一次比较确认值的同步与代码块的同步并没有关系 CAS理论应用下的锁实现原理：利用volatile变量与CAS理论保证在一定时间段内变量结果的一致性同步对于线程进行阻塞 CAS无锁状态下与synchronize有锁状态下的本质区别无锁情况下，即使重试失败，线程始终在高速运行，没有停歇，而synchronized会让线程">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="http://www.yppcat.top/2022/11/27/CAS与原子变量/image-20221127211502227.png">
+<meta property="og:updated_time" content="2022-11-28T01:54:19.332Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="CAS与原子变量">
+<meta name="twitter:description" content="为什么无锁状态下的运行效率会高？ 单纯的CAS理论： 单纯的CAS理论只是为了完成一次比较确认值的同步与代码块的同步并没有关系 CAS理论应用下的锁实现原理：利用volatile变量与CAS理论保证在一定时间段内变量结果的一致性同步对于线程进行阻塞 CAS无锁状态下与synchronize有锁状态下的本质区别无锁情况下，即使重试失败，线程始终在高速运行，没有停歇，而synchronized会让线程">
+<meta name="twitter:image" content="http://www.yppcat.top/2022/11/27/CAS与原子变量/image-20221127211502227.png">
+  
+    <link rel="alternative" href="/atom.xml" title="Eric笔记" type="application/atom+xml">
+  
+  <meta name="summary" content="">
+  <link rel="shortcut icon" href="/favicon.ico">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="loading" class="active"></div>
+
+  <nav id="menu" class="hide" >
+   <div class="inner flex-row-vertical">
+  <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+      <i class="icon icon-lg icon-close"></i>
+  </a>
+  <div class="brand-wrap">
+    <div class="brand">
+      <a href="/" class="avatar"><img src="/img/header.jpg"></a>
+      <hgroup class="introduce">
+        <h5 class="nickname">Eric笔记</h5>
+        <a href="mailto:1246275955@qq.com" title="1246275955@qq.com" class="mail">1246275955@qq.com</a>
+      </hgroup>
+    </div>
+  </div>
+  <div class="scroll-wrap flex-col">
+    <ul class="nav">
+      
+          <li class="waves-block waves-effect">
+            <a href="/">
+              <i class="icon icon-lg icon-home"></i>
+              主页
+            </a>
+          </li>
+      
+          <li class="waves-block waves-effect">
+            <a href="/archives">
+              <i class="icon icon-lg icon-archives"></i>
+              Archives
+            </a>
+          </li>
+      
+          <li class="waves-block waves-effect">
+            <a href="/tags">
+              <i class="icon icon-lg icon-tags"></i>
+              Tags
+            </a>
+          </li>
+      
+          <li class="waves-block waves-effect">
+            <a href="https://github.com/wtdBill" target="_blank">
+              <i class="icon icon-lg icon-github"></i>
+              Github
+            </a>
+          </li>
+      
+    </ul>
+
+    <footer class="footer">
+  <p><a rel="license" target="_blank" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0;vertical-align:middle;" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFAAAAAPCAMAAABEF7i9AAAAllBMVEUAAAD///+rsapERER3d3eIiIjMzMzu7u4iIiKUmZO6v7rKzsoODg4RERFVVVUNDQ0NDg0PEA8zMzNLTEtbXltmZmZydnF9gn2AgICPkI+ZmZmqqqq7u7vFxsXIzMgNDQwZGRkgICAhISEkJSMnKCcuMC4xMzE5Ozk7PTtBQkFCQkJDQ0Nna2eGhoaHh4ezuLLGysbd3d1wVGpAAAAA4UlEQVR42q2T1xqCMAyFk7QsBQeKA9x7j/d/OSm22CpX0nzcpA1/T05aAOuBVkMAScQFHLnEwoCo2f1TnQIGoVMewjZEjVFN4GH1Ue1Cn2jWqwfsOOj6wDwGvotsl/c8lv7KIq1eLOsT0HMFHMIE/RZyHnlphryT9zyV+8WH5e8yQw3wnQvgAFxPTKUVi555SHR/lOfLMgVTeDlSfN+TaoUsiTyeIm+bCkHvCA2FUKG48LDtYBZBknsYP/G8NTw0gaaHyuQf4H5pecrB/FYCT2sL9zAfy1Xyjou6L8X2W7YcLyBZCRtnq/zfAAAAAElFTkSuQmCC"></a></p>
+  <p>Eric笔记 &copy; 2022</p>
+  <p>Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme
+  <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a></p>
+  <a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-2x icon-rss-square"></i></a>
+</footer>
+
+  </div>
+</div>
+
+  </nav>
+  <main id="main">
+    <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">CAS与原子变量</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input " autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+    </div>
+</header>
+<header class="content-header">
+  <div class="container">
+    <h1 class="author">CAS与原子变量</h1>
+    <h5 class="subtitle">
+        
+            <time datetime="2022-11-27T13:08:34.000Z" itemprop="datePublished" class="page-time">
+  2022-11-27
+</time>
+
+
+        
+    </h5>
+  </div>
+</header>
+
+    <div class="container body-wrap">
+      <article id="post-CAS与原子变量" class="article article-type-post" itemprop="blogPost">
+    <div class="post-meta flex-row">
+        
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JUC/">JUC</a></li></ul>
+
+    </div>
+    <div class="post-body">
+        <aside class="post-widget" id="post-widget">
+
+            
+
+            
+            <nav class="post-toc-wrap" id="post-toc">
+            
+            </nav>
+            
+        </aside>
+
+        <div class="post-main">
+
+            <div class="post-content" id="post-content" itemprop="postContent">
+            <p><strong>为什么无锁状态下的运行效率会高？</strong></p>
+<p><strong>单纯的CAS理论：</strong></p>
+<p>单纯的CAS理论只是为了完成一次比较确认值的同步<br>与代码块的同步并没有关系</p>
+<p><strong>CAS理论应用下的锁实现原理：</strong><br>利用volatile变量与CAS理论保证在一定时间段内变量结果的一致性<br>同步对于线程进行阻塞</p>
+<p><strong>CAS无锁状态下与synchronize有锁状态下的本质区别</strong><br>无锁情况下，即使重试失败，线程始终在高速运行，没有停歇，而synchronized会让线程在没有获得锁的时候，发生上下文切换，进入阻塞<br>比喻：高速上飙车，当前自己开200码，正常的高速运行，但是一旦发生上下文切换，需要减速停车，换路，在加速，代价相对高昂<br>无锁状态下，因为线程需要保持运行，则需要额外CPU的支持，CPU在这里就是高速公路，没路我们走不下去，一开始没有加锁，不会有阻塞，但是没有时间片，会导致上下文切换，所以CAS需要有多核CPU对于其进行支撑，单核体系下效率不一定</p>
+<p><strong>CAS效率分析</strong></p>
+<p>结合CAS与volatile实现无锁并发情况的适用场景：<br>    多核CPU场景下，且线程数少<br><strong>CAS基于乐观锁思想</strong>，最乐观结果，不怕别的线程来修改共享变量，改了也没事，我在重试<br><strong>synchronize基于悲观锁思想</strong>：最悲观结果，得放着其他线程来修改共享变量，我上锁，你们都别改，我改了解开你们才有机会</p>
+<p>CAS体现的是无锁并发，无阻塞并发<br>    因为没有synchronized，线程不会陷入阻塞，这是效率提升的因素之一<br>    如果竞争几率，重试必然发生频繁，效率会下降</p>
+<p>最好结果为线程数不超过CPU核心数</p>
+<p><strong>线程的上下文切换</strong></p>
+<p>本质：CPU切换前把当前任务的状态保存下来，以便下次切换回这个任务时可以再次加载这个任务的状态，然后加载下一任务的状态并执行。任务的状态保存及再加载, 这段过程就叫做上下文切换。</p>
+<p>每个线程都有一个程序计数器（记录要执行的下一条指令），一组寄存器（保存当前线程的工作变量），堆栈（记录执行历史，其中每一帧保存了一个已经调用但未返回的过程）。</p>
+<p>寄存器 是 CPU 内部的数量较少但是速度很快的内存（与之对应的是 CPU 外部相对较慢的 RAM 主内存）。寄存器通过对常用值（通常是运算的中间值）的快速访问来提高计算机程序运行的速度。</p>
+<p>程序计数器是一个专用的寄存器，用于表明指令序列中 CPU 正在执行的位置，存的值为正在执行的指令的位置或者下一个将要被执行的指令的位置。</p>
+<p>上下文切换会导致额外的开销，常常表现为高并发执行时速度会慢串行，因此减少上下文切换次数便可以提高多线程程序的运行效率。</p>
+<p>直接消耗：指的是CPU寄存器需要保存和加载, 系统调度器的代码需要执行, TLB实例需要重新加载, CPU 的pipeline需要刷掉<br>间接消耗：指的是多核的cache之间得共享数据, 间接消耗对于程序的影响要看线程工作区操作数据的大小</p>
+<p><strong>Atomic Variables（原子变量）</strong></p>
+<p>本质上是一组工具，位置在atomic包下</p>
+<p>​    处理并发安全问题上：<br>​        1.单个原子处理<br>​        2.块处理</p>
+<p>​    本质上分类两类，<br>​        1.保证基本数据类型的原子性（AtomicInteger…）<br>​        2.保证引用类型的原子性（AtomicReference）</p>
+<p><strong>原子引用与ABA问题</strong></p>
+<p><strong>ABA问题</strong>：<br>    在多线程对于原子变量操作时，会发生将数据变更回去的现象，CAS在判断时会造成概念上的认知错误，但是实际上对业务结果是不变的</p>
+<p>但是实际业务运用过程中可能会需要知道整个运行过程值是否改变</p>
+<p>通过AtomicStampedReference  追溯版本号<br>通过AtomicMarkableReference 得到是否更改结果</p>
+<p><strong>不同场景下的原子变量操作方案</strong></p>
+<p>AtomicReference本质上是对于引用类型的地址<br>但是我们常规使用中，更多的业务是要判定内部数据是否一致<br>原子数组：<br>    保证数组内元素的线程安全<br>字段：<br>    字段更新器   AtomicReferenceFieldUpdater<br>累加业务：<br>    原子累加器</p>
+<p><strong>LongAdder与Atomic比较</strong></p>
+<p>性能提升的原因很简单，就是有竞争时，设置多个累加单元，然后最后结果汇总，他这样的累加操作不同的cell变量，因此减少了Cas重试失败，从而提高性能</p>
+<p><strong>LongAdder原理分析</strong></p>
+<p>性能提升的原因很简单，就是有竞争时，设置多个累加单元，然后最后结果汇总，他这样的累加操作不同的cell变量，因此减少了Cas重试失败，从而提高性能</p>
+<img src="/2022/11/27/CAS与原子变量/image-20221127211502227.png" title="[CAS与原子变量]">
+<p><strong>LongAdder伪共享原理与缓存行</strong></p>
+<p>什么是伪共享？</p>
+<p>​    CPU高度缓冲器的存储体系下，一个基本的缓存单位叫做缓存行，一个缓存行的大小为64byte,<br>​    数组是一块连续的空间，因为副本数据的原因，数组加载到缓存当中，数据超过64字节会占用多行,若小于64字节则占用一行</p>
+<p><strong>总结</strong></p>
+<p>对于并发处理，从业务角度我们看做为两块：</p>
+<p>​    1.原子变量操作</p>
+<p>​    2.业务代码块的并发</p>
+<p>并发手段现在接触的是两种：</p>
+<p>​    1.加锁并发：synchronize（悲观体现）</p>
+<p>​    2.无锁并发：CAS应用实现（乐观体现）</p>
+
+
+            
+            <div class="post-reward">
+                <a id="rewardBtn" href="javascript:;" class="post-reward-btn waves-effect waves-circle waves-light">赏</a>
+            </div>
+            
+            
+            <blockquote>
+                <p>
+                本文地址：
+                <a href="http://www.yppcat.top/2022/11/27/CAS与原子变量/" target="_blank" rel="external">http://www.yppcat.top/2022/11/27/CAS与原子变量/</a>
+                </p>
+                <footer><cite><a href="http://www.yppcat.top">@Eric笔记</a></cite></footer>
+            </blockquote>
+            </div>
+            
+<nav class="post-nav">
+  
+    <div class="waves-block waves-effect prev fl">
+      <a href="/2022/12/03/线程池/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">线程池</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next fr">
+      <a href="/2022/11/24/锁/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">锁</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+            
+            
+<div class="duoshuo">
+	<!-- 多说评论框 start -->
+	<div class="ds-thread" data-thread-key="CAS与原子变量" data-title="CAS与原子变量" data-url="http://www.yppcat.top/2022/11/27/CAS与原子变量/index.html"></div>
+	<!-- 多说评论框 end -->
+	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+	<script type="text/javascript">
+	var duoshuoQuery = {short_name:"ysblog"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+	<!-- 多说公共JS代码 end -->
+</div>
+
+
+
+
+
+        </div>
+    </div>
+</article>
+
+<div id="reward" class="reward-lay">
+    <a class="reward-off" id="rewardOff" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        谢谢老板~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <ul class="reward-items">
+        
+        <li>
+            <img src="/img/wechat.jpg" title="微信打赏二维码" alt="微信打赏二维码">
+            <p>微信</p>
+        </li>
+        
+
+        
+    </ul>
+</div>
+
+    </div>
+  </main>
+<div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+<script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+
+<script src="/js/main.js"></script>
+
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<script type="text/template" id="search-tpl">
+<li class="item">
+    <a href="/{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</script>
+
+<script src="/js/search.js"></script>
+
+
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script type="text/javascript" async src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

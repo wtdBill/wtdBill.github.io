@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  <title>字节码文件与类加载 | Eric笔记 | Eric笔记</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="theme-color" content="#3F51B5">
+  
+  
+  <meta name="keywords" content="JVM">
+  <meta name="description" content="Dalvik虚拟机执行的是dex字节码，解释执行。从Android 2.2版本开始，支持在程序运行的过程中进行选择热点代码（经常执行的代码）进行编译或者优化。 而ART（Android Runtime） 是在 Android 4.4 中引入的一个开发者选项，也是 Android 5.0 及更高版本的默认 Android 运行时。ART虚拟机执行的是本地机器码。Android的运行时从Dalvik虚">
+<meta name="keywords" content="JVM">
+<meta property="og:type" content="article">
+<meta property="og:title" content="字节码文件与类加载">
+<meta property="og:url" content="http://www.yppcat.top/2022/11/20/字节码文件与类加载/index.html">
+<meta property="og:site_name" content="Eric笔记">
+<meta property="og:description" content="Dalvik虚拟机执行的是dex字节码，解释执行。从Android 2.2版本开始，支持在程序运行的过程中进行选择热点代码（经常执行的代码）进行编译或者优化。 而ART（Android Runtime） 是在 Android 4.4 中引入的一个开发者选项，也是 Android 5.0 及更高版本的默认 Android 运行时。ART虚拟机执行的是本地机器码。Android的运行时从Dalvik虚">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="http://www.yppcat.top/2022/11/20/字节码文件与类加载/image-20221120211238030.png">
+<meta property="og:image" content="http://www.yppcat.top/2022/11/20/字节码文件与类加载/image-20221120211537989.png">
+<meta property="og:image" content="http://www.yppcat.top/2022/11/20/字节码文件与类加载/image-20221120211738049.png">
+<meta property="og:image" content="http://www.yppcat.top/2022/11/20/字节码文件与类加载/“类”的生命周期.png">
+<meta property="og:image" content="http://www.yppcat.top/2022/11/20/字节码文件与类加载/生命周期-类卸载.png">
+<meta property="og:image" content="http://www.yppcat.top/2022/11/20/字节码文件与类加载/image-20221120213716176.png">
+<meta property="og:image" content="http://www.yppcat.top/2022/11/20/字节码文件与类加载/类加载器.png">
+<meta property="og:image" content="http://www.yppcat.top/2022/11/20/字节码文件与类加载/image-20221120211910243.png">
+<meta property="og:image" content="http://www.yppcat.top/2022/11/20/字节码文件与类加载/image-20221120211930746.png">
+<meta property="og:updated_time" content="2022-11-20T13:48:32.227Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="字节码文件与类加载">
+<meta name="twitter:description" content="Dalvik虚拟机执行的是dex字节码，解释执行。从Android 2.2版本开始，支持在程序运行的过程中进行选择热点代码（经常执行的代码）进行编译或者优化。 而ART（Android Runtime） 是在 Android 4.4 中引入的一个开发者选项，也是 Android 5.0 及更高版本的默认 Android 运行时。ART虚拟机执行的是本地机器码。Android的运行时从Dalvik虚">
+<meta name="twitter:image" content="http://www.yppcat.top/2022/11/20/字节码文件与类加载/image-20221120211238030.png">
+  
+    <link rel="alternative" href="/atom.xml" title="Eric笔记" type="application/atom+xml">
+  
+  <meta name="summary" content="">
+  <link rel="shortcut icon" href="/favicon.ico">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="loading" class="active"></div>
+
+  <nav id="menu" class="hide" >
+   <div class="inner flex-row-vertical">
+  <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+      <i class="icon icon-lg icon-close"></i>
+  </a>
+  <div class="brand-wrap">
+    <div class="brand">
+      <a href="/" class="avatar"><img src="/img/header.jpg"></a>
+      <hgroup class="introduce">
+        <h5 class="nickname">Eric笔记</h5>
+        <a href="mailto:1246275955@qq.com" title="1246275955@qq.com" class="mail">1246275955@qq.com</a>
+      </hgroup>
+    </div>
+  </div>
+  <div class="scroll-wrap flex-col">
+    <ul class="nav">
+      
+          <li class="waves-block waves-effect">
+            <a href="/">
+              <i class="icon icon-lg icon-home"></i>
+              主页
+            </a>
+          </li>
+      
+          <li class="waves-block waves-effect">
+            <a href="/archives">
+              <i class="icon icon-lg icon-archives"></i>
+              Archives
+            </a>
+          </li>
+      
+          <li class="waves-block waves-effect">
+            <a href="/tags">
+              <i class="icon icon-lg icon-tags"></i>
+              Tags
+            </a>
+          </li>
+      
+          <li class="waves-block waves-effect">
+            <a href="https://github.com/wtdBill" target="_blank">
+              <i class="icon icon-lg icon-github"></i>
+              Github
+            </a>
+          </li>
+      
+    </ul>
+
+    <footer class="footer">
+  <p><a rel="license" target="_blank" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0;vertical-align:middle;" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFAAAAAPCAMAAABEF7i9AAAAllBMVEUAAAD///+rsapERER3d3eIiIjMzMzu7u4iIiKUmZO6v7rKzsoODg4RERFVVVUNDQ0NDg0PEA8zMzNLTEtbXltmZmZydnF9gn2AgICPkI+ZmZmqqqq7u7vFxsXIzMgNDQwZGRkgICAhISEkJSMnKCcuMC4xMzE5Ozk7PTtBQkFCQkJDQ0Nna2eGhoaHh4ezuLLGysbd3d1wVGpAAAAA4UlEQVR42q2T1xqCMAyFk7QsBQeKA9x7j/d/OSm22CpX0nzcpA1/T05aAOuBVkMAScQFHLnEwoCo2f1TnQIGoVMewjZEjVFN4GH1Ue1Cn2jWqwfsOOj6wDwGvotsl/c8lv7KIq1eLOsT0HMFHMIE/RZyHnlphryT9zyV+8WH5e8yQw3wnQvgAFxPTKUVi555SHR/lOfLMgVTeDlSfN+TaoUsiTyeIm+bCkHvCA2FUKG48LDtYBZBknsYP/G8NTw0gaaHyuQf4H5pecrB/FYCT2sL9zAfy1Xyjou6L8X2W7YcLyBZCRtnq/zfAAAAAElFTkSuQmCC"></a></p>
+  <p>Eric笔记 &copy; 2022</p>
+  <p>Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme
+  <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a></p>
+  <a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-2x icon-rss-square"></i></a>
+</footer>
+
+  </div>
+</div>
+
+  </nav>
+  <main id="main">
+    <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">字节码文件与类加载</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input " autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+    </div>
+</header>
+<header class="content-header">
+  <div class="container">
+    <h1 class="author">字节码文件与类加载</h1>
+    <h5 class="subtitle">
+        
+            <time datetime="2022-11-20T13:11:06.000Z" itemprop="datePublished" class="page-time">
+  2022-11-20
+</time>
+
+
+        
+    </h5>
+  </div>
+</header>
+
+    <div class="container body-wrap">
+      <article id="post-字节码文件与类加载" class="article article-type-post" itemprop="blogPost">
+    <div class="post-meta flex-row">
+        
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JVM/">JVM</a></li></ul>
+
+    </div>
+    <div class="post-body">
+        <aside class="post-widget" id="post-widget">
+
+            
+
+            
+            <nav class="post-toc-wrap" id="post-toc">
+            
+            </nav>
+            
+        </aside>
+
+        <div class="post-main">
+
+            <div class="post-content" id="post-content" itemprop="postContent">
+            <p><strong>Dalvik虚拟机</strong>执行的是dex字节码，解释执行。从Android 2.2版本开始，支持在程序运行的过程中进行选择热点代码（经常执行的代码）进行编译或者优化。</p>
+<p>而<strong>ART（Android Runtime）</strong> 是在 Android 4.4 中引入的一个开发者选项，也是 Android 5.0 及更高版本的默认 Android 运行时。<strong>ART虚拟机执行的是本地机器码</strong>。Android的运行时从Dalvik虚拟机替换成ART虚拟机，并不要求开发者将自己的应用直接编译成目标机器码，APK仍然是一个包含dex字节码的文件。 </p>
+<p><strong>那么，ART虚拟机执行的本地机器码是从哪里来？</strong></p>
+<p><strong>前端编译器与后端编译器</strong></p>
+<img src="/2022/11/20/字节码文件与类加载/image-20221120211238030.png" title="[字节码文件与类加载]">
+<p><strong>解释执行&amp;JIT&amp;AOT</strong></p>
+<p>解释执行 ： 程序运行过程中，逐行进行代码编译</p>
+<p>JIT ：程序运行过程中，将热点代码进行编译缓存执行</p>
+<p>AOT：运行之前，将所有代码打包编译成机器码</p>
+<p><strong>dex2aot</strong></p>
+<p>Dalvik下应用在安装的过程，会执行一次优化，将dex字节码进行优化生成odex文件。</p>
+<p>而Art下将应用的dex字节码翻译成本地机器码的最恰当AOT时机也就发生在应用安装的时候。ART 引入了预先编译机制（Ahead Of Time），在安装时，ART 使用设备自带的 dex2oat 工具来编译应用，dex中的字节码将被编译成本地机器码</p>
+<img src="/2022/11/20/字节码文件与类加载/image-20221120211537989.png" title="[字节码文件与类加载]">
+<p><strong>Android N的运作方式</strong></p>
+<p>ART 使用预先 (AOT) 编译，并且从 Android N混合使用AOT编译，解释和JIT。</p>
+<p>1、最初安装应用时不进行任何 AOT 编译（安装又快了），运行过程中解释执行，对经常执行的方法进行JIT，经过 JIT 编译的方法将会记录到<strong>Profile</strong>配置文件中。</p>
+<p>2、当设备闲置和充电时，编译守护进程会运行，根据<strong>Profile</strong>文件对常用代码进行 AOT 编译。待下次运行时直接使用。</p>
+<p><strong>“类（文件）”的生命周期</strong></p>
+<p><strong>类的生命周期概述</strong></p>
+<p>在JAVA中数据类型分为引用数据类型与基本数据类型，基本数据类型由虚拟机预先定义，引用数据类型则需要进行类加载。</p>
+<p>按照JAVA虚拟机规范，从class文件到加载到内存当中的类，到类写在出内存位置，他的整个生命周期包含下述七个阶段</p>
+<img src="/2022/11/20/字节码文件与类加载/image-20221120211738049.png" title="[字节码文件与类加载]">
+<img src="/2022/11/20/字节码文件与类加载/“类”的生命周期.png" title="[字节码文件与类加载]">
+<p>类的卸载</p>
+<img src="/2022/11/20/字节码文件与类加载/生命周期-类卸载.png" title="[字节码文件与类加载]">
+<p> 我们需要知道的是，一个我自己写的代码文件如何到内存当中被使用以及释放的过程</p>
+<p>​       1.写代码—.java—&gt;前段编译器—&gt;.class—–&gt;通过IO读取进来—-&gt;解析文件结构，约定固定套路</p>
+<p>​       —-&gt;将解出来的数据扔到方法区—-&gt;将当前这个类的信息提取出来—&gt;推到堆当中生成Class对象</p>
+<p>​       —-&gt;具体使用—&gt;cinit—-&gt;卸载</p>
+<p><strong>字节码解析</strong></p>
+<img src="/2022/11/20/字节码文件与类加载/image-20221120213716176.png" title="[字节码文件与类加载]">
+<p><strong>类加载器</strong></p>
+<img src="/2022/11/20/字节码文件与类加载/类加载器.png" title="[字节码文件与类加载]">
+<p>类加载：</p>
+<p>​         读取指定目录下面的相关字节码文件，解析文</p>
+<p>​           <strong>系统类加载器/启动类加载器/根类加载器</strong></p>
+<p>​             加载jre下的内容</p>
+<p>​            <strong>扩展类加载器</strong></p>
+<p>​             加载ext文件夹下的内容</p>
+<p>​           <strong>应用程序类加载器</strong></p>
+<p>​             加载自己工程当中的内容</p>
+<p>​           <strong>自定义类加载器（热修复）</strong></p>
+<p>​             提供自己去写类加载器的方案，自己去指定某个路径或者某个文件，只要你是符合jvm字节码规范</p>
+<p>​           Dex—&gt;N个Class文件—》应用程序类加载器–》不支持。自己写</p>
+<p>​           </p>
+<p>​           类加载器的分类=类加载器的种类</p>
+<p>​             不是继承关系，每个人都是独立的，每个人干自己不同的活，加载代码的路径不一致   </p>
+<p>​         ART ！= JVM</p>
+<p>​         BootClassLoader—&gt;DexBaseClassloader</p>
+<p>  <strong>Android的应用程序类加载器</strong></p>
+<img src="/2022/11/20/字节码文件与类加载/image-20221120211910243.png" title="[字节码文件与类加载]">
+<p> 类加载–》物理读取字节码文件的动作</p>
+<p>​           loadClass—》双亲委派–》为了保证我找不到，其他人能够去找</p>
+<p>​           findClass—&gt;找一个路径，读取这个文件出来，形成一个字节码数组</p>
+<p>​           defindClass—》将字节码文件读取完后进行校验，然后生成Class数据对象</p>
+<p>​          </p>
+<p>​           defindClass结束，类加载结束—-</p>
+<p><strong>热修复原理</strong></p>
+<p>热修复原理就是类加载器的核心</p>
+<img src="/2022/11/20/字节码文件与类加载/image-20221120211930746.png" title="[字节码文件与类加载]">
+<p>热修复文章 ： <a href="https://blog.csdn.net/sahadev_/article/details/53318251" target="_blank" rel="noopener">https://blog.csdn.net/sahadev_/article/details/53318251</a></p>
+
+
+            
+            <div class="post-reward">
+                <a id="rewardBtn" href="javascript:;" class="post-reward-btn waves-effect waves-circle waves-light">赏</a>
+            </div>
+            
+            
+            <blockquote>
+                <p>
+                本文地址：
+                <a href="http://www.yppcat.top/2022/11/20/字节码文件与类加载/" target="_blank" rel="external">http://www.yppcat.top/2022/11/20/字节码文件与类加载/</a>
+                </p>
+                <footer><cite><a href="http://www.yppcat.top">@Eric笔记</a></cite></footer>
+            </blockquote>
+            </div>
+            
+<nav class="post-nav">
+  
+    <div class="waves-block waves-effect prev fl">
+      <a href="/2022/11/20/class字节码文件结构/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">class字节码文件结构</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next fr">
+      <a href="/2022/11/18/GC及调优/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">GC及调优</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+            
+            
+<div class="duoshuo">
+	<!-- 多说评论框 start -->
+	<div class="ds-thread" data-thread-key="字节码文件与类加载" data-title="字节码文件与类加载" data-url="http://www.yppcat.top/2022/11/20/字节码文件与类加载/index.html"></div>
+	<!-- 多说评论框 end -->
+	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+	<script type="text/javascript">
+	var duoshuoQuery = {short_name:"ysblog"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+	<!-- 多说公共JS代码 end -->
+</div>
+
+
+
+
+
+        </div>
+    </div>
+</article>
+
+<div id="reward" class="reward-lay">
+    <a class="reward-off" id="rewardOff" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        谢谢老板~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <ul class="reward-items">
+        
+        <li>
+            <img src="/img/wechat.jpg" title="微信打赏二维码" alt="微信打赏二维码">
+            <p>微信</p>
+        </li>
+        
+
+        
+    </ul>
+</div>
+
+    </div>
+  </main>
+<div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+<script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+
+<script src="/js/main.js"></script>
+
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<script type="text/template" id="search-tpl">
+<li class="item">
+    <a href="/{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</script>
+
+<script src="/js/search.js"></script>
+
+
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script type="text/javascript" async src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

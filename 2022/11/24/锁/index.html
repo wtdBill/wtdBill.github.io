@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  <title>锁 | Eric笔记 | Eric笔记</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="theme-color" content="#3F51B5">
+  
+  
+  <meta name="keywords" content="JUC">
+  <meta name="description" content="JAVA下的线程安全分析 在系统处理过程中，最为常见的问题是同一线程对于相同资源进行访问所造成的数据处理异常问题 下面代码中可能出现的结果是多少？  出现问题的过程指令分析-线程的上下文切换  临界区与竞态条件 临界区：一个程序运行多个线程本身没有问题出现问题最大的地方在于多个线程访问共享资源多个线程读共享资源其实也没有问题在多个线程对共享资源读写操作时发生指令交错，就会出现问题一段代码块内如果存">
+<meta name="keywords" content="JUC">
+<meta property="og:type" content="article">
+<meta property="og:title" content="锁">
+<meta property="og:url" content="http://www.yppcat.top/2022/11/24/锁/index.html">
+<meta property="og:site_name" content="Eric笔记">
+<meta property="og:description" content="JAVA下的线程安全分析 在系统处理过程中，最为常见的问题是同一线程对于相同资源进行访问所造成的数据处理异常问题 下面代码中可能出现的结果是多少？  出现问题的过程指令分析-线程的上下文切换  临界区与竞态条件 临界区：一个程序运行多个线程本身没有问题出现问题最大的地方在于多个线程访问共享资源多个线程读共享资源其实也没有问题在多个线程对共享资源读写操作时发生指令交错，就会出现问题一段代码块内如果存">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="http://www.yppcat.top/2022/11/24/锁/image-20221124083439437.png">
+<meta property="og:image" content="http://www.yppcat.top/2022/11/24/锁/image-20221124083501485.png">
+<meta property="og:image" content="http://www.yppcat.top/2022/11/24/锁/image-20221124083546506.png">
+<meta property="og:image" content="http://www.yppcat.top/2022/11/24/锁/image-20221124083638396.png">
+<meta property="og:image" content="http://www.yppcat.top/2022/11/24/锁/image-20221124083721097.png">
+<meta property="og:image" content="http://www.yppcat.top/2022/11/24/锁/image-20221124083734688.png">
+<meta property="og:image" content="http://www.yppcat.top/2022/11/24/锁/image-20221124083750276.png">
+<meta property="og:image" content="http://www.yppcat.top/2022/11/24/锁/image-20221124084005051.png">
+<meta property="og:image" content="http://www.yppcat.top/2022/11/24/锁/image-20221124084041320.png">
+<meta property="og:updated_time" content="2022-11-24T00:44:09.608Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="锁">
+<meta name="twitter:description" content="JAVA下的线程安全分析 在系统处理过程中，最为常见的问题是同一线程对于相同资源进行访问所造成的数据处理异常问题 下面代码中可能出现的结果是多少？  出现问题的过程指令分析-线程的上下文切换  临界区与竞态条件 临界区：一个程序运行多个线程本身没有问题出现问题最大的地方在于多个线程访问共享资源多个线程读共享资源其实也没有问题在多个线程对共享资源读写操作时发生指令交错，就会出现问题一段代码块内如果存">
+<meta name="twitter:image" content="http://www.yppcat.top/2022/11/24/锁/image-20221124083439437.png">
+  
+    <link rel="alternative" href="/atom.xml" title="Eric笔记" type="application/atom+xml">
+  
+  <meta name="summary" content="">
+  <link rel="shortcut icon" href="/favicon.ico">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="loading" class="active"></div>
+
+  <nav id="menu" class="hide" >
+   <div class="inner flex-row-vertical">
+  <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+      <i class="icon icon-lg icon-close"></i>
+  </a>
+  <div class="brand-wrap">
+    <div class="brand">
+      <a href="/" class="avatar"><img src="/img/header.jpg"></a>
+      <hgroup class="introduce">
+        <h5 class="nickname">Eric笔记</h5>
+        <a href="mailto:1246275955@qq.com" title="1246275955@qq.com" class="mail">1246275955@qq.com</a>
+      </hgroup>
+    </div>
+  </div>
+  <div class="scroll-wrap flex-col">
+    <ul class="nav">
+      
+          <li class="waves-block waves-effect">
+            <a href="/">
+              <i class="icon icon-lg icon-home"></i>
+              主页
+            </a>
+          </li>
+      
+          <li class="waves-block waves-effect">
+            <a href="/archives">
+              <i class="icon icon-lg icon-archives"></i>
+              Archives
+            </a>
+          </li>
+      
+          <li class="waves-block waves-effect">
+            <a href="/tags">
+              <i class="icon icon-lg icon-tags"></i>
+              Tags
+            </a>
+          </li>
+      
+          <li class="waves-block waves-effect">
+            <a href="https://github.com/wtdBill" target="_blank">
+              <i class="icon icon-lg icon-github"></i>
+              Github
+            </a>
+          </li>
+      
+    </ul>
+
+    <footer class="footer">
+  <p><a rel="license" target="_blank" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0;vertical-align:middle;" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFAAAAAPCAMAAABEF7i9AAAAllBMVEUAAAD///+rsapERER3d3eIiIjMzMzu7u4iIiKUmZO6v7rKzsoODg4RERFVVVUNDQ0NDg0PEA8zMzNLTEtbXltmZmZydnF9gn2AgICPkI+ZmZmqqqq7u7vFxsXIzMgNDQwZGRkgICAhISEkJSMnKCcuMC4xMzE5Ozk7PTtBQkFCQkJDQ0Nna2eGhoaHh4ezuLLGysbd3d1wVGpAAAAA4UlEQVR42q2T1xqCMAyFk7QsBQeKA9x7j/d/OSm22CpX0nzcpA1/T05aAOuBVkMAScQFHLnEwoCo2f1TnQIGoVMewjZEjVFN4GH1Ue1Cn2jWqwfsOOj6wDwGvotsl/c8lv7KIq1eLOsT0HMFHMIE/RZyHnlphryT9zyV+8WH5e8yQw3wnQvgAFxPTKUVi555SHR/lOfLMgVTeDlSfN+TaoUsiTyeIm+bCkHvCA2FUKG48LDtYBZBknsYP/G8NTw0gaaHyuQf4H5pecrB/FYCT2sL9zAfy1Xyjou6L8X2W7YcLyBZCRtnq/zfAAAAAElFTkSuQmCC"></a></p>
+  <p>Eric笔记 &copy; 2022</p>
+  <p>Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme
+  <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a></p>
+  <a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-2x icon-rss-square"></i></a>
+</footer>
+
+  </div>
+</div>
+
+  </nav>
+  <main id="main">
+    <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">锁</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input " autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+    </div>
+</header>
+<header class="content-header">
+  <div class="container">
+    <h1 class="author">锁</h1>
+    <h5 class="subtitle">
+        
+            <time datetime="2022-11-24T00:33:55.000Z" itemprop="datePublished" class="page-time">
+  2022-11-24
+</time>
+
+
+        
+    </h5>
+  </div>
+</header>
+
+    <div class="container body-wrap">
+      <article id="post-锁" class="article article-type-post" itemprop="blogPost">
+    <div class="post-meta flex-row">
+        
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JUC/">JUC</a></li></ul>
+
+    </div>
+    <div class="post-body">
+        <aside class="post-widget" id="post-widget">
+
+            
+
+            
+            <nav class="post-toc-wrap" id="post-toc">
+            
+            </nav>
+            
+        </aside>
+
+        <div class="post-main">
+
+            <div class="post-content" id="post-content" itemprop="postContent">
+            <p><strong>JAVA下的线程安全分析</strong></p>
+<p>在系统处理过程中，最为常见的问题是同一线程对于相同资源进行访问所造成的数据处理异常问题</p>
+<p>下面代码中可能出现的结果是多少？</p>
+<img src="/2022/11/24/锁/image-20221124083439437.png" title="[锁]">
+<p>出现问题的过程指令分析-线程的上下文切换</p>
+<img src="/2022/11/24/锁/image-20221124083501485.png" title="[锁]">
+<p><strong>临界区与竞态条件</strong></p>
+<p><strong>临界区：</strong><br>一个程序运行多个线程本身没有问题<br>出现问题最大的地方在于多个线程访问共享资源<br>多个线程读共享资源其实也没有问题<br>在多个线程对共享资源读写操作时发生指令交错，就会出现问题<br>一段代码块内如果存在对共享资源的多线程读写操作，称这段代码为临界区</p>
+<p><strong>竞态条件:</strong><br>多个线程在临界区内执行，由于代码执行序列不同而导致结果无法预测，称之为静态条件</p>
+<img src="/2022/11/24/锁/image-20221124083546506.png" title="[锁]">
+<p><strong>应用之互斥</strong></p>
+<p>为了避免临界区的竞态条件发生，JAVA提供多种手段进行规避<br>阻塞式的解决方案：synchronized,Lock<br>非阻塞式的解决方案：原子变量</p>
+<p>synchronized对象锁：<br>采用互斥方式让统一时刻之多只有一个线程持有对象锁，其他线程在获取这个对象锁会被阻塞，不用担心线程上下文切换</p>
+<p>synchronized—本质与等价方案</p>
+<img src="/2022/11/24/锁/image-20221124083638396.png" title="[锁]">
+<p><strong>Mark中的数据对于并发的支持</strong></p>
+<img src="/2022/11/24/锁/image-20221124083721097.png" title="[锁]">
+<img src="/2022/11/24/锁/image-20221124083734688.png" title="[锁]">
+<p><strong>Monitor对象与synchronized</strong></p>
+<img src="/2022/11/24/锁/image-20221124083750276.png" title="[锁]">
+<p><strong>注意事项</strong></p>
+<p>执行同步代码块内容，然后唤醒entryList中其他线程时，此处采取竞争策略，先到不一定先得，所以synchronize锁是非公平</p>
+<p>非公平锁： 在锁可用的时候，一个新到来的线程要占有锁，可以不需要排队，直接获得。</p>
+<p>公平锁： 在锁可用的时候，一个新到来的线程要占有锁，需要排队，等待执行</p>
+<p><strong>有没有比synchronized速度更快的方案？</strong></p>
+<p>利用CPU的CAS指令，同时借助JNI来完成Java的非阻塞算法。其它原子操作都是利用类似的特性完成的。而整个J.U.C都是建立在CAS之上的，因此对于synchronized阻塞算法，J.U.C在性能上有了很大的提升。</p>
+<p><strong>什么是CAS？</strong></p>
+<p>CAS是英文单词Compare And Swap的缩写，翻译过来就是比较并替换。</p>
+<p>CAS机制当中使用了3个基本操作数：<br>内存地址V<br>旧的预期值A<br>要修改的新值B</p>
+<p>更新一个变量的时候，只有当变量的预期值A和内存地址V当中的实际值相同时，才会将内存地址V对应的值修改为B。</p>
+<p>CAS机制当中使用了3个基本操作数：内存地址V，旧的预期值A，要修改的新值B。</p>
+<img src="/2022/11/24/锁/image-20221124084005051.png" title="[锁]">
+<img src="/2022/11/24/锁/image-20221124084041320.png" title="[锁]">
+
+            
+            <div class="post-reward">
+                <a id="rewardBtn" href="javascript:;" class="post-reward-btn waves-effect waves-circle waves-light">赏</a>
+            </div>
+            
+            
+            <blockquote>
+                <p>
+                本文地址：
+                <a href="http://www.yppcat.top/2022/11/24/锁/" target="_blank" rel="external">http://www.yppcat.top/2022/11/24/锁/</a>
+                </p>
+                <footer><cite><a href="http://www.yppcat.top">@Eric笔记</a></cite></footer>
+            </blockquote>
+            </div>
+            
+<nav class="post-nav">
+  
+    <div class="waves-block waves-effect prev fl">
+      <a href="/2022/11/27/CAS与原子变量/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">CAS与原子变量</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next fr">
+      <a href="/2022/11/23/JMM内存模型与线程并发/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">JMM内存模型与线程并发</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+            
+            
+<div class="duoshuo">
+	<!-- 多说评论框 start -->
+	<div class="ds-thread" data-thread-key="锁" data-title="锁" data-url="http://www.yppcat.top/2022/11/24/锁/index.html"></div>
+	<!-- 多说评论框 end -->
+	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+	<script type="text/javascript">
+	var duoshuoQuery = {short_name:"ysblog"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+	<!-- 多说公共JS代码 end -->
+</div>
+
+
+
+
+
+        </div>
+    </div>
+</article>
+
+<div id="reward" class="reward-lay">
+    <a class="reward-off" id="rewardOff" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        谢谢老板~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <ul class="reward-items">
+        
+        <li>
+            <img src="/img/wechat.jpg" title="微信打赏二维码" alt="微信打赏二维码">
+            <p>微信</p>
+        </li>
+        
+
+        
+    </ul>
+</div>
+
+    </div>
+  </main>
+<div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+<script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+
+<script src="/js/main.js"></script>
+
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<script type="text/template" id="search-tpl">
+<li class="item">
+    <a href="/{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</script>
+
+<script src="/js/search.js"></script>
+
+
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script type="text/javascript" async src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  <title>AQS | Eric笔记 | Eric笔记</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="theme-color" content="#3F51B5">
+  
+  
+  <meta name="keywords" content="JUC">
+  <meta name="description" content="什么是AQS？ AQS，全程AbstractQueuedSynchronizer，位于java.util.concurrent.locks包下。 是JDK1.5提供的一套用于实现阻塞锁和一系列依赖FIFO等待队列的同步器(First Input First Output先进先出)的框架实现。是除了java自带的synchronized 关键字之外的锁机制。 可以将AQS作为一个队列来理解。 我们常">
+<meta name="keywords" content="JUC">
+<meta property="og:type" content="article">
+<meta property="og:title" content="AQS">
+<meta property="og:url" content="http://www.yppcat.top/2022/12/05/AQS/index.html">
+<meta property="og:site_name" content="Eric笔记">
+<meta property="og:description" content="什么是AQS？ AQS，全程AbstractQueuedSynchronizer，位于java.util.concurrent.locks包下。 是JDK1.5提供的一套用于实现阻塞锁和一系列依赖FIFO等待队列的同步器(First Input First Output先进先出)的框架实现。是除了java自带的synchronized 关键字之外的锁机制。 可以将AQS作为一个队列来理解。 我们常">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="http://www.yppcat.top/2022/12/05/AQS/image-20221205080624705.png">
+<meta property="og:image" content="http://www.yppcat.top/2022/12/05/AQS/image-20221205080912795.png">
+<meta property="og:image" content="http://www.yppcat.top/2022/12/05/AQS/image-20221205080936878.png">
+<meta property="og:image" content="http://www.yppcat.top/2022/12/05/AQS/image-20221205080956123.png">
+<meta property="og:image" content="http://www.yppcat.top/2022/12/05/AQS/aqs加锁流程图.png">
+<meta property="og:image" content="http://www.yppcat.top/2022/12/05/AQS/image-20221205081119159.png">
+<meta property="og:updated_time" content="2022-12-05T00:16:55.258Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="AQS">
+<meta name="twitter:description" content="什么是AQS？ AQS，全程AbstractQueuedSynchronizer，位于java.util.concurrent.locks包下。 是JDK1.5提供的一套用于实现阻塞锁和一系列依赖FIFO等待队列的同步器(First Input First Output先进先出)的框架实现。是除了java自带的synchronized 关键字之外的锁机制。 可以将AQS作为一个队列来理解。 我们常">
+<meta name="twitter:image" content="http://www.yppcat.top/2022/12/05/AQS/image-20221205080624705.png">
+  
+    <link rel="alternative" href="/atom.xml" title="Eric笔记" type="application/atom+xml">
+  
+  <meta name="summary" content="">
+  <link rel="shortcut icon" href="/favicon.ico">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="loading" class="active"></div>
+
+  <nav id="menu" class="hide" >
+   <div class="inner flex-row-vertical">
+  <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+      <i class="icon icon-lg icon-close"></i>
+  </a>
+  <div class="brand-wrap">
+    <div class="brand">
+      <a href="/" class="avatar"><img src="/img/header.jpg"></a>
+      <hgroup class="introduce">
+        <h5 class="nickname">Eric笔记</h5>
+        <a href="mailto:1246275955@qq.com" title="1246275955@qq.com" class="mail">1246275955@qq.com</a>
+      </hgroup>
+    </div>
+  </div>
+  <div class="scroll-wrap flex-col">
+    <ul class="nav">
+      
+          <li class="waves-block waves-effect">
+            <a href="/">
+              <i class="icon icon-lg icon-home"></i>
+              主页
+            </a>
+          </li>
+      
+          <li class="waves-block waves-effect">
+            <a href="/archives">
+              <i class="icon icon-lg icon-archives"></i>
+              Archives
+            </a>
+          </li>
+      
+          <li class="waves-block waves-effect">
+            <a href="/tags">
+              <i class="icon icon-lg icon-tags"></i>
+              Tags
+            </a>
+          </li>
+      
+          <li class="waves-block waves-effect">
+            <a href="https://github.com/wtdBill" target="_blank">
+              <i class="icon icon-lg icon-github"></i>
+              Github
+            </a>
+          </li>
+      
+    </ul>
+
+    <footer class="footer">
+  <p><a rel="license" target="_blank" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0;vertical-align:middle;" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFAAAAAPCAMAAABEF7i9AAAAllBMVEUAAAD///+rsapERER3d3eIiIjMzMzu7u4iIiKUmZO6v7rKzsoODg4RERFVVVUNDQ0NDg0PEA8zMzNLTEtbXltmZmZydnF9gn2AgICPkI+ZmZmqqqq7u7vFxsXIzMgNDQwZGRkgICAhISEkJSMnKCcuMC4xMzE5Ozk7PTtBQkFCQkJDQ0Nna2eGhoaHh4ezuLLGysbd3d1wVGpAAAAA4UlEQVR42q2T1xqCMAyFk7QsBQeKA9x7j/d/OSm22CpX0nzcpA1/T05aAOuBVkMAScQFHLnEwoCo2f1TnQIGoVMewjZEjVFN4GH1Ue1Cn2jWqwfsOOj6wDwGvotsl/c8lv7KIq1eLOsT0HMFHMIE/RZyHnlphryT9zyV+8WH5e8yQw3wnQvgAFxPTKUVi555SHR/lOfLMgVTeDlSfN+TaoUsiTyeIm+bCkHvCA2FUKG48LDtYBZBknsYP/G8NTw0gaaHyuQf4H5pecrB/FYCT2sL9zAfy1Xyjou6L8X2W7YcLyBZCRtnq/zfAAAAAElFTkSuQmCC"></a></p>
+  <p>Eric笔记 &copy; 2022</p>
+  <p>Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme
+  <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a></p>
+  <a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-2x icon-rss-square"></i></a>
+</footer>
+
+  </div>
+</div>
+
+  </nav>
+  <main id="main">
+    <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">AQS</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input " autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+    </div>
+</header>
+<header class="content-header">
+  <div class="container">
+    <h1 class="author">AQS</h1>
+    <h5 class="subtitle">
+        
+            <time datetime="2022-12-05T00:05:16.000Z" itemprop="datePublished" class="page-time">
+  2022-12-05
+</time>
+
+
+        
+    </h5>
+  </div>
+</header>
+
+    <div class="container body-wrap">
+      <article id="post-AQS" class="article article-type-post" itemprop="blogPost">
+    <div class="post-meta flex-row">
+        
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JUC/">JUC</a></li></ul>
+
+    </div>
+    <div class="post-body">
+        <aside class="post-widget" id="post-widget">
+
+            
+
+            
+            <nav class="post-toc-wrap" id="post-toc">
+            
+            </nav>
+            
+        </aside>
+
+        <div class="post-main">
+
+            <div class="post-content" id="post-content" itemprop="postContent">
+            <p><strong>什么是AQS？</strong></p>
+<p>AQS，全程AbstractQueuedSynchronizer，位于java.util.concurrent.locks包下。</p>
+<p>是JDK1.5提供的一套用于实现阻塞锁和一系列依赖FIFO等待队列的同步器(First Input First Output先进先出)的框架实现。是除了java自带的synchronized 关键字之外的锁机制。 可以将AQS作为一个队列来理解。</p>
+<p>我们常用的ReentrantLock、Semaphore、CountDownLatch、CyclicBarrier等并发类均是基于AQS来实现的。具体用法是通过继承AQS，并实现其模板方法，来达到同步状态的管理。</p>
+<p>AQS的功能在使用中可以分为两种:独占锁和共享锁<br>独占锁：每次只能有一个线程持有锁。eg: ReentrantLock就是独占锁<br>共享锁：允许多个线程同时获得锁，并发访问共享资源。eg: ReentrantReadWriteLock中的读</p>
+<p><strong>AQS核心思想</strong></p>
+<p>AQS核心思想是，如果被请求的共享资源空闲，则将当前请求资源的线程设置为有效的工作线程，并且将共享资源设置为锁定状态。如果被请求的共享资源被占用，那么就需要一套线程阻塞等待以及被唤醒时锁分配的机制，这个机制AQS是用CLH队列锁实现的，即将暂时获取不到锁的线程加入到队列中。</p>
+<img src="/2022/12/05/AQS/image-20221205080624705.png" title="[AQS]">
+<p><strong>AQS使用方式</strong></p>
+<p>AQS设计是基于模板方法模式的，一般的使用方式是：<br>使用者继承AbstractQueuedSynchronizer并重写指定的方法。（这些重写方法很简单，无非是对于共享资源state的获取和释放）</p>
+<p>将AQS组合在自定义同步组件的实现中，并调用其模板方法，而这些模板方法会调用使用者重写的方法。</p>
+<p>AQS定义的这些可重写的方法：<br>protected boolean tryAcquire(int arg): 独占式获取同步状态，试着获取，成功返回true，反之为false<br>protected boolean tryRelease(int arg) ：独占式释放同步状态，等待中的其他线程此时将有机会获取到同步状态；<br>protected int tryAcquireShared(int arg) ：共享式获取同步状态，返回值大于等于0，代表获取成功；反之获取失败；<br>protected boolean tryReleaseShared(int arg) ：共享式释放同步状态，成功为true，失败为false<br>protected boolean isHeldExclusively()： 是否在独占模式下被线程占用。</p>
+<p><strong>AQS的模板方法</strong></p>
+<p><strong>独占锁：</strong><br>void acquire(int arg);// 独占式获取同步状态，如果获取失败则插入同步队列进行等待；<br>void acquireInterruptibly(int arg);// 与acquire方法相同，但在同步队列中进行等待的时候可以检测中断；<br>boolean tryAcquireNanos(int arg, long nanosTimeout);// 在acquireInterruptibly基础上增加了超时等待功能，在超时时间内没有获得同步状态返回false;<br>boolean release(int arg);// 释放同步状态，该方法会唤醒在同步队列中的下一个节点</p>
+<p><strong>共享锁：</strong><br>void acquireShared(int arg);// 共享式获取同步状态，与独占式的区别在于同一时刻有多个线程获取同步状态；<br>void acquireSharedInterruptibly(int arg);// 在acquireShared方法基础上增加了能响应中断的功能；<br>boolean tryAcquireSharedNanos(int arg, long nanosTimeout);// 在acquireSharedInterruptibly基础上增加了超时等待的功能；<br>boolean releaseShared(int arg);// 共享式释放同步状态</p>
+<p>自定义，使用总结</p>
+<p>首先，我们需要去继承AbstractQueuedSynchronizer这个类，然后我们根据我们的需求去重写相应的方法，比如要实现一个独占锁，那就去重写tryAcquire，tryRelease方法，要实现共享锁，就去重写tryAcquireShared，tryReleaseShared；</p>
+<p>然后，在我们的组件中调用AQS中的模板方法就可以了，而这些模板方法是会调用到我们之前重写的那些方法的。也就是说，我们只需要很小的工作量就可以实现自己的同步组件，重写的那些方法，仅仅是一些简单的对于共享资源state的获取和释放操作，至于像是获取资源失败，线程需要阻塞之类的操作，自然是AQS帮我们完成了</p>
+<p><strong>AQS源码分析</strong></p>
+<p>AQS的基本实现：<br>    AQS维护一个共享资源state，通过内置的FIFO来完成获取资源线程的排队工作。（这个内置的同步队列称为”CLH”队列）。该队列由一个一个的Node结点组成，每个Node结点维护一个prev引用和next引用，分别指向自己的前驱和后继结点。AQS维护两个指针，分别指向队列头部head和尾部tail。<br>    当线程获取资源失败（比如tryAcquire时试图设置state状态失败），会被构造成一个结点加入CLH队列中，同时当前线程会被阻塞在队列中（通过LockSupport.park实现，其实是等待态）。当持有同步状态的线程释放同步状态时，会唤醒后继结点，然后此结点线程继续加入到对同步状态的争夺中。</p>
+<img src="/2022/12/05/AQS/image-20221205080912795.png" title="[AQS]">
+<p><strong>ReentrantLock与AQS</strong></p>
+<img src="/2022/12/05/AQS/image-20221205080936878.png" title="[AQS]">
+<p><strong>ReentrantLock加锁流程</strong>    </p>
+<img src="/2022/12/05/AQS/image-20221205080956123.png" title="[AQS]">
+<img src="/2022/12/05/AQS/aqs加锁流程图.png" title="[AQS]">
+<p><strong>条件变量实现原理</strong></p>
+<p>每个条件变量其实就对应着一个等待队列，其实现类是 ConditionObject</p>
+<p>await 流程<br>开始 Thread-0 持有锁，调用 await，进入 ConditionObject 的 addConditionWaiter 流程<br>创建新的 Node 状态为 -2（Node.CONDITION），关联 Thread-0，加入等待队列尾部</p>
+<img src="/2022/12/05/AQS/image-20221205081119159.png" title="[AQS]">
+<p><strong>同步方案对比</strong></p>
+<p>wait/notify：依托于synchronized，基于VM底层对于阻塞的实现，使用waitSet作为等待机制，set结构的问题，要么是随机一个（set的提取算法），要么是全部提出来唤醒</p>
+<p>await/signal：依赖于ReentrantLock条件变量，已经用条件变量与AQS体系作为唤醒机制，本质上底层是park/unpark实现阻塞</p>
+<p>park/unpark:以thread为操作对象,操作更精准，可以准确地唤醒某一个线程（notify随机唤醒一个线程，notifyAll唤醒所有等待的线程），增加了灵活性。</p>
+<p>其实park/unpark的设计原理核心是“许可”：park是等待一个许可，unpark是为某线程提供一个许可</p>
+<p>但是这个“许可”是不能叠加的，“许可”是一次性的。<br>比如线程B连续调用了三次unpark函数，当线程A调用park函数就使用掉这个“许可”，如果线程A再次调用park，则进入等待状态。</p>
+<p><strong>ReentrantReadWriteLock读写锁</strong></p>
+<p><strong>读写锁指一个资源能够被多个读线程访问，或者被一个写线程访问，但是不能同时存在读写线程</strong><br>ReentrantReadWriteLock中有两个静态内部类：ReadLock读锁和WriteLock写锁，这两个锁实现了Lock接口ReentrantReadWriteLock支持可重入，同步功能依赖自定义同步器（AbstractQueuedSynchronizer）实现，读写状态就是其同步器的同步状态</p>
+<p><strong>写锁的获取和释放</strong>：<br>写锁WriteLock是支持重进入的排他锁。如果当前线程已经获取了写锁，则增加写状态。如果当前线程在获取读锁时，读锁已经被获取或者该线程不是已获取写锁的线程，则当前线程进入等待状态。读写锁确保写锁的操作对读锁可见。写锁释放每次减少写状态，当前写状态为0时表示写锁已背释放。</p>
+<p><strong>读锁的获取与释放：</strong><br>读锁ReadLock是支持重进入的共享锁（共享锁为shared节点，对于shared节点会进行一连串的唤醒，知道遇到一个读节点），它能够被多个线程同时获取，在没有其他写线程访问（写状态为0）时，读锁总是能够被成功地获取，而所做的也只是增加读状态（线程安全）。如果当前线程已经获取了读锁，则增加读状态。如果当前线程在获取读锁时，写锁已经被获取，则进入等待状态。</p>
+<p><strong>CyclicBarrier和CountDownLatch</strong></p>
+<p>CountDownLatch：一个或者多个线程，等待其他多个线程完成某件事情之后才能执行；</p>
+<p>CyclicBarrier：多个线程互相等待，直到到达同一个同步点，再继续一起执行。而且可以重用</p>
+<p>CountDownLatch是计数器，线程完成一个记录一个，只不过计数不是递增而是递减，而CyclicBarrier更像是一个阀门，需要所有线程都到达，阀门才能打开，然后继续执行。</p>
+
+
+            
+            <div class="post-reward">
+                <a id="rewardBtn" href="javascript:;" class="post-reward-btn waves-effect waves-circle waves-light">赏</a>
+            </div>
+            
+            
+            <blockquote>
+                <p>
+                本文地址：
+                <a href="http://www.yppcat.top/2022/12/05/AQS/" target="_blank" rel="external">http://www.yppcat.top/2022/12/05/AQS/</a>
+                </p>
+                <footer><cite><a href="http://www.yppcat.top">@Eric笔记</a></cite></footer>
+            </blockquote>
+            </div>
+            
+<nav class="post-nav">
+  
+    <div class="waves-block waves-effect prev fl">
+      <a href="/2022/12/05/BIO与NIO/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">BIO与NIO</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next fr">
+      <a href="/2022/12/03/线程池/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">线程池</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+            
+            
+<div class="duoshuo">
+	<!-- 多说评论框 start -->
+	<div class="ds-thread" data-thread-key="AQS" data-title="AQS" data-url="http://www.yppcat.top/2022/12/05/AQS/index.html"></div>
+	<!-- 多说评论框 end -->
+	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+	<script type="text/javascript">
+	var duoshuoQuery = {short_name:"ysblog"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+	<!-- 多说公共JS代码 end -->
+</div>
+
+
+
+
+
+        </div>
+    </div>
+</article>
+
+<div id="reward" class="reward-lay">
+    <a class="reward-off" id="rewardOff" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        谢谢老板~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <ul class="reward-items">
+        
+        <li>
+            <img src="/img/wechat.jpg" title="微信打赏二维码" alt="微信打赏二维码">
+            <p>微信</p>
+        </li>
+        
+
+        
+    </ul>
+</div>
+
+    </div>
+  </main>
+<div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+<script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+
+<script src="/js/main.js"></script>
+
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<script type="text/template" id="search-tpl">
+<li class="item">
+    <a href="/{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</script>
+
+<script src="/js/search.js"></script>
+
+
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script type="text/javascript" async src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

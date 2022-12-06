@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  <title>JMM内存模型与线程并发 | Eric笔记 | Eric笔记</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="theme-color" content="#3F51B5">
+  
+  
+  <meta name="keywords" content="JUC">
+  <meta name="description" content="多核并发缓存架构解析 CPU 核心数和线程数的关系 多核心:也指单芯片多处理器( Chip Multiprocessors,简称 CMP),CMP 是由美国斯坦福大学提出的,其思想是将大规模并行处理器中的 SMP(对称多处理器)集成到同一芯片内,各个处理器并行执行不同的进程。这种依靠多个 CPU 同时并行地运行程序是实现超高速计算的一个重要方向,称为并行处理 多线程: Simultaneous M">
+<meta name="keywords" content="JUC">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JMM内存模型与线程并发">
+<meta property="og:url" content="http://www.yppcat.top/2022/11/23/JMM内存模型与线程并发/index.html">
+<meta property="og:site_name" content="Eric笔记">
+<meta property="og:description" content="多核并发缓存架构解析 CPU 核心数和线程数的关系 多核心:也指单芯片多处理器( Chip Multiprocessors,简称 CMP),CMP 是由美国斯坦福大学提出的,其思想是将大规模并行处理器中的 SMP(对称多处理器)集成到同一芯片内,各个处理器并行执行不同的进程。这种依靠多个 CPU 同时并行地运行程序是实现超高速计算的一个重要方向,称为并行处理 多线程: Simultaneous M">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="http://www.yppcat.top/2022/11/23/JMM内存模型与线程并发/image-20221123081135874.png">
+<meta property="og:image" content="http://www.yppcat.top/2022/11/23/JMM内存模型与线程并发/image-20221123081047224.png">
+<meta property="og:image" content="http://www.yppcat.top/2022/11/23/JMM内存模型与线程并发/image-20221123081215966.png">
+<meta property="og:image" content="http://www.yppcat.top/2022/11/23/JMM内存模型与线程并发/image-20221123081303369.png">
+<meta property="og:image" content="http://www.yppcat.top/2022/11/23/JMM内存模型与线程并发/image-20221123081334365.png">
+<meta property="og:image" content="http://www.yppcat.top/2022/11/23/JMM内存模型与线程并发/image-20221123081409704.png">
+<meta property="og:image" content="http://www.yppcat.top/2022/11/23/JMM内存模型与线程并发/image-20221123081454988.png">
+<meta property="og:image" content="http://www.yppcat.top/2022/11/23/JMM内存模型与线程并发/image-20221123081614247.png">
+<meta property="og:image" content="http://www.yppcat.top/2022/11/23/JMM内存模型与线程并发/image-20221123081642431.png">
+<meta property="og:image" content="http://www.yppcat.top/2022/11/23/JMM内存模型与线程并发/image-20221123082200922.png">
+<meta property="og:updated_time" content="2022-11-23T00:27:46.051Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="JMM内存模型与线程并发">
+<meta name="twitter:description" content="多核并发缓存架构解析 CPU 核心数和线程数的关系 多核心:也指单芯片多处理器( Chip Multiprocessors,简称 CMP),CMP 是由美国斯坦福大学提出的,其思想是将大规模并行处理器中的 SMP(对称多处理器)集成到同一芯片内,各个处理器并行执行不同的进程。这种依靠多个 CPU 同时并行地运行程序是实现超高速计算的一个重要方向,称为并行处理 多线程: Simultaneous M">
+<meta name="twitter:image" content="http://www.yppcat.top/2022/11/23/JMM内存模型与线程并发/image-20221123081135874.png">
+  
+    <link rel="alternative" href="/atom.xml" title="Eric笔记" type="application/atom+xml">
+  
+  <meta name="summary" content="">
+  <link rel="shortcut icon" href="/favicon.ico">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="loading" class="active"></div>
+
+  <nav id="menu" class="hide" >
+   <div class="inner flex-row-vertical">
+  <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+      <i class="icon icon-lg icon-close"></i>
+  </a>
+  <div class="brand-wrap">
+    <div class="brand">
+      <a href="/" class="avatar"><img src="/img/header.jpg"></a>
+      <hgroup class="introduce">
+        <h5 class="nickname">Eric笔记</h5>
+        <a href="mailto:1246275955@qq.com" title="1246275955@qq.com" class="mail">1246275955@qq.com</a>
+      </hgroup>
+    </div>
+  </div>
+  <div class="scroll-wrap flex-col">
+    <ul class="nav">
+      
+          <li class="waves-block waves-effect">
+            <a href="/">
+              <i class="icon icon-lg icon-home"></i>
+              主页
+            </a>
+          </li>
+      
+          <li class="waves-block waves-effect">
+            <a href="/archives">
+              <i class="icon icon-lg icon-archives"></i>
+              Archives
+            </a>
+          </li>
+      
+          <li class="waves-block waves-effect">
+            <a href="/tags">
+              <i class="icon icon-lg icon-tags"></i>
+              Tags
+            </a>
+          </li>
+      
+          <li class="waves-block waves-effect">
+            <a href="https://github.com/wtdBill" target="_blank">
+              <i class="icon icon-lg icon-github"></i>
+              Github
+            </a>
+          </li>
+      
+    </ul>
+
+    <footer class="footer">
+  <p><a rel="license" target="_blank" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0;vertical-align:middle;" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFAAAAAPCAMAAABEF7i9AAAAllBMVEUAAAD///+rsapERER3d3eIiIjMzMzu7u4iIiKUmZO6v7rKzsoODg4RERFVVVUNDQ0NDg0PEA8zMzNLTEtbXltmZmZydnF9gn2AgICPkI+ZmZmqqqq7u7vFxsXIzMgNDQwZGRkgICAhISEkJSMnKCcuMC4xMzE5Ozk7PTtBQkFCQkJDQ0Nna2eGhoaHh4ezuLLGysbd3d1wVGpAAAAA4UlEQVR42q2T1xqCMAyFk7QsBQeKA9x7j/d/OSm22CpX0nzcpA1/T05aAOuBVkMAScQFHLnEwoCo2f1TnQIGoVMewjZEjVFN4GH1Ue1Cn2jWqwfsOOj6wDwGvotsl/c8lv7KIq1eLOsT0HMFHMIE/RZyHnlphryT9zyV+8WH5e8yQw3wnQvgAFxPTKUVi555SHR/lOfLMgVTeDlSfN+TaoUsiTyeIm+bCkHvCA2FUKG48LDtYBZBknsYP/G8NTw0gaaHyuQf4H5pecrB/FYCT2sL9zAfy1Xyjou6L8X2W7YcLyBZCRtnq/zfAAAAAElFTkSuQmCC"></a></p>
+  <p>Eric笔记 &copy; 2022</p>
+  <p>Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme
+  <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a></p>
+  <a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-2x icon-rss-square"></i></a>
+</footer>
+
+  </div>
+</div>
+
+  </nav>
+  <main id="main">
+    <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">JMM内存模型与线程并发</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input " autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+    </div>
+</header>
+<header class="content-header">
+  <div class="container">
+    <h1 class="author">JMM内存模型与线程并发</h1>
+    <h5 class="subtitle">
+        
+            <time datetime="2022-11-23T00:09:15.000Z" itemprop="datePublished" class="page-time">
+  2022-11-23
+</time>
+
+
+        
+    </h5>
+  </div>
+</header>
+
+    <div class="container body-wrap">
+      <article id="post-JMM内存模型与线程并发" class="article article-type-post" itemprop="blogPost">
+    <div class="post-meta flex-row">
+        
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JUC/">JUC</a></li></ul>
+
+    </div>
+    <div class="post-body">
+        <aside class="post-widget" id="post-widget">
+
+            
+
+            
+            <nav class="post-toc-wrap" id="post-toc">
+            
+            </nav>
+            
+        </aside>
+
+        <div class="post-main">
+
+            <div class="post-content" id="post-content" itemprop="postContent">
+            <p><strong>多核并发缓存架构解析</strong></p>
+<p><strong>CPU 核心数和线程数的关系</strong></p>
+<p>多核心:也指单芯片多处理器( Chip Multiprocessors,简称 CMP),CMP 是由美国斯坦福大学提出的,其思想是将大规模并行处理器中的 SMP(对称多处理器)集成到同一芯片内,各个处理器并行执行不同的进程。这种依靠多个 CPU 同时并行地运行程序是实现超高速计算的一个重要方向,称为并行处理</p>
+<p>多线程: Simultaneous Multithreading.简称 SMT.让同一个处理器上的多个线程同步执行并共享处理器的执行资源。<br>核心数、线程数:目前主流 CPU 都是多核的。增加核心数目就是为了增加线程数,因为操作系统是通过线程来执行任务的,一般情况下它们是 1:1 对应关系,也就是说四核 CPU 一般拥有四个线程。但 Intel 引入超线程技术后,使核心数与线程数形成 1:2 的关系</p>
+<img src="/2022/11/23/JMM内存模型与线程并发/image-20221123081135874.png" title="[JMM内存模型与线程并发]">
+<p><strong>CPU 时间片轮转机制</strong></p>
+<p>时间片轮转调度中唯一有趣的一点是时间片的长度。从一个进程切换到另一个进程是需要定时间的,包括保存和装入寄存器值及内存映像,更新各种表格和队列等。假如进程切( processwitch),有时称为上下文切换( context switch),需要 5ms, 再假设时间片设为 20ms,则在做完 20ms 有用的工作之后,CPU 将花费 5ms 来进行进程切换。CPU 时间的 20%被浪费在了管理开销上了。<br>为了提高 CPU 效率,我们可以将时间片设为 5000ms。这时浪费的时间只有0.1%。但考虑到在一个分时系统中,如果有 10 个交互用户几乎同时按下回车键, 将发生什么情况?假设所有其他进程都用足它们的时间片的话,最后一个不幸的进程不得不等待 5s 才获得运行机会。多数用户无法忍受一条简短命令要 5 才能做出响应。<br>结论可以归结如下:时间片设得太短会导致过多的进程切换,降低了CPU 效率: 而设得太长又可能引起对短的交互请求的响应变差。将时间片设为 100ms 通常是一个比较合理的折衷</p>
+<img src="/2022/11/23/JMM内存模型与线程并发/image-20221123081047224.png" title="[JMM内存模型与线程并发]">
+<p><strong>并发与并行</strong></p>
+<p>我们举个例子,如果有条高速公路 A 上面并排有 8 条车道,那么最大的并行车辆就是 8 辆此条高速公路 A 同时并排行走的车辆小于等于 8 辆的时候,车辆就可以并行运行。CPU 也是这个原理,一个 CPU 相当于一个高速公路 A,核心数或者线程数就相当于并排可以通行的车道;而多个CPU  就相当于并排有多条高速公路,而每个高速公路并排有多个车道。<br>当谈论并发的时候一定要加个单位时间,也就是说单位时间内并发量是多少?    离开了单位时间其实是没有意义的。<br>俗话说,一心不能二用,这对计算机也一样,原则上一个 CPU 只能分配给一个进程,以便运行这个进程。我们通常使用的计算机中只有一个 CPU,也就是说只有一颗心,要让它一心多用同时运行多个进程,就必须使用并发技术。实现并发技术相当复杂,最容易理解的是“时间片轮转进程调度算法”。</p>
+<img src="/2022/11/23/JMM内存模型与线程并发/image-20221123081215966.png" title="[JMM内存模型与线程并发]">
+<p><strong>CPU物理内核架构</strong></p>
+<img src="/2022/11/23/JMM内存模型与线程并发/image-20221123081303369.png" title="[JMM内存模型与线程并发]">
+<p><strong>多核CPU缓存架构</strong></p>
+<img src="/2022/11/23/JMM内存模型与线程并发/image-20221123081334365.png" title="[JMM内存模型与线程并发]">
+<p><strong>JMM内存模型</strong></p>
+<p>JAVA多线程内存模型跟CPU内存模型类似，是基于CPU缓存模型来建立的，java线程内存模型是标准化的，屏蔽了底层计算机的不同</p>
+<img src="/2022/11/23/JMM内存模型与线程并发/image-20221123081409704.png" title="[JMM内存模型与线程并发]">
+<p><strong>JMM内存模型8大原子操作</strong></p>
+<p><strong>read(读取)：从主内存中读取数据</strong><br><strong>load(载入)：将主内存读取到的数据写入工作内存</strong><br><strong>use(使用)：从工作内存读取数据来计算</strong><br><strong>assign(赋值)：将计算好的值重新赋值到工作内存当中</strong><br><strong>store(存储)：将工作内存数据写入主内存</strong><br><strong>write(写入)：将存入的数据变量值赋值给主内存中的共享变量</strong><br><strong>lock(锁定)：将主内存变量加锁</strong><br><strong>unlock(解锁)：将主内存变量解锁</strong></p>
+<img src="/2022/11/23/JMM内存模型与线程并发/image-20221123081454988.png" title="[JMM内存模型与线程并发]">
+<p><strong>缓存一致协议（MESI）：</strong><br>多个CPU从主内存读取同一个数据到各自的高速缓存，当其中某个CPU修改了缓存里的数据，该数据马上同步会主内存，其他的CPU通过总线嗅探机制可以感知到数据的变化从而将自己缓存的数据失效</p>
+<p><strong>缓存加锁：</strong><br>缓存锁的核心机制是遵循与缓存一致性协议，一个处理器的缓存回写到内存会导致其他处理器的缓存失效，IA-32和Inter 64处理器使用MESI实现缓存一致性协议，Arm架构下是AMBA协议</p>
+<p><strong>Volatile可见性底层实现原理</strong></p>
+<p>Volatile缓存可见性实现原理：<br>底层实现主要通过一条汇编指令lock前缀指令，他会锁定这块内存区域的缓存（缓存行锁定）并写回到主内存中<br>Inter架构软件开发者手册中对lock指令的解释：<br>会将当前处理器缓存行的数据立即写回到系统内存<br>这个写回内存操作会引起其他CPU缓存了该地址的数据无效(MESI)<br>提供内存屏障功能，是lock指令不会进行重排</p>
+<img src="/2022/11/23/JMM内存模型与线程并发/image-20221123081614247.png" title="[JMM内存模型与线程并发]">
+<p><strong>JAVA底层对应转换汇编语言查看</strong></p>
+<p>-server -Xcomp -XX:+UnlockDiagnosticVMOptions -XX:+PrintAssembly -XX:CompileCommand=compileonly,*JMMTest.prepare</p>
+<img src="/2022/11/23/JMM内存模型与线程并发/image-20221123081642431.png" title="[JMM内存模型与线程并发]">
+<p><strong>dex工具使用</strong></p>
+<p>工具位置：SDK目录下\build-tools\版本\dx.bat<br>使用方式：配置该路径为环境变量<br>作用：将.class编译为dex字节码<br>转换指令：<br>dx –dex –min-sdk-version=28 –verbose –dump-to=JmmTest.dex.txt –dump-method=JMMTest.prepare  –verbose-dump JMMTest.class</p>
+<p>-server -Xcomp -XX:+UnlockDiagnosticVMOptions -XX:+PrintAssembly -XX:CompileCommand=compileonly,*VolatileVisibilltyTest.prepareData</p>
+<p><strong>指令重排序</strong></p>
+<p>在计算机执行指令的顺序在经过程序编译器编译之后形成的指令序列</p>
+<p>一般而言，这个指令序列是会输出确定的结果；以确保每一次的执行都有确定的结果</p>
+<p>但是，一般情况下，CPU和编译器为了提升程序执行的效率，会按照一定的规则允许进行指令优化</p>
+<p>在某些情况下，这种优化会带来一些执行的逻辑问题，主要的原因是代码逻辑之间是存在一定的先后顺序</p>
+<p>在并发执行情况下，会发生二义性，即按照不同的执行逻辑，会得到不同的结果信息。</p>
+<p><strong>规则:  改变指令的先后顺序会导致最终的结果不一致，则不会发生指令重排,反之 如果不会发生结果不一致则会发生重排指令重排主要反映在读和写的过程中</strong></p>
+<p><strong>不会发生重排</strong></p>
+<p>名称        代码示例            说明</p>
+<p>写后读     a = 1;b = a;     写一个变量之后，再读这个位置。</p>
+<p>写后写     a = 1;a = 2;     写一个变量之后，再写这个变量。</p>
+<p>读后写     a = b;b = 1;     读一个变量之后，再写这个变量</p>
+<p><strong>指令重排序规则</strong></p>
+<p>在计算机执行指令的顺序在经过程序编译器编译之后形成的指令序列</p>
+<p>一般而言，这个指令序列是会输出确定的结果；以确保每一次的执行都有确定的结果</p>
+<p>但是，一般情况下，CPU和编译器为了提升程序执行的效率，会按照一定的规则允许进行指令优化<br>在某些情况下，这种优化会带来一些执行的逻辑问题，主要的原因是代码逻辑之间是存在一定的先后顺序</p>
+<p>在并发执行情况下，会发生二义性，即按照不同的执行逻辑，会得到不同的结果信息。</p>
+<p><strong>Happens-Before</strong></p>
+<p><strong>程序次序规则</strong>：在一个线程内一段代码的执行结果是有序的。就是还会指令重排，但是随便它怎么排，结果是按照我们代码的顺序生成的不会变。<br><strong>管程锁定规则</strong>：就是无论是在单线程环境还是多线程环境，对于同一个锁来说，一个线程对这个锁解锁之后，另一个线程获取了这个锁都能看到前一个线程的操作结果！(管程是一种通用的同步原语，synchronized就是管程的实现）<br><strong>volatile变量规则</strong>：就是如果一个线程先去写一个volatile变量，然后一个线程去读这个变量，那么这个写操作的结果一定对读的这个线程可见。<br><strong>线程启动规则</strong>：在主线程A执行过程中，启动子线程B，那么线程A在启动子线程B之前对共享变量的修改结果对线程B见。<br><strong>线程终止规则</strong>：在主线程A执行过程中，子线程B终止，那么线程B在终止之前对共享变量的修改结果在线程A中可见。也称线程join()规则。<br><strong>线程中断规则</strong>：对线程interrupt()方法的调用先行发生于被中断线程代码检测到中断事件的发生，可以通过Thread.interrupted()检测到是否发生中断。<br><strong>传递性规则</strong>：这个简单的，就是happens-before原则具有传递性，即hb(A, B) ， hb(B, C)，那么hb(A, C)。<br><strong>对象终结规则</strong>：这个也简单的，就是一个对象的初始化的完成，也就是构造函</p>
+<p><strong>内存屏障</strong></p>
+<p><strong>实际上就是如果CPU在指令优化时给与一个标记位置，碰到此位置不进行优化</strong></p>
+<p>Store：将处理器缓存的数据刷新到内存中。<br>Load：将内存存储的数据拷贝到处理器的缓存中。</p>
+<img src="/2022/11/23/JMM内存模型与线程并发/image-20221123082200922.png" title="[JMM内存模型与线程并发]">
+
+            
+            <div class="post-reward">
+                <a id="rewardBtn" href="javascript:;" class="post-reward-btn waves-effect waves-circle waves-light">赏</a>
+            </div>
+            
+            
+            <blockquote>
+                <p>
+                本文地址：
+                <a href="http://www.yppcat.top/2022/11/23/JMM内存模型与线程并发/" target="_blank" rel="external">http://www.yppcat.top/2022/11/23/JMM内存模型与线程并发/</a>
+                </p>
+                <footer><cite><a href="http://www.yppcat.top">@Eric笔记</a></cite></footer>
+            </blockquote>
+            </div>
+            
+<nav class="post-nav">
+  
+    <div class="waves-block waves-effect prev fl">
+      <a href="/2022/11/24/锁/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">锁</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next fr">
+      <a href="/2022/11/20/JVM指令手册/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">JVM指令手册</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+            
+            
+<div class="duoshuo">
+	<!-- 多说评论框 start -->
+	<div class="ds-thread" data-thread-key="JMM内存模型与线程并发" data-title="JMM内存模型与线程并发" data-url="http://www.yppcat.top/2022/11/23/JMM内存模型与线程并发/index.html"></div>
+	<!-- 多说评论框 end -->
+	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+	<script type="text/javascript">
+	var duoshuoQuery = {short_name:"ysblog"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+	<!-- 多说公共JS代码 end -->
+</div>
+
+
+
+
+
+        </div>
+    </div>
+</article>
+
+<div id="reward" class="reward-lay">
+    <a class="reward-off" id="rewardOff" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        谢谢老板~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <ul class="reward-items">
+        
+        <li>
+            <img src="/img/wechat.jpg" title="微信打赏二维码" alt="微信打赏二维码">
+            <p>微信</p>
+        </li>
+        
+
+        
+    </ul>
+</div>
+
+    </div>
+  </main>
+<div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+<script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+
+<script src="/js/main.js"></script>
+
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<script type="text/template" id="search-tpl">
+<li class="item">
+    <a href="/{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</script>
+
+<script src="/js/search.js"></script>
+
+
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script type="text/javascript" async src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

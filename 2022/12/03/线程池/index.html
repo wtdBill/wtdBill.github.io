@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  <title>线程池 | Eric笔记 | Eric笔记</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="theme-color" content="#3F51B5">
+  
+  
+  <meta name="keywords" content="JUC">
+  <meta name="description" content="异步模式之工作线程 让有限的工作线程轮流异步处理无限多的任务，也可以将其归类为分工模式，他的典型实现就是线程池，也体现了经典设计模式中的享元模式 例如,海底捞的服务员（线程），轮流处理每位顾客的点餐（任务），如果每位顾客都配一个专属服务员，则成本太过高昂 注意：不同任务类型应该使用不同的线程池，这样能够避免饥饿现象，且效率上得到合理分配 线程饥饿现象：    本质上是在出现多任务混合在同一个池中，">
+<meta name="keywords" content="JUC">
+<meta property="og:type" content="article">
+<meta property="og:title" content="线程池">
+<meta property="og:url" content="http://www.yppcat.top/2022/12/03/线程池/index.html">
+<meta property="og:site_name" content="Eric笔记">
+<meta property="og:description" content="异步模式之工作线程 让有限的工作线程轮流异步处理无限多的任务，也可以将其归类为分工模式，他的典型实现就是线程池，也体现了经典设计模式中的享元模式 例如,海底捞的服务员（线程），轮流处理每位顾客的点餐（任务），如果每位顾客都配一个专属服务员，则成本太过高昂 注意：不同任务类型应该使用不同的线程池，这样能够避免饥饿现象，且效率上得到合理分配 线程饥饿现象：    本质上是在出现多任务混合在同一个池中，">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="http://www.yppcat.top/2022/12/03/线程池/image-20221203195303524.png">
+<meta property="og:image" content="http://www.yppcat.top/2022/12/03/线程池/image-20221203195417333.png">
+<meta property="og:image" content="http://www.yppcat.top/2022/12/03/线程池/image-20221203195509261.png">
+<meta property="og:image" content="http://www.yppcat.top/2022/12/03/线程池/image-20221203195533485.png">
+<meta property="og:image" content="http://www.yppcat.top/2022/12/03/线程池/image-20221203195601076.png">
+<meta property="og:image" content="http://www.yppcat.top/2022/12/03/线程池/image-20221203195622021.png">
+<meta property="og:image" content="http://www.yppcat.top/2022/12/03/线程池/image-20221203195711488.png">
+<meta property="og:updated_time" content="2022-12-03T12:03:06.462Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="线程池">
+<meta name="twitter:description" content="异步模式之工作线程 让有限的工作线程轮流异步处理无限多的任务，也可以将其归类为分工模式，他的典型实现就是线程池，也体现了经典设计模式中的享元模式 例如,海底捞的服务员（线程），轮流处理每位顾客的点餐（任务），如果每位顾客都配一个专属服务员，则成本太过高昂 注意：不同任务类型应该使用不同的线程池，这样能够避免饥饿现象，且效率上得到合理分配 线程饥饿现象：    本质上是在出现多任务混合在同一个池中，">
+<meta name="twitter:image" content="http://www.yppcat.top/2022/12/03/线程池/image-20221203195303524.png">
+  
+    <link rel="alternative" href="/atom.xml" title="Eric笔记" type="application/atom+xml">
+  
+  <meta name="summary" content="">
+  <link rel="shortcut icon" href="/favicon.ico">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="loading" class="active"></div>
+
+  <nav id="menu" class="hide" >
+   <div class="inner flex-row-vertical">
+  <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+      <i class="icon icon-lg icon-close"></i>
+  </a>
+  <div class="brand-wrap">
+    <div class="brand">
+      <a href="/" class="avatar"><img src="/img/header.jpg"></a>
+      <hgroup class="introduce">
+        <h5 class="nickname">Eric笔记</h5>
+        <a href="mailto:1246275955@qq.com" title="1246275955@qq.com" class="mail">1246275955@qq.com</a>
+      </hgroup>
+    </div>
+  </div>
+  <div class="scroll-wrap flex-col">
+    <ul class="nav">
+      
+          <li class="waves-block waves-effect">
+            <a href="/">
+              <i class="icon icon-lg icon-home"></i>
+              主页
+            </a>
+          </li>
+      
+          <li class="waves-block waves-effect">
+            <a href="/archives">
+              <i class="icon icon-lg icon-archives"></i>
+              Archives
+            </a>
+          </li>
+      
+          <li class="waves-block waves-effect">
+            <a href="/tags">
+              <i class="icon icon-lg icon-tags"></i>
+              Tags
+            </a>
+          </li>
+      
+          <li class="waves-block waves-effect">
+            <a href="https://github.com/wtdBill" target="_blank">
+              <i class="icon icon-lg icon-github"></i>
+              Github
+            </a>
+          </li>
+      
+    </ul>
+
+    <footer class="footer">
+  <p><a rel="license" target="_blank" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0;vertical-align:middle;" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFAAAAAPCAMAAABEF7i9AAAAllBMVEUAAAD///+rsapERER3d3eIiIjMzMzu7u4iIiKUmZO6v7rKzsoODg4RERFVVVUNDQ0NDg0PEA8zMzNLTEtbXltmZmZydnF9gn2AgICPkI+ZmZmqqqq7u7vFxsXIzMgNDQwZGRkgICAhISEkJSMnKCcuMC4xMzE5Ozk7PTtBQkFCQkJDQ0Nna2eGhoaHh4ezuLLGysbd3d1wVGpAAAAA4UlEQVR42q2T1xqCMAyFk7QsBQeKA9x7j/d/OSm22CpX0nzcpA1/T05aAOuBVkMAScQFHLnEwoCo2f1TnQIGoVMewjZEjVFN4GH1Ue1Cn2jWqwfsOOj6wDwGvotsl/c8lv7KIq1eLOsT0HMFHMIE/RZyHnlphryT9zyV+8WH5e8yQw3wnQvgAFxPTKUVi555SHR/lOfLMgVTeDlSfN+TaoUsiTyeIm+bCkHvCA2FUKG48LDtYBZBknsYP/G8NTw0gaaHyuQf4H5pecrB/FYCT2sL9zAfy1Xyjou6L8X2W7YcLyBZCRtnq/zfAAAAAElFTkSuQmCC"></a></p>
+  <p>Eric笔记 &copy; 2022</p>
+  <p>Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme
+  <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a></p>
+  <a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-2x icon-rss-square"></i></a>
+</footer>
+
+  </div>
+</div>
+
+  </nav>
+  <main id="main">
+    <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">线程池</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input " autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+    </div>
+</header>
+<header class="content-header">
+  <div class="container">
+    <h1 class="author">线程池</h1>
+    <h5 class="subtitle">
+        
+            <time datetime="2022-12-03T11:49:42.000Z" itemprop="datePublished" class="page-time">
+  2022-12-03
+</time>
+
+
+        
+    </h5>
+  </div>
+</header>
+
+    <div class="container body-wrap">
+      <article id="post-线程池" class="article article-type-post" itemprop="blogPost">
+    <div class="post-meta flex-row">
+        
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JUC/">JUC</a></li></ul>
+
+    </div>
+    <div class="post-body">
+        <aside class="post-widget" id="post-widget">
+
+            
+
+            
+            <nav class="post-toc-wrap" id="post-toc">
+            
+            </nav>
+            
+        </aside>
+
+        <div class="post-main">
+
+            <div class="post-content" id="post-content" itemprop="postContent">
+            <p><strong>异步模式之工作线程</strong></p>
+<p>让有限的工作线程轮流异步处理无限多的任务，也可以将其归类为分工模式，他的典型实现就是线程池，也体现了经典设计模式中的享元模式</p>
+<p>例如,海底捞的服务员（线程），轮流处理每位顾客的点餐（任务），如果每位顾客都配一个专属服务员，则成本太过高昂</p>
+<p>注意：不同任务类型应该使用不同的线程池，这样能够避免饥饿现象，且效率上得到合理分配</p>
+<p>线程饥饿现象：<br>    本质上是在出现多任务混合在同一个池中，如果出现相互影响的状况出现类似死锁的问题</p>
+<p><strong>享元设计模式</strong></p>
+<p>本质：运用内存共享的原理，去有效支撑大量的细颗粒度的对象</p>
+<p>享元工厂：一个享元工厂，用来创建并管理对象，他主要是用来确保合理地共享对象，当用户请求一个对象是，由工厂提供一个已创建的对象示例或者创建一个</p>
+<p>享元对象：一个重复的对象</p>
+<p>使用场景：如果一个程序对于某个对象进行大量应用，且使用生命周期短，可以考虑采取享元模式进行复用</p>
+<p><strong>线程数量与核心数</strong></p>
+<p>处理器核数：<br>    线程核心数是一种执行资源，资源数量就是核的个数，应用程序的线程数就是服务请求数，而操作系统的作用如何调配有限的资源来服务更多的请求，这就是进程调度的概念。<br>一般情况下，服务其你去线程会“相对公平”的分配到核上运行，并且在时间片上轮流使用，这就是所谓的并发执行。</p>
+<p>比如系统有4个核，如果<br>3个线程，分配到3个核上<br>8个线程，每个核分配两个线程执行<br>10个线程，有些核跑3个有些跑2个</p>
+<p>所以，并非线程数量越大，速度越快，线程数量太过于庞大会导致各种内存问题，因为一个线程的开辟还会涉及到线程上下文的应用</p>
+<p><strong>创建多少线程合适？</strong></p>
+<img src="/2022/12/03/线程池/image-20221203195303524.png" title="[线程池]">
+<p><strong>CPU密集型运算：</strong><br>    通常采用CPU核数 + 1 能够实现最优的CPU利用率，+1是保证当线程由于页缺失故障（操作系统）或其他原因导致暂停时，额外的这个线程就能顶上去，保证CPU始终周期不被浪费</p>
+<p><strong>I/O密集型运算：</strong><br>    CPU不总是处于繁忙状态，例如，当你执行业务计算时，这时候会使用CPU资源，但当你执行IO操作、或者远程的RPC调用时，包括进行数据库操作等，这个时候CPU会闲下来，你可以利用多线程提高他的利用率</p>
+<p><strong>经验公式如下：</strong><br><strong>线程数 = 核数 <em> 期望CPU利用率 </em> 总时间（CPU计算时间+等待时间） / CPU计算时间</strong></p>
+<p>例如：4核CPU，计算时间是50%，其他等待时间是50%，期望CPU被100%利用，套用公式<br>    4 <em> 100% </em> 100% / 50% = 8</p>
+<p><strong>自定义线程池</strong></p>
+<p>由主线程往一个队列中去添加任务，由线程池控制线程去进行消费</p>
+<img src="/2022/12/03/线程池/image-20221203195417333.png" title="[线程池]">
+<p><strong>JDK中提供的线程池</strong></p>
+<img src="/2022/12/03/线程池/image-20221203195509261.png" title="[线程池]">
+<p><strong>ThreadPoolExecutor</strong></p>
+<p><strong>状态模型：</strong></p>
+<img src="/2022/12/03/线程池/image-20221203195533485.png" title="[线程池]">
+<p><strong>构造方法</strong></p>
+<img src="/2022/12/03/线程池/image-20221203195601076.png" title="[线程池]">
+<p><strong>工作模式</strong></p>
+<img src="/2022/12/03/线程池/image-20221203195622021.png" title="[线程池]">
+<p><strong>JDK中的拒绝策略</strong></p>
+<p>ThreadPoolExecutor自己已经提供了四个拒绝策略，分别是</p>
+<p>CallerRunsPolicy：在任务被拒绝添加后，会调用当前线程池的所在的线程去执行被拒绝的任务。这个策略的缺点就是可能会阻塞主线程。</p>
+<p>AbortPolicy：默认的拒绝策略就是AbortPolicy。直接抛出异常。抛出个RejectedExecutionException异常，也不执行这个任务了</p>
+<p>DiscardPolicy：这个东西什么都没干。</p>
+<p>DiscardOldestPolicy：当任务呗拒绝添加时，会抛弃任务队列中最旧的任务也就是最先加入队列的，再把这个新任务添加进去。</p>
+<p><strong>变量压缩合并的好处</strong></p>
+<img src="/2022/12/03/线程池/image-20221203195711488.png" title="[线程池]">
+<p><strong>合并算法</strong></p>
+<p>目的：将另个整数值打包到一个整数值下</p>
+<p>步骤：<br>    1.拆分短位与长位数值      短位=常量（状态）         长位 = 动态值（长度）<br>    2.打包算法   :<br>        长位 &amp; ~ mask | 短位 &amp; mask<br>    mask为分界位，如 一个整数值 短位占用3位，则长位占用29位，mask作用是用来对于短位数值进行换算，所有，如果短位需要占用三位则需要用111&lt;&lt;29位来占据前三位作为等值</p>
+<p><strong>ThreadPoolExecutor与当前自定义的区别</strong></p>
+<p>1.救急线程的应用<br>    提升性能</p>
+<p>2.状态设置<br>    对于线程池的管理</p>
+<p>3.原子合并<br>    利用位运算，进行CAS的优化</p>
+<p>4.工厂模式的应用</p>
+<p><strong>Timer缺点</strong></p>
+<p>Timer的优点在于简单易用，但是由于所有任务都是同一线程来调度执行，所有任务是串行，如果前面任务有延迟，会影响后面任务执行</p>
+<p>解决办法：<br>    ScheduledExecutorService<br>    线程池的调度</p>
+<p><strong>fork/join线程池</strong></p>
+<p>fork/join是JDK 1.7后加入的心得线程池实现，他主要体现是分治思想，适用于能够进行任务拆分的CPU密集型运算</p>
+<p>他是为了处理大数据诞生的</p>
+<p>所谓任务拆分，是将一个大任务拆分为算法上相同的小任务，直至不能拆分可以直接求解。跟递归相关的一些计算，如归并排序、斐波拉切数列，都可以进行分治完成</p>
+<p>Fork/Join在分治的基础上加入了多线程，可以把每个任务的分解和合并交给不同的线程来完成，进一步提升运算效率</p>
+<p>Fork/Join 默认会创建于CPU核心数大小相同的线程池</p>
+<p>最常见业务，对于文件夹的操作</p>
+
+
+            
+            <div class="post-reward">
+                <a id="rewardBtn" href="javascript:;" class="post-reward-btn waves-effect waves-circle waves-light">赏</a>
+            </div>
+            
+            
+            <blockquote>
+                <p>
+                本文地址：
+                <a href="http://www.yppcat.top/2022/12/03/线程池/" target="_blank" rel="external">http://www.yppcat.top/2022/12/03/线程池/</a>
+                </p>
+                <footer><cite><a href="http://www.yppcat.top">@Eric笔记</a></cite></footer>
+            </blockquote>
+            </div>
+            
+<nav class="post-nav">
+  
+    <div class="waves-block waves-effect prev fl">
+      <a href="/2022/12/05/AQS/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">AQS</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next fr">
+      <a href="/2022/11/27/CAS与原子变量/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">CAS与原子变量</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+            
+            
+<div class="duoshuo">
+	<!-- 多说评论框 start -->
+	<div class="ds-thread" data-thread-key="线程池" data-title="线程池" data-url="http://www.yppcat.top/2022/12/03/线程池/index.html"></div>
+	<!-- 多说评论框 end -->
+	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+	<script type="text/javascript">
+	var duoshuoQuery = {short_name:"ysblog"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+	<!-- 多说公共JS代码 end -->
+</div>
+
+
+
+
+
+        </div>
+    </div>
+</article>
+
+<div id="reward" class="reward-lay">
+    <a class="reward-off" id="rewardOff" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        谢谢老板~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <ul class="reward-items">
+        
+        <li>
+            <img src="/img/wechat.jpg" title="微信打赏二维码" alt="微信打赏二维码">
+            <p>微信</p>
+        </li>
+        
+
+        
+    </ul>
+</div>
+
+    </div>
+  </main>
+<div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+<script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+
+<script src="/js/main.js"></script>
+
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<script type="text/template" id="search-tpl">
+<li class="item">
+    <a href="/{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</script>
+
+<script src="/js/search.js"></script>
+
+
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script type="text/javascript" async src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

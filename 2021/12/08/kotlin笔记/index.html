@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  <title>kotlin笔记-列表 | Eric笔记 | Eric笔记</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="theme-color" content="#3F51B5">
+  
+  
+  <meta name="keywords" content="Kotlin">
+  <meta name="description" content="kotlin普通列表1234val list = listOf(&quot;jack&quot;, &quot;lucy&quot;, &quot;black&quot;)println(list.getOrElse(4) &amp;#123; &quot;UnKnown&quot; &amp;#125;)println(list.getOrNull(4) ?: &quot;UnKnown&quot;)println(list[2]) list的for each循环12345678910111213141516">
+<meta name="keywords" content="Kotlin">
+<meta property="og:type" content="article">
+<meta property="og:title" content="kotlin笔记-列表">
+<meta property="og:url" content="http://www.yppcat.top/2021/12/08/kotlin笔记/index.html">
+<meta property="og:site_name" content="Eric笔记">
+<meta property="og:description" content="kotlin普通列表1234val list = listOf(&quot;jack&quot;, &quot;lucy&quot;, &quot;black&quot;)println(list.getOrElse(4) &amp;#123; &quot;UnKnown&quot; &amp;#125;)println(list.getOrNull(4) ?: &quot;UnKnown&quot;)println(list[2]) list的for each循环12345678910111213141516">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2021-12-08T14:59:33.174Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="kotlin笔记-列表">
+<meta name="twitter:description" content="kotlin普通列表1234val list = listOf(&quot;jack&quot;, &quot;lucy&quot;, &quot;black&quot;)println(list.getOrElse(4) &amp;#123; &quot;UnKnown&quot; &amp;#125;)println(list.getOrNull(4) ?: &quot;UnKnown&quot;)println(list[2]) list的for each循环12345678910111213141516">
+  
+    <link rel="alternative" href="/atom.xml" title="Eric笔记" type="application/atom+xml">
+  
+  <meta name="summary" content="">
+  <link rel="shortcut icon" href="/favicon.ico">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="loading" class="active"></div>
+
+  <nav id="menu" class="hide" >
+   <div class="inner flex-row-vertical">
+  <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+      <i class="icon icon-lg icon-close"></i>
+  </a>
+  <div class="brand-wrap">
+    <div class="brand">
+      <a href="/" class="avatar"><img src="/img/header.jpg"></a>
+      <hgroup class="introduce">
+        <h5 class="nickname">Eric笔记</h5>
+        <a href="mailto:1246275955@qq.com" title="1246275955@qq.com" class="mail">1246275955@qq.com</a>
+      </hgroup>
+    </div>
+  </div>
+  <div class="scroll-wrap flex-col">
+    <ul class="nav">
+      
+          <li class="waves-block waves-effect">
+            <a href="/">
+              <i class="icon icon-lg icon-home"></i>
+              主页
+            </a>
+          </li>
+      
+          <li class="waves-block waves-effect">
+            <a href="/archives">
+              <i class="icon icon-lg icon-archives"></i>
+              Archives
+            </a>
+          </li>
+      
+          <li class="waves-block waves-effect">
+            <a href="/tags">
+              <i class="icon icon-lg icon-tags"></i>
+              Tags
+            </a>
+          </li>
+      
+          <li class="waves-block waves-effect">
+            <a href="https://github.com/wtdBill" target="_blank">
+              <i class="icon icon-lg icon-github"></i>
+              Github
+            </a>
+          </li>
+      
+    </ul>
+
+    <footer class="footer">
+  <p><a rel="license" target="_blank" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0;vertical-align:middle;" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFAAAAAPCAMAAABEF7i9AAAAllBMVEUAAAD///+rsapERER3d3eIiIjMzMzu7u4iIiKUmZO6v7rKzsoODg4RERFVVVUNDQ0NDg0PEA8zMzNLTEtbXltmZmZydnF9gn2AgICPkI+ZmZmqqqq7u7vFxsXIzMgNDQwZGRkgICAhISEkJSMnKCcuMC4xMzE5Ozk7PTtBQkFCQkJDQ0Nna2eGhoaHh4ezuLLGysbd3d1wVGpAAAAA4UlEQVR42q2T1xqCMAyFk7QsBQeKA9x7j/d/OSm22CpX0nzcpA1/T05aAOuBVkMAScQFHLnEwoCo2f1TnQIGoVMewjZEjVFN4GH1Ue1Cn2jWqwfsOOj6wDwGvotsl/c8lv7KIq1eLOsT0HMFHMIE/RZyHnlphryT9zyV+8WH5e8yQw3wnQvgAFxPTKUVi555SHR/lOfLMgVTeDlSfN+TaoUsiTyeIm+bCkHvCA2FUKG48LDtYBZBknsYP/G8NTw0gaaHyuQf4H5pecrB/FYCT2sL9zAfy1Xyjou6L8X2W7YcLyBZCRtnq/zfAAAAAElFTkSuQmCC"></a></p>
+  <p>Eric笔记 &copy; 2022</p>
+  <p>Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme
+  <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a></p>
+  <a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-2x icon-rss-square"></i></a>
+</footer>
+
+  </div>
+</div>
+
+  </nav>
+  <main id="main">
+    <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">kotlin笔记-列表</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input " autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+    </div>
+</header>
+<header class="content-header">
+  <div class="container">
+    <h1 class="author">kotlin笔记-列表</h1>
+    <h5 class="subtitle">
+        
+            <time datetime="2021-12-08T14:18:06.000Z" itemprop="datePublished" class="page-time">
+  2021-12-08
+</time>
+
+
+        
+    </h5>
+  </div>
+</header>
+
+    <div class="container body-wrap">
+      <article id="post-kotlin笔记" class="article article-type-post" itemprop="blogPost">
+    <div class="post-meta flex-row">
+        
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Kotlin/">Kotlin</a></li></ul>
+
+    </div>
+    <div class="post-body">
+        <aside class="post-widget" id="post-widget">
+
+            
+
+            
+            <nav class="post-toc-wrap" id="post-toc">
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#kotlin普通列表"><span class="post-toc-number">1.</span> <span class="post-toc-text">kotlin普通列表</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#list的for-each循环"><span class="post-toc-number">2.</span> <span class="post-toc-text">list的for each循环</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#map列表"><span class="post-toc-number">3.</span> <span class="post-toc-text">map列表</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#kotlin可变列表MutableList"><span class="post-toc-number">4.</span> <span class="post-toc-text">kotlin可变列表MutableList</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#kotlin可变列表MutableMap"><span class="post-toc-number">5.</span> <span class="post-toc-text">kotlin可变列表MutableMap</span></a></li></ol>
+            </nav>
+            
+        </aside>
+
+        <div class="post-main">
+
+            <div class="post-content" id="post-content" itemprop="postContent">
+            <h4 id="kotlin普通列表"><a href="#kotlin普通列表" class="headerlink" title="kotlin普通列表"></a>kotlin普通列表</h4><figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">val</span> list = listOf(<span class="string">"jack"</span>, <span class="string">"lucy"</span>, <span class="string">"black"</span>)</span><br><span class="line">println(list.getOrElse(<span class="number">4</span>) &#123; <span class="string">"UnKnown"</span> &#125;)</span><br><span class="line">println(list.getOrNull(<span class="number">4</span>) ?: <span class="string">"UnKnown"</span>)</span><br><span class="line">println(list[<span class="number">2</span>])</span><br></pre></td></tr></table></figure>
+<h4 id="list的for-each循环"><a href="#list的for-each循环" class="headerlink" title="list的for each循环"></a>list的for each循环</h4><figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">val</span> list = listOf(<span class="string">"jack"</span>, <span class="string">"jimmy"</span>, <span class="string">"jason"</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> (s <span class="keyword">in</span> list) &#123;</span><br><span class="line">    println(s)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">list.forEach &#123;</span><br><span class="line">    println(it)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">list.forEachIndexed &#123; index, s -&gt;</span><br><span class="line">    println(<span class="string">"<span class="variable">$index</span>  <span class="variable">$s</span>"</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//此处的_参数被过滤掉，name proxy依次赋值0 1个元素</span></span><br><span class="line"><span class="keyword">val</span> (name,_,proxy) = listOf(<span class="string">"jack"</span>,<span class="string">"jimmy"</span>,<span class="string">"jason"</span>,<span class="string">"jacky"</span>)</span><br><span class="line">println(<span class="string">"name = <span class="variable">$name</span>   proxy = <span class="variable">$proxy</span>"</span>)</span><br></pre></td></tr></table></figure>
+<h4 id="map列表"><a href="#map列表" class="headerlink" title="map列表"></a>map列表</h4><figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//此处用了infix函数</span></span><br><span class="line"><span class="keyword">val</span> map = mapOf(<span class="string">"jack"</span> to <span class="number">20</span>, <span class="string">"jimmy"</span> to <span class="number">18</span>, <span class="string">"jason"</span> to <span class="number">24</span>)</span><br><span class="line">println(map)</span><br><span class="line"></span><br><span class="line"><span class="comment">//pair是map的子元素</span></span><br><span class="line"><span class="keyword">val</span> sMap = mapOf(Pair(<span class="string">"jack"</span>, <span class="number">20</span>), Pair(<span class="string">"jimmy"</span>, <span class="number">18</span>), Pair(<span class="string">"json"</span>, <span class="number">24</span>))</span><br><span class="line">println(map[<span class="string">"jack"</span>])</span><br><span class="line">println(sMap[<span class="string">"jimmy"</span>])</span><br><span class="line"></span><br><span class="line"><span class="comment">//</span></span><br><span class="line">println(map.getOrElse(<span class="string">"jimmy"</span>) &#123; <span class="string">"UnKnown"</span> &#125;)</span><br><span class="line">println(map.getOrDefault(<span class="string">"jason"</span>) &#123; <span class="string">"UnKnown"</span> &#125;)</span><br><span class="line"></span><br><span class="line"><span class="comment">//map的遍历</span></span><br><span class="line">map.forEach &#123;</span><br><span class="line">    println(<span class="string">"<span class="subst">$&#123;it.key&#125;</span>  <span class="subst">$&#123;it.value&#125;</span>"</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//map的遍历</span></span><br><span class="line">map.forEach &#123; (key, value) -&gt;</span><br><span class="line">    println(<span class="string">"key = <span class="variable">$key</span>  value = <span class="variable">$value</span>"</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="kotlin可变列表MutableList"><a href="#kotlin可变列表MutableList" class="headerlink" title="kotlin可变列表MutableList"></a>kotlin可变列表MutableList</h4><figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">val</span> mutableList = mutableListOf(<span class="string">"jack"</span>, <span class="string">"jimmy"</span>, <span class="string">"jacky"</span>)</span><br><span class="line">mutableList.add(<span class="string">"jason"</span>)</span><br><span class="line">mutableList.remove(<span class="string">"jack"</span>)</span><br><span class="line">println(mutableList)</span><br><span class="line"></span><br><span class="line">listOf(<span class="string">"a"</span>, <span class="string">"b"</span>, <span class="string">"c"</span>).toMutableList()</span><br><span class="line">mutableListOf(<span class="string">"m"</span>, <span class="string">"n"</span>, <span class="string">"o"</span>).toList()</span><br></pre></td></tr></table></figure>
+<h4 id="kotlin可变列表MutableMap"><a href="#kotlin可变列表MutableMap" class="headerlink" title="kotlin可变列表MutableMap"></a>kotlin可变列表MutableMap</h4><figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">val</span> mutableMap = mutableMapOf(<span class="string">"Jack"</span> to <span class="number">20</span>, <span class="string">"Jason"</span> to <span class="number">18</span>, <span class="string">"Jacky"</span> to <span class="number">30</span>)</span><br><span class="line"><span class="comment">//此处用到了操作符重载</span></span><br><span class="line">mutableMap += <span class="string">"jimmy"</span> to <span class="number">1000</span></span><br><span class="line">mutableMap.put(<span class="string">"lucas"</span>, <span class="number">31</span>)</span><br><span class="line">mutableMap[<span class="string">"lucy"</span>] = <span class="number">30</span></span><br><span class="line"></span><br><span class="line">mutableMap.getOrPut(<span class="string">"lily"</span>)&#123; <span class="number">100</span> &#125;</span><br><span class="line"><span class="keyword">val</span> i = mutableMap.getOrPut(<span class="string">"jimmy"</span>)&#123; <span class="number">100</span> &#125;</span><br><span class="line"></span><br><span class="line">println(mutableMap)</span><br><span class="line">println(i)</span><br></pre></td></tr></table></figure>
+<p>set列表</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">val</span> mutableSet = mutableSetOf(<span class="string">"Kotlin"</span>, <span class="string">"Java"</span>, <span class="string">"Scala"</span>)</span><br><span class="line">mutableSet += <span class="string">"Groovy"</span></span><br><span class="line"></span><br><span class="line">println(listOf(<span class="string">"Jack"</span>, <span class="string">"Jason"</span>, <span class="string">"Jacky"</span>,<span class="string">"Jacky"</span>).toSet().toList())</span><br><span class="line"></span><br><span class="line"><span class="comment">//去重的快捷函数</span></span><br><span class="line">println(listOf(<span class="string">"Jack"</span>, <span class="string">"Jason"</span>, <span class="string">"Jacky"</span>,<span class="string">"Jacky"</span>).distinct())</span><br></pre></td></tr></table></figure>
+
+
+            
+            <div class="post-reward">
+                <a id="rewardBtn" href="javascript:;" class="post-reward-btn waves-effect waves-circle waves-light">赏</a>
+            </div>
+            
+            
+            <blockquote>
+                <p>
+                本文地址：
+                <a href="http://www.yppcat.top/2021/12/08/kotlin笔记/" target="_blank" rel="external">http://www.yppcat.top/2021/12/08/kotlin笔记/</a>
+                </p>
+                <footer><cite><a href="http://www.yppcat.top">@Eric笔记</a></cite></footer>
+            </blockquote>
+            </div>
+            
+<nav class="post-nav">
+  
+    <div class="waves-block waves-effect prev fl">
+      <a href="/2021/12/08/kotlin笔记-标准函数/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">kotlin笔记-标准函数</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next fr">
+      <a href="/2020/07/29/Activity启动流程/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">Activity启动流程</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+            
+            
+<div class="duoshuo">
+	<!-- 多说评论框 start -->
+	<div class="ds-thread" data-thread-key="kotlin笔记" data-title="kotlin笔记-列表" data-url="http://www.yppcat.top/2021/12/08/kotlin笔记/index.html"></div>
+	<!-- 多说评论框 end -->
+	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+	<script type="text/javascript">
+	var duoshuoQuery = {short_name:"ysblog"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+	<!-- 多说公共JS代码 end -->
+</div>
+
+
+
+
+
+        </div>
+    </div>
+</article>
+
+<div id="reward" class="reward-lay">
+    <a class="reward-off" id="rewardOff" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        谢谢老板~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <ul class="reward-items">
+        
+        <li>
+            <img src="/img/wechat.jpg" title="微信打赏二维码" alt="微信打赏二维码">
+            <p>微信</p>
+        </li>
+        
+
+        
+    </ul>
+</div>
+
+    </div>
+  </main>
+<div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+<script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+
+<script src="/js/main.js"></script>
+
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<script type="text/template" id="search-tpl">
+<li class="item">
+    <a href="/{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</script>
+
+<script src="/js/search.js"></script>
+
+
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script type="text/javascript" async src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

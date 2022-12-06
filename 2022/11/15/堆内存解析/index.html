@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  <title>堆内存解析 | Eric笔记 | Eric笔记</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="theme-color" content="#3F51B5">
+  
+  
+  <meta name="keywords" content="JVM">
+  <meta name="description" content="运行时数据区  堆概述 1.一个JVM进程存在一个堆内存，堆是JVM内存管理的核心区域 2.java 堆区在JVM启动是被创建，其空间大小也被确定，是JVM管理的最大一块内存（堆内存大小可以调整） 3.本质上堆是一组在物理上不连续的内存空间，但是逻辑上是连续的空间（参考HSDB分析的内存结构） 4.所有线程共享堆，但是堆内对于线程处理还是做了一个线程私有的部分（TLAB） 堆的对象管理 在《JAV">
+<meta name="keywords" content="JVM">
+<meta property="og:type" content="article">
+<meta property="og:title" content="堆内存解析">
+<meta property="og:url" content="http://www.yppcat.top/2022/11/15/堆内存解析/index.html">
+<meta property="og:site_name" content="Eric笔记">
+<meta property="og:description" content="运行时数据区  堆概述 1.一个JVM进程存在一个堆内存，堆是JVM内存管理的核心区域 2.java 堆区在JVM启动是被创建，其空间大小也被确定，是JVM管理的最大一块内存（堆内存大小可以调整） 3.本质上堆是一组在物理上不连续的内存空间，但是逻辑上是连续的空间（参考HSDB分析的内存结构） 4.所有线程共享堆，但是堆内对于线程处理还是做了一个线程私有的部分（TLAB） 堆的对象管理 在《JAV">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="http://www.yppcat.top/2022/11/15/堆内存解析/image-20221115214119142.png">
+<meta property="og:image" content="http://www.yppcat.top/2022/11/15/堆内存解析/image-20221115214342705.png">
+<meta property="og:image" content="http://www.yppcat.top/2022/11/15/堆内存解析/image-20221115214524136.png">
+<meta property="og:image" content="http://www.yppcat.top/2022/11/15/堆内存解析/image-20221115214857087.png">
+<meta property="og:image" content="http://www.yppcat.top/2022/11/15/堆内存解析/image-20221115215131588.png">
+<meta property="og:image" content="http://www.yppcat.top/2022/11/15/堆内存解析/image-20221115215235484.png">
+<meta property="og:image" content="http://www.yppcat.top/2022/11/15/堆内存解析/image-20221115220014659.png">
+<meta property="og:image" content="http://www.yppcat.top/2022/11/15/堆内存解析/image-20221115220108627.png">
+<meta property="og:image" content="http://www.yppcat.top/2022/11/15/堆内存解析/image-20221115220127135.png">
+<meta property="og:updated_time" content="2022-11-15T14:06:06.260Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="堆内存解析">
+<meta name="twitter:description" content="运行时数据区  堆概述 1.一个JVM进程存在一个堆内存，堆是JVM内存管理的核心区域 2.java 堆区在JVM启动是被创建，其空间大小也被确定，是JVM管理的最大一块内存（堆内存大小可以调整） 3.本质上堆是一组在物理上不连续的内存空间，但是逻辑上是连续的空间（参考HSDB分析的内存结构） 4.所有线程共享堆，但是堆内对于线程处理还是做了一个线程私有的部分（TLAB） 堆的对象管理 在《JAV">
+<meta name="twitter:image" content="http://www.yppcat.top/2022/11/15/堆内存解析/image-20221115214119142.png">
+  
+    <link rel="alternative" href="/atom.xml" title="Eric笔记" type="application/atom+xml">
+  
+  <meta name="summary" content="">
+  <link rel="shortcut icon" href="/favicon.ico">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="loading" class="active"></div>
+
+  <nav id="menu" class="hide" >
+   <div class="inner flex-row-vertical">
+  <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+      <i class="icon icon-lg icon-close"></i>
+  </a>
+  <div class="brand-wrap">
+    <div class="brand">
+      <a href="/" class="avatar"><img src="/img/header.jpg"></a>
+      <hgroup class="introduce">
+        <h5 class="nickname">Eric笔记</h5>
+        <a href="mailto:1246275955@qq.com" title="1246275955@qq.com" class="mail">1246275955@qq.com</a>
+      </hgroup>
+    </div>
+  </div>
+  <div class="scroll-wrap flex-col">
+    <ul class="nav">
+      
+          <li class="waves-block waves-effect">
+            <a href="/">
+              <i class="icon icon-lg icon-home"></i>
+              主页
+            </a>
+          </li>
+      
+          <li class="waves-block waves-effect">
+            <a href="/archives">
+              <i class="icon icon-lg icon-archives"></i>
+              Archives
+            </a>
+          </li>
+      
+          <li class="waves-block waves-effect">
+            <a href="/tags">
+              <i class="icon icon-lg icon-tags"></i>
+              Tags
+            </a>
+          </li>
+      
+          <li class="waves-block waves-effect">
+            <a href="https://github.com/wtdBill" target="_blank">
+              <i class="icon icon-lg icon-github"></i>
+              Github
+            </a>
+          </li>
+      
+    </ul>
+
+    <footer class="footer">
+  <p><a rel="license" target="_blank" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0;vertical-align:middle;" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFAAAAAPCAMAAABEF7i9AAAAllBMVEUAAAD///+rsapERER3d3eIiIjMzMzu7u4iIiKUmZO6v7rKzsoODg4RERFVVVUNDQ0NDg0PEA8zMzNLTEtbXltmZmZydnF9gn2AgICPkI+ZmZmqqqq7u7vFxsXIzMgNDQwZGRkgICAhISEkJSMnKCcuMC4xMzE5Ozk7PTtBQkFCQkJDQ0Nna2eGhoaHh4ezuLLGysbd3d1wVGpAAAAA4UlEQVR42q2T1xqCMAyFk7QsBQeKA9x7j/d/OSm22CpX0nzcpA1/T05aAOuBVkMAScQFHLnEwoCo2f1TnQIGoVMewjZEjVFN4GH1Ue1Cn2jWqwfsOOj6wDwGvotsl/c8lv7KIq1eLOsT0HMFHMIE/RZyHnlphryT9zyV+8WH5e8yQw3wnQvgAFxPTKUVi555SHR/lOfLMgVTeDlSfN+TaoUsiTyeIm+bCkHvCA2FUKG48LDtYBZBknsYP/G8NTw0gaaHyuQf4H5pecrB/FYCT2sL9zAfy1Xyjou6L8X2W7YcLyBZCRtnq/zfAAAAAElFTkSuQmCC"></a></p>
+  <p>Eric笔记 &copy; 2022</p>
+  <p>Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme
+  <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a></p>
+  <a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-2x icon-rss-square"></i></a>
+</footer>
+
+  </div>
+</div>
+
+  </nav>
+  <main id="main">
+    <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">堆内存解析</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input " autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+    </div>
+</header>
+<header class="content-header">
+  <div class="container">
+    <h1 class="author">堆内存解析</h1>
+    <h5 class="subtitle">
+        
+            <time datetime="2022-11-15T13:39:21.000Z" itemprop="datePublished" class="page-time">
+  2022-11-15
+</time>
+
+
+        
+    </h5>
+  </div>
+</header>
+
+    <div class="container body-wrap">
+      <article id="post-堆内存解析" class="article article-type-post" itemprop="blogPost">
+    <div class="post-meta flex-row">
+        
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JVM/">JVM</a></li></ul>
+
+    </div>
+    <div class="post-body">
+        <aside class="post-widget" id="post-widget">
+
+            
+
+            
+            <nav class="post-toc-wrap" id="post-toc">
+            
+            </nav>
+            
+        </aside>
+
+        <div class="post-main">
+
+            <div class="post-content" id="post-content" itemprop="postContent">
+            <p><strong>运行时数据区</strong></p>
+<img src="/2022/11/15/堆内存解析/image-20221115214119142.png" title="[堆内存解析]">
+<p><strong>堆概述</strong></p>
+<p>1.一个JVM进程存在一个堆内存，堆是JVM内存管理的核心区域</p>
+<p>2.java 堆区在JVM启动是被创建，其空间大小也被确定，是JVM管理的最大一块内存（堆内存大小可以调整）</p>
+<p>3.本质上堆是一组在物理上不连续的内存空间，但是逻辑上是连续的空间（参考HSDB分析的内存结构）</p>
+<p>4.所有线程共享堆，但是堆内对于线程处理还是做了一个线程私有的部分（TLAB）</p>
+<p><strong>堆的对象管理</strong></p>
+<p>在《JAVA虚拟机规范》中对Java堆的描述是：所有的对象示例以及数组都应当在运行时分配在堆上</p>
+<p>但是从实际使用角度来看，不是绝对，存在某些特殊情况下的对象产生是不在堆上分配</p>
+<p>这里请注意，规范上是绝对、实际上是相对</p>
+<p>方法结束后,堆中的对象不会马上移除，需要通过GC执行垃圾回收后才会回收</p>
+<p><strong>堆的内存细分</strong></p>
+<img src="/2022/11/15/堆内存解析/image-20221115214342705.png" title="[堆内存解析]">
+<p>Java7之前内存逻辑划分为：</p>
+<p>新生区+养老区+永久区</p>
+<p>Java8之后内存逻辑划分为：</p>
+<p>新生去+养老区+元空间</p>
+<p>实际上不管永久代与元空间其实都是只方法区中对于长期存在的常量对象的保存</p>
+<p><strong>体会堆空间的分代思想</strong></p>
+<p>为什么需要分代？有什么好处？</p>
+<p>经研究表明，不同对象的生命周期不一致，但是在具体使用过程中70%-90的对象是临时对象</p>
+<p>分代唯一的理由是优化GC性能。如果没有分代，那么所有对象在一块空间，GC想要回收扫描他就必须扫描所有的对象，分代之后，长期持有的对象可以挑出，短期持有的对象可以固定在一个位置进行回收，省掉很大一部分空间利用</p>
+<p><strong>堆的默认大小</strong></p>
+<p>默认空间大小：</p>
+<p>初始大小：物理电脑内存大小 / 64</p>
+<p>最大内存大小：物理电脑内存大小 / 4</p>
+<p><strong>对象分配过程图示</strong></p>
+<img src="/2022/11/15/堆内存解析/image-20221115214524136.png" title="[堆内存解析]">
+<p><strong>对象生产过程自述</strong></p>
+<p>1.我是一个普通的java对象，我出生在Eden区，在Eden区我还看到和我长的很像的小兄弟，我们在Eden区中玩了挺长时间。</p>
+<p>2.有一天Eden区中的人实在是太多了，我就被迫去了Survivor区的“From”区，自从去了Survivor区，我就开始了我漂泊的人生，有时候在Survivor的“From”区，有时候在Survivor的“To”区，居无定所。</p>
+<p>3.直到我 岁的时候，爸爸说我成人了，该去社会上闯闯了。于是我就去了年老代那边，年老代里，人很多，并且年龄都挺大的，我在这里也认识了很多人。在年老代里，我生活了 年(每次GC加一岁)，然后被回收。</p>
+<p><strong>MinorGc、MajorGC、FullGC的区别</strong></p>
+<p>JVM在进行GC时，并非每次都对上面三个内存区域一起回收，大部分的只会针对于Eden区进行</p>
+<p>在JVM标准中，他里面的GC按照回收区域划分为两种：</p>
+<p> 一种是部分采集（Partial GC ）:</p>
+<p>新生代采集（Minor GC / YongGC）：</p>
+<p><strong>只采集新生代数据</strong></p>
+<p>老年代采集（Major GC / Old GC）：</p>
+<p><strong>只采集老年代数据，目前只有CMS会单独采集老年代</strong></p>
+<p>混合采集（Mixed GC）：</p>
+<p><strong>采集新生代与老年代部分数据，目前只有G1使用</strong></p>
+<p>一种是整堆采集（Full GC）:</p>
+<p><strong>收集整个堆与方法区的所有垃圾</strong></p>
+<p><strong>GC触发策略</strong></p>
+<p><strong>年轻代触发机制：</strong></p>
+<p>当年青代空间不足时，就会触发MinorGc,这里年轻代满值得是Eden区中满了</p>
+<p>因为Java大部分对象都是具备朝生熄灭的特性，所以MinorGC非常频繁，一般回收速度也快</p>
+<p>MinorGc会出发STW行为，暂停其他用户的线程</p>
+<p><strong>老年代GC触发机制：</strong></p>
+<p>出现MajorGC经常会伴随至少一次MinorGC(非绝对，老年代空间不足时会尝试触发</p>
+<p>MinorGC如果空间还是不足则会出发MajorGC)</p>
+<p>MajorGC比MinorGC速度慢10倍，如果MajorGC后内存还是不足则会出现OOM</p>
+<p><strong>FullGC触发</strong></p>
+<p>调用System.gc()时</p>
+<p>老年代空间不足时</p>
+<p>方法区空间不足时</p>
+<p>通过MinorGC进入老年代的平均大小大于老年代的可用内存</p>
+<p>在Eden使用Survivor进行复制时，对象大小大于Survivor的可用内存，则该对象转入老年代，且</p>
+<p>老年代的可用内存小于该对消</p>
+<p>Full GC 是开发或者调优中尽量要避开的</p>
+<p><strong>GC日志查看</strong></p>
+<p>-Xms9m -Xmx9m -XX:+PrintGCDetails</p>
+<img src="/2022/11/15/堆内存解析/image-20221115214857087.png" title="[堆内存解析]">
+<p><strong>TLAB（</strong>Thread Local Allocation Buffer）</p>
+<p>什么是TLAB?</p>
+<p>堆区是线程共享区，任何线程都可以访问堆中共享数据</p>
+<p>由于对象示例的创建很频繁，在并发环境下对重划分内存空间是线程不安全的，如果需要避免多个线程对于同一地址操作，需要加锁，而加锁则会印象分配速度</p>
+<p>所以JVM默认在堆区中开辟了一块空间，专门服务于每一个线程。他为每个线程分配了一个私有缓存区域，包含在Eden中，这就是TLAB</p>
+<p>多线程同时分配内存是，使用TLAB可以避免一系列的非线程安全问题</p>
+<p>TLAB会作为内存分配的首选，TLAB总空间只会占用EDEN空间的1% </p>
+<p>一旦对象在TLAB空间分配失败，JVM会尝试使用加锁来保证数据操作的原子性，从而直接在Eden中分配</p>
+<p><strong>对象逃逸与代码优化</strong></p>
+<p><strong>堆是分配对象存储的唯一选择吗？</strong></p>
+<p>在《深入理解JAVA虚拟机》一书中，有一段这样的描述：</p>
+<p>随着JIT编译器的发展与逃逸分析技术逐渐成熟，栈上分配、标量替换优化技术将会导致一些微妙的变化，所有的对象分配到堆上也渐渐地变得不那么“绝对”了。</p>
+<p>？？？？什么是栈上分配？？ 什么是标量替换？？ 什么叫逃逸分析技术？？？</p>
+<p><strong>逃逸分析</strong></p>
+<p>逃逸：</p>
+<p>一个对象的作用域仅限于方法区域内部在使用的情况下，此种状况叫做非逃逸</p>
+<p>一个对象如果被外部其他类调用，或者是作用于属性中，则此种现象被称之为对象逃逸</p>
+<p>此种行为发生在字节码被编译后JIT对于代码的进一步优化</p>
+<p><strong>逃逸分析案例</strong></p>
+<p>一个对象的作用域仅限于方法区域内部在使用的情况下，此种状况加做非逃逸</p>
+<img src="/2022/11/15/堆内存解析/image-20221115215131588.png" title="[堆内存解析]">
+<p>method2因为将当前sb返回出去进行使用，所以发生逃逸，</p>
+<p>变更为methd3之后是构建一个新的String 对象，而StringBuffer对象未产生逃逸现象</p>
+<img src="/2022/11/15/堆内存解析/image-20221115215235484.png" title="[堆内存解析]">
+<p><strong>逃逸分析：代码优化</strong></p>
+<p>使用逃逸分析，编译器可以堆代码做如下优化：</p>
+<p>1.栈上分配：JIT编译器在编译期间根据逃逸分析计算结果，如果发现当前对象没有发生逃逸现象，那么当前对象就可能被优化成栈上分配，会将对象直接分配在栈中</p>
+<p>2.标量替换:有的对象可能不需要作为一个连续的内存结构存在也能被访问到，那么对象部分可以不存储在内存，而是存储在CPU寄存器中</p>
+<p><strong>标量替换</strong></p>
+<p><strong>标量</strong>：指一个无法在分解成更小的数据的数据。Java中的原始数据类型就是标量</p>
+<p><strong>聚合量</strong>：Java中的聚合量指的就是类，封装的行为就是聚合</p>
+<p><strong>标量替换</strong>：在未发生逃逸的情况下，函数内部生成的聚合量在经过JIT优化后会将其拆解为标量</p>
+<p><strong>逃逸分析弊端</strong></p>
+<p>需要进行一些列复杂的分析算法运算，相对耗时</p>
+<p><strong>对象的生产与对象内存分布</strong></p>
+<p><strong>对象创建的几种实例化方案</strong></p>
+<p>1.new</p>
+<p>2.Class.newInstance</p>
+<p>3.Cpmstructor.newInstance(xxx)</p>
+<p>4.obi.clone</p>
+<p>5.反序列化</p>
+<p><strong>字节码看对象内存创建过程</strong></p>
+<img src="/2022/11/15/堆内存解析/image-20221115220014659.png" title="[堆内存解析]">
+<p>new=方法调用</p>
+<p>dup = 复制</p>
+<p>invokespecial = 调用构造器</p>
+<img src="/2022/11/15/堆内存解析/image-20221115220108627.png" title="[堆内存解析]">
+<p><strong>对象内存布局</strong></p>
+<img src="/2022/11/15/堆内存解析/image-20221115220127135.png" title="[堆内存解析]">
+
+            
+            <div class="post-reward">
+                <a id="rewardBtn" href="javascript:;" class="post-reward-btn waves-effect waves-circle waves-light">赏</a>
+            </div>
+            
+            
+            <blockquote>
+                <p>
+                本文地址：
+                <a href="http://www.yppcat.top/2022/11/15/堆内存解析/" target="_blank" rel="external">http://www.yppcat.top/2022/11/15/堆内存解析/</a>
+                </p>
+                <footer><cite><a href="http://www.yppcat.top">@Eric笔记</a></cite></footer>
+            </blockquote>
+            </div>
+            
+<nav class="post-nav">
+  
+    <div class="waves-block waves-effect prev fl">
+      <a href="/2022/11/18/Dalvik虚拟机与ART虚拟机/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">Dalvik虚拟机与ART虚拟机</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next fr">
+      <a href="/2022/11/15/Activity问题/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">Activity问题</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+            
+            
+<div class="duoshuo">
+	<!-- 多说评论框 start -->
+	<div class="ds-thread" data-thread-key="堆内存解析" data-title="堆内存解析" data-url="http://www.yppcat.top/2022/11/15/堆内存解析/index.html"></div>
+	<!-- 多说评论框 end -->
+	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+	<script type="text/javascript">
+	var duoshuoQuery = {short_name:"ysblog"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+	<!-- 多说公共JS代码 end -->
+</div>
+
+
+
+
+
+        </div>
+    </div>
+</article>
+
+<div id="reward" class="reward-lay">
+    <a class="reward-off" id="rewardOff" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        谢谢老板~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <ul class="reward-items">
+        
+        <li>
+            <img src="/img/wechat.jpg" title="微信打赏二维码" alt="微信打赏二维码">
+            <p>微信</p>
+        </li>
+        
+
+        
+    </ul>
+</div>
+
+    </div>
+  </main>
+<div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+<script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+
+<script src="/js/main.js"></script>
+
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<script type="text/template" id="search-tpl">
+<li class="item">
+    <a href="/{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</script>
+
+<script src="/js/search.js"></script>
+
+
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script type="text/javascript" async src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

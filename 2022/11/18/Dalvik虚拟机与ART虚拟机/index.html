@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  <title>Dalvik虚拟机与ART虚拟机 | Eric笔记 | Eric笔记</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="theme-color" content="#3F51B5">
+  
+  
+  <meta name="keywords" content="JVM">
+  <meta name="description" content="Dalvik虚拟机&amp;amp;ART虚拟机与Hotspot区别 Dalivk VM: 隶属：Google 发展历史： 应用于Android系统，并且在Android2.2中提供了JIT，发展迅猛 Dalvik是一款不是JVM的JVM虚拟机。本质上他没有遵循与JVM规范 不能直接运行java Class文件 他的结构基于寄存器结构，而不是JVM栈架构 执行的是编译后的Dex文件，执行效率较高 于And">
+<meta name="keywords" content="JVM">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Dalvik虚拟机与ART虚拟机">
+<meta property="og:url" content="http://www.yppcat.top/2022/11/18/Dalvik虚拟机与ART虚拟机/index.html">
+<meta property="og:site_name" content="Eric笔记">
+<meta property="og:description" content="Dalvik虚拟机&amp;amp;ART虚拟机与Hotspot区别 Dalivk VM: 隶属：Google 发展历史： 应用于Android系统，并且在Android2.2中提供了JIT，发展迅猛 Dalvik是一款不是JVM的JVM虚拟机。本质上他没有遵循与JVM规范 不能直接运行java Class文件 他的结构基于寄存器结构，而不是JVM栈架构 执行的是编译后的Dex文件，执行效率较高 于And">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="http://www.yppcat.top/2022/11/18/Dalvik虚拟机与ART虚拟机/image-20221118171713741.png">
+<meta property="og:image" content="http://www.yppcat.top/2022/11/18/Dalvik虚拟机与ART虚拟机/image-20221118171801777.png">
+<meta property="og:image" content="http://www.yppcat.top/2022/11/18/Dalvik虚拟机与ART虚拟机/image-20221118171917722.png">
+<meta property="og:image" content="http://www.yppcat.top/2022/11/18/Dalvik虚拟机与ART虚拟机/image-20221118172212396.png">
+<meta property="og:image" content="http://www.yppcat.top/2022/11/18/Dalvik虚拟机与ART虚拟机/image-20221118172443050.png">
+<meta property="og:image" content="http://www.yppcat.top/2022/11/18/Dalvik虚拟机与ART虚拟机/image-20221118172812081.png">
+<meta property="og:image" content="http://www.yppcat.top/2022/11/18/Dalvik虚拟机与ART虚拟机/image-20221118172905300.png">
+<meta property="og:image" content="http://www.yppcat.top/2022/11/18/Dalvik虚拟机与ART虚拟机/image-20221118173020016.png">
+<meta property="og:image" content="http://www.yppcat.top/2022/11/18/Dalvik虚拟机与ART虚拟机/image-20221118173405715.png">
+<meta property="og:image" content="http://www.yppcat.top/2022/11/18/Dalvik虚拟机与ART虚拟机/image-20221118173813194.png">
+<meta property="og:image" content="http://www.yppcat.top/2022/11/18/Dalvik虚拟机与ART虚拟机/image-20221118174236862.png">
+<meta property="og:image" content="http://www.yppcat.top/2022/11/18/Dalvik虚拟机与ART虚拟机/image-20221118174253850.png">
+<meta property="og:updated_time" content="2022-11-18T09:52:06.255Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Dalvik虚拟机与ART虚拟机">
+<meta name="twitter:description" content="Dalvik虚拟机&amp;amp;ART虚拟机与Hotspot区别 Dalivk VM: 隶属：Google 发展历史： 应用于Android系统，并且在Android2.2中提供了JIT，发展迅猛 Dalvik是一款不是JVM的JVM虚拟机。本质上他没有遵循与JVM规范 不能直接运行java Class文件 他的结构基于寄存器结构，而不是JVM栈架构 执行的是编译后的Dex文件，执行效率较高 于And">
+<meta name="twitter:image" content="http://www.yppcat.top/2022/11/18/Dalvik虚拟机与ART虚拟机/image-20221118171713741.png">
+  
+    <link rel="alternative" href="/atom.xml" title="Eric笔记" type="application/atom+xml">
+  
+  <meta name="summary" content="">
+  <link rel="shortcut icon" href="/favicon.ico">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="loading" class="active"></div>
+
+  <nav id="menu" class="hide" >
+   <div class="inner flex-row-vertical">
+  <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+      <i class="icon icon-lg icon-close"></i>
+  </a>
+  <div class="brand-wrap">
+    <div class="brand">
+      <a href="/" class="avatar"><img src="/img/header.jpg"></a>
+      <hgroup class="introduce">
+        <h5 class="nickname">Eric笔记</h5>
+        <a href="mailto:1246275955@qq.com" title="1246275955@qq.com" class="mail">1246275955@qq.com</a>
+      </hgroup>
+    </div>
+  </div>
+  <div class="scroll-wrap flex-col">
+    <ul class="nav">
+      
+          <li class="waves-block waves-effect">
+            <a href="/">
+              <i class="icon icon-lg icon-home"></i>
+              主页
+            </a>
+          </li>
+      
+          <li class="waves-block waves-effect">
+            <a href="/archives">
+              <i class="icon icon-lg icon-archives"></i>
+              Archives
+            </a>
+          </li>
+      
+          <li class="waves-block waves-effect">
+            <a href="/tags">
+              <i class="icon icon-lg icon-tags"></i>
+              Tags
+            </a>
+          </li>
+      
+          <li class="waves-block waves-effect">
+            <a href="https://github.com/wtdBill" target="_blank">
+              <i class="icon icon-lg icon-github"></i>
+              Github
+            </a>
+          </li>
+      
+    </ul>
+
+    <footer class="footer">
+  <p><a rel="license" target="_blank" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0;vertical-align:middle;" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFAAAAAPCAMAAABEF7i9AAAAllBMVEUAAAD///+rsapERER3d3eIiIjMzMzu7u4iIiKUmZO6v7rKzsoODg4RERFVVVUNDQ0NDg0PEA8zMzNLTEtbXltmZmZydnF9gn2AgICPkI+ZmZmqqqq7u7vFxsXIzMgNDQwZGRkgICAhISEkJSMnKCcuMC4xMzE5Ozk7PTtBQkFCQkJDQ0Nna2eGhoaHh4ezuLLGysbd3d1wVGpAAAAA4UlEQVR42q2T1xqCMAyFk7QsBQeKA9x7j/d/OSm22CpX0nzcpA1/T05aAOuBVkMAScQFHLnEwoCo2f1TnQIGoVMewjZEjVFN4GH1Ue1Cn2jWqwfsOOj6wDwGvotsl/c8lv7KIq1eLOsT0HMFHMIE/RZyHnlphryT9zyV+8WH5e8yQw3wnQvgAFxPTKUVi555SHR/lOfLMgVTeDlSfN+TaoUsiTyeIm+bCkHvCA2FUKG48LDtYBZBknsYP/G8NTw0gaaHyuQf4H5pecrB/FYCT2sL9zAfy1Xyjou6L8X2W7YcLyBZCRtnq/zfAAAAAElFTkSuQmCC"></a></p>
+  <p>Eric笔记 &copy; 2022</p>
+  <p>Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme
+  <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a></p>
+  <a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-2x icon-rss-square"></i></a>
+</footer>
+
+  </div>
+</div>
+
+  </nav>
+  <main id="main">
+    <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">Dalvik虚拟机与ART虚拟机</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input " autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+    </div>
+</header>
+<header class="content-header">
+  <div class="container">
+    <h1 class="author">Dalvik虚拟机与ART虚拟机</h1>
+    <h5 class="subtitle">
+        
+            <time datetime="2022-11-18T09:14:42.000Z" itemprop="datePublished" class="page-time">
+  2022-11-18
+</time>
+
+
+        
+    </h5>
+  </div>
+</header>
+
+    <div class="container body-wrap">
+      <article id="post-Dalvik虚拟机与ART虚拟机" class="article article-type-post" itemprop="blogPost">
+    <div class="post-meta flex-row">
+        
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JVM/">JVM</a></li></ul>
+
+    </div>
+    <div class="post-body">
+        <aside class="post-widget" id="post-widget">
+
+            
+
+            
+            <nav class="post-toc-wrap" id="post-toc">
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Android内存管理模型"><span class="post-toc-number">1.</span> <span class="post-toc-text">Android内存管理模型</span></a></li></ol>
+            </nav>
+            
+        </aside>
+
+        <div class="post-main">
+
+            <div class="post-content" id="post-content" itemprop="postContent">
+            <p>Dalvik<strong>虚拟机&amp;ART虚拟机与Hotspot区别</strong></p>
+<p>Dalivk VM:</p>
+<p>隶属：Google</p>
+<p>发展历史：</p>
+<p>应用于Android系统，并且在Android2.2中提供了JIT，发展迅猛</p>
+<p>Dalvik是一款不是JVM的JVM虚拟机。本质上他没有遵循与JVM规范</p>
+<p>不能直接运行java Class文件</p>
+<p>他的结构基于寄存器结构，而不是JVM栈架构</p>
+<p>执行的是编译后的Dex文件，执行效率较高</p>
+<p>于Android5.0后被ART替换</p>
+<p>Android应用程序运行在Dalvik/ART虚拟机，并且每一个应用程序对应有一个单独的Dalvik虚拟机实例。Dalvik虚拟机实则也算是一个Java虚拟机，只不过它执行的不是class文件，而是dex文件。</p>
+<p>Dalvik虚拟机与Java虚拟机共享有差不多的特性，差别在于两者执行的指令集是不一样的，前者的指令集是基本寄存的，而后者的指令集是基于堆栈的。</p>
+<img src="/2022/11/18/Dalvik虚拟机与ART虚拟机/image-20221118171713741.png" title="[Dalvik虚拟机与ART虚拟机]">
+<p><strong>栈区存储结构与运行原理</strong></p>
+<img src="/2022/11/18/Dalvik虚拟机与ART虚拟机/image-20221118171801777.png" title="[Dalvik虚拟机与ART虚拟机]">
+<p><strong>寄存器存储与运行原理</strong></p>
+<p>寄存器是CPU的组成部分。寄存器是有限存贮容量的高速存贮部件，它们可用来暂存指令、数据和位址。</p>
+<img src="/2022/11/18/Dalvik虚拟机与ART虚拟机/image-20221118171917722.png" title="[Dalvik虚拟机与ART虚拟机]">
+<p><strong>基于寄存器的虚拟机</strong></p>
+<p>基于寄存器的虚拟机中没有操作数栈，但是有很多虚拟寄存器。其实和操作数栈相同，这些寄存器也存放在运行时栈中，本质上就是一个数组。与JVM相似，在Dalvik VM中每个线程都有自己的PC和调用栈，方法调用的活动记录以帧为单位保存在调用栈上。</p>
+<img src="/2022/11/18/Dalvik虚拟机与ART虚拟机/image-20221118172212396.png" title="[Dalvik虚拟机与ART虚拟机]">
+<p>与JVM版相比，可以发现Dalvik版程序的指令数明显减少了，数据移动次数也明显减少了。</p>
+<p><strong>性能对比</strong></p>
+<p>基于堆栈的Java指令(1个字节)和基于寄存器的Dalvik指令(2、4或者6个字节)各有优劣</p>
+<p>一般而言，执行同样的功能，Java虚拟机需要更多的指令（主要是load和store指令），而Dalvik虚拟机需要更多的指令空间</p>
+<p>需要更多指令意味着要多占用CPU时间，而需要更多指令空间意味着指令缓冲（i-cache）更易失效</p>
+<p>Dalvik虚拟机使用dex（Dalvik Executable）格式的类文件，而Java虚拟机使用class格式的类文件</p>
+<p>一个dex文件可以包含若干个类，而一个class文件只包括一个类</p>
+<p>由于一个dex文件可以包含若干个类，因此它可以将各个类中重复的字符串只保存一次，从而节省了空间，</p>
+<p>适合在内存有限的移动设备使用</p>
+<p>一般来说，包含有相同类的未压缩dex文件稍小于一个已经压缩的jar文件</p>
+<img src="/2022/11/18/Dalvik虚拟机与ART虚拟机/image-20221118172443050.png" title="[Dalvik虚拟机与ART虚拟机]">
+<p><strong>ART与Dalvik</strong></p>
+<p>Dalvik虚拟机执行的是dex字节码，解释执行。从Android 2.2版本开始，支持JIT即时编译（Just In Time）在程序运行的过程中进行选择热点代码（经常执行的代码）进行编译或者优化。</p>
+<p>而ART（Android Runtime） 是在 Android 4.4 中引入的一个开发者选项，也是 Android 5.0 及更高版本的默认 Android 运行时。ART虚拟机执行的是本地机器码。Android的运行时从Dalvik虚拟机替换成ART虚拟机，并不要求开发者将自己的应用直接编译成目标机器码，APK仍然是一个包含dex字节码的文件。</p>
+<p><strong>那么，ART虚拟机执行的本地机器码是从哪里来？</strong></p>
+<p>dex2aot</p>
+<p>Dalvik下应用在安装的过程，会执行一次优化，将dex字节码进行优化生成odex文件。而Art下将应用的dex字节码翻译成本地机器码的最恰当AOT时机也就发生在应用安装的时候。ART 引入了预先编译机制（Ahead Of Time），在安装时，ART 使用设备自带的 dex2oat 工具来编译应用，dex中的字节码将被编译成本地机器码。</p>
+<img src="/2022/11/18/Dalvik虚拟机与ART虚拟机/image-20221118172812081.png" title="[Dalvik虚拟机与ART虚拟机]">
+<p><strong>Android N的运作方式</strong></p>
+<p>ART使用预先(AOT)编译，并且从AndroidN混合使用AOT编译，解释和JIT。</p>
+<p>1、最初安装应用时不进行任何AOT编译（安装又快了），运行过程中解释执行，对经常执行的方法进行JIT，</p>
+<p>经过JIT编译的方法将会记录到<strong>Profile</strong>配置文件中。</p>
+<p>2、当设备闲置和充电时，编译守护进程会运行，根据<strong>Profile</strong>文件对常用代码进行AOT编译。待下次运行时直</p>
+<p>接使用。</p>
+<img src="/2022/11/18/Dalvik虚拟机与ART虚拟机/image-20221118172905300.png" title="[Dalvik虚拟机与ART虚拟机]">
+<h2 id="Android内存管理模型"><a href="#Android内存管理模型" class="headerlink" title="Android内存管理模型"></a><strong>Android内存管理模型</strong></h2><img src="/2022/11/18/Dalvik虚拟机与ART虚拟机/image-20221118173020016.png" title="[Dalvik虚拟机与ART虚拟机]">
+<p><strong>用户空间内存管理</strong></p>
+<p>用户空间主要分两部分，一个是面向C++的native层，一个是基于虚拟机的java层。</p>
+<p>native部分：</p>
+<p>​             Data：用于保存全局变量</p>
+<p>​             Bss：用于保存全局未初始化变量</p>
+<p>​              Code：程序代码段</p>
+<p>​              Stack：线程函数执行的内存</p>
+<p>​               Heap：Malloc分配管理的内存</p>
+<p>java基于虚拟机的内存划分:</p>
+<p>​                ProgramCounterRegisterPC寄存器</p>
+<p>​                VMStack基于方法中的局部变量，包括基本数据类型及对象引用等</p>
+<p>​                NativeMethodStack针对native方法，与方法栈一致</p>
+<p>​                MethodArea虚拟机加载的类信息、常量、静态变量等</p>
+<p>​                Heap对象实体</p>
+<p><strong>ART堆的详细划分</strong></p>
+<img src="/2022/11/18/Dalvik虚拟机与ART虚拟机/image-20221118173405715.png" title="[Dalvik虚拟机与ART虚拟机]">
+<p>ImageSpace：连续地址空间，不进行垃圾回收，存放系统预加载类，而这些对象是存放system@<a href="mailto:framework@boot.art" target="_blank" rel="noopener">framework@boot.art</a>@classes.oat这个OAT文件中的该文件存于data/dalvikccache目录下，每次开机启动只需把系统类映射到ImageSpace。</p>
+<p>ZygoteSpace：连续地址空间，匿名共享内存，进行垃圾回收，管理Zygote进程在启动过程中预加载和创建的各种对象、资源。</p>
+<p>注：ImageSpace和ZygoteSpace在Zygote进程和应用程序进程之间进行共享，而AllocationSpace就每个进程都独立地拥有一份。虽然ImageSpace和ZygoteSpace都是在Zygote进程和应用程序进程之间进行共享，但是前者的对象只创建一次，而后者的对象需要在系统每次启动时根据运行情况都重新创建一遍。</p>
+<p>AllocationSpace与ZygoteSpace性质一致，在Zygote进程fork第一个子进程之前，就会把ZygoteSpace一分为二，原来的已经被使用的那部分堆还叫ZygoteSpace，而未使用的那部分堆就叫AllocationSpace。以后的对象都在AllocationSpace上分配。</p>
+<p>LargeObjectSpace离散地址空间，进行垃圾回收，用来分配一些大于12K的大对象。当满足以下三个条件时，在largeobject  heap上分配，否则在zygote或者allocationspace上分配： </p>
+<p>​                        1.请求分配的内存大于等于Heap类的成员变量large_object_threshold_指定的值。</p>
+<p>​                         2.这个值等于3*kPageSize，即3个页面的大小</p>
+<p>​                         3.已经从ZygoteSpace划分出AllocationSpace，即Heap类的成员变量have_zygote_space_的值等于true。</p>
+<p>​                         4.被分配的对象是一个原子类型数组，即byte数组、int数组和boolean数组等。</p>
+<p><strong>ART的GC策略</strong></p>
+<p>Art的三种GC策略：</p>
+<p>StickyGC:只回收上一次GC到本次GC之间申请的内存。cms浮游垃圾</p>
+<p>PartialGC:局部垃圾回收，除了ImageSpace和ZygoteSpace空间以外的其他内存垃圾。</p>
+<p>FullGC:全局垃圾回收,除了ImageSpace之外的Space的内存垃圾。</p>
+<p>策略的对比：(gcpause时间越长，对应用的影响越大)</p>
+<p>GC暂停时间：StickyGC&lt;PartialGC&lt;FullGC</p>
+<p>回收垃圾的效率：StickyGC&gt;PartialGC&gt;FullGC</p>
+<p><strong>分配对象时执行GC的三个阶段</strong></p>
+<p>执行GC的三个阶段：</p>
+<p>阶段一：首先会进行一次轻量级的GC，GC完成后尝试分配。如果分配失败，则选取下一个GC策略，再进行一次轻量级GC。每次GC完成后都尝试分配，直到三种GC策略都被轮询了一遍还是不能完成分配，则进入下一阶段。</p>
+<p>阶段二：允许堆进行增长的情况下进行对象的分配。</p>
+<p>阶段三：进行一次允许回收软引用的GC的情况下进行对象的分配。</p>
+<img src="/2022/11/18/Dalvik虚拟机与ART虚拟机/image-20221118173813194.png" title="[Dalvik虚拟机与ART虚拟机]">
+<p><strong>强、软、弱、虚引用</strong></p>
+<p>强软弱虚（强引用、软引用、弱引用、虚引用）对应的是四种JVM回收堆内存的四种策略，不同的引用类型</p>
+<p>有不同的回收策略。</p>
+<p>1.强引用</p>
+<p>普通new对象就是使用强引用，强引用必须是对象不可达情况下才会回收</p>
+<p>2.软引用</p>
+<p>当内存不足时，软引用会被回收，系统不足时，就算可达也会回收</p>
+<p>3.弱引用</p>
+<p>只要遇到垃圾回收，就会被回收掉，</p>
+<p>4.虚引用</p>
+<p>如果一个对象仅持有虚引用，那么它就和没有任何引用一样，在任何时候都可能被垃圾回收器回收。</p>
+<p><strong>GC打印log分析</strong></p>
+<p>ART不会把所有的GC结果都输出到Logcat中。只有那些被认为执行缓慢的GC才会被输出到Logcat中。确切的说，只有GC停顿时间超过5ms或者整个GC耗时超过100ms才会被输出到Logcat中</p>
+<p>I/art:ExplicitconcurrentmarksweepGCfreed104710(7MB)AllocSpaceobjects,21(416KB)LOSobjects,33%free,</p>
+<p>25MB/38MB,paused1.230mstotal67.216ms</p>
+<p>格式翻译：</p>
+<p>I/art:&lt;GC_Reason&gt;&lt;GC_Name&gt;&lt;Objects_freed&gt;(&lt;Size_freed&gt;)AllocSpaceObjects,</p>
+<p>GC_Reason&gt;触发垃圾回收的原因以及触发了何种类型的垃圾回收，它包含以下几类：</p>
+<p>Concurrent特点是不需要挂起应用线程。它在后台线程中运行，不会影响到内存的分配。(前后台切换)</p>
+<p>Alloc它在应用申请内存但是堆已满的情况下触发。在这种情况下，垃圾回收在分配内存的线程中进行。（它会导致应用停一段时间）</p>
+<p>Explicit主动发起的垃圾回收，例如System.gc()。跟dalvik一样，建议不要主动发起垃圾回收。</p>
+<p>NativeAlloc它会在native层内存吃紧的时候发起。比如说分配Bitmap或者RenderScript内存空间不够的时候。</p>
+<p>CollectorTransition一般由堆转换引起，垃圾回收器会把free-listback空间的所有对象都复制到bumppointer空间中。目前转换过程只在一些低内存的设备上应用所在进程从对暂停敏感切换到对暂停不敏感状态的时候发生。</p>
+<p>HomogeneousSpaceCompact它是在free-list空间到free-list空间的复制。当app所在进程对暂停不敏感的时候发生。它可以减少内存的使用，减少内存分配的碎片化。</p>
+<p>DisableMovingGc它并不是引起内存回收的真正原因，它是垃圾回收被GetPrimitiveCritical中断时发生的。当concurrent堆压缩正在执行的时候，因为对垃圾回收器的限制，所以非常不建议使用它。</p>
+<p>HeapTrim它不是触发垃圾回收的原因，但是在堆压缩的时候垃圾回收会被终止。</p>
+<p>GCName垃圾回收的名称，一共有如下几类：</p>
+<p>Concurrentmarksweep(CMS)对整个堆进行垃圾回收，除了image空间。</p>
+<p>Concurrentpartialmarksweep对几乎整个堆进行回收，除了image空间和zynote空间。</p>
+<p>Concurrentstickymarksweep一次普通的垃圾回收，它只负责回收上次垃圾回收之后的分配的对象。它要比Concurrentpartial marksweep执行的次数频繁的多，因为它的执行速度快，暂停时间少。</p>
+<p>Marksweep+semispace一种非同时进行的，包含复制过程的GC。可以用来移动堆，也可以用来压缩堆（减少堆的碎片化）。</p>
+<p>Objectsfreed释放了对象（非大对象）的数量</p>
+<p>Sizefreed释放了空间（非大对象）的大小</p>
+<p>Largeobjectsfreed释放了大对象的数量</p>
+<p>Largeobjectsizefreed释放了大对象的空间的大小</p>
+<p>Heapstats堆中空闲空间的百分比和（对象的个数）/（堆的总空间）</p>
+<p>Pausetimes一般情况下，垃圾回收的暂停时间跟堆中引用的数量成正比。目前，ARTCMSGC只有一次在垃圾回收结束的时候。</p>
+<p><strong>分析工具</strong></p>
+<p>adb:对应用进程和系统整体内存状态做一个宏观把控</p>
+<p>dumpsysmeminfo、MemoryProfiler:操作应用程序过程中，以实时图标反馈当前内存情况，对于明显的内存抖动、内存泄漏能做一个初步分析。</p>
+<p>eakCanary:傻瓜式内存泄漏检测工具，对于Activity与Fragment检测非常好用</p>
+<p>MAT:内存块分析，比较全面，使用复杂</p>
+<p><strong>MemoryProfiler</strong></p>
+<img src="/2022/11/18/Dalvik虚拟机与ART虚拟机/image-20221118174236862.png" title="[Dalvik虚拟机与ART虚拟机]">
+<p><strong>30分钟下代码整体运行情况</strong></p>
+<img src="/2022/11/18/Dalvik虚拟机与ART虚拟机/image-20221118174253850.png" title="[Dalvik虚拟机与ART虚拟机]">
+<p><strong>MAT与性能调优（GCROOT溯源与问题分析）</strong></p>
+<p>Mat工具的使用</p>
+<p>转换profile文件格式 -&gt; sdk/platform-tools/hprof-conv.exe  -&gt; 转换命令hprof-conv-zsrcdst</p>
+<p>下载：<a href="https://www.eclipse.org/mat/downloads.php" target="_blank" rel="noopener">https://www.eclipse.org/mat/downloads.php</a></p>
+<p>打开软件File菜单下OpenHeapDump…打开转换好的文件 -&gt; 点击QQL按钮查找activity  (select*frominstanceofandroid.app.Activity)</p>
+<p><strong>内存抖动与内存泄漏</strong></p>
+<p><strong>内存抖动</strong></p>
+<p>内存频繁的分配与回收，（分配速度大于回收速度时）最终会产生OOM</p>
+<p><strong>内存泄露</strong></p>
+<p>一个长生命周期的对象持有一个短生命周期对象的强引用,通俗讲就是该回收的对象因为引用问题没有被回收，最终会产生OOM</p>
+
+
+            
+            <div class="post-reward">
+                <a id="rewardBtn" href="javascript:;" class="post-reward-btn waves-effect waves-circle waves-light">赏</a>
+            </div>
+            
+            
+            <blockquote>
+                <p>
+                本文地址：
+                <a href="http://www.yppcat.top/2022/11/18/Dalvik虚拟机与ART虚拟机/" target="_blank" rel="external">http://www.yppcat.top/2022/11/18/Dalvik虚拟机与ART虚拟机/</a>
+                </p>
+                <footer><cite><a href="http://www.yppcat.top">@Eric笔记</a></cite></footer>
+            </blockquote>
+            </div>
+            
+<nav class="post-nav">
+  
+    <div class="waves-block waves-effect prev fl">
+      <a href="/2022/11/18/GC及调优/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">GC及调优</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next fr">
+      <a href="/2022/11/15/堆内存解析/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">堆内存解析</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+            
+            
+<div class="duoshuo">
+	<!-- 多说评论框 start -->
+	<div class="ds-thread" data-thread-key="Dalvik虚拟机与ART虚拟机" data-title="Dalvik虚拟机与ART虚拟机" data-url="http://www.yppcat.top/2022/11/18/Dalvik虚拟机与ART虚拟机/index.html"></div>
+	<!-- 多说评论框 end -->
+	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+	<script type="text/javascript">
+	var duoshuoQuery = {short_name:"ysblog"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+	<!-- 多说公共JS代码 end -->
+</div>
+
+
+
+
+
+        </div>
+    </div>
+</article>
+
+<div id="reward" class="reward-lay">
+    <a class="reward-off" id="rewardOff" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        谢谢老板~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <ul class="reward-items">
+        
+        <li>
+            <img src="/img/wechat.jpg" title="微信打赏二维码" alt="微信打赏二维码">
+            <p>微信</p>
+        </li>
+        
+
+        
+    </ul>
+</div>
+
+    </div>
+  </main>
+<div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+<script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+
+<script src="/js/main.js"></script>
+
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<script type="text/template" id="search-tpl">
+<li class="item">
+    <a href="/{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</script>
+
+<script src="/js/search.js"></script>
+
+
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script type="text/javascript" async src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>
