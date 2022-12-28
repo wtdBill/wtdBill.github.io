@@ -1,6 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>Activity和Fragment通信</title>
+    <url>/2019/08/23/Activity%E5%92%8CFragment%E9%80%9A%E4%BF%A1/</url>
+    <content><![CDATA[<p>Activity和Fragment通信的几种方式：</p>
+<p>1.接口的方式：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">class MainFragment : Fragment() &#123;</span><br><span class="line"></span><br><span class="line">    private lateinit var name : String</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    fun setName(name : String)&#123;</span><br><span class="line">        this.name = name</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    override fun onCreateView(</span><br><span class="line">        inflater: LayoutInflater, container: ViewGroup?,</span><br><span class="line">        savedInstanceState: Bundle?</span><br><span class="line">    ): View? &#123;</span><br><span class="line">        return inflater.inflate(R.layout.fragment_main, container, false)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">class MainActivity : AppCompatActivity() &#123;</span><br><span class="line"></span><br><span class="line">    private lateinit var mainFragment: MainFragment</span><br><span class="line"></span><br><span class="line">    override fun onCreate(savedInstanceState: Bundle?) &#123;</span><br><span class="line">        super.onCreate(savedInstanceState)</span><br><span class="line">        setContentView(R.layout.activity_main)</span><br><span class="line"></span><br><span class="line">        mainFragment = MainFragment()</span><br><span class="line">        mainFragment.setName(&quot;Hello&quot;)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>2.Bundle的方式：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">class MainFragment private constructor() : Fragment() &#123;</span><br><span class="line"></span><br><span class="line">    private lateinit var name: String</span><br><span class="line">    private lateinit var mainFragment: MainFragment</span><br><span class="line"></span><br><span class="line">    companion object &#123;</span><br><span class="line">        private lateinit var mainFragment: MainFragment</span><br><span class="line"></span><br><span class="line">        fun newInstance(bundle: Bundle): MainFragment &#123;</span><br><span class="line">            mainFragment = MainFragment()</span><br><span class="line">            mainFragment.arguments = bundle</span><br><span class="line">            return mainFragment</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+<p>3.广播方式</p>
+<p>4.eventBus、RxBus等事件</p>
+<p>5.文件（File、SharedPreference方式等）</p>
+]]></content>
+      <tags>
+        <tag>面试</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>AQS</title>
     <url>/2022/12/05/AQS/</url>
     <content><![CDATA[<p><strong>什么是AQS？</strong></p>
@@ -50,36 +67,6 @@
 ]]></content>
       <tags>
         <tag>JUC</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Activity启动流程</title>
-    <url>/2020/07/29/Activity%E5%90%AF%E5%8A%A8%E6%B5%81%E7%A8%8B/</url>
-    <content><![CDATA[<p>我们看一下startActivity方法中到底发生了什么：</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"> <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">startActivity</span><span class="params">(Intent intent)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.startActivity(intent, <span class="keyword">null</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">startActivity</span><span class="params">(Intent intent, @Nullable Bundle options)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (options != <span class="keyword">null</span>) &#123;</span><br><span class="line">            startActivityForResult(intent, -<span class="number">1</span>, options);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="comment">// Note we want to go through this call for compatibility with</span></span><br><span class="line">            <span class="comment">// applications that may have overridden the method.</span></span><br><span class="line">            startActivityForResult(intent, -<span class="number">1</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">startActivityForResult</span><span class="params">(@RequiresPermission Intent intent, <span class="keyword">int</span> requestCode,</span></span></span><br><span class="line"><span class="function"><span class="params">            @Nullable Bundle options)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (mParent == <span class="keyword">null</span>) &#123;</span><br><span class="line">            options = transferSpringboardActivityOptions(options);</span><br><span class="line">            Instrumentation.ActivityResult ar =</span><br><span class="line">                mInstrumentation.execStartActivity(</span><br><span class="line">                    <span class="keyword">this</span>, mMainThread.getApplicationThread(), mToken, <span class="keyword">this</span>,</span><br><span class="line">                    intent, requestCode, options);</span><br><span class="line">            <span class="keyword">if</span> (ar != <span class="keyword">null</span>) &#123;</span><br><span class="line">                mMainThread.sendActivityResult(</span><br><span class="line">                    mToken, mEmbeddedID, requestCode, ar.getResultCode(),</span><br><span class="line">                    ar.getResultData());</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span> (requestCode &gt;= <span class="number">0</span>) &#123;</span><br><span class="line">                <span class="comment">// If this start is requesting a result, we can avoid making</span></span><br><span class="line">                <span class="comment">// the activity visible until the result is received.  Setting</span></span><br><span class="line">                <span class="comment">// this code during onCreate(Bundle savedInstanceState) or onResume() will keep the</span></span><br><span class="line">                <span class="comment">// activity hidden during this time, to avoid flickering.</span></span><br><span class="line">                <span class="comment">// This can only be done when a result is requested because</span></span><br><span class="line">                <span class="comment">// that guarantees we will get information back when the</span></span><br><span class="line">                <span class="comment">// activity is finished, no matter what happens to it.</span></span><br><span class="line">                mStartedActivity = <span class="keyword">true</span>;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            cancelInputsAndStartExitTransition(options);</span><br><span class="line">            <span class="comment">// TODO Consider clearing/flushing other event sources and events for child windows.</span></span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">if</span> (options != <span class="keyword">null</span>) &#123;</span><br><span class="line">                mParent.startActivityFromChild(<span class="keyword">this</span>, intent, requestCode, options);</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                <span class="comment">// Note we want to go through this method for compatibility with</span></span><br><span class="line">                <span class="comment">// existing applications that may have overridden it.</span></span><br><span class="line">                mParent.startActivityFromChild(<span class="keyword">this</span>, intent, requestCode);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-<p>可以看到最终都会走到上述的方法中，我们关注一下mParent==null这种情况，上面的ApplicationThread其实是ActivityThread的一个内部类，我们看下execStartActivity方法：</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> ActivityResult <span class="title">execStartActivity</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">            Context who, IBinder contextThread, IBinder token, Activity target,</span></span></span><br><span class="line"><span class="function"><span class="params">            Intent intent, <span class="keyword">int</span> requestCode, Bundle options)</span> </span>&#123;</span><br><span class="line">        IApplicationThread whoThread = (IApplicationThread) contextThread;</span><br><span class="line">        Uri referrer = target != <span class="keyword">null</span> ? target.onProvideReferrer() : <span class="keyword">null</span>;</span><br><span class="line">        <span class="keyword">if</span> (referrer != <span class="keyword">null</span>) &#123;</span><br><span class="line">            intent.putExtra(Intent.EXTRA_REFERRER, referrer);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (mActivityMonitors != <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">synchronized</span> (mSync) &#123;</span><br><span class="line">                <span class="keyword">final</span> <span class="keyword">int</span> N = mActivityMonitors.size();</span><br><span class="line">                <span class="keyword">for</span> (<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;N; i++) &#123;</span><br><span class="line">                    <span class="keyword">final</span> ActivityMonitor am = mActivityMonitors.get(i);</span><br><span class="line">                    ActivityResult result = <span class="keyword">null</span>;</span><br><span class="line">                    <span class="keyword">if</span> (am.ignoreMatchingSpecificIntents()) &#123;</span><br><span class="line">                        result = am.onStartActivity(intent);</span><br><span class="line">                    &#125;</span><br><span class="line">                    <span class="keyword">if</span> (result != <span class="keyword">null</span>) &#123;</span><br><span class="line">                        am.mHits++;</span><br><span class="line">                        <span class="keyword">return</span> result;</span><br><span class="line">                    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (am.match(who, <span class="keyword">null</span>, intent)) &#123;</span><br><span class="line">                        am.mHits++;</span><br><span class="line">                        <span class="keyword">if</span> (am.isBlocking()) &#123;</span><br><span class="line">                            <span class="keyword">return</span> requestCode &gt;= <span class="number">0</span> ? am.getResult() : <span class="keyword">null</span>;</span><br><span class="line">                        &#125;</span><br><span class="line">                        <span class="keyword">break</span>;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            intent.migrateExtraStreamToClipData();</span><br><span class="line">            intent.prepareToLeaveProcess(who);</span><br><span class="line">            <span class="keyword">int</span> result = ActivityManager.getService()</span><br><span class="line">                .startActivity(whoThread, who.getBasePackageName(), intent,</span><br><span class="line">                        intent.resolveTypeIfNeeded(who.getContentResolver()),</span><br><span class="line">                        token, target != <span class="keyword">null</span> ? target.mEmbeddedID : <span class="keyword">null</span>,</span><br><span class="line">                        requestCode, <span class="number">0</span>, <span class="keyword">null</span>, options);</span><br><span class="line">            checkStartActivityResult(result, intent);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (RemoteException e) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(<span class="string">"Failure from system"</span>, e);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-<p>可以看到最终都是由ActivityManager.getService()的startActivity方法来完成的</p>
-]]></content>
-      <tags>
-        <tag>android</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Activity和Fragment通信</title>
-    <url>/2019/08/23/Activity%E5%92%8CFragment%E9%80%9A%E4%BF%A1/</url>
-    <content><![CDATA[<p>Activity和Fragment通信的几种方式：</p>
-<p>1.接口的方式：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">class MainFragment : Fragment() &#123;</span><br><span class="line"></span><br><span class="line">    private lateinit var name : String</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    fun setName(name : String)&#123;</span><br><span class="line">        this.name = name</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    override fun onCreateView(</span><br><span class="line">        inflater: LayoutInflater, container: ViewGroup?,</span><br><span class="line">        savedInstanceState: Bundle?</span><br><span class="line">    ): View? &#123;</span><br><span class="line">        return inflater.inflate(R.layout.fragment_main, container, false)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">class MainActivity : AppCompatActivity() &#123;</span><br><span class="line"></span><br><span class="line">    private lateinit var mainFragment: MainFragment</span><br><span class="line"></span><br><span class="line">    override fun onCreate(savedInstanceState: Bundle?) &#123;</span><br><span class="line">        super.onCreate(savedInstanceState)</span><br><span class="line">        setContentView(R.layout.activity_main)</span><br><span class="line"></span><br><span class="line">        mainFragment = MainFragment()</span><br><span class="line">        mainFragment.setName(&quot;Hello&quot;)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>2.Bundle的方式：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">class MainFragment private constructor() : Fragment() &#123;</span><br><span class="line"></span><br><span class="line">    private lateinit var name: String</span><br><span class="line">    private lateinit var mainFragment: MainFragment</span><br><span class="line"></span><br><span class="line">    companion object &#123;</span><br><span class="line">        private lateinit var mainFragment: MainFragment</span><br><span class="line"></span><br><span class="line">        fun newInstance(bundle: Bundle): MainFragment &#123;</span><br><span class="line">            mainFragment = MainFragment()</span><br><span class="line">            mainFragment.arguments = bundle</span><br><span class="line">            return mainFragment</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
-<p>3.广播方式</p>
-<p>4.eventBus、RxBus等事件</p>
-<p>5.文件（File、SharedPreference方式等）</p>
-]]></content>
-      <tags>
-        <tag>面试</tag>
       </tags>
   </entry>
   <entry>
@@ -469,6 +456,66 @@
       </tags>
   </entry>
   <entry>
+    <title>C++学习笔记-数据处理</title>
+    <url>/2019/06/16/C-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/</url>
+    <content><![CDATA[<p>1.整型：</p>
+<p>short至少表示1６位</p>
+<p>int至少与short一样长（可能16位，可能32位）</p>
+<p>long至少32位，且至少与int一样长</p>
+<p>long long至少64位，且至少与long一样长</p>
+<p>可通过sizeof()方法查看具体类型的最大值:</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">cout &lt;&lt; &quot;int is&quot; &lt;&lt; sizeof(int) &lt;&lt; &quot;bytes&quot; &lt;&lt; INT_MAX &lt;&lt; endl;</span><br></pre></td></tr></table></figure>
+<p>2.无符号类型：</p>
+<p>eg：unsigned short change;</p>
+<p>short表示的范围是-32767到+32767，上述所表示的范围是0-65535，优点是可以增大变量能够存储的最大值。此外 unsigned int 可以简写为unsigned。</p>
+<p>３.char类型</p>
+<p>char类型专门存储字符（数字和字母），是一种整型。eg : char s = ‘s’;</p>
+<p>signed char 和 unsigned char的区别：</p>
+<p>将char作为数值类型时，同上面的整型（表示的范围0-255），在表示字符时可以直接使用char。</p>
+<p>4.bool类型</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">bool is_ready = true;</span><br></pre></td></tr></table></figure>
+<p>其中true被转换成１，false被转换成０</p>
+<p>5.const限定符</p>
+<p>类似Java中的static final的用法，定义常量且在程序的多处用到。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">const int msg = 0;</span><br></pre></td></tr></table></figure>
+<p>６.浮点数</p>
+<p>浮点数可以表示带小数的数字，计算机存储时将这样的值分为两个部分存储，一部分表示值，另一部分用于对值进行放大和缩小。</p>
+<p>浮点类型有float(至少32位),double(至少48位且不少于float),long double(至少和double一样多)</p>
+<p>两种写法：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">float f = 12.34;</span><br><span class="line">float ss = 3.65E6;</span><br></pre></td></tr></table></figure>
+<p>后者表示的是3.65与1000000相乘的结果，前者表示具体的值。表示小数还可以写：3.65E-4表示3.65/10000</p>
+<p>优点：可以表示的范围大得多。</p>
+<p>缺点：运算速度较慢，精度降低。</p>
+<p>７.运算符：</p>
+<p>+,-,*,/,%等不具体说</p>
+<p>类型转换：转换float会导致精度丢失的问题，将long转换成short这种类型时原来的值可能超出目标范围，只复制右边的值。</p>
+<p>强制转换：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">cout &lt;&lt; int(&apos;Q&apos;);</span><br><span class="line">cout &lt;&lt; (int) &apos;Q&apos;;</span><br></pre></td></tr></table></figure>
+<p>强制转换会有危险，用以下方式较好：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">cout &lt;&lt; static_cast&lt;int &gt;(&apos;Q&apos;);</span><br></pre></td></tr></table></figure>
+<p>static_cast用于将一种数值转换为另一种数值。</p>
+<p>8.auto关键字</p>
+<p>auto关键字用于声明变量时不指定变量和的类型，编译器将把变量的类型设置成与初始值相同。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">auto x = 0.99;</span><br><span class="line">auto y = &quot;hello&quot;;</span><br></pre></td></tr></table></figure>
+]]></content>
+      <tags>
+        <tag>C++学习笔记</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Activity启动流程</title>
+    <url>/2020/07/29/Activity%E5%90%AF%E5%8A%A8%E6%B5%81%E7%A8%8B/</url>
+    <content><![CDATA[<p>我们看一下startActivity方法中到底发生了什么：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"> <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">startActivity</span><span class="params">(Intent intent)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.startActivity(intent, <span class="keyword">null</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">startActivity</span><span class="params">(Intent intent, @Nullable Bundle options)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (options != <span class="keyword">null</span>) &#123;</span><br><span class="line">            startActivityForResult(intent, -<span class="number">1</span>, options);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="comment">// Note we want to go through this call for compatibility with</span></span><br><span class="line">            <span class="comment">// applications that may have overridden the method.</span></span><br><span class="line">            startActivityForResult(intent, -<span class="number">1</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">startActivityForResult</span><span class="params">(@RequiresPermission Intent intent, <span class="keyword">int</span> requestCode,</span></span></span><br><span class="line"><span class="function"><span class="params">            @Nullable Bundle options)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (mParent == <span class="keyword">null</span>) &#123;</span><br><span class="line">            options = transferSpringboardActivityOptions(options);</span><br><span class="line">            Instrumentation.ActivityResult ar =</span><br><span class="line">                mInstrumentation.execStartActivity(</span><br><span class="line">                    <span class="keyword">this</span>, mMainThread.getApplicationThread(), mToken, <span class="keyword">this</span>,</span><br><span class="line">                    intent, requestCode, options);</span><br><span class="line">            <span class="keyword">if</span> (ar != <span class="keyword">null</span>) &#123;</span><br><span class="line">                mMainThread.sendActivityResult(</span><br><span class="line">                    mToken, mEmbeddedID, requestCode, ar.getResultCode(),</span><br><span class="line">                    ar.getResultData());</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span> (requestCode &gt;= <span class="number">0</span>) &#123;</span><br><span class="line">                <span class="comment">// If this start is requesting a result, we can avoid making</span></span><br><span class="line">                <span class="comment">// the activity visible until the result is received.  Setting</span></span><br><span class="line">                <span class="comment">// this code during onCreate(Bundle savedInstanceState) or onResume() will keep the</span></span><br><span class="line">                <span class="comment">// activity hidden during this time, to avoid flickering.</span></span><br><span class="line">                <span class="comment">// This can only be done when a result is requested because</span></span><br><span class="line">                <span class="comment">// that guarantees we will get information back when the</span></span><br><span class="line">                <span class="comment">// activity is finished, no matter what happens to it.</span></span><br><span class="line">                mStartedActivity = <span class="keyword">true</span>;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            cancelInputsAndStartExitTransition(options);</span><br><span class="line">            <span class="comment">// TODO Consider clearing/flushing other event sources and events for child windows.</span></span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">if</span> (options != <span class="keyword">null</span>) &#123;</span><br><span class="line">                mParent.startActivityFromChild(<span class="keyword">this</span>, intent, requestCode, options);</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                <span class="comment">// Note we want to go through this method for compatibility with</span></span><br><span class="line">                <span class="comment">// existing applications that may have overridden it.</span></span><br><span class="line">                mParent.startActivityFromChild(<span class="keyword">this</span>, intent, requestCode);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>可以看到最终都会走到上述的方法中，我们关注一下mParent==null这种情况，上面的ApplicationThread其实是ActivityThread的一个内部类，我们看下execStartActivity方法：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> ActivityResult <span class="title">execStartActivity</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">            Context who, IBinder contextThread, IBinder token, Activity target,</span></span></span><br><span class="line"><span class="function"><span class="params">            Intent intent, <span class="keyword">int</span> requestCode, Bundle options)</span> </span>&#123;</span><br><span class="line">        IApplicationThread whoThread = (IApplicationThread) contextThread;</span><br><span class="line">        Uri referrer = target != <span class="keyword">null</span> ? target.onProvideReferrer() : <span class="keyword">null</span>;</span><br><span class="line">        <span class="keyword">if</span> (referrer != <span class="keyword">null</span>) &#123;</span><br><span class="line">            intent.putExtra(Intent.EXTRA_REFERRER, referrer);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (mActivityMonitors != <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">synchronized</span> (mSync) &#123;</span><br><span class="line">                <span class="keyword">final</span> <span class="keyword">int</span> N = mActivityMonitors.size();</span><br><span class="line">                <span class="keyword">for</span> (<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;N; i++) &#123;</span><br><span class="line">                    <span class="keyword">final</span> ActivityMonitor am = mActivityMonitors.get(i);</span><br><span class="line">                    ActivityResult result = <span class="keyword">null</span>;</span><br><span class="line">                    <span class="keyword">if</span> (am.ignoreMatchingSpecificIntents()) &#123;</span><br><span class="line">                        result = am.onStartActivity(intent);</span><br><span class="line">                    &#125;</span><br><span class="line">                    <span class="keyword">if</span> (result != <span class="keyword">null</span>) &#123;</span><br><span class="line">                        am.mHits++;</span><br><span class="line">                        <span class="keyword">return</span> result;</span><br><span class="line">                    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (am.match(who, <span class="keyword">null</span>, intent)) &#123;</span><br><span class="line">                        am.mHits++;</span><br><span class="line">                        <span class="keyword">if</span> (am.isBlocking()) &#123;</span><br><span class="line">                            <span class="keyword">return</span> requestCode &gt;= <span class="number">0</span> ? am.getResult() : <span class="keyword">null</span>;</span><br><span class="line">                        &#125;</span><br><span class="line">                        <span class="keyword">break</span>;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            intent.migrateExtraStreamToClipData();</span><br><span class="line">            intent.prepareToLeaveProcess(who);</span><br><span class="line">            <span class="keyword">int</span> result = ActivityManager.getService()</span><br><span class="line">                .startActivity(whoThread, who.getBasePackageName(), intent,</span><br><span class="line">                        intent.resolveTypeIfNeeded(who.getContentResolver()),</span><br><span class="line">                        token, target != <span class="keyword">null</span> ? target.mEmbeddedID : <span class="keyword">null</span>,</span><br><span class="line">                        requestCode, <span class="number">0</span>, <span class="keyword">null</span>, options);</span><br><span class="line">            checkStartActivityResult(result, intent);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (RemoteException e) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(<span class="string">"Failure from system"</span>, e);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>可以看到最终都是由ActivityManager.getService()的startActivity方法来完成的</p>
+]]></content>
+      <tags>
+        <tag>android</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>AsyncTask原理分析</title>
     <url>/2019/04/12/AsyncTask%E5%8E%9F%E7%90%86%E5%88%86%E6%9E%90/</url>
     <content><![CDATA[<p>AsyncTask是一个抽象泛型类，它有三个参数，分别是Params,Progress和Result，其中Params为参数类型,Progress为后台执行任务的进度，Result为返回的结果的类型。如果不需要某个参数，可以将其设置为Void类型。</p>
@@ -574,53 +621,6 @@
 ]]></content>
       <tags>
         <tag>IO</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>C++学习笔记-数据处理</title>
-    <url>/2019/06/16/C-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/</url>
-    <content><![CDATA[<p>1.整型：</p>
-<p>short至少表示1６位</p>
-<p>int至少与short一样长（可能16位，可能32位）</p>
-<p>long至少32位，且至少与int一样长</p>
-<p>long long至少64位，且至少与long一样长</p>
-<p>可通过sizeof()方法查看具体类型的最大值:</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">cout &lt;&lt; &quot;int is&quot; &lt;&lt; sizeof(int) &lt;&lt; &quot;bytes&quot; &lt;&lt; INT_MAX &lt;&lt; endl;</span><br></pre></td></tr></table></figure>
-<p>2.无符号类型：</p>
-<p>eg：unsigned short change;</p>
-<p>short表示的范围是-32767到+32767，上述所表示的范围是0-65535，优点是可以增大变量能够存储的最大值。此外 unsigned int 可以简写为unsigned。</p>
-<p>３.char类型</p>
-<p>char类型专门存储字符（数字和字母），是一种整型。eg : char s = ‘s’;</p>
-<p>signed char 和 unsigned char的区别：</p>
-<p>将char作为数值类型时，同上面的整型（表示的范围0-255），在表示字符时可以直接使用char。</p>
-<p>4.bool类型</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">bool is_ready = true;</span><br></pre></td></tr></table></figure>
-<p>其中true被转换成１，false被转换成０</p>
-<p>5.const限定符</p>
-<p>类似Java中的static final的用法，定义常量且在程序的多处用到。</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">const int msg = 0;</span><br></pre></td></tr></table></figure>
-<p>６.浮点数</p>
-<p>浮点数可以表示带小数的数字，计算机存储时将这样的值分为两个部分存储，一部分表示值，另一部分用于对值进行放大和缩小。</p>
-<p>浮点类型有float(至少32位),double(至少48位且不少于float),long double(至少和double一样多)</p>
-<p>两种写法：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">float f = 12.34;</span><br><span class="line">float ss = 3.65E6;</span><br></pre></td></tr></table></figure>
-<p>后者表示的是3.65与1000000相乘的结果，前者表示具体的值。表示小数还可以写：3.65E-4表示3.65/10000</p>
-<p>优点：可以表示的范围大得多。</p>
-<p>缺点：运算速度较慢，精度降低。</p>
-<p>７.运算符：</p>
-<p>+,-,*,/,%等不具体说</p>
-<p>类型转换：转换float会导致精度丢失的问题，将long转换成short这种类型时原来的值可能超出目标范围，只复制右边的值。</p>
-<p>强制转换：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">cout &lt;&lt; int(&apos;Q&apos;);</span><br><span class="line">cout &lt;&lt; (int) &apos;Q&apos;;</span><br></pre></td></tr></table></figure>
-<p>强制转换会有危险，用以下方式较好：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">cout &lt;&lt; static_cast&lt;int &gt;(&apos;Q&apos;);</span><br></pre></td></tr></table></figure>
-<p>static_cast用于将一种数值转换为另一种数值。</p>
-<p>8.auto关键字</p>
-<p>auto关键字用于声明变量时不指定变量和的类型，编译器将把变量的类型设置成与初始值相同。</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">auto x = 0.99;</span><br><span class="line">auto y = &quot;hello&quot;;</span><br></pre></td></tr></table></figure>
-]]></content>
-      <tags>
-        <tag>C++学习笔记</tag>
       </tags>
   </entry>
   <entry>
@@ -760,6 +760,49 @@
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Uri uri1 = Uri.parse(&quot;content://com.example.ypp0623.decorator.MyContentProvider/book&quot;);</span><br><span class="line">Cursor cursor1 = getContentResolver().query(uri1,null,null,null,null);</span><br><span class="line">if (cursor1!=null)&#123;</span><br><span class="line">    while (cursor1.moveToNext())&#123;</span><br><span class="line">        String name = cursor1.getString(cursor1.getColumnIndex(&quot;name&quot;));</span><br><span class="line">        String author = cursor1.getString(cursor1.getColumnIndex(&quot;author&quot;));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
       <tags>
         <tag>android</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>IO加解密核心与dex文件改造过程分析</title>
+    <url>/2022/12/06/IO%E5%8A%A0%E8%A7%A3%E5%AF%86%E6%A0%B8%E5%BF%83%E4%B8%8Edex%E6%96%87%E4%BB%B6%E6%94%B9%E9%80%A0%E8%BF%87%E7%A8%8B%E5%88%86%E6%9E%90/</url>
+    <content><![CDATA[<p><strong>IO及序列化</strong></p>
+<p>IO及序列化学习完成后，我能用用他们做什么？<br>数据的加解密<br>文件的读写<br>网络数据的传输</p>
+<p><strong>加解密的核心原理</strong></p>
+<p>加密原理其实很简单，通俗的说就是打乱所加密文件的内容，举个简单例子：你的桌面图标是不是可以按顺序排列，按时间排列，按大小排列，按内容排列？对的就是这个原理 加密就是打乱信息内容，比如把第一个字放在最后，在吧最后一个字放在前面，按照一定的算法，给一个自己编写的函数，比如递归加密，异或加密等等，解密的时候倒过来解密，异或加密，倒过来解密就是先或在异。 有的加密，把内容打乱后在进行2次整体加密。。完了后在加…… 其实不用加密软软件：我根据加密的原理自己手动加密，一个简单的方法。。你把文件后缀名改掉，比如JPG，改成CHM,log.WIN等等。。个人倾向改成系统问价后缀，然后把改了的文件在压缩，，压缩后在吧压缩文件后缀RAR在改掉、、，，恶心吧。。多改几次。。别人怎么能打开？当然你的指导顺序在改回来。。一般我是最后改成INF或者COM系统后缀放在C盘的系统问文件夹下面。。。一般别人也不会动、。</p>
+<p><strong>数字签名-哈希散列</strong></p>
+<p><strong>MD5算法:</strong><br>MD5 用的是 哈希函数，它的典型应用是对一段信息产生 信息摘要，以 防止被篡改。严格来说，MD5 不是一种 加密算法 而是 摘要算法。无论是多长的输入，MD5 都会输出长度为 128bits 的一个串 (通常用 16 进制 表示为 32 个字符)。。<br>对称加密和非对称加密<br>加密算法分 对称加密 和 非对称加密，其中对称加密算法的加密与解密 密钥相同，非对称加密算法的加密密钥与解密 密钥不同，此外，还有一类 不需要密钥 的 散列算法。</p>
+<p><strong>SHA1算法：</strong><br>HA1 是和 MD5 一样流行的 消息摘要算法，然而 SHA1 比 MD5 的 安全性更强。对于长度小于 2 ^ 64 位的消息，SHA1 会产生一个 160 位的 消息摘要。基于 MD5、SHA1 的信息摘要特性以及 不可逆 (一般而言)，可以被应用在检查 文件完整性 以及 数字签名 等场景。</p>
+<p><strong>对称加密与非对称加密</strong></p>
+<p><strong>AES算法:</strong><br>AES 加密算法是密码学中的 高级加密标准，该加密算法采用 对称分组密码体制，密钥长度的最少支持为 128 位、 192 位、256 位，分组长度 128 位，算法应易于各种硬件和软件实现。这种加密算法是美国联邦政府采用的 区块加密标准。</p>
+<p><strong>RSA算法：</strong><br>RSA 加密算法是目前最有影响力的 公钥加密算法，并且被普遍认为是目前 最优秀的公钥方案 之一。RSA 是第一个能同时用于 加密 和 数字签名 的算法，它能够 抵抗 到目前为止已知的 所有密码攻击，已被 ISO 推荐为公钥数据加密标准。</p>
+<p><strong>ECC算法：</strong><br>ECC 也是一种 非对称加密算法，主要优势是在某些情况下，它比其他的方法使用 更小的密钥，比如 RSA 加密算法，提供 相当的或更高等级 的安全级别。不过一个缺点是 加密和解密操作 的实现比其他机制 时间长 (相比 RSA 算法，该算法对 CPU 消耗严重)。。</p>
+<p><strong>各算法比较</strong></p>
+<p><strong>散列</strong></p>
+<img src="/2022/12/06/IO加解密核心与dex文件改造过程分析/image-20221206203731247.png" title="[IO加解密核心与dex文件改造过程分析]">
+<p><strong>对称加密算法</strong></p>
+<img src="/2022/12/06/IO加解密核心与dex文件改造过程分析/image-20221206203753881.png" title="[IO加解密核心与dex文件改造过程分析]">
+<p><strong>非对称算法</strong></p>
+<img src="/2022/12/06/IO加解密核心与dex文件改造过程分析/image-20221206203809988.png" title="[IO加解密核心与dex文件改造过程分析]">
+<p><strong>大厂中加密思想：算法自定义，数学与性能的考虑，CPU利用与汇编底层的融合</strong></p>
+<h2 id="APK反编译原理及实战"><a href="#APK反编译原理及实战" class="headerlink" title="APK反编译原理及实战"></a><strong>APK反编译原理及实战</strong></h2><img src="/2022/12/06/IO加解密核心与dex文件改造过程分析/image-20221206203920035.png" title="[IO加解密核心与dex文件改造过程分析]">
+<img src="/2022/12/06/IO加解密核心与dex文件改造过程分析/image-20221206203911695.png" title="[IO加解密核心与dex文件改造过程分析]">
+<p><strong>加固的总体思想</strong></p>
+<p>一个程序员的故事：<br>辛辛苦苦找到一个对象，婚后家里主权为大，老婆管钱，导致这程序员木有经费去做一些爱做的事情。然而这个程序员很努力，平时除了上班，还能够做点外包，赚点外快。 所以他就想到了把工资卡上交，而把赚到的外快放到了自己的小金库。从此过上了性福生活。<br>结果被你反手一掏，小金库没了，从此欲哭无泪。<br>钱 = 代码<br>金库 = 编译过程<br>反手一套 = 破解过程</p>
+<p><strong>加固基本原理</strong></p>
+<p><strong>Dex文件 是什么？</strong></p>
+<p>加固的目的是保护dex，直接而言就是对dex文件进 行操作，对dex文件动刀子，必须知道dex文件是什 么，能否直接动刀子。什么是源dex？什么是壳dex？</p>
+<p><strong>Apk打包 流程</strong></p>
+<p>加壳是在原来apk的基础上加一层保护壳，dex文件 修改了就需要重新打包，否则apk安装不了。这就需 要我们详细学习apk如何打包的，</p>
+<p><strong>Dex文件加 载流程</strong></p>
+<p>加壳后的文件是不能直接用的，dex文件是加密的， 所以我们需要对他进行解密，解密后的dex文件如何 加载？</p>
+<p><strong>APK加载流程</strong></p>
+<img src="/2022/12/06/IO加解密核心与dex文件改造过程分析/image-20221206204129808.png" title="[IO加解密核心与dex文件改造过程分析]">
+<p><strong>加壳步骤</strong></p>
+<p>1、制作原始项目的apk，这里称作original.apk；<br>2、制作一个壳项目（具体功能见ps），编译通过后得到它的classes.dex文件，这里称作shell.dex，而壳项目的apk称作shell.apk（需要签名）；<br>3、制作一个加壳工具（java工程就可以），按照以下流程工作：<br>1）读取original.apk的byte流，并加密；<br>2）读取shell.dex的byte流；<br>3）new一个新的byte数组，长度为1）和2）的长度之和+4，因为我们要在shell.dex中保存original.apk的长度；<br>4）在new byte数组中写入2），写入1），写入1）的长度；<br>5）根据dex文件的结构，修改checksum文件头、Signature文件头和file_size文件头，最终生成一个新的classes.dex；<br>4、替换掉2中的shell.apk中的classes.dex，并使用工具重新签名；<br>5、生成的新签名apk就是我们加壳过的apk了。</p>
+<p><strong>脱壳流程</strong></p>
+<img src="/2022/12/06/IO加解密核心与dex文件改造过程分析/image-20221206204213005.png" title="[IO加解密核心与dex文件改造过程分析]">]]></content>
+      <tags>
+        <tag>IO</tag>
       </tags>
   </entry>
   <entry>
@@ -913,6 +956,24 @@
       </tags>
   </entry>
   <entry>
+    <title>HashMap实现原理</title>
+    <url>/2019/04/14/HashMap%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86/</url>
+    <content><![CDATA[<p><a href="https://blog.csdn.net/mbshqqb/article/details/79799009" target="_blank" rel="noopener">HashMap原理</a></p>
+<p>几个注意点：</p>
+<p><strong>哈希冲突：</strong>当插入的Entry越来越多时，不同的Key值通过哈希函数算出来的index值肯定会有冲突，此时就可以利用链表来解决。 其实HaspMap数组的每一个元素不止是一个Entry对象，也是一个链表的头节点，每一个Entry对象通过Next指针指向下一个Entry对象，这样，当新的Entry的hash值与之前的存在冲突时，只需要插入到对应点链表即可。要注意的是，新来的Entry节点采用的是“头插法”，而不是直接插入在链表的尾部，这是因为HashMap的发明者认为，新插入的节点被查找的可能性更大。</p>
+<p><strong>get的几个步骤：</strong></p>
+<p>第一步，算出Key值“apple”的hash值，假设为2。</p>
+<p> 第二步，在数组中查找索引为2的位置，此时找到头节点为Entry6，Entry6的Key值是banana，不是我们要找的值。</p>
+<p> 第三步，查找Entry6的Next节点，这里为Entry1，它的Key值为apple，是我们要查找的值，这样就找到了对应的键值对，结束。</p>
+<p><a href="https://coolshell.cn/articles/9606.html" target="_blank" rel="noopener">HashMap死锁：</a></p>
+<p>HashMap设计了一个阈值，其值为容量的0.75，当HashMap所用容量超过了阈值后，就会自动扩充其容量。</p>
+<p>在多线程的情况下，当重新调整HashMap大小的时候，就会存在条件竞争，因为如果两个线程都发现HashMap需要重新调整大小了，它们会同时试着调整大小。在调整大小的过程中，存储在链表中的元素的次序会反过来，因为移动到新的bucket位置的时候，HashMap并不会将元素放在链表的尾部，而是放在头部，这是为了避免尾部遍历。如果条件竞争发生了，那么就会产生死循环了。</p>
+]]></content>
+      <tags>
+        <tag>Java</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>GC及调优</title>
     <url>/2022/11/18/GC%E5%8F%8A%E8%B0%83%E4%BC%98/</url>
     <content><![CDATA[<h2 id="GC核心概述"><a href="#GC核心概述" class="headerlink" title="GC核心概述"></a><strong>GC核心概述</strong></h2><p><strong>Java自动化内存管理</strong></p>
@@ -1033,67 +1094,6 @@
       </tags>
   </entry>
   <entry>
-    <title>HashMap实现原理</title>
-    <url>/2019/04/14/HashMap%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86/</url>
-    <content><![CDATA[<p><a href="https://blog.csdn.net/mbshqqb/article/details/79799009" target="_blank" rel="noopener">HashMap原理</a></p>
-<p>几个注意点：</p>
-<p><strong>哈希冲突：</strong>当插入的Entry越来越多时，不同的Key值通过哈希函数算出来的index值肯定会有冲突，此时就可以利用链表来解决。 其实HaspMap数组的每一个元素不止是一个Entry对象，也是一个链表的头节点，每一个Entry对象通过Next指针指向下一个Entry对象，这样，当新的Entry的hash值与之前的存在冲突时，只需要插入到对应点链表即可。要注意的是，新来的Entry节点采用的是“头插法”，而不是直接插入在链表的尾部，这是因为HashMap的发明者认为，新插入的节点被查找的可能性更大。</p>
-<p><strong>get的几个步骤：</strong></p>
-<p>第一步，算出Key值“apple”的hash值，假设为2。</p>
-<p> 第二步，在数组中查找索引为2的位置，此时找到头节点为Entry6，Entry6的Key值是banana，不是我们要找的值。</p>
-<p> 第三步，查找Entry6的Next节点，这里为Entry1，它的Key值为apple，是我们要查找的值，这样就找到了对应的键值对，结束。</p>
-<p><a href="https://coolshell.cn/articles/9606.html" target="_blank" rel="noopener">HashMap死锁：</a></p>
-<p>HashMap设计了一个阈值，其值为容量的0.75，当HashMap所用容量超过了阈值后，就会自动扩充其容量。</p>
-<p>在多线程的情况下，当重新调整HashMap大小的时候，就会存在条件竞争，因为如果两个线程都发现HashMap需要重新调整大小了，它们会同时试着调整大小。在调整大小的过程中，存储在链表中的元素的次序会反过来，因为移动到新的bucket位置的时候，HashMap并不会将元素放在链表的尾部，而是放在头部，这是为了避免尾部遍历。如果条件竞争发生了，那么就会产生死循环了。</p>
-]]></content>
-      <tags>
-        <tag>Java</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>IO加解密核心与dex文件改造过程分析</title>
-    <url>/2022/12/06/IO%E5%8A%A0%E8%A7%A3%E5%AF%86%E6%A0%B8%E5%BF%83%E4%B8%8Edex%E6%96%87%E4%BB%B6%E6%94%B9%E9%80%A0%E8%BF%87%E7%A8%8B%E5%88%86%E6%9E%90/</url>
-    <content><![CDATA[<p><strong>IO及序列化</strong></p>
-<p>IO及序列化学习完成后，我能用用他们做什么？<br>数据的加解密<br>文件的读写<br>网络数据的传输</p>
-<p><strong>加解密的核心原理</strong></p>
-<p>加密原理其实很简单，通俗的说就是打乱所加密文件的内容，举个简单例子：你的桌面图标是不是可以按顺序排列，按时间排列，按大小排列，按内容排列？对的就是这个原理 加密就是打乱信息内容，比如把第一个字放在最后，在吧最后一个字放在前面，按照一定的算法，给一个自己编写的函数，比如递归加密，异或加密等等，解密的时候倒过来解密，异或加密，倒过来解密就是先或在异。 有的加密，把内容打乱后在进行2次整体加密。。完了后在加…… 其实不用加密软软件：我根据加密的原理自己手动加密，一个简单的方法。。你把文件后缀名改掉，比如JPG，改成CHM,log.WIN等等。。个人倾向改成系统问价后缀，然后把改了的文件在压缩，，压缩后在吧压缩文件后缀RAR在改掉、、，，恶心吧。。多改几次。。别人怎么能打开？当然你的指导顺序在改回来。。一般我是最后改成INF或者COM系统后缀放在C盘的系统问文件夹下面。。。一般别人也不会动、。</p>
-<p><strong>数字签名-哈希散列</strong></p>
-<p><strong>MD5算法:</strong><br>MD5 用的是 哈希函数，它的典型应用是对一段信息产生 信息摘要，以 防止被篡改。严格来说，MD5 不是一种 加密算法 而是 摘要算法。无论是多长的输入，MD5 都会输出长度为 128bits 的一个串 (通常用 16 进制 表示为 32 个字符)。。<br>对称加密和非对称加密<br>加密算法分 对称加密 和 非对称加密，其中对称加密算法的加密与解密 密钥相同，非对称加密算法的加密密钥与解密 密钥不同，此外，还有一类 不需要密钥 的 散列算法。</p>
-<p><strong>SHA1算法：</strong><br>HA1 是和 MD5 一样流行的 消息摘要算法，然而 SHA1 比 MD5 的 安全性更强。对于长度小于 2 ^ 64 位的消息，SHA1 会产生一个 160 位的 消息摘要。基于 MD5、SHA1 的信息摘要特性以及 不可逆 (一般而言)，可以被应用在检查 文件完整性 以及 数字签名 等场景。</p>
-<p><strong>对称加密与非对称加密</strong></p>
-<p><strong>AES算法:</strong><br>AES 加密算法是密码学中的 高级加密标准，该加密算法采用 对称分组密码体制，密钥长度的最少支持为 128 位、 192 位、256 位，分组长度 128 位，算法应易于各种硬件和软件实现。这种加密算法是美国联邦政府采用的 区块加密标准。</p>
-<p><strong>RSA算法：</strong><br>RSA 加密算法是目前最有影响力的 公钥加密算法，并且被普遍认为是目前 最优秀的公钥方案 之一。RSA 是第一个能同时用于 加密 和 数字签名 的算法，它能够 抵抗 到目前为止已知的 所有密码攻击，已被 ISO 推荐为公钥数据加密标准。</p>
-<p><strong>ECC算法：</strong><br>ECC 也是一种 非对称加密算法，主要优势是在某些情况下，它比其他的方法使用 更小的密钥，比如 RSA 加密算法，提供 相当的或更高等级 的安全级别。不过一个缺点是 加密和解密操作 的实现比其他机制 时间长 (相比 RSA 算法，该算法对 CPU 消耗严重)。。</p>
-<p><strong>各算法比较</strong></p>
-<p><strong>散列</strong></p>
-<img src="/2022/12/06/IO加解密核心与dex文件改造过程分析/image-20221206203731247.png" title="[IO加解密核心与dex文件改造过程分析]">
-<p><strong>对称加密算法</strong></p>
-<img src="/2022/12/06/IO加解密核心与dex文件改造过程分析/image-20221206203753881.png" title="[IO加解密核心与dex文件改造过程分析]">
-<p><strong>非对称算法</strong></p>
-<img src="/2022/12/06/IO加解密核心与dex文件改造过程分析/image-20221206203809988.png" title="[IO加解密核心与dex文件改造过程分析]">
-<p><strong>大厂中加密思想：算法自定义，数学与性能的考虑，CPU利用与汇编底层的融合</strong></p>
-<h2 id="APK反编译原理及实战"><a href="#APK反编译原理及实战" class="headerlink" title="APK反编译原理及实战"></a><strong>APK反编译原理及实战</strong></h2><img src="/2022/12/06/IO加解密核心与dex文件改造过程分析/image-20221206203920035.png" title="[IO加解密核心与dex文件改造过程分析]">
-<img src="/2022/12/06/IO加解密核心与dex文件改造过程分析/image-20221206203911695.png" title="[IO加解密核心与dex文件改造过程分析]">
-<p><strong>加固的总体思想</strong></p>
-<p>一个程序员的故事：<br>辛辛苦苦找到一个对象，婚后家里主权为大，老婆管钱，导致这程序员木有经费去做一些爱做的事情。然而这个程序员很努力，平时除了上班，还能够做点外包，赚点外快。 所以他就想到了把工资卡上交，而把赚到的外快放到了自己的小金库。从此过上了性福生活。<br>结果被你反手一掏，小金库没了，从此欲哭无泪。<br>钱 = 代码<br>金库 = 编译过程<br>反手一套 = 破解过程</p>
-<p><strong>加固基本原理</strong></p>
-<p><strong>Dex文件 是什么？</strong></p>
-<p>加固的目的是保护dex，直接而言就是对dex文件进 行操作，对dex文件动刀子，必须知道dex文件是什 么，能否直接动刀子。什么是源dex？什么是壳dex？</p>
-<p><strong>Apk打包 流程</strong></p>
-<p>加壳是在原来apk的基础上加一层保护壳，dex文件 修改了就需要重新打包，否则apk安装不了。这就需 要我们详细学习apk如何打包的，</p>
-<p><strong>Dex文件加 载流程</strong></p>
-<p>加壳后的文件是不能直接用的，dex文件是加密的， 所以我们需要对他进行解密，解密后的dex文件如何 加载？</p>
-<p><strong>APK加载流程</strong></p>
-<img src="/2022/12/06/IO加解密核心与dex文件改造过程分析/image-20221206204129808.png" title="[IO加解密核心与dex文件改造过程分析]">
-<p><strong>加壳步骤</strong></p>
-<p>1、制作原始项目的apk，这里称作original.apk；<br>2、制作一个壳项目（具体功能见ps），编译通过后得到它的classes.dex文件，这里称作shell.dex，而壳项目的apk称作shell.apk（需要签名）；<br>3、制作一个加壳工具（java工程就可以），按照以下流程工作：<br>1）读取original.apk的byte流，并加密；<br>2）读取shell.dex的byte流；<br>3）new一个新的byte数组，长度为1）和2）的长度之和+4，因为我们要在shell.dex中保存original.apk的长度；<br>4）在new byte数组中写入2），写入1），写入1）的长度；<br>5）根据dex文件的结构，修改checksum文件头、Signature文件头和file_size文件头，最终生成一个新的classes.dex；<br>4、替换掉2中的shell.apk中的classes.dex，并使用工具重新签名；<br>5、生成的新签名apk就是我们加壳过的apk了。</p>
-<p><strong>脱壳流程</strong></p>
-<img src="/2022/12/06/IO加解密核心与dex文件改造过程分析/image-20221206204213005.png" title="[IO加解密核心与dex文件改造过程分析]">]]></content>
-      <tags>
-        <tag>IO</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>IntentFilter的匹配规则</title>
     <url>/2019/02/26/IntentFilter%E7%9A%84%E5%8C%B9%E9%85%8D%E8%A7%84%E5%88%99/</url>
     <content><![CDATA[<p>IntentFilter中的过滤信息有action、category、data，一个过滤列表中的action、category、data可以有多个，只有一个Intent同时匹配action类别、category类别、data类别才算完全匹配，只有完全匹配才能成功启动目标Activity。此外，一个Activity可以有多个intent-filter，一个Intent只要能匹配任何一组intent-filter即可成功启动对应的Activity。</p>
@@ -1178,6 +1178,27 @@
       </tags>
   </entry>
   <entry>
+    <title>Linux命令</title>
+    <url>/2019/04/26/Linux%E5%91%BD%E4%BB%A4/</url>
+    <content><![CDATA[<p><strong>用户相关命令：</strong></p>
+<p>创建用户：</p>
+<p>useradd ypp : 新建一个ypp用户</p>
+<p>passwd ypp : 设置ypp密码</p>
+<p>切换用户:</p>
+<p>su – ypp : 切换到ypp用户</p>
+<p>修改密码:</p>
+<p>passwd : 修改当前用户密码</p>
+<p>passwd ypp : 修改ypp用户密码</p>
+<p>查看创建的用户信息：</p>
+<p>cat /etc/passwd</p>
+<p>查看组信息:</p>
+<p>cat /etc/group</p>
+]]></content>
+      <tags>
+        <tag>Linux</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>JNIEnv实现原理</title>
     <url>/2020/03/18/JNIEnv%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86/</url>
     <content><![CDATA[<p>`</p>
@@ -1196,6 +1217,41 @@
 ]]></content>
       <tags>
         <tag>Ndk</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Java线程状态</title>
+    <url>/2020/07/17/Java%E7%BA%BF%E7%A8%8B%E7%8A%B6%E6%80%81/</url>
+    <content><![CDATA[<h3 id="线程的-6-种状态"><a href="#线程的-6-种状态" class="headerlink" title="线程的 6 种状态"></a>线程的 6 种状态</h3><p>就像生物从出生到长大、最终死亡的过程一样，线程也有自己的生命周期，在 Java 中线程的生命周期中一共有 6 种状态。</p>
+<p><strong>New（新创建）</strong></p>
+<p><strong>Runnable（可运行）</strong></p>
+<p><strong>Blocked（被阻塞）</strong></p>
+<p><strong>Waiting（等待）</strong></p>
+<p><strong>Timed Waiting（计时等待）</strong></p>
+<p><strong>Terminated（被终止）</strong></p>
+<p>如果想要确定线程当前的状态，可以通过 getState() 方法，并且线程在任何时刻只可能处于 1 种状态。</p>
+<h4 id="New-新创建"><a href="#New-新创建" class="headerlink" title="New 新创建"></a>New 新创建</h4><p>New 表示线程被创建但尚未启动的状态：当我们用 new Thread() 新建一个线程时，如果线程没有开始运行 start() 方法，所以也没有开始执行 run() 方法里面的代码，那么此时它的状态就是 New。而一旦线程调用了 start()，它的状态就会从 New 变成 Runnable。</p>
+<h4 id="Runnable-可运行"><a href="#Runnable-可运行" class="headerlink" title="Runnable 可运行"></a>Runnable 可运行</h4><p>Java 中的 Runable 状态对应操作系统线程状态中的两种状态，分别是 Running 和 Ready，也就是说，Java 中处于 Runnable 状态的线程有可能正在执行，也有可能没有正在执行，正在等待被分配 CPU 资源。</p>
+<p>所以，如果一个正在运行的线程是 Runnable 状态，当它运行到任务的一半时，执行该线程的 CPU 被调度去做其他事情，导致该线程暂时不运行，它的状态依然不变，还是 Runnable，因为它有可能随时被调度回来继续执行任务。</p>
+<h4 id="Blocked-被阻塞"><a href="#Blocked-被阻塞" class="headerlink" title="Blocked 被阻塞"></a>Blocked 被阻塞</h4><p>从 Runnable 状态进入 Blocked 状态只有一种可能，<strong>就是进入 synchronized 保护的代码时没有抢到 monitor 锁</strong>，无论是进入 synchronized 代码块，还是 synchronized 方法，都是一样。</p>
+<h4 id="Waiting-等待"><a href="#Waiting-等待" class="headerlink" title="Waiting 等待"></a>Waiting 等待</h4><p>我们再看看 Waiting 状态，线程进入 Waiting 状态有三种可能性。</p>
+<p>没有设置 Timeout 参数的 Object.wait() 方法。</p>
+<p>没有设置 Timeout 参数的 Thread.join() 方法。</p>
+<p>LockSupport.park() 方法。</p>
+<p>刚才强调过，Blocked 仅仅针对 synchronized monitor 锁，可是在 Java 中还有很多其他的锁，比如 ReentrantLock，如果线程在获取这种锁时没有抢到该锁就会进入 Waiting 状态，因为本质上它执行了 LockSupport.park() 方法，所以会进入 Waiting 状态。同样，Object.wait() 和 Thread.join() 也会让线程进入 Waiting 状态。</p>
+<p><strong>Blocked 与 Waiting 的区别是 Blocked 在等待其他线程释放 monitor 锁，而 Waiting 则是在等待某个条件，比如 join 的线程执行完毕，或者是 notify()/notifyAll() 。</strong></p>
+<h4 id="Timed-Waiting-限期等待"><a href="#Timed-Waiting-限期等待" class="headerlink" title="Timed Waiting 限期等待"></a>Timed Waiting 限期等待</h4><p>在 Waiting 上面是 Timed Waiting 状态，这两个状态是非常相似的，区别仅在于有没有时间限制，Timed Waiting 会等待超时，由系统自动唤醒，或者在超时前被唤醒信号唤醒。</p>
+<p>以下情况会让线程进入 Timed Waiting 状态。</p>
+<p>设置了时间参数的 Thread.sleep(long millis) 方法；</p>
+<p>设置了时间参数的 Object.wait(long timeout) 方法；</p>
+<p>设置了时间参数的 Thread.join(long millis) 方法；</p>
+<p>设置了时间参数的 LockSupport.parkNanos(long nanos) 方法和 LockSupport.parkUntil(long deadline) 方法。</p>
+<h4 id="Terminated-终止"><a href="#Terminated-终止" class="headerlink" title="Terminated 终止"></a>Terminated 终止</h4><p>再来看看最后一种状态，Terminated 终止状态，要想进入这个状态有两种可能。</p>
+<p>run() 方法执行完毕，线程正常退出。</p>
+<p>出现一个没有捕获的异常，终止了 run() 方法，最终导致意外终止。</p>
+]]></content>
+      <tags>
+        <tag>Java</tag>
       </tags>
   </entry>
   <entry>
@@ -1469,39 +1525,9 @@
       </tags>
   </entry>
   <entry>
-    <title>Java线程状态</title>
-    <url>/2020/07/17/Java%E7%BA%BF%E7%A8%8B%E7%8A%B6%E6%80%81/</url>
-    <content><![CDATA[<h3 id="线程的-6-种状态"><a href="#线程的-6-种状态" class="headerlink" title="线程的 6 种状态"></a>线程的 6 种状态</h3><p>就像生物从出生到长大、最终死亡的过程一样，线程也有自己的生命周期，在 Java 中线程的生命周期中一共有 6 种状态。</p>
-<p><strong>New（新创建）</strong></p>
-<p><strong>Runnable（可运行）</strong></p>
-<p><strong>Blocked（被阻塞）</strong></p>
-<p><strong>Waiting（等待）</strong></p>
-<p><strong>Timed Waiting（计时等待）</strong></p>
-<p><strong>Terminated（被终止）</strong></p>
-<p>如果想要确定线程当前的状态，可以通过 getState() 方法，并且线程在任何时刻只可能处于 1 种状态。</p>
-<h4 id="New-新创建"><a href="#New-新创建" class="headerlink" title="New 新创建"></a>New 新创建</h4><p>New 表示线程被创建但尚未启动的状态：当我们用 new Thread() 新建一个线程时，如果线程没有开始运行 start() 方法，所以也没有开始执行 run() 方法里面的代码，那么此时它的状态就是 New。而一旦线程调用了 start()，它的状态就会从 New 变成 Runnable。</p>
-<h4 id="Runnable-可运行"><a href="#Runnable-可运行" class="headerlink" title="Runnable 可运行"></a>Runnable 可运行</h4><p>Java 中的 Runable 状态对应操作系统线程状态中的两种状态，分别是 Running 和 Ready，也就是说，Java 中处于 Runnable 状态的线程有可能正在执行，也有可能没有正在执行，正在等待被分配 CPU 资源。</p>
-<p>所以，如果一个正在运行的线程是 Runnable 状态，当它运行到任务的一半时，执行该线程的 CPU 被调度去做其他事情，导致该线程暂时不运行，它的状态依然不变，还是 Runnable，因为它有可能随时被调度回来继续执行任务。</p>
-<h4 id="Blocked-被阻塞"><a href="#Blocked-被阻塞" class="headerlink" title="Blocked 被阻塞"></a>Blocked 被阻塞</h4><p>从 Runnable 状态进入 Blocked 状态只有一种可能，<strong>就是进入 synchronized 保护的代码时没有抢到 monitor 锁</strong>，无论是进入 synchronized 代码块，还是 synchronized 方法，都是一样。</p>
-<h4 id="Waiting-等待"><a href="#Waiting-等待" class="headerlink" title="Waiting 等待"></a>Waiting 等待</h4><p>我们再看看 Waiting 状态，线程进入 Waiting 状态有三种可能性。</p>
-<p>没有设置 Timeout 参数的 Object.wait() 方法。</p>
-<p>没有设置 Timeout 参数的 Thread.join() 方法。</p>
-<p>LockSupport.park() 方法。</p>
-<p>刚才强调过，Blocked 仅仅针对 synchronized monitor 锁，可是在 Java 中还有很多其他的锁，比如 ReentrantLock，如果线程在获取这种锁时没有抢到该锁就会进入 Waiting 状态，因为本质上它执行了 LockSupport.park() 方法，所以会进入 Waiting 状态。同样，Object.wait() 和 Thread.join() 也会让线程进入 Waiting 状态。</p>
-<p><strong>Blocked 与 Waiting 的区别是 Blocked 在等待其他线程释放 monitor 锁，而 Waiting 则是在等待某个条件，比如 join 的线程执行完毕，或者是 notify()/notifyAll() 。</strong></p>
-<h4 id="Timed-Waiting-限期等待"><a href="#Timed-Waiting-限期等待" class="headerlink" title="Timed Waiting 限期等待"></a>Timed Waiting 限期等待</h4><p>在 Waiting 上面是 Timed Waiting 状态，这两个状态是非常相似的，区别仅在于有没有时间限制，Timed Waiting 会等待超时，由系统自动唤醒，或者在超时前被唤醒信号唤醒。</p>
-<p>以下情况会让线程进入 Timed Waiting 状态。</p>
-<p>设置了时间参数的 Thread.sleep(long millis) 方法；</p>
-<p>设置了时间参数的 Object.wait(long timeout) 方法；</p>
-<p>设置了时间参数的 Thread.join(long millis) 方法；</p>
-<p>设置了时间参数的 LockSupport.parkNanos(long nanos) 方法和 LockSupport.parkUntil(long deadline) 方法。</p>
-<h4 id="Terminated-终止"><a href="#Terminated-终止" class="headerlink" title="Terminated 终止"></a>Terminated 终止</h4><p>再来看看最后一种状态，Terminated 终止状态，要想进入这个状态有两种可能。</p>
-<p>run() 方法执行完毕，线程正常退出。</p>
-<p>出现一个没有捕获的异常，终止了 run() 方法，最终导致意外终止。</p>
-]]></content>
-      <tags>
-        <tag>Java</tag>
-      </tags>
+    <title>NDK入门-NDK简介</title>
+    <url>/2019/04/17/NDK%E5%85%A5%E9%97%A8-NDK%E7%AE%80%E4%BB%8B/</url>
+    <content><![CDATA[]]></content>
   </entry>
   <entry>
     <title>JVM底层核心技术解析</title>
@@ -1768,32 +1794,6 @@
       </tags>
   </entry>
   <entry>
-    <title>Linux命令</title>
-    <url>/2019/04/26/Linux%E5%91%BD%E4%BB%A4/</url>
-    <content><![CDATA[<p><strong>用户相关命令：</strong></p>
-<p>创建用户：</p>
-<p>useradd ypp : 新建一个ypp用户</p>
-<p>passwd ypp : 设置ypp密码</p>
-<p>切换用户:</p>
-<p>su – ypp : 切换到ypp用户</p>
-<p>修改密码:</p>
-<p>passwd : 修改当前用户密码</p>
-<p>passwd ypp : 修改ypp用户密码</p>
-<p>查看创建的用户信息：</p>
-<p>cat /etc/passwd</p>
-<p>查看组信息:</p>
-<p>cat /etc/group</p>
-]]></content>
-      <tags>
-        <tag>Linux</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>NDK入门-NDK简介</title>
-    <url>/2019/04/17/NDK%E5%85%A5%E9%97%A8-NDK%E7%AE%80%E4%BB%8B/</url>
-    <content><![CDATA[]]></content>
-  </entry>
-  <entry>
     <title>Ndk开发步骤</title>
     <url>/2020/03/17/Ndk%E5%BC%80%E5%8F%91%E6%AD%A5%E9%AA%A4/</url>
     <content><![CDATA[<p>step1:</p>
@@ -1810,52 +1810,6 @@
 <img src="/2020/03/17/Ndk开发步骤/step4.png" title="[Ndk开发步骤]">]]></content>
       <tags>
         <tag>NDK</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Okhttp源码分析</title>
-    <url>/2020/07/27/Okhttp%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/</url>
-    <content><![CDATA[<p>首先看Okhttp发起一个异步的请求：</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">testOkHttp</span><span class="params">()</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">        OkHttpClient okHttpClient = <span class="keyword">new</span> OkHttpClient.Builder().build();    <span class="comment">//构造 OkHttpClient</span></span><br><span class="line">        Request request = <span class="keyword">new</span> Request.Builder()</span><br><span class="line">                .get()  <span class="comment">//Method GET</span></span><br><span class="line">                .url(<span class="string">"www.baidu.com"</span>)</span><br><span class="line">                .build();    <span class="comment">//构造请求信息</span></span><br><span class="line"></span><br><span class="line">        okHttpClient.newCall(request)</span><br><span class="line">                .enqueue(<span class="keyword">new</span> Callback() &#123;    <span class="comment">//发起异步请求</span></span><br><span class="line">                    <span class="meta">@Override</span></span><br><span class="line">                    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onResponse</span><span class="params">(<span class="keyword">final</span> Call call, <span class="keyword">final</span> Response response)</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">                        <span class="comment">//成功拿到响应</span></span><br><span class="line">                        <span class="keyword">int</span> code = response.code();</span><br><span class="line">                        ResponseBody body = response.body();</span><br><span class="line">                        String string = body.string();</span><br><span class="line">                    &#125;</span><br><span class="line"></span><br><span class="line">                    <span class="meta">@Override</span></span><br><span class="line">                    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onFailure</span><span class="params">(<span class="keyword">final</span> Call call, <span class="keyword">final</span> IOException e)</span> </span>&#123;</span><br><span class="line">                        e.printStackTrace();</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-<p>我们看下newCall方法，</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Override</span> <span class="function"><span class="keyword">public</span> Call <span class="title">newCall</span><span class="params">(Request request)</span> </span>&#123;</span><br><span class="line">   <span class="keyword">return</span> <span class="keyword">new</span> RealCall(<span class="keyword">this</span>, request);</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
-<p><code>newCall(Request)</code> 方法调用了 <code>RealCall.newRealCall()</code> 方法，这个 <code>RealCall.newRealCall()</code> 方法创建了一个新的<code>RealCall</code>对象，这个<code>RealCall</code>是<code>okhttp3.Call`</code> 接口的一个实现。</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">Call</span> <span class="keyword">extends</span> <span class="title">Cloneable</span> </span>&#123;</span><br><span class="line">  <span class="comment">//返回这个请求关联的 Request 对象</span></span><br><span class="line">  <span class="function">Request <span class="title">request</span><span class="params">()</span></span>;</span><br><span class="line"></span><br><span class="line">  <span class="comment">//立即执行请求，阻塞等待拿到响应</span></span><br><span class="line">  <span class="function">Response <span class="title">execute</span><span class="params">()</span> <span class="keyword">throws</span> IOException</span>;</span><br><span class="line"></span><br><span class="line">  <span class="comment">//请求入队，异步执行</span></span><br><span class="line">  <span class="function"><span class="keyword">void</span> <span class="title">enqueue</span><span class="params">(Callback responseCallback)</span></span>;</span><br><span class="line"></span><br><span class="line">  <span class="comment">//取消一个请求</span></span><br><span class="line">  <span class="function"><span class="keyword">void</span> <span class="title">cancel</span><span class="params">()</span></span>;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">boolean</span> <span class="title">isExecuted</span><span class="params">()</span></span>;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">boolean</span> <span class="title">isCanceled</span><span class="params">()</span></span>;</span><br><span class="line"></span><br><span class="line">  <span class="function">Call <span class="title">clone</span><span class="params">()</span></span>;</span><br><span class="line"></span><br><span class="line">  <span class="class"><span class="keyword">interface</span> <span class="title">Factory</span> </span>&#123;</span><br><span class="line">    <span class="function">Call <span class="title">newCall</span><span class="params">(Request request)</span></span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>可以看到，我们前面发起异步请求的 <code>enqueue()</code> 方法是定义在 <code>Call</code> 中的。</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">okHttpClient.newCall(request)</span><br><span class="line">                .enqueue(new Callback() &#123; ...&#125;);        //原来就是 Call 的方法</span><br></pre></td></tr></table></figure>
-<p>在 OkHttp 中，<code>Call</code> 的唯一实现就是 <code>RealCall</code>，它表示一个准备好被执行的请求。和 <code>Request</code> 不同在于，它还提供了发起请求、取消等方法。</p>
-<p>拿到 <code>OkHttp.Call</code> 的实例、<code>RealCall</code> 对象后，我们调用了它的 <code>enqueue()</code> 方法：</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">//RealCall.enqueue()</span></span><br><span class="line"><span class="meta">@Override</span> <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">enqueue</span><span class="params">(Callback responseCallback)</span> </span>&#123;</span><br><span class="line">  <span class="keyword">synchronized</span> (<span class="keyword">this</span>) &#123;</span><br><span class="line">    <span class="keyword">if</span> (executed) <span class="keyword">throw</span> <span class="keyword">new</span> IllegalStateException(<span class="string">"Already Executed"</span>);</span><br><span class="line">    executed = <span class="keyword">true</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  captureCallStackTrace();</span><br><span class="line">  eventListener.callStart(<span class="keyword">this</span>);</span><br><span class="line">  client.dispatcher().enqueue(<span class="keyword">new</span> AsyncCall(responseCallback));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>核心就在最后这句 <code>client.dispatcher().enqueue(new AsyncCall(responseCallback));</code>，它做了两件事：</p>
-<ol>
-<li>创建一个 <code>AsyncCall</code> 对象</li>
-<li>调用 <code>Dispatcher.enqueue()</code> 方法将请求入队</li>
-</ol>
-<p>先看下 <code>AsyncCall</code> 是何方神圣：</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">final</span> <span class="class"><span class="keyword">class</span> <span class="title">AsyncCall</span> <span class="keyword">extends</span> <span class="title">NamedRunnable</span> </span>&#123;</span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">final</span> Callback responseCallback;</span><br><span class="line"></span><br><span class="line">  AsyncCall(Callback responseCallback) &#123;</span><br><span class="line">    <span class="keyword">super</span>(<span class="string">"OkHttp %s"</span>, redactedUrl());</span><br><span class="line">    <span class="keyword">this</span>.responseCallback = responseCallback;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="function">String <span class="title">host</span><span class="params">()</span> </span>&#123;    <span class="comment">//用于标识这个请求</span></span><br><span class="line">    <span class="keyword">return</span> originalRequest.url().host();</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="function">Request <span class="title">request</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> originalRequest;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="function">RealCall <span class="title">get</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> RealCall.<span class="keyword">this</span>;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@Override</span> <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">execute</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="comment">//...</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>可以看到， <code>AsyncCall</code> 就是一个 Runnable，用于异步执行任务。</p>
-<p>接着看 <code>client.dispatcher()</code> 方法，它返回一个调度器 <code>Dispatcher</code>，这是 OkHttp 中比较核心的一个类：</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">final</span> <span class="class"><span class="keyword">class</span> <span class="title">Dispatcher</span> </span>&#123;</span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">int</span> maxRequests = <span class="number">64</span>;    <span class="comment">//同时最多发起 64 个请求</span></span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">int</span> maxRequestsPerHost = <span class="number">5</span>;    <span class="comment">//同一 host 最多发起 5 个请求</span></span><br><span class="line">  <span class="keyword">private</span> <span class="meta">@Nullable</span> Runnable idleCallback;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">private</span> <span class="meta">@Nullable</span> ExecutorService executorService;    <span class="comment">//将会异步创建的线程池</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">//等待被执行的异步请求队列</span></span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">final</span> Deque&lt;AsyncCall&gt; readyAsyncCalls = <span class="keyword">new</span> ArrayDeque&lt;&gt;();</span><br><span class="line"></span><br><span class="line">  <span class="comment">//正在运行的异步请求队列（其中也包括取消后没有完成的请求）</span></span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">final</span> Deque&lt;AsyncCall&gt; runningAsyncCalls = <span class="keyword">new</span> ArrayDeque&lt;&gt;();</span><br><span class="line"></span><br><span class="line">  <span class="comment">//正在运行的同步请求队列</span></span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">final</span> Deque&lt;RealCall&gt; runningSyncCalls = <span class="keyword">new</span> ArrayDeque&lt;&gt;();</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="title">Dispatcher</span><span class="params">(ExecutorService executorService)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.executorService = executorService;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="title">Dispatcher</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">synchronized</span> ExecutorService <span class="title">executorService</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (executorService == <span class="keyword">null</span>) &#123;</span><br><span class="line">      executorService = <span class="keyword">new</span> ThreadPoolExecutor(<span class="number">0</span>, Integer.MAX_VALUE, <span class="number">60</span>, TimeUnit.SECONDS,</span><br><span class="line">          <span class="keyword">new</span> SynchronousQueue&lt;Runnable&gt;(), Util.threadFactory(<span class="string">"OkHttp Dispatcher"</span>, <span class="keyword">false</span>));</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> executorService;</span><br><span class="line">  &#125;</span><br><span class="line">    <span class="comment">//...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<ul>
-<li>在一个 <code>OkHttpClient</code> 中一般只有一个 <code>Dispatcher</code>，因此一个 <code>OkHttpClient</code> 能发起的最多请求就是 <code>Dispatcher</code> 中定义的 64 个</li>
-<li>同样，同一 host 能发起的最多请求是 5 个</li>
-<li><code>Dispatcher</code> 中用三个队列保存同步、异步请求</li>
-<li>默认线程池核心线程数量为 0，最多数量不限制，消息队列为 <code>SynchronousQueue</code>，因此有请求时会不断创建新线程</li>
-</ul>
-<p>接着我们看一下<strong>NamedRunnable</strong> 的execute在AsyncCall的实现</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Override</span> <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">execute</span><span class="params">()</span> </span>&#123;</span><br><span class="line">      <span class="keyword">boolean</span> signalledCallback = <span class="keyword">false</span>;</span><br><span class="line">      <span class="keyword">try</span> &#123;</span><br><span class="line">        Response response = getResponseWithInterceptorChain(forWebSocket);</span><br><span class="line">        <span class="keyword">if</span> (canceled) &#123;</span><br><span class="line">          signalledCallback = <span class="keyword">true</span>;</span><br><span class="line">          responseCallback.onFailure(RealCall.<span class="keyword">this</span>, <span class="keyword">new</span> IOException(<span class="string">"Canceled"</span>));</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">          signalledCallback = <span class="keyword">true</span>;</span><br><span class="line">          responseCallback.onResponse(RealCall.<span class="keyword">this</span>, response);</span><br><span class="line">        &#125;</span><br><span class="line">      &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">        <span class="keyword">if</span> (signalledCallback) &#123;</span><br><span class="line">          <span class="comment">// Do not signal the callback twice!</span></span><br><span class="line">          logger.log(Level.INFO, <span class="string">"Callback failure for "</span> + toLoggableString(), e);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">          responseCallback.onFailure(RealCall.<span class="keyword">this</span>, e);</span><br><span class="line">        &#125;</span><br><span class="line">      &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">        client.dispatcher().finished(<span class="keyword">this</span>);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-<p>可以看到，这个方法中先通过 <code>getResponseWithInterceptorChain()</code> 方法拿到了响应 <code>Response</code>，然后进行了回调，最后在 <code>finally</code> 代码块中调用了 <code>client.dispatcher().finished(this)</code> 方法，这个方法的作用是从调度器 Dispatcher 里移除当前这个请求，执行下一个。</p>
-<p>我们重点看 <code>getResponseWithInterceptorChain()</code> 方法，</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="function">Response <span class="title">getResponseWithInterceptorChain</span><span class="params">()</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">    <span class="comment">// Build a full stack of interceptors.</span></span><br><span class="line">    List&lt;Interceptor&gt; interceptors = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">    interceptors.addAll(client.interceptors());</span><br><span class="line">    interceptors.add(retryAndFollowUpInterceptor);</span><br><span class="line">    interceptors.add(<span class="keyword">new</span> BridgeInterceptor(client.cookieJar()));</span><br><span class="line">    interceptors.add(<span class="keyword">new</span> CacheInterceptor(client.internalCache()));</span><br><span class="line">    interceptors.add(<span class="keyword">new</span> ConnectInterceptor(client));</span><br><span class="line">    <span class="keyword">if</span> (!forWebSocket) &#123;</span><br><span class="line">      interceptors.addAll(client.networkInterceptors());</span><br><span class="line">    &#125;</span><br><span class="line">    interceptors.add(<span class="keyword">new</span> CallServerInterceptor(forWebSocket));</span><br><span class="line"></span><br><span class="line">    Interceptor.Chain chain = <span class="keyword">new</span> RealInterceptorChain(interceptors, <span class="keyword">null</span>, <span class="keyword">null</span>, <span class="keyword">null</span>, <span class="number">0</span>,</span><br><span class="line">        originalRequest, <span class="keyword">this</span>, eventListener, client.connectTimeoutMillis(),</span><br><span class="line">        client.readTimeoutMillis(), client.writeTimeoutMillis());</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> chain.proceed(originalRequest);</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
-<h5 id="小结"><a href="#小结" class="headerlink" title="小结"></a><strong>小结</strong></h5><p>至此我们对 <code>OkHttp</code> 如何发起请求、逐层处理、拿到响应有了一个基本的认识，三句话概括一下：</p>
-<ol>
-<li>发起异步请求后会构造异步任务 <code>AsyncCall</code> 入队，等被执行时会调用它的 <code>execute()</code> 方法</li>
-<li>这个执行方法会通过拦截器链，挨个调用我们自定义的和系统内置的 5 个拦截器，对请求信息和响应做处理，最后返回结果，回调我们传入的参数</li>
-<li>然后从队列中移除当前任务，执行下一个，以此循环</li>
-</ol>
-]]></content>
-      <tags>
-        <tag>android</tag>
       </tags>
   </entry>
   <entry>
@@ -1957,6 +1911,81 @@
       </tags>
   </entry>
   <entry>
+    <title>Okhttp源码分析</title>
+    <url>/2020/07/27/Okhttp%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/</url>
+    <content><![CDATA[<p>首先看Okhttp发起一个异步的请求：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">testOkHttp</span><span class="params">()</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">        OkHttpClient okHttpClient = <span class="keyword">new</span> OkHttpClient.Builder().build();    <span class="comment">//构造 OkHttpClient</span></span><br><span class="line">        Request request = <span class="keyword">new</span> Request.Builder()</span><br><span class="line">                .get()  <span class="comment">//Method GET</span></span><br><span class="line">                .url(<span class="string">"www.baidu.com"</span>)</span><br><span class="line">                .build();    <span class="comment">//构造请求信息</span></span><br><span class="line"></span><br><span class="line">        okHttpClient.newCall(request)</span><br><span class="line">                .enqueue(<span class="keyword">new</span> Callback() &#123;    <span class="comment">//发起异步请求</span></span><br><span class="line">                    <span class="meta">@Override</span></span><br><span class="line">                    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onResponse</span><span class="params">(<span class="keyword">final</span> Call call, <span class="keyword">final</span> Response response)</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">                        <span class="comment">//成功拿到响应</span></span><br><span class="line">                        <span class="keyword">int</span> code = response.code();</span><br><span class="line">                        ResponseBody body = response.body();</span><br><span class="line">                        String string = body.string();</span><br><span class="line">                    &#125;</span><br><span class="line"></span><br><span class="line">                    <span class="meta">@Override</span></span><br><span class="line">                    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onFailure</span><span class="params">(<span class="keyword">final</span> Call call, <span class="keyword">final</span> IOException e)</span> </span>&#123;</span><br><span class="line">                        e.printStackTrace();</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>我们看下newCall方法，</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Override</span> <span class="function"><span class="keyword">public</span> Call <span class="title">newCall</span><span class="params">(Request request)</span> </span>&#123;</span><br><span class="line">   <span class="keyword">return</span> <span class="keyword">new</span> RealCall(<span class="keyword">this</span>, request);</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+<p><code>newCall(Request)</code> 方法调用了 <code>RealCall.newRealCall()</code> 方法，这个 <code>RealCall.newRealCall()</code> 方法创建了一个新的<code>RealCall</code>对象，这个<code>RealCall</code>是<code>okhttp3.Call`</code> 接口的一个实现。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">Call</span> <span class="keyword">extends</span> <span class="title">Cloneable</span> </span>&#123;</span><br><span class="line">  <span class="comment">//返回这个请求关联的 Request 对象</span></span><br><span class="line">  <span class="function">Request <span class="title">request</span><span class="params">()</span></span>;</span><br><span class="line"></span><br><span class="line">  <span class="comment">//立即执行请求，阻塞等待拿到响应</span></span><br><span class="line">  <span class="function">Response <span class="title">execute</span><span class="params">()</span> <span class="keyword">throws</span> IOException</span>;</span><br><span class="line"></span><br><span class="line">  <span class="comment">//请求入队，异步执行</span></span><br><span class="line">  <span class="function"><span class="keyword">void</span> <span class="title">enqueue</span><span class="params">(Callback responseCallback)</span></span>;</span><br><span class="line"></span><br><span class="line">  <span class="comment">//取消一个请求</span></span><br><span class="line">  <span class="function"><span class="keyword">void</span> <span class="title">cancel</span><span class="params">()</span></span>;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">boolean</span> <span class="title">isExecuted</span><span class="params">()</span></span>;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">boolean</span> <span class="title">isCanceled</span><span class="params">()</span></span>;</span><br><span class="line"></span><br><span class="line">  <span class="function">Call <span class="title">clone</span><span class="params">()</span></span>;</span><br><span class="line"></span><br><span class="line">  <span class="class"><span class="keyword">interface</span> <span class="title">Factory</span> </span>&#123;</span><br><span class="line">    <span class="function">Call <span class="title">newCall</span><span class="params">(Request request)</span></span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>可以看到，我们前面发起异步请求的 <code>enqueue()</code> 方法是定义在 <code>Call</code> 中的。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">okHttpClient.newCall(request)</span><br><span class="line">                .enqueue(new Callback() &#123; ...&#125;);        //原来就是 Call 的方法</span><br></pre></td></tr></table></figure>
+<p>在 OkHttp 中，<code>Call</code> 的唯一实现就是 <code>RealCall</code>，它表示一个准备好被执行的请求。和 <code>Request</code> 不同在于，它还提供了发起请求、取消等方法。</p>
+<p>拿到 <code>OkHttp.Call</code> 的实例、<code>RealCall</code> 对象后，我们调用了它的 <code>enqueue()</code> 方法：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">//RealCall.enqueue()</span></span><br><span class="line"><span class="meta">@Override</span> <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">enqueue</span><span class="params">(Callback responseCallback)</span> </span>&#123;</span><br><span class="line">  <span class="keyword">synchronized</span> (<span class="keyword">this</span>) &#123;</span><br><span class="line">    <span class="keyword">if</span> (executed) <span class="keyword">throw</span> <span class="keyword">new</span> IllegalStateException(<span class="string">"Already Executed"</span>);</span><br><span class="line">    executed = <span class="keyword">true</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  captureCallStackTrace();</span><br><span class="line">  eventListener.callStart(<span class="keyword">this</span>);</span><br><span class="line">  client.dispatcher().enqueue(<span class="keyword">new</span> AsyncCall(responseCallback));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>核心就在最后这句 <code>client.dispatcher().enqueue(new AsyncCall(responseCallback));</code>，它做了两件事：</p>
+<ol>
+<li>创建一个 <code>AsyncCall</code> 对象</li>
+<li>调用 <code>Dispatcher.enqueue()</code> 方法将请求入队</li>
+</ol>
+<p>先看下 <code>AsyncCall</code> 是何方神圣：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">final</span> <span class="class"><span class="keyword">class</span> <span class="title">AsyncCall</span> <span class="keyword">extends</span> <span class="title">NamedRunnable</span> </span>&#123;</span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">final</span> Callback responseCallback;</span><br><span class="line"></span><br><span class="line">  AsyncCall(Callback responseCallback) &#123;</span><br><span class="line">    <span class="keyword">super</span>(<span class="string">"OkHttp %s"</span>, redactedUrl());</span><br><span class="line">    <span class="keyword">this</span>.responseCallback = responseCallback;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="function">String <span class="title">host</span><span class="params">()</span> </span>&#123;    <span class="comment">//用于标识这个请求</span></span><br><span class="line">    <span class="keyword">return</span> originalRequest.url().host();</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="function">Request <span class="title">request</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> originalRequest;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="function">RealCall <span class="title">get</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> RealCall.<span class="keyword">this</span>;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@Override</span> <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">execute</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="comment">//...</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>可以看到， <code>AsyncCall</code> 就是一个 Runnable，用于异步执行任务。</p>
+<p>接着看 <code>client.dispatcher()</code> 方法，它返回一个调度器 <code>Dispatcher</code>，这是 OkHttp 中比较核心的一个类：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">final</span> <span class="class"><span class="keyword">class</span> <span class="title">Dispatcher</span> </span>&#123;</span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">int</span> maxRequests = <span class="number">64</span>;    <span class="comment">//同时最多发起 64 个请求</span></span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">int</span> maxRequestsPerHost = <span class="number">5</span>;    <span class="comment">//同一 host 最多发起 5 个请求</span></span><br><span class="line">  <span class="keyword">private</span> <span class="meta">@Nullable</span> Runnable idleCallback;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">private</span> <span class="meta">@Nullable</span> ExecutorService executorService;    <span class="comment">//将会异步创建的线程池</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">//等待被执行的异步请求队列</span></span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">final</span> Deque&lt;AsyncCall&gt; readyAsyncCalls = <span class="keyword">new</span> ArrayDeque&lt;&gt;();</span><br><span class="line"></span><br><span class="line">  <span class="comment">//正在运行的异步请求队列（其中也包括取消后没有完成的请求）</span></span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">final</span> Deque&lt;AsyncCall&gt; runningAsyncCalls = <span class="keyword">new</span> ArrayDeque&lt;&gt;();</span><br><span class="line"></span><br><span class="line">  <span class="comment">//正在运行的同步请求队列</span></span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">final</span> Deque&lt;RealCall&gt; runningSyncCalls = <span class="keyword">new</span> ArrayDeque&lt;&gt;();</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="title">Dispatcher</span><span class="params">(ExecutorService executorService)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.executorService = executorService;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="title">Dispatcher</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">synchronized</span> ExecutorService <span class="title">executorService</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (executorService == <span class="keyword">null</span>) &#123;</span><br><span class="line">      executorService = <span class="keyword">new</span> ThreadPoolExecutor(<span class="number">0</span>, Integer.MAX_VALUE, <span class="number">60</span>, TimeUnit.SECONDS,</span><br><span class="line">          <span class="keyword">new</span> SynchronousQueue&lt;Runnable&gt;(), Util.threadFactory(<span class="string">"OkHttp Dispatcher"</span>, <span class="keyword">false</span>));</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> executorService;</span><br><span class="line">  &#125;</span><br><span class="line">    <span class="comment">//...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>在一个 <code>OkHttpClient</code> 中一般只有一个 <code>Dispatcher</code>，因此一个 <code>OkHttpClient</code> 能发起的最多请求就是 <code>Dispatcher</code> 中定义的 64 个</li>
+<li>同样，同一 host 能发起的最多请求是 5 个</li>
+<li><code>Dispatcher</code> 中用三个队列保存同步、异步请求</li>
+<li>默认线程池核心线程数量为 0，最多数量不限制，消息队列为 <code>SynchronousQueue</code>，因此有请求时会不断创建新线程</li>
+</ul>
+<p>接着我们看一下<strong>NamedRunnable</strong> 的execute在AsyncCall的实现</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Override</span> <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">execute</span><span class="params">()</span> </span>&#123;</span><br><span class="line">      <span class="keyword">boolean</span> signalledCallback = <span class="keyword">false</span>;</span><br><span class="line">      <span class="keyword">try</span> &#123;</span><br><span class="line">        Response response = getResponseWithInterceptorChain(forWebSocket);</span><br><span class="line">        <span class="keyword">if</span> (canceled) &#123;</span><br><span class="line">          signalledCallback = <span class="keyword">true</span>;</span><br><span class="line">          responseCallback.onFailure(RealCall.<span class="keyword">this</span>, <span class="keyword">new</span> IOException(<span class="string">"Canceled"</span>));</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">          signalledCallback = <span class="keyword">true</span>;</span><br><span class="line">          responseCallback.onResponse(RealCall.<span class="keyword">this</span>, response);</span><br><span class="line">        &#125;</span><br><span class="line">      &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">        <span class="keyword">if</span> (signalledCallback) &#123;</span><br><span class="line">          <span class="comment">// Do not signal the callback twice!</span></span><br><span class="line">          logger.log(Level.INFO, <span class="string">"Callback failure for "</span> + toLoggableString(), e);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">          responseCallback.onFailure(RealCall.<span class="keyword">this</span>, e);</span><br><span class="line">        &#125;</span><br><span class="line">      &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">        client.dispatcher().finished(<span class="keyword">this</span>);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>可以看到，这个方法中先通过 <code>getResponseWithInterceptorChain()</code> 方法拿到了响应 <code>Response</code>，然后进行了回调，最后在 <code>finally</code> 代码块中调用了 <code>client.dispatcher().finished(this)</code> 方法，这个方法的作用是从调度器 Dispatcher 里移除当前这个请求，执行下一个。</p>
+<p>我们重点看 <code>getResponseWithInterceptorChain()</code> 方法，</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="function">Response <span class="title">getResponseWithInterceptorChain</span><span class="params">()</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">    <span class="comment">// Build a full stack of interceptors.</span></span><br><span class="line">    List&lt;Interceptor&gt; interceptors = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">    interceptors.addAll(client.interceptors());</span><br><span class="line">    interceptors.add(retryAndFollowUpInterceptor);</span><br><span class="line">    interceptors.add(<span class="keyword">new</span> BridgeInterceptor(client.cookieJar()));</span><br><span class="line">    interceptors.add(<span class="keyword">new</span> CacheInterceptor(client.internalCache()));</span><br><span class="line">    interceptors.add(<span class="keyword">new</span> ConnectInterceptor(client));</span><br><span class="line">    <span class="keyword">if</span> (!forWebSocket) &#123;</span><br><span class="line">      interceptors.addAll(client.networkInterceptors());</span><br><span class="line">    &#125;</span><br><span class="line">    interceptors.add(<span class="keyword">new</span> CallServerInterceptor(forWebSocket));</span><br><span class="line"></span><br><span class="line">    Interceptor.Chain chain = <span class="keyword">new</span> RealInterceptorChain(interceptors, <span class="keyword">null</span>, <span class="keyword">null</span>, <span class="keyword">null</span>, <span class="number">0</span>,</span><br><span class="line">        originalRequest, <span class="keyword">this</span>, eventListener, client.connectTimeoutMillis(),</span><br><span class="line">        client.readTimeoutMillis(), client.writeTimeoutMillis());</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> chain.proceed(originalRequest);</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+<h5 id="小结"><a href="#小结" class="headerlink" title="小结"></a><strong>小结</strong></h5><p>至此我们对 <code>OkHttp</code> 如何发起请求、逐层处理、拿到响应有了一个基本的认识，三句话概括一下：</p>
+<ol>
+<li>发起异步请求后会构造异步任务 <code>AsyncCall</code> 入队，等被执行时会调用它的 <code>execute()</code> 方法</li>
+<li>这个执行方法会通过拦截器链，挨个调用我们自定义的和系统内置的 5 个拦截器，对请求信息和响应做处理，最后返回结果，回调我们传入的参数</li>
+<li>然后从队列中移除当前任务，执行下一个，以此循环</li>
+</ol>
+]]></content>
+      <tags>
+        <tag>android</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>app冷热启动及优化</title>
+    <url>/2019/03/08/app%E5%86%B7%E7%83%AD%E5%90%AF%E5%8A%A8%E5%8F%8A%E4%BC%98%E5%8C%96/</url>
+    <content><![CDATA[<p>冷启动：当启动应用时，后台没有该应用的进程，这时系统会重新创建一个新的进程分配给该应用，这个启动方式就是冷启动。 </p>
+<p>特点：冷启动因为系统会重新创建一个新的进程分配给它，所以会先创建和初始化Application类，再创建和初始化MainActivity类（包括一系列的测量、布局、绘制），最后显示在界面上。</p>
+<p>热启动：当启动应用时，后台已有该应用的进程（例：按back键、home键，应用虽然会退出，但是该应用的进程是依然会保留在后台，可进入任务列表查看），所以在已有进程的情况下，这种启动会从已有的进程中来启动应用，这个方式叫热启动。</p>
+<p>特点：热启动因为会从已有的进程中来启动，所以热启动就不会走Application这步了，而是直接走MainActivity（包括一系列的测量、布局、绘制），所以热启动的过程只需要创建和初始化一个MainActivity就行了，而不必创建和初始化Application，因为一个应用从新进程的创建到进程的销毁，Application只会初始化一次。</p>
+<p>冷启动优化方案：</p>
+<p>1.使用背景图：</p>
+<p>在style文件下定义如下主题：</p>
+<p><code>&lt;style name=&quot;AppWelcome&quot; parent=&quot;AppTheme&quot;&gt; &lt;item name=&quot;android:windowBackground&quot;&gt;@mipmap/bg_welcome_start&lt;/item&gt; &lt;/style&gt;</code></p>
+<p>然后在Manifest中将启动页的主题设置为当前主题：</p>
+<p><code>android:theme=&quot;@style/AppWelcome&quot;</code></p>
+<p>2.使用透明背景和全屏：</p>
+<p><code>&lt;style name=&quot;AppTransparent&quot; parent=&quot;AppTheme&quot;&gt;    &lt;item name=&quot;android:windowFullscreen&quot;&gt;true&lt;/item&gt;    &lt;item name=&quot;android:windowIsTranslucent&quot;&gt;true&lt;/item&gt;&lt;/style&gt;</code></p>
+<p>或者：</p>
+<p><code>&lt;style name=&quot;APPWel&quot; parent=&quot;android:Theme.Translucent.NoTitleBar.Fullscreen&quot; /&gt;</code></p>
+<p>这种就和微信的处理方式是一样的，APP启动时会有一种因为系统卡顿造成启动较慢的假象。</p>
+<p>3.如下几点建议：</p>
+<p>尽量不要让Application参与业务的操作  </p>
+<p>尽量不要在APPlication进行耗时操作，比如有些开发者会在自己的APP里一系列文件夹或文件（比如我自己），这些I/O操作应该放到”确实该使用的时候再去创建”亦或者是数据库的一些操作</p>
+<p> 尽量不要以静态变量的方式在Application中保存数据等。  4、减少LaunchActivity的View层级，减少View测量绘制时间</p>
+<p>此外，可以通过如下方式测量APP冷启动和热启动的时间：</p>
+<p><code>adb shell am start -W [packageName]/[packageName.launchActivity]</code></p>
+]]></content>
+      <tags>
+        <tag>android</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>apk优化方式</title>
     <url>/2019/04/02/apk%E4%BC%98%E5%8C%96%E6%96%B9%E5%BC%8F/</url>
     <content><![CDATA[<p>apk优化的几种方式：</p>
@@ -1995,32 +2024,109 @@
       </tags>
   </entry>
   <entry>
-    <title>app冷热启动及优化</title>
-    <url>/2019/03/08/app%E5%86%B7%E7%83%AD%E5%90%AF%E5%8A%A8%E5%8F%8A%E4%BC%98%E5%8C%96/</url>
-    <content><![CDATA[<p>冷启动：当启动应用时，后台没有该应用的进程，这时系统会重新创建一个新的进程分配给该应用，这个启动方式就是冷启动。 </p>
-<p>特点：冷启动因为系统会重新创建一个新的进程分配给它，所以会先创建和初始化Application类，再创建和初始化MainActivity类（包括一系列的测量、布局、绘制），最后显示在界面上。</p>
-<p>热启动：当启动应用时，后台已有该应用的进程（例：按back键、home键，应用虽然会退出，但是该应用的进程是依然会保留在后台，可进入任务列表查看），所以在已有进程的情况下，这种启动会从已有的进程中来启动应用，这个方式叫热启动。</p>
-<p>特点：热启动因为会从已有的进程中来启动，所以热启动就不会走Application这步了，而是直接走MainActivity（包括一系列的测量、布局、绘制），所以热启动的过程只需要创建和初始化一个MainActivity就行了，而不必创建和初始化Application，因为一个应用从新进程的创建到进程的销毁，Application只会初始化一次。</p>
-<p>冷启动优化方案：</p>
-<p>1.使用背景图：</p>
-<p>在style文件下定义如下主题：</p>
-<p><code>&lt;style name=&quot;AppWelcome&quot; parent=&quot;AppTheme&quot;&gt; &lt;item name=&quot;android:windowBackground&quot;&gt;@mipmap/bg_welcome_start&lt;/item&gt; &lt;/style&gt;</code></p>
-<p>然后在Manifest中将启动页的主题设置为当前主题：</p>
-<p><code>android:theme=&quot;@style/AppWelcome&quot;</code></p>
-<p>2.使用透明背景和全屏：</p>
-<p><code>&lt;style name=&quot;AppTransparent&quot; parent=&quot;AppTheme&quot;&gt;    &lt;item name=&quot;android:windowFullscreen&quot;&gt;true&lt;/item&gt;    &lt;item name=&quot;android:windowIsTranslucent&quot;&gt;true&lt;/item&gt;&lt;/style&gt;</code></p>
-<p>或者：</p>
-<p><code>&lt;style name=&quot;APPWel&quot; parent=&quot;android:Theme.Translucent.NoTitleBar.Fullscreen&quot; /&gt;</code></p>
-<p>这种就和微信的处理方式是一样的，APP启动时会有一种因为系统卡顿造成启动较慢的假象。</p>
-<p>3.如下几点建议：</p>
-<p>尽量不要让Application参与业务的操作  </p>
-<p>尽量不要在APPlication进行耗时操作，比如有些开发者会在自己的APP里一系列文件夹或文件（比如我自己），这些I/O操作应该放到”确实该使用的时候再去创建”亦或者是数据库的一些操作</p>
-<p> 尽量不要以静态变量的方式在Application中保存数据等。  4、减少LaunchActivity的View层级，减少View测量绘制时间</p>
-<p>此外，可以通过如下方式测量APP冷启动和热启动的时间：</p>
-<p><code>adb shell am start -W [packageName]/[packageName.launchActivity]</code></p>
+    <title>jetpack</title>
+    <url>/2022/12/28/jetpack/</url>
+    <content><![CDATA[<p><strong>Lifecycle</strong></p>
+<p>1.Activity实现了LifecycleOwner被观察者 addObserver添加观察者 map存入观察者<br>2.LiveData粘性事件是因为添加时当前的version和被观察者的version不一致导致，可通过反射hook的方式修改<br>3.Activity内部添加了ReportFragment来感知生命周期向观察者发送事件<br>4.Activity实现了状态机，能够顺序显示和退出 同事同步自己的状态给被观察者<br>5.LiveData观察者接收事件后再setValue会导致后续的观察者只能收到新的事件<br>6.postValue本质是切到主线程在setValue 回调在主线程</p>
+<p><strong>ViewModel</strong></p>
+<p>Boudle作为数据存储，就已经和当前Activity实例没有任何关系了！<br>存储手段， 表层应用的是一个Hashmap</p>
+<p>不受Activity实例影响，<br>Bundle理解为进程中的共享数据区<br>Activity继承ComponentActivity在内部通过LifeCycle监听到onSaveInstanceState事件通过mSavedStateRegistryController.performSave(outState)将数据存入到Bundle中<br>内部通过LifeCycle监听到onDestroy事件通过getViewModelStore().clear()去清除Map中的数据，此处map中放的是ViewModel中的数据<br>销毁重建走onCreate通过mSavedStateRegistryController.performRestore(savedInstanceState)从Bundle中恢复数据<br>本质上是Bundle的上层封装，Bundle通过类名去查找数据<br>本质是两个Activity之间的数据传递，上一个被销毁的Activity与新建的这个Activity建立的Bundle数据传递</p>
+<p><strong>WorkManager</strong></p>
+<p>1.架构上使用JobServiceManager或AlarmService进行调用执行<br>2.数据传递上使用Database进行存储<br>3.执行角度上利用线程池提供具体的执行能力<br>4.编译完manifest会生成contentProvider 和receiver等</p>
+<p>1.WorkManger最大的特色， 是不依赖于当前用户进程<br>    当前用户进行killed，任务能够继续执行<br>    保活！  绝对意义上的保活</p>
+<p>2.WorkManager区别于Service提供了一系列的便于我们处理任务的业务<br>    任务链<br>    触发条件执行</p>
+<p>WorkManager<br>    1.架构设计<br>        独立于当前APP进程，由第三方进行进行调用<br>    2.业务设计<br>        支持条件约束<br>        支持循环任务<br>        支持任务链</p>
+<p>1.底层提供能力的是线程池</p>
+<p>2.封装成了一个线性的队列执行</p>
+<p>3.当前SDK版本&gt;23的情况下，是由jobservice提供调用支持</p>
+<p>4.如果是小于23的情况下是AlarmService提供调用支持！</p>
+<p>从创建角度上来将<br>        1.默认会生成CP  作为组件进行注册<br>            1.1. 构建一个线程池提供具体的执行能力<br>            1.2. 根据版本构建JSM 或AlarmService进行调用执行</p>
+<pre><code>通过recevier支持各种约束环节！
+
+对应数据直接入了数据库
+在使用时，取数据库中的数据提取进行处理
+
+
+1.架构上用JSM 或AlarmService进行调用执行
+2.数据传递上用Database进行存储
+3.执行角度利用线程池提供具体执行能力
+
+能不能做保活？？
+
+
+各大手机厂商，对于ROM的系统，隔一段事件 直接一次性清除掉非系统进程的所有进程
+
+
+WorkManager这东西用不了！
+    有时候会失效，就是因为厂商做了处理
+
+ROM厂商定制
+    连JMS   ALARMSERVICE
+</code></pre>]]></content>
+      <tags>
+        <tag>Jetpack</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>java反射</title>
+    <url>/2019/03/28/java%E5%8F%8D%E5%B0%84/</url>
+    <content><![CDATA[<p>简单来说，反射就是在运行时可以获取任意 <code>Class</code> 或 <code>Object</code> 内部所有成员属性，如成员变量、成员方法、构造函数和 Annotation。</p>
+<p>首先，我们定义一个注解：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">@Target(ElementType.METHOD)</span><br><span class="line">@Retention(RetentionPolicy.RUNTIME)</span><br><span class="line">public @interface Invoke &#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p> 对于注解中的参数，有以下解释：</p>
+<p>@Target : 注解所修饰的对象范围</p>
+<p>@Inherited ：表示注解可以被继承</p>
+<p>@Documented ：表示这个注解应该被JavaDoc工具记录</p>
+<p>@Retention ：用来声明注解的保留策略</p>
+<p>其中@Target和@Retention有以下的一些参数：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">public enum ElementType &#123;</span><br><span class="line"></span><br><span class="line">    TYPE, 能修饰类，接口和枚举类型</span><br><span class="line"></span><br><span class="line">    FIELD, 能修饰成员变量</span><br><span class="line"> </span><br><span class="line">    METHOD, 能修饰方法</span><br><span class="line"></span><br><span class="line">    PARAMETER, 能修饰参数</span><br><span class="line"></span><br><span class="line">    CONSTRUCTOR, 能修饰构造方法</span><br><span class="line"></span><br><span class="line">    LOCAL_VARIABLE, 能修饰局部变量</span><br><span class="line"> </span><br><span class="line">    ANNOTATION_TYPE, 能修饰注解</span><br><span class="line"></span><br><span class="line">    PACKAGE, 能修饰包</span><br><span class="line"></span><br><span class="line">    TYPE_PARAMETER, 类型参数声明</span><br><span class="line"></span><br><span class="line">    TYPE_USE 使用类型</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">public enum RetentionPolicy &#123;</span><br><span class="line">    </span><br><span class="line">    SOURCE, 源码级注解，只会保留在.java源码中，编译后被丢弃，不会保留在.class中</span><br><span class="line"></span><br><span class="line">    CLASS, 编译时注解。注解信息会保留在.java源码以及.class中。当程序运行时，JVM会丢弃该注解信息</span><br><span class="line"></span><br><span class="line">    RUNTIME 运行时注解。当运行Java程序时，JVM也会保留该注解信息，可以通过反射获取该注解信息</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>下面，我们来定义一个该注解使用的类：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">public class UserBean &#123;</span><br><span class="line"></span><br><span class="line">    private String name;</span><br><span class="line">    public int age;</span><br><span class="line"></span><br><span class="line">    public UserBean(String name, int age) &#123;</span><br><span class="line">        this.name = name;</span><br><span class="line">        this.age = age;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Invoke</span><br><span class="line">    public static void logd() &#123;</span><br><span class="line">        Log.e(&quot;test&quot;, &quot;this is static class&quot;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Invoke</span><br><span class="line">    public void publicMethod(String user) &#123;</span><br><span class="line">        Log.e(&quot;test&quot;, &quot;this is public&quot; + user);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Invoke</span><br><span class="line">    private void privateMethod() &#123;</span><br><span class="line">        Log.e(&quot;test&quot;, &quot;this is private method&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上面说过，运行时注解可以通过反射的方式处理：</p>
+]]></content>
+      <tags>
+        <tag>Java</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>iconify使用</title>
+    <url>/2019/05/14/iconify%E4%BD%BF%E7%94%A8/</url>
+    <content><![CDATA[<p>先引入：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">compile &apos;com.joanzapata.iconify:android-iconify-ionicons:2.2.2&apos; // (v2.0.1)</span><br><span class="line">compile &apos;com.joanzapata.iconify:android-iconify-fontawesome:2.2.2&apos; // (v4.5)</span><br></pre></td></tr></table></figure>
+<p>在Applciation初始化：</p>
+<p><code>Iconify.with(FontAwesomeModule())        .with(FontEcModule())</code></p>
+<p>自定义module使用：先创建继承自IconFontDescriptor的类</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">class FontEcModule : IconFontDescriptor&#123;</span><br><span class="line">    override fun ttfFileName(): String &#123;</span><br><span class="line">        return &quot;iconfont.ttf&quot;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    override fun characters(): Array&lt;EcIcons&gt; &#123;</span><br><span class="line">        return EcIcons.values()</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上面的ttf文件是放在assets目录下的，之后定义枚举的Icon</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">public enum EcIcons implements Icon &#123;</span><br><span class="line">    icon_shuidi(&apos;\ue600&apos;)</span><br><span class="line"></span><br><span class="line">    ;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    private char character;</span><br><span class="line"></span><br><span class="line">    EcIcons(char character) &#123;</span><br><span class="line">        this.character = character;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public String key() &#123;</span><br><span class="line">        return name().replace(&apos;_&apos;, &apos;-&apos;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public char character() &#123;</span><br><span class="line">        return character;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这里有个细节，枚举中的名字是用下划线_定义的，但是在使用时要用-　</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">android:text=&quot;&#123;icon-shuidi&#125;&quot;</span><br></pre></td></tr></table></figure>
+<p>　这里的unicode编码　&#xe600;　需要将&amp;#xe删除　改为\u</p>
 ]]></content>
       <tags>
         <tag>android</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>kotlin特殊的函数和调用</title>
+    <url>/2019/04/04/kotlin%E7%89%B9%E6%AE%8A%E7%9A%84%E5%87%BD%E6%95%B0%E5%92%8C%E8%B0%83%E7%94%A8/</url>
+    <content><![CDATA[<p>1.扩展函数的使用：</p>
+<p>新建.kt文件，并编写如下</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">fun Fragment.showToast(content: String): Toast &#123;</span><br><span class="line">    val toast = Toast.makeText(this.activity?.applicationContext, content, Toast.LENGTH_SHORT)</span><br><span class="line">    toast.show()</span><br><span class="line">    return toast</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>图上的showToast就是一个扩展函数，可以直接访问被扩展的其他方法和属性，相当于在Fragment类中添加了这样的方法再去访问一样，此外，扩展函数不能访问私有的和受保护的成员。扩展函数不存在重写，在Kotlin中会被当做静态的函数对待。通过以下方导入：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">import ktmvp.yppcat.ktmvp.utils.showToast</span><br></pre></td></tr></table></figure>
+<p>之后在Fragment可以这样使用：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">showToast(errorMessage)</span><br></pre></td></tr></table></figure>
+<p>2.可变参数：让函数支持任意数量的参数</p>
+<p>在Java中：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"> private void getName(String... params) &#123;</span><br><span class="line">        Log.e(&quot;test&quot;, Arrays.toString(params));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Kotlin中：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">private fun getName(vararg params: String) &#123;</span><br><span class="line">    val list = listOf(&quot;aa&quot;, *params)</span><br><span class="line">    print(list)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>java中的…被vararg修饰符替代，此外*表示的是展开运算符</p>
+]]></content>
+      <tags>
+        <tag>Kotlin</tag>
       </tags>
   </entry>
   <entry>
@@ -2459,68 +2565,6 @@
       </tags>
   </entry>
   <entry>
-    <title>iconify使用</title>
-    <url>/2019/05/14/iconify%E4%BD%BF%E7%94%A8/</url>
-    <content><![CDATA[<p>先引入：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">compile &apos;com.joanzapata.iconify:android-iconify-ionicons:2.2.2&apos; // (v2.0.1)</span><br><span class="line">compile &apos;com.joanzapata.iconify:android-iconify-fontawesome:2.2.2&apos; // (v4.5)</span><br></pre></td></tr></table></figure>
-<p>在Applciation初始化：</p>
-<p><code>Iconify.with(FontAwesomeModule())        .with(FontEcModule())</code></p>
-<p>自定义module使用：先创建继承自IconFontDescriptor的类</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">class FontEcModule : IconFontDescriptor&#123;</span><br><span class="line">    override fun ttfFileName(): String &#123;</span><br><span class="line">        return &quot;iconfont.ttf&quot;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    override fun characters(): Array&lt;EcIcons&gt; &#123;</span><br><span class="line">        return EcIcons.values()</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>上面的ttf文件是放在assets目录下的，之后定义枚举的Icon</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">public enum EcIcons implements Icon &#123;</span><br><span class="line">    icon_shuidi(&apos;\ue600&apos;)</span><br><span class="line"></span><br><span class="line">    ;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    private char character;</span><br><span class="line"></span><br><span class="line">    EcIcons(char character) &#123;</span><br><span class="line">        this.character = character;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public String key() &#123;</span><br><span class="line">        return name().replace(&apos;_&apos;, &apos;-&apos;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public char character() &#123;</span><br><span class="line">        return character;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>这里有个细节，枚举中的名字是用下划线_定义的，但是在使用时要用-　</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">android:text=&quot;&#123;icon-shuidi&#125;&quot;</span><br></pre></td></tr></table></figure>
-<p>　这里的unicode编码　&#xe600;　需要将&amp;#xe删除　改为\u</p>
-]]></content>
-      <tags>
-        <tag>android</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>java反射</title>
-    <url>/2019/03/28/java%E5%8F%8D%E5%B0%84/</url>
-    <content><![CDATA[<p>简单来说，反射就是在运行时可以获取任意 <code>Class</code> 或 <code>Object</code> 内部所有成员属性，如成员变量、成员方法、构造函数和 Annotation。</p>
-<p>首先，我们定义一个注解：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">@Target(ElementType.METHOD)</span><br><span class="line">@Retention(RetentionPolicy.RUNTIME)</span><br><span class="line">public @interface Invoke &#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p> 对于注解中的参数，有以下解释：</p>
-<p>@Target : 注解所修饰的对象范围</p>
-<p>@Inherited ：表示注解可以被继承</p>
-<p>@Documented ：表示这个注解应该被JavaDoc工具记录</p>
-<p>@Retention ：用来声明注解的保留策略</p>
-<p>其中@Target和@Retention有以下的一些参数：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">public enum ElementType &#123;</span><br><span class="line"></span><br><span class="line">    TYPE, 能修饰类，接口和枚举类型</span><br><span class="line"></span><br><span class="line">    FIELD, 能修饰成员变量</span><br><span class="line"> </span><br><span class="line">    METHOD, 能修饰方法</span><br><span class="line"></span><br><span class="line">    PARAMETER, 能修饰参数</span><br><span class="line"></span><br><span class="line">    CONSTRUCTOR, 能修饰构造方法</span><br><span class="line"></span><br><span class="line">    LOCAL_VARIABLE, 能修饰局部变量</span><br><span class="line"> </span><br><span class="line">    ANNOTATION_TYPE, 能修饰注解</span><br><span class="line"></span><br><span class="line">    PACKAGE, 能修饰包</span><br><span class="line"></span><br><span class="line">    TYPE_PARAMETER, 类型参数声明</span><br><span class="line"></span><br><span class="line">    TYPE_USE 使用类型</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">public enum RetentionPolicy &#123;</span><br><span class="line">    </span><br><span class="line">    SOURCE, 源码级注解，只会保留在.java源码中，编译后被丢弃，不会保留在.class中</span><br><span class="line"></span><br><span class="line">    CLASS, 编译时注解。注解信息会保留在.java源码以及.class中。当程序运行时，JVM会丢弃该注解信息</span><br><span class="line"></span><br><span class="line">    RUNTIME 运行时注解。当运行Java程序时，JVM也会保留该注解信息，可以通过反射获取该注解信息</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>下面，我们来定义一个该注解使用的类：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">public class UserBean &#123;</span><br><span class="line"></span><br><span class="line">    private String name;</span><br><span class="line">    public int age;</span><br><span class="line"></span><br><span class="line">    public UserBean(String name, int age) &#123;</span><br><span class="line">        this.name = name;</span><br><span class="line">        this.age = age;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Invoke</span><br><span class="line">    public static void logd() &#123;</span><br><span class="line">        Log.e(&quot;test&quot;, &quot;this is static class&quot;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Invoke</span><br><span class="line">    public void publicMethod(String user) &#123;</span><br><span class="line">        Log.e(&quot;test&quot;, &quot;this is public&quot; + user);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Invoke</span><br><span class="line">    private void privateMethod() &#123;</span><br><span class="line">        Log.e(&quot;test&quot;, &quot;this is private method&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>上面说过，运行时注解可以通过反射的方式处理：</p>
-]]></content>
-      <tags>
-        <tag>Java</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>kotlin特殊的函数和调用</title>
-    <url>/2019/04/04/kotlin%E7%89%B9%E6%AE%8A%E7%9A%84%E5%87%BD%E6%95%B0%E5%92%8C%E8%B0%83%E7%94%A8/</url>
-    <content><![CDATA[<p>1.扩展函数的使用：</p>
-<p>新建.kt文件，并编写如下</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">fun Fragment.showToast(content: String): Toast &#123;</span><br><span class="line">    val toast = Toast.makeText(this.activity?.applicationContext, content, Toast.LENGTH_SHORT)</span><br><span class="line">    toast.show()</span><br><span class="line">    return toast</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>图上的showToast就是一个扩展函数，可以直接访问被扩展的其他方法和属性，相当于在Fragment类中添加了这样的方法再去访问一样，此外，扩展函数不能访问私有的和受保护的成员。扩展函数不存在重写，在Kotlin中会被当做静态的函数对待。通过以下方导入：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">import ktmvp.yppcat.ktmvp.utils.showToast</span><br></pre></td></tr></table></figure>
-<p>之后在Fragment可以这样使用：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">showToast(errorMessage)</span><br></pre></td></tr></table></figure>
-<p>2.可变参数：让函数支持任意数量的参数</p>
-<p>在Java中：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"> private void getName(String... params) &#123;</span><br><span class="line">        Log.e(&quot;test&quot;, Arrays.toString(params));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>Kotlin中：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">private fun getName(vararg params: String) &#123;</span><br><span class="line">    val list = listOf(&quot;aa&quot;, *params)</span><br><span class="line">    print(list)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>java中的…被vararg修饰符替代，此外*表示的是展开运算符</p>
-]]></content>
-      <tags>
-        <tag>Kotlin</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>kotlin笔记-标准函数</title>
     <url>/2021/12/08/kotlin%E7%AC%94%E8%AE%B0-%E6%A0%87%E5%87%86%E5%87%BD%E6%95%B0/</url>
     <content><![CDATA[<h4 id="let函数会将参数传入到lambda作用域中，返回作用域的最后一行"><a href="#let函数会将参数传入到lambda作用域中，返回作用域的最后一行" class="headerlink" title="let函数会将参数传入到lambda作用域中，返回作用域的最后一行"></a>let函数会将参数传入到lambda作用域中，返回作用域的最后一行</h4><figure class="highlight kotlin"><table><tr><td class="code"><pre><span class="line"><span class="keyword">val</span> res = listOf(<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>).first().let &#123;</span><br><span class="line">    it * it</span><br><span class="line">&#125;</span><br><span class="line">println(res)</span><br></pre></td></tr></table></figure>
@@ -2534,18 +2578,24 @@
       </tags>
   </entry>
   <entry>
-    <title>kotlin笔记-列表</title>
-    <url>/2021/12/08/kotlin%E7%AC%94%E8%AE%B0/</url>
-    <content><![CDATA[<h4 id="kotlin普通列表"><a href="#kotlin普通列表" class="headerlink" title="kotlin普通列表"></a>kotlin普通列表</h4><figure class="highlight kotlin"><table><tr><td class="code"><pre><span class="line"><span class="keyword">val</span> list = listOf(<span class="string">"jack"</span>, <span class="string">"lucy"</span>, <span class="string">"black"</span>)</span><br><span class="line">println(list.getOrElse(<span class="number">4</span>) &#123; <span class="string">"UnKnown"</span> &#125;)</span><br><span class="line">println(list.getOrNull(<span class="number">4</span>) ?: <span class="string">"UnKnown"</span>)</span><br><span class="line">println(list[<span class="number">2</span>])</span><br></pre></td></tr></table></figure>
-<h4 id="list的for-each循环"><a href="#list的for-each循环" class="headerlink" title="list的for each循环"></a>list的for each循环</h4><figure class="highlight kotlin"><table><tr><td class="code"><pre><span class="line"><span class="keyword">val</span> list = listOf(<span class="string">"jack"</span>, <span class="string">"jimmy"</span>, <span class="string">"jason"</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> (s <span class="keyword">in</span> list) &#123;</span><br><span class="line">    println(s)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">list.forEach &#123;</span><br><span class="line">    println(it)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">list.forEachIndexed &#123; index, s -&gt;</span><br><span class="line">    println(<span class="string">"<span class="variable">$index</span>  <span class="variable">$s</span>"</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//此处的_参数被过滤掉，name proxy依次赋值0 1个元素</span></span><br><span class="line"><span class="keyword">val</span> (name,_,proxy) = listOf(<span class="string">"jack"</span>,<span class="string">"jimmy"</span>,<span class="string">"jason"</span>,<span class="string">"jacky"</span>)</span><br><span class="line">println(<span class="string">"name = <span class="variable">$name</span>   proxy = <span class="variable">$proxy</span>"</span>)</span><br></pre></td></tr></table></figure>
-<h4 id="map列表"><a href="#map列表" class="headerlink" title="map列表"></a>map列表</h4><figure class="highlight kotlin"><table><tr><td class="code"><pre><span class="line"><span class="comment">//此处用了infix函数</span></span><br><span class="line"><span class="keyword">val</span> map = mapOf(<span class="string">"jack"</span> to <span class="number">20</span>, <span class="string">"jimmy"</span> to <span class="number">18</span>, <span class="string">"jason"</span> to <span class="number">24</span>)</span><br><span class="line">println(map)</span><br><span class="line"></span><br><span class="line"><span class="comment">//pair是map的子元素</span></span><br><span class="line"><span class="keyword">val</span> sMap = mapOf(Pair(<span class="string">"jack"</span>, <span class="number">20</span>), Pair(<span class="string">"jimmy"</span>, <span class="number">18</span>), Pair(<span class="string">"json"</span>, <span class="number">24</span>))</span><br><span class="line">println(map[<span class="string">"jack"</span>])</span><br><span class="line">println(sMap[<span class="string">"jimmy"</span>])</span><br><span class="line"></span><br><span class="line"><span class="comment">//</span></span><br><span class="line">println(map.getOrElse(<span class="string">"jimmy"</span>) &#123; <span class="string">"UnKnown"</span> &#125;)</span><br><span class="line">println(map.getOrDefault(<span class="string">"jason"</span>) &#123; <span class="string">"UnKnown"</span> &#125;)</span><br><span class="line"></span><br><span class="line"><span class="comment">//map的遍历</span></span><br><span class="line">map.forEach &#123;</span><br><span class="line">    println(<span class="string">"<span class="subst">$&#123;it.key&#125;</span>  <span class="subst">$&#123;it.value&#125;</span>"</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//map的遍历</span></span><br><span class="line">map.forEach &#123; (key, value) -&gt;</span><br><span class="line">    println(<span class="string">"key = <span class="variable">$key</span>  value = <span class="variable">$value</span>"</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h4 id="kotlin可变列表MutableList"><a href="#kotlin可变列表MutableList" class="headerlink" title="kotlin可变列表MutableList"></a>kotlin可变列表MutableList</h4><figure class="highlight kotlin"><table><tr><td class="code"><pre><span class="line"><span class="keyword">val</span> mutableList = mutableListOf(<span class="string">"jack"</span>, <span class="string">"jimmy"</span>, <span class="string">"jacky"</span>)</span><br><span class="line">mutableList.add(<span class="string">"jason"</span>)</span><br><span class="line">mutableList.remove(<span class="string">"jack"</span>)</span><br><span class="line">println(mutableList)</span><br><span class="line"></span><br><span class="line">listOf(<span class="string">"a"</span>, <span class="string">"b"</span>, <span class="string">"c"</span>).toMutableList()</span><br><span class="line">mutableListOf(<span class="string">"m"</span>, <span class="string">"n"</span>, <span class="string">"o"</span>).toList()</span><br></pre></td></tr></table></figure>
-<h4 id="kotlin可变列表MutableMap"><a href="#kotlin可变列表MutableMap" class="headerlink" title="kotlin可变列表MutableMap"></a>kotlin可变列表MutableMap</h4><figure class="highlight kotlin"><table><tr><td class="code"><pre><span class="line"><span class="keyword">val</span> mutableMap = mutableMapOf(<span class="string">"Jack"</span> to <span class="number">20</span>, <span class="string">"Jason"</span> to <span class="number">18</span>, <span class="string">"Jacky"</span> to <span class="number">30</span>)</span><br><span class="line"><span class="comment">//此处用到了操作符重载</span></span><br><span class="line">mutableMap += <span class="string">"jimmy"</span> to <span class="number">1000</span></span><br><span class="line">mutableMap.put(<span class="string">"lucas"</span>, <span class="number">31</span>)</span><br><span class="line">mutableMap[<span class="string">"lucy"</span>] = <span class="number">30</span></span><br><span class="line"></span><br><span class="line">mutableMap.getOrPut(<span class="string">"lily"</span>)&#123; <span class="number">100</span> &#125;</span><br><span class="line"><span class="keyword">val</span> i = mutableMap.getOrPut(<span class="string">"jimmy"</span>)&#123; <span class="number">100</span> &#125;</span><br><span class="line"></span><br><span class="line">println(mutableMap)</span><br><span class="line">println(i)</span><br></pre></td></tr></table></figure>
-<p>set列表</p>
-<figure class="highlight kotlin"><table><tr><td class="code"><pre><span class="line"><span class="keyword">val</span> mutableSet = mutableSetOf(<span class="string">"Kotlin"</span>, <span class="string">"Java"</span>, <span class="string">"Scala"</span>)</span><br><span class="line">mutableSet += <span class="string">"Groovy"</span></span><br><span class="line"></span><br><span class="line">println(listOf(<span class="string">"Jack"</span>, <span class="string">"Jason"</span>, <span class="string">"Jacky"</span>,<span class="string">"Jacky"</span>).toSet().toList())</span><br><span class="line"></span><br><span class="line"><span class="comment">//去重的快捷函数</span></span><br><span class="line">println(listOf(<span class="string">"Jack"</span>, <span class="string">"Jason"</span>, <span class="string">"Jacky"</span>,<span class="string">"Jacky"</span>).distinct())</span><br></pre></td></tr></table></figure>
-]]></content>
+    <title>单例模式</title>
+    <url>/2019/04/12/%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F/</url>
+    <content><![CDATA[<p>单例模式：保证一个类仅有一个实例，并提供一个访问它的全局访问点。</p>
+<p>单例模式的６中写法：</p>
+<p><strong>饿汉模式：</strong>在类加载时就完成了初始化，所以加载较慢，但是对象的获取速度快，避免了多线程同步问题。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">public class SingleTon &#123;</span><br><span class="line"></span><br><span class="line">    private static SingleTon instance = new SingleTon();</span><br><span class="line"></span><br><span class="line">    private SingleTon() &#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public static SingleTon getInstance() &#123;</span><br><span class="line">        return instance;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>懒汉模式：</strong>线程不安全，节约了资源，在多线程时不能正常工作。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">public class SingleTon &#123;</span><br><span class="line"></span><br><span class="line">    private static SingleTon instance;</span><br><span class="line"></span><br><span class="line">    private SingleTon() &#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public static SingleTon getInstance() &#123;</span><br><span class="line">        if (instance == null) &#123;</span><br><span class="line">            return new SingleTon();</span><br><span class="line">        &#125;</span><br><span class="line">        return instance;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>线程安全的懒汉模式：</strong>能够在多线程下工作，但是每次调用getInstance都需要进行同步，造成的同步开销较大。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">public class SingleTon &#123;</span><br><span class="line"></span><br><span class="line">    private static SingleTon instance;</span><br><span class="line"></span><br><span class="line">    private SingleTon() &#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public static synchronized SingleTon getInstance() &#123;</span><br><span class="line">        if (instance == null) &#123;</span><br><span class="line">            return new SingleTon();</span><br><span class="line">        &#125;</span><br><span class="line">        return instance;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>双重检查模式:　</strong>避免了不必要的同步，同时避免创建多余的实例，volatile稍微影响了性能。　第一次加载稍慢，有可能出现失效的问题。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">public class SingleTon &#123;</span><br><span class="line"></span><br><span class="line">    private volatile static SingleTon instance;</span><br><span class="line"></span><br><span class="line">    private SingleTon() &#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public static synchronized SingleTon getInstance() &#123;</span><br><span class="line">        if (instance == null) &#123;</span><br><span class="line">            synchronized (SingleTon.class) &#123;</span><br><span class="line">                if (instance == null) &#123;</span><br><span class="line">                    instance = new SingleTon();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        return instance;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>静态内部类单例模式：</strong>第一次加载时不会初始化sInstance,只有第一次调用getInstance方法时才会加载SingleTonHolder并初始化sInstance。不仅能保证线程安全，也能保证SingleTon类的唯一性。（推荐使用）</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">public class SingleTon &#123;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    private SingleTon() &#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public static SingleTon getInstance() &#123;</span><br><span class="line">        return SingleTonHolder.sInstance;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    private static class SingleTonHolder &#123;</span><br><span class="line">        private static final SingleTon sInstance = new SingleTon();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>枚举单例：</strong>　线程安全，且在任何情况下都是单例，但是可读性不高。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">public enum  SingleTon &#123;</span><br><span class="line"></span><br><span class="line">    INSTANCE;</span><br><span class="line">    </span><br><span class="line">    public void doSomeThing()&#123;</span><br><span class="line">        </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
       <tags>
-        <tag>Kotlin</tag>
+        <tag>Java</tag>
       </tags>
   </entry>
   <entry>
@@ -2580,24 +2630,18 @@ private Utils(Context context) {
       </tags>
   </entry>
   <entry>
-    <title>单例模式</title>
-    <url>/2019/04/12/%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F/</url>
-    <content><![CDATA[<p>单例模式：保证一个类仅有一个实例，并提供一个访问它的全局访问点。</p>
-<p>单例模式的６中写法：</p>
-<p><strong>饿汉模式：</strong>在类加载时就完成了初始化，所以加载较慢，但是对象的获取速度快，避免了多线程同步问题。</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">public class SingleTon &#123;</span><br><span class="line"></span><br><span class="line">    private static SingleTon instance = new SingleTon();</span><br><span class="line"></span><br><span class="line">    private SingleTon() &#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public static SingleTon getInstance() &#123;</span><br><span class="line">        return instance;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><strong>懒汉模式：</strong>线程不安全，节约了资源，在多线程时不能正常工作。</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">public class SingleTon &#123;</span><br><span class="line"></span><br><span class="line">    private static SingleTon instance;</span><br><span class="line"></span><br><span class="line">    private SingleTon() &#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public static SingleTon getInstance() &#123;</span><br><span class="line">        if (instance == null) &#123;</span><br><span class="line">            return new SingleTon();</span><br><span class="line">        &#125;</span><br><span class="line">        return instance;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><strong>线程安全的懒汉模式：</strong>能够在多线程下工作，但是每次调用getInstance都需要进行同步，造成的同步开销较大。</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">public class SingleTon &#123;</span><br><span class="line"></span><br><span class="line">    private static SingleTon instance;</span><br><span class="line"></span><br><span class="line">    private SingleTon() &#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public static synchronized SingleTon getInstance() &#123;</span><br><span class="line">        if (instance == null) &#123;</span><br><span class="line">            return new SingleTon();</span><br><span class="line">        &#125;</span><br><span class="line">        return instance;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><strong>双重检查模式:　</strong>避免了不必要的同步，同时避免创建多余的实例，volatile稍微影响了性能。　第一次加载稍慢，有可能出现失效的问题。</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">public class SingleTon &#123;</span><br><span class="line"></span><br><span class="line">    private volatile static SingleTon instance;</span><br><span class="line"></span><br><span class="line">    private SingleTon() &#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public static synchronized SingleTon getInstance() &#123;</span><br><span class="line">        if (instance == null) &#123;</span><br><span class="line">            synchronized (SingleTon.class) &#123;</span><br><span class="line">                if (instance == null) &#123;</span><br><span class="line">                    instance = new SingleTon();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        return instance;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><strong>静态内部类单例模式：</strong>第一次加载时不会初始化sInstance,只有第一次调用getInstance方法时才会加载SingleTonHolder并初始化sInstance。不仅能保证线程安全，也能保证SingleTon类的唯一性。（推荐使用）</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">public class SingleTon &#123;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    private SingleTon() &#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public static SingleTon getInstance() &#123;</span><br><span class="line">        return SingleTonHolder.sInstance;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    private static class SingleTonHolder &#123;</span><br><span class="line">        private static final SingleTon sInstance = new SingleTon();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><strong>枚举单例：</strong>　线程安全，且在任何情况下都是单例，但是可读性不高。</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">public enum  SingleTon &#123;</span><br><span class="line"></span><br><span class="line">    INSTANCE;</span><br><span class="line">    </span><br><span class="line">    public void doSomeThing()&#123;</span><br><span class="line">        </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
+    <title>kotlin笔记-列表</title>
+    <url>/2021/12/08/kotlin%E7%AC%94%E8%AE%B0/</url>
+    <content><![CDATA[<h4 id="kotlin普通列表"><a href="#kotlin普通列表" class="headerlink" title="kotlin普通列表"></a>kotlin普通列表</h4><figure class="highlight kotlin"><table><tr><td class="code"><pre><span class="line"><span class="keyword">val</span> list = listOf(<span class="string">"jack"</span>, <span class="string">"lucy"</span>, <span class="string">"black"</span>)</span><br><span class="line">println(list.getOrElse(<span class="number">4</span>) &#123; <span class="string">"UnKnown"</span> &#125;)</span><br><span class="line">println(list.getOrNull(<span class="number">4</span>) ?: <span class="string">"UnKnown"</span>)</span><br><span class="line">println(list[<span class="number">2</span>])</span><br></pre></td></tr></table></figure>
+<h4 id="list的for-each循环"><a href="#list的for-each循环" class="headerlink" title="list的for each循环"></a>list的for each循环</h4><figure class="highlight kotlin"><table><tr><td class="code"><pre><span class="line"><span class="keyword">val</span> list = listOf(<span class="string">"jack"</span>, <span class="string">"jimmy"</span>, <span class="string">"jason"</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> (s <span class="keyword">in</span> list) &#123;</span><br><span class="line">    println(s)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">list.forEach &#123;</span><br><span class="line">    println(it)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">list.forEachIndexed &#123; index, s -&gt;</span><br><span class="line">    println(<span class="string">"<span class="variable">$index</span>  <span class="variable">$s</span>"</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//此处的_参数被过滤掉，name proxy依次赋值0 1个元素</span></span><br><span class="line"><span class="keyword">val</span> (name,_,proxy) = listOf(<span class="string">"jack"</span>,<span class="string">"jimmy"</span>,<span class="string">"jason"</span>,<span class="string">"jacky"</span>)</span><br><span class="line">println(<span class="string">"name = <span class="variable">$name</span>   proxy = <span class="variable">$proxy</span>"</span>)</span><br></pre></td></tr></table></figure>
+<h4 id="map列表"><a href="#map列表" class="headerlink" title="map列表"></a>map列表</h4><figure class="highlight kotlin"><table><tr><td class="code"><pre><span class="line"><span class="comment">//此处用了infix函数</span></span><br><span class="line"><span class="keyword">val</span> map = mapOf(<span class="string">"jack"</span> to <span class="number">20</span>, <span class="string">"jimmy"</span> to <span class="number">18</span>, <span class="string">"jason"</span> to <span class="number">24</span>)</span><br><span class="line">println(map)</span><br><span class="line"></span><br><span class="line"><span class="comment">//pair是map的子元素</span></span><br><span class="line"><span class="keyword">val</span> sMap = mapOf(Pair(<span class="string">"jack"</span>, <span class="number">20</span>), Pair(<span class="string">"jimmy"</span>, <span class="number">18</span>), Pair(<span class="string">"json"</span>, <span class="number">24</span>))</span><br><span class="line">println(map[<span class="string">"jack"</span>])</span><br><span class="line">println(sMap[<span class="string">"jimmy"</span>])</span><br><span class="line"></span><br><span class="line"><span class="comment">//</span></span><br><span class="line">println(map.getOrElse(<span class="string">"jimmy"</span>) &#123; <span class="string">"UnKnown"</span> &#125;)</span><br><span class="line">println(map.getOrDefault(<span class="string">"jason"</span>) &#123; <span class="string">"UnKnown"</span> &#125;)</span><br><span class="line"></span><br><span class="line"><span class="comment">//map的遍历</span></span><br><span class="line">map.forEach &#123;</span><br><span class="line">    println(<span class="string">"<span class="subst">$&#123;it.key&#125;</span>  <span class="subst">$&#123;it.value&#125;</span>"</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//map的遍历</span></span><br><span class="line">map.forEach &#123; (key, value) -&gt;</span><br><span class="line">    println(<span class="string">"key = <span class="variable">$key</span>  value = <span class="variable">$value</span>"</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="kotlin可变列表MutableList"><a href="#kotlin可变列表MutableList" class="headerlink" title="kotlin可变列表MutableList"></a>kotlin可变列表MutableList</h4><figure class="highlight kotlin"><table><tr><td class="code"><pre><span class="line"><span class="keyword">val</span> mutableList = mutableListOf(<span class="string">"jack"</span>, <span class="string">"jimmy"</span>, <span class="string">"jacky"</span>)</span><br><span class="line">mutableList.add(<span class="string">"jason"</span>)</span><br><span class="line">mutableList.remove(<span class="string">"jack"</span>)</span><br><span class="line">println(mutableList)</span><br><span class="line"></span><br><span class="line">listOf(<span class="string">"a"</span>, <span class="string">"b"</span>, <span class="string">"c"</span>).toMutableList()</span><br><span class="line">mutableListOf(<span class="string">"m"</span>, <span class="string">"n"</span>, <span class="string">"o"</span>).toList()</span><br></pre></td></tr></table></figure>
+<h4 id="kotlin可变列表MutableMap"><a href="#kotlin可变列表MutableMap" class="headerlink" title="kotlin可变列表MutableMap"></a>kotlin可变列表MutableMap</h4><figure class="highlight kotlin"><table><tr><td class="code"><pre><span class="line"><span class="keyword">val</span> mutableMap = mutableMapOf(<span class="string">"Jack"</span> to <span class="number">20</span>, <span class="string">"Jason"</span> to <span class="number">18</span>, <span class="string">"Jacky"</span> to <span class="number">30</span>)</span><br><span class="line"><span class="comment">//此处用到了操作符重载</span></span><br><span class="line">mutableMap += <span class="string">"jimmy"</span> to <span class="number">1000</span></span><br><span class="line">mutableMap.put(<span class="string">"lucas"</span>, <span class="number">31</span>)</span><br><span class="line">mutableMap[<span class="string">"lucy"</span>] = <span class="number">30</span></span><br><span class="line"></span><br><span class="line">mutableMap.getOrPut(<span class="string">"lily"</span>)&#123; <span class="number">100</span> &#125;</span><br><span class="line"><span class="keyword">val</span> i = mutableMap.getOrPut(<span class="string">"jimmy"</span>)&#123; <span class="number">100</span> &#125;</span><br><span class="line"></span><br><span class="line">println(mutableMap)</span><br><span class="line">println(i)</span><br></pre></td></tr></table></figure>
+<p>set列表</p>
+<figure class="highlight kotlin"><table><tr><td class="code"><pre><span class="line"><span class="keyword">val</span> mutableSet = mutableSetOf(<span class="string">"Kotlin"</span>, <span class="string">"Java"</span>, <span class="string">"Scala"</span>)</span><br><span class="line">mutableSet += <span class="string">"Groovy"</span></span><br><span class="line"></span><br><span class="line">println(listOf(<span class="string">"Jack"</span>, <span class="string">"Jason"</span>, <span class="string">"Jacky"</span>,<span class="string">"Jacky"</span>).toSet().toList())</span><br><span class="line"></span><br><span class="line"><span class="comment">//去重的快捷函数</span></span><br><span class="line">println(listOf(<span class="string">"Jack"</span>, <span class="string">"Jason"</span>, <span class="string">"Jacky"</span>,<span class="string">"Jacky"</span>).distinct())</span><br></pre></td></tr></table></figure>
+]]></content>
       <tags>
-        <tag>Java</tag>
+        <tag>Kotlin</tag>
       </tags>
   </entry>
   <entry>
@@ -3331,23 +3375,6 @@ public static void recycleBitmaps(Bitmap... bitmaps) {
       </tags>
   </entry>
   <entry>
-    <title>观察者模式</title>
-    <url>/2019/02/07/%E8%A7%82%E5%AF%9F%E8%80%85%E6%A8%A1%E5%BC%8F/</url>
-    <content><![CDATA[<p>首先，实现观察者、被观察者接口</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">public interface Subject &#123;</span><br><span class="line">    void registerObserver(Observer o); //注册观察者</span><br><span class="line">    void removeObserver(Observer o); //删除观察者</span><br><span class="line">    void notifyObservers(); //当被观察者状态改变时，通知所有观察者信息</span><br><span class="line">&#125;</span><br><span class="line">public interface Observer &#123;</span><br><span class="line">    //当被观察者的数据更新时，将更新的信息当做参数传递给观察者</span><br><span class="line">    void update(float temperature, float humidity, float pressure);</span><br><span class="line">&#125;</span><br><span class="line">public interface DisplayElement &#123;</span><br><span class="line">    void display(); //用于显示更新的数据</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>被观察者对象的实现</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">//被观察对象实现被观察接口</span><br><span class="line">public class WeatherData implements Subject &#123;</span><br><span class="line">    private ArrayList&lt;Observer&gt; observers;</span><br><span class="line">    private float temperature;</span><br><span class="line">    private float humidity;</span><br><span class="line">    private float pressure;</span><br><span class="line"></span><br><span class="line">    public WeatherData() &#123;</span><br><span class="line">        observers = new ArrayList&lt;Observer&gt;();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public void registerObserver(Observer o) &#123;</span><br><span class="line">        observers.add(o);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public void removeObserver(Observer o) &#123;</span><br><span class="line">        int i = observers.indexOf(o);</span><br><span class="line">        if (i &gt;= 0) &#123;</span><br><span class="line">            observers.remove(i);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void notifyObservers() &#123;</span><br><span class="line">        for (int i = 0; i &lt; observers.size(); i++) &#123;</span><br><span class="line">            Observer observer = observers.get(i);</span><br><span class="line">            observer.update(temperature, humidity, pressure);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void measurementsChanged()&#123;</span><br><span class="line">        notifyObservers();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void setMeasurements(float temperature,float humidity,float pressure)&#123;</span><br><span class="line">        this.temperature = temperature;</span><br><span class="line">        this.humidity = humidity;</span><br><span class="line">        this.pressure = pressure;</span><br><span class="line">        measurementsChanged();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>观察者被观察者逻辑的具体实现</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">//观察者实现观察者接口和具体的数据展示</span><br><span class="line">public class CurrentContionsDisplay implements Observer, DisplayElement &#123;</span><br><span class="line">    private static final String TAG = &quot;CurrentContionsDisplay&quot;;</span><br><span class="line">    private float temperature;</span><br><span class="line">    private float humidity;</span><br><span class="line">    private Subject weatherData;</span><br><span class="line"></span><br><span class="line">    public CurrentContionsDisplay(Subject weatherData) &#123;</span><br><span class="line">        this.weatherData = weatherData;</span><br><span class="line">        weatherData.registerObserver(this);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public void update(float temperature, float humidity, float pressure) &#123;</span><br><span class="line">        this.temperature = temperature;</span><br><span class="line">        this.humidity = humidity;</span><br><span class="line">        display();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public void display() &#123;</span><br><span class="line">        Log.d(TAG, &quot;display: &quot; + temperature + &quot;::&quot; + humidity);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>使用实例：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">WeatherData data = new WeatherData();</span><br><span class="line">CurrentContionsDisplay display = new CurrentContionsDisplay(data);</span><br><span class="line">data.setMeasurements(100,100,100);</span><br></pre></td></tr></table></figure>
-<p><a href="https://github.com/wtdBill/Subscriber" target="_blank" rel="noopener">代码地址</a></p>
-]]></content>
-      <tags>
-        <tag>设计模式</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>锁</title>
     <url>/2022/11/24/%E9%94%81/</url>
     <content><![CDATA[<p><strong>JAVA下的线程安全分析</strong></p>
@@ -3385,6 +3412,23 @@ public static void recycleBitmaps(Bitmap... bitmaps) {
 <img src="/2022/11/24/锁/image-20221124084041320.png" title="[锁]">]]></content>
       <tags>
         <tag>JUC</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>观察者模式</title>
+    <url>/2019/02/07/%E8%A7%82%E5%AF%9F%E8%80%85%E6%A8%A1%E5%BC%8F/</url>
+    <content><![CDATA[<p>首先，实现观察者、被观察者接口</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">public interface Subject &#123;</span><br><span class="line">    void registerObserver(Observer o); //注册观察者</span><br><span class="line">    void removeObserver(Observer o); //删除观察者</span><br><span class="line">    void notifyObservers(); //当被观察者状态改变时，通知所有观察者信息</span><br><span class="line">&#125;</span><br><span class="line">public interface Observer &#123;</span><br><span class="line">    //当被观察者的数据更新时，将更新的信息当做参数传递给观察者</span><br><span class="line">    void update(float temperature, float humidity, float pressure);</span><br><span class="line">&#125;</span><br><span class="line">public interface DisplayElement &#123;</span><br><span class="line">    void display(); //用于显示更新的数据</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>被观察者对象的实现</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">//被观察对象实现被观察接口</span><br><span class="line">public class WeatherData implements Subject &#123;</span><br><span class="line">    private ArrayList&lt;Observer&gt; observers;</span><br><span class="line">    private float temperature;</span><br><span class="line">    private float humidity;</span><br><span class="line">    private float pressure;</span><br><span class="line"></span><br><span class="line">    public WeatherData() &#123;</span><br><span class="line">        observers = new ArrayList&lt;Observer&gt;();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public void registerObserver(Observer o) &#123;</span><br><span class="line">        observers.add(o);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public void removeObserver(Observer o) &#123;</span><br><span class="line">        int i = observers.indexOf(o);</span><br><span class="line">        if (i &gt;= 0) &#123;</span><br><span class="line">            observers.remove(i);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void notifyObservers() &#123;</span><br><span class="line">        for (int i = 0; i &lt; observers.size(); i++) &#123;</span><br><span class="line">            Observer observer = observers.get(i);</span><br><span class="line">            observer.update(temperature, humidity, pressure);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void measurementsChanged()&#123;</span><br><span class="line">        notifyObservers();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void setMeasurements(float temperature,float humidity,float pressure)&#123;</span><br><span class="line">        this.temperature = temperature;</span><br><span class="line">        this.humidity = humidity;</span><br><span class="line">        this.pressure = pressure;</span><br><span class="line">        measurementsChanged();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>观察者被观察者逻辑的具体实现</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">//观察者实现观察者接口和具体的数据展示</span><br><span class="line">public class CurrentContionsDisplay implements Observer, DisplayElement &#123;</span><br><span class="line">    private static final String TAG = &quot;CurrentContionsDisplay&quot;;</span><br><span class="line">    private float temperature;</span><br><span class="line">    private float humidity;</span><br><span class="line">    private Subject weatherData;</span><br><span class="line"></span><br><span class="line">    public CurrentContionsDisplay(Subject weatherData) &#123;</span><br><span class="line">        this.weatherData = weatherData;</span><br><span class="line">        weatherData.registerObserver(this);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public void update(float temperature, float humidity, float pressure) &#123;</span><br><span class="line">        this.temperature = temperature;</span><br><span class="line">        this.humidity = humidity;</span><br><span class="line">        display();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public void display() &#123;</span><br><span class="line">        Log.d(TAG, &quot;display: &quot; + temperature + &quot;::&quot; + humidity);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>使用实例：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">WeatherData data = new WeatherData();</span><br><span class="line">CurrentContionsDisplay display = new CurrentContionsDisplay(data);</span><br><span class="line">data.setMeasurements(100,100,100);</span><br></pre></td></tr></table></figure>
+<p><a href="https://github.com/wtdBill/Subscriber" target="_blank" rel="noopener">代码地址</a></p>
+]]></content>
+      <tags>
+        <tag>设计模式</tag>
       </tags>
   </entry>
 </search>

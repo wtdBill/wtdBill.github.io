@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  <title>jetpack | Eric笔记 | Eric笔记</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="theme-color" content="#3F51B5">
+  
+  
+  <meta name="keywords" content="Jetpack">
+  <meta name="description" content="Lifecycle 1.Activity实现了LifecycleOwner被观察者 addObserver添加观察者 map存入观察者2.LiveData粘性事件是因为添加时当前的version和被观察者的version不一致导致，可通过反射hook的方式修改3.Activity内部添加了ReportFragment来感知生命周期向观察者发送事件4.Activity实现了状态机，能够顺序显示和退出">
+<meta name="keywords" content="Jetpack">
+<meta property="og:type" content="article">
+<meta property="og:title" content="jetpack">
+<meta property="og:url" content="http://www.yppcat.top/2022/12/28/jetpack/index.html">
+<meta property="og:site_name" content="Eric笔记">
+<meta property="og:description" content="Lifecycle 1.Activity实现了LifecycleOwner被观察者 addObserver添加观察者 map存入观察者2.LiveData粘性事件是因为添加时当前的version和被观察者的version不一致导致，可通过反射hook的方式修改3.Activity内部添加了ReportFragment来感知生命周期向观察者发送事件4.Activity实现了状态机，能够顺序显示和退出">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2022-12-28T03:13:12.879Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="jetpack">
+<meta name="twitter:description" content="Lifecycle 1.Activity实现了LifecycleOwner被观察者 addObserver添加观察者 map存入观察者2.LiveData粘性事件是因为添加时当前的version和被观察者的version不一致导致，可通过反射hook的方式修改3.Activity内部添加了ReportFragment来感知生命周期向观察者发送事件4.Activity实现了状态机，能够顺序显示和退出">
+  
+    <link rel="alternative" href="/atom.xml" title="Eric笔记" type="application/atom+xml">
+  
+  <meta name="summary" content="">
+  <link rel="shortcut icon" href="/favicon.ico">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="loading" class="active"></div>
+
+  <nav id="menu" class="hide" >
+   <div class="inner flex-row-vertical">
+  <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+      <i class="icon icon-lg icon-close"></i>
+  </a>
+  <div class="brand-wrap">
+    <div class="brand">
+      <a href="/" class="avatar"><img src="/img/header.jpg"></a>
+      <hgroup class="introduce">
+        <h5 class="nickname">Eric笔记</h5>
+        <a href="mailto:1246275955@qq.com" title="1246275955@qq.com" class="mail">1246275955@qq.com</a>
+      </hgroup>
+    </div>
+  </div>
+  <div class="scroll-wrap flex-col">
+    <ul class="nav">
+      
+          <li class="waves-block waves-effect">
+            <a href="/">
+              <i class="icon icon-lg icon-home"></i>
+              主页
+            </a>
+          </li>
+      
+          <li class="waves-block waves-effect">
+            <a href="/archives">
+              <i class="icon icon-lg icon-archives"></i>
+              Archives
+            </a>
+          </li>
+      
+          <li class="waves-block waves-effect">
+            <a href="/tags">
+              <i class="icon icon-lg icon-tags"></i>
+              Tags
+            </a>
+          </li>
+      
+          <li class="waves-block waves-effect">
+            <a href="https://github.com/wtdBill" target="_blank">
+              <i class="icon icon-lg icon-github"></i>
+              Github
+            </a>
+          </li>
+      
+    </ul>
+
+    <footer class="footer">
+  <p><a rel="license" target="_blank" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0;vertical-align:middle;" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFAAAAAPCAMAAABEF7i9AAAAllBMVEUAAAD///+rsapERER3d3eIiIjMzMzu7u4iIiKUmZO6v7rKzsoODg4RERFVVVUNDQ0NDg0PEA8zMzNLTEtbXltmZmZydnF9gn2AgICPkI+ZmZmqqqq7u7vFxsXIzMgNDQwZGRkgICAhISEkJSMnKCcuMC4xMzE5Ozk7PTtBQkFCQkJDQ0Nna2eGhoaHh4ezuLLGysbd3d1wVGpAAAAA4UlEQVR42q2T1xqCMAyFk7QsBQeKA9x7j/d/OSm22CpX0nzcpA1/T05aAOuBVkMAScQFHLnEwoCo2f1TnQIGoVMewjZEjVFN4GH1Ue1Cn2jWqwfsOOj6wDwGvotsl/c8lv7KIq1eLOsT0HMFHMIE/RZyHnlphryT9zyV+8WH5e8yQw3wnQvgAFxPTKUVi555SHR/lOfLMgVTeDlSfN+TaoUsiTyeIm+bCkHvCA2FUKG48LDtYBZBknsYP/G8NTw0gaaHyuQf4H5pecrB/FYCT2sL9zAfy1Xyjou6L8X2W7YcLyBZCRtnq/zfAAAAAElFTkSuQmCC"></a></p>
+  <p>Eric笔记 &copy; 2022</p>
+  <p>Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme
+  <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a></p>
+  <a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-2x icon-rss-square"></i></a>
+</footer>
+
+  </div>
+</div>
+
+  </nav>
+  <main id="main">
+    <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">jetpack</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input " autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+    </div>
+</header>
+<header class="content-header">
+  <div class="container">
+    <h1 class="author">jetpack</h1>
+    <h5 class="subtitle">
+        
+            <time datetime="2022-12-28T03:07:25.000Z" itemprop="datePublished" class="page-time">
+  2022-12-28
+</time>
+
+
+        
+    </h5>
+  </div>
+</header>
+
+    <div class="container body-wrap">
+      <article id="post-jetpack" class="article article-type-post" itemprop="blogPost">
+    <div class="post-meta flex-row">
+        
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Jetpack/">Jetpack</a></li></ul>
+
+    </div>
+    <div class="post-body">
+        <aside class="post-widget" id="post-widget">
+
+            
+
+            
+            <nav class="post-toc-wrap" id="post-toc">
+            
+            </nav>
+            
+        </aside>
+
+        <div class="post-main">
+
+            <div class="post-content" id="post-content" itemprop="postContent">
+            <p><strong>Lifecycle</strong></p>
+<p>1.Activity实现了LifecycleOwner被观察者 addObserver添加观察者 map存入观察者<br>2.LiveData粘性事件是因为添加时当前的version和被观察者的version不一致导致，可通过反射hook的方式修改<br>3.Activity内部添加了ReportFragment来感知生命周期向观察者发送事件<br>4.Activity实现了状态机，能够顺序显示和退出 同事同步自己的状态给被观察者<br>5.LiveData观察者接收事件后再setValue会导致后续的观察者只能收到新的事件<br>6.postValue本质是切到主线程在setValue 回调在主线程</p>
+<p><strong>ViewModel</strong></p>
+<p>Boudle作为数据存储，就已经和当前Activity实例没有任何关系了！<br>存储手段， 表层应用的是一个Hashmap</p>
+<p>不受Activity实例影响，<br>Bundle理解为进程中的共享数据区<br>Activity继承ComponentActivity在内部通过LifeCycle监听到onSaveInstanceState事件通过mSavedStateRegistryController.performSave(outState)将数据存入到Bundle中<br>内部通过LifeCycle监听到onDestroy事件通过getViewModelStore().clear()去清除Map中的数据，此处map中放的是ViewModel中的数据<br>销毁重建走onCreate通过mSavedStateRegistryController.performRestore(savedInstanceState)从Bundle中恢复数据<br>本质上是Bundle的上层封装，Bundle通过类名去查找数据<br>本质是两个Activity之间的数据传递，上一个被销毁的Activity与新建的这个Activity建立的Bundle数据传递</p>
+<p><strong>WorkManager</strong></p>
+<p>1.架构上使用JobServiceManager或AlarmService进行调用执行<br>2.数据传递上使用Database进行存储<br>3.执行角度上利用线程池提供具体的执行能力<br>4.编译完manifest会生成contentProvider 和receiver等</p>
+<p>1.WorkManger最大的特色， 是不依赖于当前用户进程<br>    当前用户进行killed，任务能够继续执行<br>    保活！  绝对意义上的保活</p>
+<p>2.WorkManager区别于Service提供了一系列的便于我们处理任务的业务<br>    任务链<br>    触发条件执行</p>
+<p>WorkManager<br>    1.架构设计<br>        独立于当前APP进程，由第三方进行进行调用<br>    2.业务设计<br>        支持条件约束<br>        支持循环任务<br>        支持任务链</p>
+<p>1.底层提供能力的是线程池</p>
+<p>2.封装成了一个线性的队列执行</p>
+<p>3.当前SDK版本&gt;23的情况下，是由jobservice提供调用支持</p>
+<p>4.如果是小于23的情况下是AlarmService提供调用支持！</p>
+<p>从创建角度上来将<br>        1.默认会生成CP  作为组件进行注册<br>            1.1. 构建一个线程池提供具体的执行能力<br>            1.2. 根据版本构建JSM 或AlarmService进行调用执行</p>
+<pre><code>通过recevier支持各种约束环节！
+
+对应数据直接入了数据库
+在使用时，取数据库中的数据提取进行处理
+
+
+1.架构上用JSM 或AlarmService进行调用执行
+2.数据传递上用Database进行存储
+3.执行角度利用线程池提供具体执行能力
+
+能不能做保活？？
+
+
+各大手机厂商，对于ROM的系统，隔一段事件 直接一次性清除掉非系统进程的所有进程
+
+
+WorkManager这东西用不了！
+    有时候会失效，就是因为厂商做了处理
+
+ROM厂商定制
+    连JMS   ALARMSERVICE
+</code></pre>
+
+            
+            <div class="post-reward">
+                <a id="rewardBtn" href="javascript:;" class="post-reward-btn waves-effect waves-circle waves-light">赏</a>
+            </div>
+            
+            
+            <blockquote>
+                <p>
+                本文地址：
+                <a href="http://www.yppcat.top/2022/12/28/jetpack/" target="_blank" rel="external">http://www.yppcat.top/2022/12/28/jetpack/</a>
+                </p>
+                <footer><cite><a href="http://www.yppcat.top">@Eric笔记</a></cite></footer>
+            </blockquote>
+            </div>
+            
+<nav class="post-nav">
+  
+
+  
+    <div class="waves-block waves-effect next fr">
+      <a href="/2022/12/06/IO加解密核心与dex文件改造过程分析/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">IO加解密核心与dex文件改造过程分析</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+            
+            
+<div class="duoshuo">
+	<!-- 多说评论框 start -->
+	<div class="ds-thread" data-thread-key="jetpack" data-title="jetpack" data-url="http://www.yppcat.top/2022/12/28/jetpack/index.html"></div>
+	<!-- 多说评论框 end -->
+	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+	<script type="text/javascript">
+	var duoshuoQuery = {short_name:"ysblog"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+	<!-- 多说公共JS代码 end -->
+</div>
+
+
+
+
+
+        </div>
+    </div>
+</article>
+
+<div id="reward" class="reward-lay">
+    <a class="reward-off" id="rewardOff" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        谢谢老板~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <ul class="reward-items">
+        
+        <li>
+            <img src="/img/wechat.jpg" title="微信打赏二维码" alt="微信打赏二维码">
+            <p>微信</p>
+        </li>
+        
+
+        
+    </ul>
+</div>
+
+    </div>
+  </main>
+<div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+<script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+
+<script src="/js/main.js"></script>
+
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<script type="text/template" id="search-tpl">
+<li class="item">
+    <a href="/{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</script>
+
+<script src="/js/search.js"></script>
+
+
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script type="text/javascript" async src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>
