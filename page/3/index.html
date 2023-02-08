@@ -124,6 +124,100 @@
       <ul class="post-list">
   
     <li class="post-list-item">
+        <article id="post-Dalvik虚拟机与ART虚拟机" class="article article-type-post" itemprop="blogPost">
+     
+
+
+  
+    <h3 class="post-title" itemprop="name">
+      <a class="post-title-link" href="/2022/11/18/Dalvik虚拟机与ART虚拟机/">Dalvik虚拟机与ART虚拟机</a>
+    </h3>
+  
+
+
+
+    <div class="post-meta">
+        <time datetime="2022-11-18T09:14:42.000Z" itemprop="datePublished" class="post-time">
+  2022-11-18
+</time>
+
+        
+
+
+    </div>
+
+    <div class="post-content" id="post-content" itemprop="postContent">
+
+    
+         Dalvik 虚拟机&amp;ART虚拟机与Hotspot区别  
+ Dalivk VM: 
+ 隶属：Google 
+ 发展历史： 
+ 应用于Android系统，并且在Android2.2中提供了JIT，发展迅猛 
+ Dalvik是一款不是JVM的JVM虚拟机。本质上他没有遵循与JVM规范 
+ 不能直接运行java Class文件 
+ 他的结构基于寄存器结构，而不是JVM栈架构 
+ 执行的是编译
+    
+    
+        <a href="/2022/11/18/Dalvik虚拟机与ART虚拟机/" class="post-more waves-effect waves-button">
+            阅读全文...
+        </a>
+    </div>
+    
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JVM/">JVM</a></li></ul>
+
+</article>
+
+    </li>
+  
+    <li class="post-list-item">
+        <article id="post-堆内存解析" class="article article-type-post" itemprop="blogPost">
+     
+
+
+  
+    <h3 class="post-title" itemprop="name">
+      <a class="post-title-link" href="/2022/11/15/堆内存解析/">堆内存解析</a>
+    </h3>
+  
+
+
+
+    <div class="post-meta">
+        <time datetime="2022-11-15T13:39:21.000Z" itemprop="datePublished" class="post-time">
+  2022-11-15
+</time>
+
+        
+
+
+    </div>
+
+    <div class="post-content" id="post-content" itemprop="postContent">
+
+    
+          运行时数据区  
+ 
+  堆概述  
+ 1.一个JVM进程存在一个堆内存，堆是JVM内存管理的核心区域 
+ 2.java 堆区在JVM启动是被创建，其空间大小也被确定，是JVM管理的最大一块内存（堆内存大小可以调整） 
+ 3.本质上堆是一组在物理上不连续的内存空间，但是逻辑上是连续的空间（参考HSDB分析的内存结构） 
+ 4.所有线程共享堆，但是堆内对于线程处理还是做了一个线程私有的部分（TL
+    
+    
+        <a href="/2022/11/15/堆内存解析/" class="post-more waves-effect waves-button">
+            阅读全文...
+        </a>
+    </div>
+    
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JVM/">JVM</a></li></ul>
+
+</article>
+
+    </li>
+  
+    <li class="post-list-item">
         <article id="post-Activity问题" class="article article-type-post" itemprop="blogPost">
      
 
@@ -367,96 +461,6 @@
     </div>
     
 	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/android/">android</a></li></ul>
-
-</article>
-
-    </li>
-  
-    <li class="post-list-item">
-        <article id="post-Java线程状态" class="article article-type-post" itemprop="blogPost">
-     
-
-
-  
-    <h3 class="post-title" itemprop="name">
-      <a class="post-title-link" href="/2020/07/17/Java线程状态/">Java线程状态</a>
-    </h3>
-  
-
-
-
-    <div class="post-meta">
-        <time datetime="2020-07-17T05:32:23.000Z" itemprop="datePublished" class="post-time">
-  2020-07-17
-</time>
-
-        
-
-
-    </div>
-
-    <div class="post-content" id="post-content" itemprop="postContent">
-
-    
-           线程的 6 种状态  就像生物从出生到长大、最终死亡的过程一样，线程也有自己的生命周期，在 Java 中线程的生命周期中一共有 6 种状态。 
-  New（新创建）  
-  Runnable（可运行）  
-  Blocked（被阻塞）  
-  Waiting（等待）  
-  Timed Waiting（计时等待）  
-  Terminated（被终止）  
- 如果想要确定线程当前的状态，可以
-    
-    
-        <a href="/2020/07/17/Java线程状态/" class="post-more waves-effect waves-button">
-            阅读全文...
-        </a>
-    </div>
-    
-	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Java/">Java</a></li></ul>
-
-</article>
-
-    </li>
-  
-    <li class="post-list-item">
-        <article id="post-JNIEnv实现原理" class="article article-type-post" itemprop="blogPost">
-     
-
-
-  
-    <h3 class="post-title" itemprop="name">
-      <a class="post-title-link" href="/2020/03/18/JNIEnv实现原理/">JNIEnv实现原理</a>
-    </h3>
-  
-
-
-
-    <div class="post-meta">
-        <time datetime="2020-03-18T12:55:54.000Z" itemprop="datePublished" class="post-time">
-  2020-03-18
-</time>
-
-        
-
-
-    </div>
-
-    <div class="post-content" id="post-content" itemprop="postContent">
-
-    
-         ` 
- #include &lt;stdio.h&gt; 
- #include &lt;stdlib.h&gt; typedef const struct JNINativeInterface *JNIEnv; 
- struct JNINativeInterface {     //方法指针     const char ( NewStringUTF)(JNIEnv ,const char );
-    
-    
-        <a href="/2020/03/18/JNIEnv实现原理/" class="post-more waves-effect waves-button">
-            阅读全文...
-        </a>
-    </div>
-    
-	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Ndk/">Ndk</a></li></ul>
 
 </article>
 

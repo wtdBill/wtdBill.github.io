@@ -124,6 +124,101 @@
       <ul class="post-list">
   
     <li class="post-list-item">
+        <article id="post-Binder-内存管理单元" class="article article-type-post" itemprop="blogPost">
+     
+
+
+  
+    <h3 class="post-title" itemprop="name">
+      <a class="post-title-link" href="/2023/02/08/Binder-内存管理单元/">Binder-内存管理单元</a>
+    </h3>
+  
+
+
+
+    <div class="post-meta">
+        <time datetime="2023-02-08T00:27:44.000Z" itemprop="datePublished" class="post-time">
+  2023-02-08
+</time>
+
+        
+
+
+    </div>
+
+    <div class="post-content" id="post-content" itemprop="postContent">
+
+    
+           1.1 什么是MMU  ​        MMU(Memory Management Unit)主要用来 管理虚拟存储器 、物理存储器的控制线路，同时也负责虚拟地址映射为物理地址，以及提供硬件机制的内存访问授权、多任务多进程操作系统。 
+   1.2 发展历史  
+ 注意：学习一个知识点 
+ 很重要的一步是了解其为什么而存在？ 
+ 它的存在是为了解决什么问题？ 
+ 最后，在学习的过程中带着这
+    
+    
+        <a href="/2023/02/08/Binder-内存管理单元/" class="post-more waves-effect waves-button">
+            阅读全文...
+        </a>
+    </div>
+    
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/binder/">binder</a></li></ul>
+
+</article>
+
+    </li>
+  
+    <li class="post-list-item">
+        <article id="post-Binder-为什么会有内核空间与用户空间" class="article article-type-post" itemprop="blogPost">
+     
+
+
+  
+    <h3 class="post-title" itemprop="name">
+      <a class="post-title-link" href="/2023/02/08/Binder-为什么会有内核空间与用户空间/">Binder-为什么会有内核空间与用户空间</a>
+    </h3>
+  
+
+
+
+    <div class="post-meta">
+        <time datetime="2023-02-08T00:24:13.000Z" itemprop="datePublished" class="post-time">
+  2023-02-08
+</time>
+
+        
+
+
+    </div>
+
+    <div class="post-content" id="post-content" itemprop="postContent">
+
+    
+           1.1 简介 内存  
+ 现代计算机都有两种以上的运行模式（普通模式、特权模式）， 
+ linux系统只有两层： 
+ 用户空间 
+ 
+ 高优先级模式（特权模式） 
+ 低优先级模式（普通模式）。 
+ 
+ 
+ ​        linux系统在高优先级模式中运行系统 内核代码 以及与 硬件密切 相关的代码。 低优先级 运行 应用程序 与硬件无关部分。 
+ ​        应用程序不能 直接操控
+    
+    
+        <a href="/2023/02/08/Binder-为什么会有内核空间与用户空间/" class="post-more waves-effect waves-button">
+            阅读全文...
+        </a>
+    </div>
+    
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/binder/">binder</a></li></ul>
+
+</article>
+
+    </li>
+  
+    <li class="post-list-item">
         <article id="post-handler笔记" class="article article-type-post" itemprop="blogPost">
      
 
@@ -363,94 +458,6 @@
     
     
         <a href="/2022/12/05/AQS/" class="post-more waves-effect waves-button">
-            阅读全文...
-        </a>
-    </div>
-    
-	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JUC/">JUC</a></li></ul>
-
-</article>
-
-    </li>
-  
-    <li class="post-list-item">
-        <article id="post-线程池" class="article article-type-post" itemprop="blogPost">
-     
-
-
-  
-    <h3 class="post-title" itemprop="name">
-      <a class="post-title-link" href="/2022/12/03/线程池/">线程池</a>
-    </h3>
-  
-
-
-
-    <div class="post-meta">
-        <time datetime="2022-12-03T11:49:42.000Z" itemprop="datePublished" class="post-time">
-  2022-12-03
-</time>
-
-        
-
-
-    </div>
-
-    <div class="post-content" id="post-content" itemprop="postContent">
-
-    
-          异步模式之工作线程  
- 让有限的工作线程轮流异步处理无限多的任务，也可以将其归类为分工模式，他的典型实现就是线程池，也体现了经典设计模式中的享元模式 
- 例如,海底捞的服务员（线程），轮流处理每位顾客的点餐（任务），如果每位顾客都配一个专属服务员，则成本太过高昂 
- 注意：不同任务类型应该使用不同的线程池，这样能够避免饥饿现象，且效率上得到合理分配 
- 线程饥饿现象：     本质上是在出现
-    
-    
-        <a href="/2022/12/03/线程池/" class="post-more waves-effect waves-button">
-            阅读全文...
-        </a>
-    </div>
-    
-	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JUC/">JUC</a></li></ul>
-
-</article>
-
-    </li>
-  
-    <li class="post-list-item">
-        <article id="post-CAS与原子变量" class="article article-type-post" itemprop="blogPost">
-     
-
-
-  
-    <h3 class="post-title" itemprop="name">
-      <a class="post-title-link" href="/2022/11/27/CAS与原子变量/">CAS与原子变量</a>
-    </h3>
-  
-
-
-
-    <div class="post-meta">
-        <time datetime="2022-11-27T13:08:34.000Z" itemprop="datePublished" class="post-time">
-  2022-11-27
-</time>
-
-        
-
-
-    </div>
-
-    <div class="post-content" id="post-content" itemprop="postContent">
-
-    
-          为什么无锁状态下的运行效率会高？  
-  单纯的CAS理论：  
- 单纯的CAS理论只是为了完成一次比较确认值的同步 与代码块的同步并没有关系 
-  CAS理论应用下的锁实现原理：  利用volatile变量与CAS理论保证在一定时间段内变量结果的一致性 同步对于线程进行阻塞 
-  CAS无锁状态下与synchronize有锁状态下的本质区别  无锁情况下，即使重试失败，线程始终在高速运行，没
-    
-    
-        <a href="/2022/11/27/CAS与原子变量/" class="post-more waves-effect waves-button">
             阅读全文...
         </a>
     </div>

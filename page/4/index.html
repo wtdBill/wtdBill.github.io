@@ -124,6 +124,96 @@
       <ul class="post-list">
   
     <li class="post-list-item">
+        <article id="post-Java线程状态" class="article article-type-post" itemprop="blogPost">
+     
+
+
+  
+    <h3 class="post-title" itemprop="name">
+      <a class="post-title-link" href="/2020/07/17/Java线程状态/">Java线程状态</a>
+    </h3>
+  
+
+
+
+    <div class="post-meta">
+        <time datetime="2020-07-17T05:32:23.000Z" itemprop="datePublished" class="post-time">
+  2020-07-17
+</time>
+
+        
+
+
+    </div>
+
+    <div class="post-content" id="post-content" itemprop="postContent">
+
+    
+           线程的 6 种状态  就像生物从出生到长大、最终死亡的过程一样，线程也有自己的生命周期，在 Java 中线程的生命周期中一共有 6 种状态。 
+  New（新创建）  
+  Runnable（可运行）  
+  Blocked（被阻塞）  
+  Waiting（等待）  
+  Timed Waiting（计时等待）  
+  Terminated（被终止）  
+ 如果想要确定线程当前的状态，可以
+    
+    
+        <a href="/2020/07/17/Java线程状态/" class="post-more waves-effect waves-button">
+            阅读全文...
+        </a>
+    </div>
+    
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Java/">Java</a></li></ul>
+
+</article>
+
+    </li>
+  
+    <li class="post-list-item">
+        <article id="post-JNIEnv实现原理" class="article article-type-post" itemprop="blogPost">
+     
+
+
+  
+    <h3 class="post-title" itemprop="name">
+      <a class="post-title-link" href="/2020/03/18/JNIEnv实现原理/">JNIEnv实现原理</a>
+    </h3>
+  
+
+
+
+    <div class="post-meta">
+        <time datetime="2020-03-18T12:55:54.000Z" itemprop="datePublished" class="post-time">
+  2020-03-18
+</time>
+
+        
+
+
+    </div>
+
+    <div class="post-content" id="post-content" itemprop="postContent">
+
+    
+         ` 
+ #include &lt;stdio.h&gt; 
+ #include &lt;stdlib.h&gt; typedef const struct JNINativeInterface *JNIEnv; 
+ struct JNINativeInterface {     //方法指针     const char ( NewStringUTF)(JNIEnv ,const char );
+    
+    
+        <a href="/2020/03/18/JNIEnv实现原理/" class="post-more waves-effect waves-button">
+            阅读全文...
+        </a>
+    </div>
+    
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Ndk/">Ndk</a></li></ul>
+
+</article>
+
+    </li>
+  
+    <li class="post-list-item">
         <article id="post-Ndk开发步骤" class="article article-type-post" itemprop="blogPost">
      
 
@@ -385,93 +475,6 @@
     </div>
     
 	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/C-学习笔记/">C++学习笔记</a></li></ul>
-
-</article>
-
-    </li>
-  
-    <li class="post-list-item">
-        <article id="post-C-学习笔记-数据处理" class="article article-type-post" itemprop="blogPost">
-     
-
-
-  
-    <h3 class="post-title" itemprop="name">
-      <a class="post-title-link" href="/2019/06/16/C-学习笔记-数据处理/">C++学习笔记-数据处理</a>
-    </h3>
-  
-
-
-
-    <div class="post-meta">
-        <time datetime="2019-06-16T00:52:08.000Z" itemprop="datePublished" class="post-time">
-  2019-06-16
-</time>
-
-        
-
-
-    </div>
-
-    <div class="post-content" id="post-content" itemprop="postContent">
-
-    
-         1.整型： 
- short至少表示1６位 
- int至少与short一样长（可能16位，可能32位） 
- long至少32位，且至少与int一样长 
- long long至少64位，且至少与long一样长 
- 可通过sizeof()方法查看具体类型的最大值: 
-      1       cout &lt;&lt; &quot;int is&quot; &lt;&lt; sizeof(int) 
-    
-    
-        <a href="/2019/06/16/C-学习笔记-数据处理/" class="post-more waves-effect waves-button">
-            阅读全文...
-        </a>
-    </div>
-    
-	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/C-学习笔记/">C++学习笔记</a></li></ul>
-
-</article>
-
-    </li>
-  
-    <li class="post-list-item">
-        <article id="post-iconify使用" class="article article-type-post" itemprop="blogPost">
-     
-
-
-  
-    <h3 class="post-title" itemprop="name">
-      <a class="post-title-link" href="/2019/05/14/iconify使用/">iconify使用</a>
-    </h3>
-  
-
-
-
-    <div class="post-meta">
-        <time datetime="2019-05-14T08:06:31.000Z" itemprop="datePublished" class="post-time">
-  2019-05-14
-</time>
-
-        
-
-
-    </div>
-
-    <div class="post-content" id="post-content" itemprop="postContent">
-
-    
-         先引入： 
-      1   2       compile &apos;com.joanzapata.iconify:android-iconify-ionicons:2.2.2&apos; // (v2.0.1)   compile &apos;com.joanzapata.iconify:android-iconify-fontawesome:2.2.2&apos; // (v4.5) 
-    
-    
-        <a href="/2019/05/14/iconify使用/" class="post-more waves-effect waves-button">
-            阅读全文...
-        </a>
-    </div>
-    
-	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/android/">android</a></li></ul>
 
 </article>
 

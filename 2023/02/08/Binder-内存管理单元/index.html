@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  <title>Binder-内存管理单元 | Eric笔记 | Eric笔记</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="theme-color" content="#3F51B5">
+  
+  
+  <meta name="keywords" content="binder">
+  <meta name="description" content="1.1 什么是MMU​        MMU(Memory Management Unit)主要用来管理虚拟存储器、物理存储器的控制线路，同时也负责虚拟地址映射为物理地址，以及提供硬件机制的内存访问授权、多任务多进程操作系统。 1.2 发展历史 注意：学习一个知识点 很重要的一步是了解其为什么而存在？ 它的存在是为了解决什么问题？ 最后，在学习的过程中带着这些问题去理解、去思考  ​">
+<meta name="keywords" content="binder">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Binder-内存管理单元">
+<meta property="og:url" content="http://www.yppcat.top/2023/02/08/Binder-内存管理单元/index.html">
+<meta property="og:site_name" content="Eric笔记">
+<meta property="og:description" content="1.1 什么是MMU​        MMU(Memory Management Unit)主要用来管理虚拟存储器、物理存储器的控制线路，同时也负责虚拟地址映射为物理地址，以及提供硬件机制的内存访问授权、多任务多进程操作系统。 1.2 发展历史 注意：学习一个知识点 很重要的一步是了解其为什么而存在？ 它的存在是为了解决什么问题？ 最后，在学习的过程中带着这些问题去理解、去思考  ​">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="http://www.yppcat.top/2023/02/08/Binder-内存管理单元/4.png">
+<meta property="og:image" content="http://www.yppcat.top/2023/02/08/Binder-内存管理单元/2310756-67a4ff2b53385008.png">
+<meta property="og:image" content="http://www.yppcat.top/2023/02/08/Binder-内存管理单元/2310756-3b1e7fc263f0642a.png">
+<meta property="og:image" content="http://www.yppcat.top/2023/02/08/Binder-内存管理单元/11.png">
+<meta property="og:image" content="http://www.yppcat.top/2023/02/08/Binder-内存管理单元/12.png">
+<meta property="og:image" content="http://www.yppcat.top/2023/02/08/Binder-内存管理单元/13.png">
+<meta property="og:image" content="http://www.yppcat.top/2023/02/08/Binder-内存管理单元/14.png">
+<meta property="og:updated_time" content="2023-02-08T00:39:13.882Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Binder-内存管理单元">
+<meta name="twitter:description" content="1.1 什么是MMU​        MMU(Memory Management Unit)主要用来管理虚拟存储器、物理存储器的控制线路，同时也负责虚拟地址映射为物理地址，以及提供硬件机制的内存访问授权、多任务多进程操作系统。 1.2 发展历史 注意：学习一个知识点 很重要的一步是了解其为什么而存在？ 它的存在是为了解决什么问题？ 最后，在学习的过程中带着这些问题去理解、去思考  ​">
+<meta name="twitter:image" content="http://www.yppcat.top/2023/02/08/Binder-内存管理单元/4.png">
+  
+    <link rel="alternative" href="/atom.xml" title="Eric笔记" type="application/atom+xml">
+  
+  <meta name="summary" content="">
+  <link rel="shortcut icon" href="/favicon.ico">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="loading" class="active"></div>
+
+  <nav id="menu" class="hide" >
+   <div class="inner flex-row-vertical">
+  <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+      <i class="icon icon-lg icon-close"></i>
+  </a>
+  <div class="brand-wrap">
+    <div class="brand">
+      <a href="/" class="avatar"><img src="/img/header.jpg"></a>
+      <hgroup class="introduce">
+        <h5 class="nickname">Eric笔记</h5>
+        <a href="mailto:1246275955@qq.com" title="1246275955@qq.com" class="mail">1246275955@qq.com</a>
+      </hgroup>
+    </div>
+  </div>
+  <div class="scroll-wrap flex-col">
+    <ul class="nav">
+      
+          <li class="waves-block waves-effect">
+            <a href="/">
+              <i class="icon icon-lg icon-home"></i>
+              主页
+            </a>
+          </li>
+      
+          <li class="waves-block waves-effect">
+            <a href="/archives">
+              <i class="icon icon-lg icon-archives"></i>
+              Archives
+            </a>
+          </li>
+      
+          <li class="waves-block waves-effect">
+            <a href="/tags">
+              <i class="icon icon-lg icon-tags"></i>
+              Tags
+            </a>
+          </li>
+      
+          <li class="waves-block waves-effect">
+            <a href="https://github.com/wtdBill" target="_blank">
+              <i class="icon icon-lg icon-github"></i>
+              Github
+            </a>
+          </li>
+      
+    </ul>
+
+    <footer class="footer">
+  <p><a rel="license" target="_blank" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0;vertical-align:middle;" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFAAAAAPCAMAAABEF7i9AAAAllBMVEUAAAD///+rsapERER3d3eIiIjMzMzu7u4iIiKUmZO6v7rKzsoODg4RERFVVVUNDQ0NDg0PEA8zMzNLTEtbXltmZmZydnF9gn2AgICPkI+ZmZmqqqq7u7vFxsXIzMgNDQwZGRkgICAhISEkJSMnKCcuMC4xMzE5Ozk7PTtBQkFCQkJDQ0Nna2eGhoaHh4ezuLLGysbd3d1wVGpAAAAA4UlEQVR42q2T1xqCMAyFk7QsBQeKA9x7j/d/OSm22CpX0nzcpA1/T05aAOuBVkMAScQFHLnEwoCo2f1TnQIGoVMewjZEjVFN4GH1Ue1Cn2jWqwfsOOj6wDwGvotsl/c8lv7KIq1eLOsT0HMFHMIE/RZyHnlphryT9zyV+8WH5e8yQw3wnQvgAFxPTKUVi555SHR/lOfLMgVTeDlSfN+TaoUsiTyeIm+bCkHvCA2FUKG48LDtYBZBknsYP/G8NTw0gaaHyuQf4H5pecrB/FYCT2sL9zAfy1Xyjou6L8X2W7YcLyBZCRtnq/zfAAAAAElFTkSuQmCC"></a></p>
+  <p>Eric笔记 &copy; 2023</p>
+  <p>Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme
+  <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a></p>
+  <a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-2x icon-rss-square"></i></a>
+</footer>
+
+  </div>
+</div>
+
+  </nav>
+  <main id="main">
+    <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">Binder-内存管理单元</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input " autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+    </div>
+</header>
+<header class="content-header">
+  <div class="container">
+    <h1 class="author">Binder-内存管理单元</h1>
+    <h5 class="subtitle">
+        
+            <time datetime="2023-02-08T00:27:44.000Z" itemprop="datePublished" class="page-time">
+  2023-02-08
+</time>
+
+
+        
+    </h5>
+  </div>
+</header>
+
+    <div class="container body-wrap">
+      <article id="post-Binder-内存管理单元" class="article article-type-post" itemprop="blogPost">
+    <div class="post-meta flex-row">
+        
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/binder/">binder</a></li></ul>
+
+    </div>
+    <div class="post-body">
+        <aside class="post-widget" id="post-widget">
+
+            
+
+            
+            <nav class="post-toc-wrap" id="post-toc">
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#1-1-什么是MMU"><span class="post-toc-number">1.</span> <span class="post-toc-text">1.1 什么是MMU</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#1-2-发展历史"><span class="post-toc-number">2.</span> <span class="post-toc-text">1.2 发展历史</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#1-2-相关概念"><span class="post-toc-number">3.</span> <span class="post-toc-text">1.2 相关概念</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#1-3分页机制"><span class="post-toc-number">4.</span> <span class="post-toc-text">1.3分页机制</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#1-4页表的概念"><span class="post-toc-number">5.</span> <span class="post-toc-text">1.4页表的概念</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-5"><a class="post-toc-link" href="#1-4-1-CPU在执行指令与数据时，获得的是虚拟内存的地址。"><span class="post-toc-number">5.1.</span> <span class="post-toc-text">1.4.1  CPU在执行指令与数据时，获得的是虚拟内存的地址。</span></a></li><li class="post-toc-item post-toc-level-5"><a class="post-toc-link" href="#1-4-2、-页式内存管理"><span class="post-toc-number">5.2.</span> <span class="post-toc-text">1.4.2、 页式内存管理</span></a></li><li class="post-toc-item post-toc-level-5"><a class="post-toc-link" href="#1-4-2-页的概念"><span class="post-toc-number">5.3.</span> <span class="post-toc-text">1.4.2      页的概念</span></a></li><li class="post-toc-item post-toc-level-5"><a class="post-toc-link" href="#1-4-3-页表的概念"><span class="post-toc-number">5.4.</span> <span class="post-toc-text">1.4.3 页表的概念</span></a></li><li class="post-toc-item post-toc-level-5"><a class="post-toc-link" href="#1-4-3-页命中"><span class="post-toc-number">5.5.</span> <span class="post-toc-text">1.4.3  页命中</span></a></li></ol></li></ol>
+            </nav>
+            
+        </aside>
+
+        <div class="post-main">
+
+            <div class="post-content" id="post-content" itemprop="postContent">
+            <h4 id="1-1-什么是MMU"><a href="#1-1-什么是MMU" class="headerlink" title="1.1 什么是MMU"></a>1.1 什么是MMU</h4><p>​        MMU(Memory Management Unit)主要用来<strong>管理虚拟存储器</strong>、物理存储器的控制线路，同时也负责虚拟地址映射为物理地址，以及提供硬件机制的内存访问授权、多任务多进程操作系统。</p>
+<h4 id="1-2-发展历史"><a href="#1-2-发展历史" class="headerlink" title="1.2 发展历史"></a>1.2 发展历史</h4><blockquote>
+<p>注意：学习一个知识点</p>
+<p>很重要的一步是了解其为什么而存在？</p>
+<p>它的存在是为了解决什么问题？</p>
+<p>最后，在学习的过程中带着这些问题去理解、去思考</p>
+</blockquote>
+<p>​        在许多年以前，还是使用DOS或一些古老的操作系统时，内存很小，同时，应用程序也很小，将程序存储在内存中基本能够满足需要。随着科技的发展，图形界面及一些其他更复杂的应用出现，内存已经无法存储这些应用程序了，通常的解决办法是将程序分割成很多个<strong>覆盖块</strong>，覆盖块0最先运行，运行结束之后，就调用另一个覆盖块，虽然这些操作由OS来完成，</p>
+<p>​        但是，需要程序员对程序进行分割，这非常不高效；因此，人们想出了一个<strong>虚拟存储器（virtual memory）</strong>的方法。</p>
+<p>​    虚拟存储器的基本思想是：<strong>程序、数据、堆栈的总大小可以超过内存空间的大小，</strong></p>
+<p>​    操作系统将当前运行的部分保存在内存中，未使用的部分保存在磁盘中。</p>
+<p>​    比如一个<strong>16MB的程序</strong>和一个<strong>内存只有4MB</strong>的机器，操作系统通过选择可以决定哪部分4MB的程序内容保存在内存中，并在需要时，在内存与磁盘中交换程序代码，</p>
+<p>这样16MB的代码就可以运行在4MB的机器中了</p>
+<img src="/2023/02/08/Binder-内存管理单元/4.png" title="[Binder-内存管理单元]">
+<h4 id="1-2-相关概念"><a href="#1-2-相关概念" class="headerlink" title="1.2 相关概念"></a>1.2 相关概念</h4><p><strong>地址范围、虚拟地址映射成物理地址</strong>以及<strong>分页机制</strong></p>
+<ul>
+<li><p><strong>地址范围</strong>： 指处理器能够产生的地址集合，如一个32bit的处理器，其能产生的地址集合是<strong>0x0000 0000 ~ 0xffff ffff</strong>(4G)，这个地址范围也称为<strong>虚拟地址空间</strong>，其中对应的地址为<strong>虚拟地址</strong>。</p>
+</li>
+<li><p><strong>虚拟地址与物理地址</strong>： 与虚拟地址空间和虚拟地址相对应的是物理地址空间和物理地址；物理地址空间只是虚拟地址空间的一个<strong>子集</strong>。如一台内存为256MB的32bit主机，其虚拟地址空间是0 ~ 0xffffffff(4GB)，</p>
+</li>
+<li><p><strong>物理地址空间</strong>范围是0 ~ 0x0fff ffff(256M)</p>
+</li>
+</ul>
+<h4 id="1-3分页机制"><a href="#1-3分页机制" class="headerlink" title="1.3分页机制"></a>1.3分页机制</h4><ul>
+<li><p>如果处理器没有MMU，或者有MMU但没有启用，CPU执行单元发出的内存地址将直接传到芯片引脚上，被内存芯片（以下称为物理内存，以便与虚拟内存区分）接收，这称为物理地址（<strong>Physical Address</strong>，以下简称<strong>PA</strong>），如下图3-1-1所示；</p>
+<img src="/2023/02/08/Binder-内存管理单元/2310756-67a4ff2b53385008.png" title="[Binder-内存管理单元]">
+<p>​        如果处理器启用了MMU，CPU执行单元发出的内存地址将被MMU截获，从CPU到MMU的地址称为虚拟，而MMU将这个地址翻译成另一个地址发到CPU芯片的外部地址引脚上，也就是将VA映射成PA，，如下图3-1-2。</p>
+<img src="/2023/02/08/Binder-内存管理单元/2310756-3b1e7fc263f0642a.png" title="[Binder-内存管理单元]">
+<pre><code>linux使用MMU的机器都采用**分页机制**。虚拟地址空间以**页**为单位进行划分，而相应的物理地址空间也被划分，其使用的单位称为**页帧**，页帧和页必须保持相同，因为**内存与外部存储器之间的传输是以页为单位进行传输的**。
+</code></pre><p>​          例如，MMU可以通过一个映射项将VA的一页0xb70010000xb7001fff映射到PA的一页0x20000x2fff，如果CPU执行单元要访问虚拟地址0xb7001008，则实际访问到的物理地址是0x2008。</p>
+<p>​        虚拟内存的哪个页面映射到物理内存的哪个页帧是通过<strong>页表（Page Table）</strong>来描述的，页表保存在<strong>物理内存中</strong>，<strong>MMU会查找页表来确定一个VA应该映射到什么PA。</strong></p>
+</li>
+</ul>
+<h4 id="1-4页表的概念"><a href="#1-4页表的概念" class="headerlink" title="1.4页表的概念"></a>1.4页表的概念</h4><h5 id="1-4-1-CPU在执行指令与数据时，获得的是虚拟内存的地址。"><a href="#1-4-1-CPU在执行指令与数据时，获得的是虚拟内存的地址。" class="headerlink" title="1.4.1  CPU在执行指令与数据时，获得的是虚拟内存的地址。"></a>1.4.1  CPU在执行指令与数据时，获得的是虚拟内存的地址。</h5><p>​        但是CPU只能去物理内存寻址。此时，MMU就派上用场了。MMU负责，将虚拟地址，翻译成，真正运行时的物理地址。</p>
+<p>MMU是如何将虚拟地址翻译成物理地址的，这个后面讲。现在先要了解一下交换区的概念。</p>
+<blockquote>
+<p><strong>交换区：</strong> 实际上就是一块磁盘空间（硬盘空间）。虚拟内存与物理内存映射的时候，是将虚拟内存的代码放到交换区中，以后在CPU想要执行相关的指令或者数据时，如果内存中没有，先去交换区将需要的指令与数据映射到物理内存，然后CPU再执行</p>
+</blockquote>
+<p>​        虚拟内存与交换取的这种概念，实现了大内存需求量的（多个）进程，能够（同时）运行在较小的物理内存中。如下图所示：</p>
+<img src="/2023/02/08/Binder-内存管理单元/11.png" title="[Binder-内存管理单元]">
+<blockquote>
+<p><strong>上图中，说的是进程的局部代码在物理内存中运行。是因为程序具有局部性原则，所以在某一段很小的时间段内，只有很少一部分代码会被CPU执行。</strong> </p>
+</blockquote>
+<p>​        到这里，我们应该大致明白了虚拟内存的作用与简单机制。还剩下MMU如何翻译虚拟地址为物理地址的，这放到最后讲解。现在先总结一下虚拟内存机制：</p>
+<blockquote>
+<p>虚拟内存需要重新映射到物理内存<br>虚拟地址映射到物理地址中的实际地址<br>每次只有进程的少部分代码会在物理内存中运行<br>大部分代码依然位于磁盘中（存储器硬盘）</p>
+</blockquote>
+<h5 id="1-4-2、-页式内存管理"><a href="#1-4-2、-页式内存管理" class="headerlink" title="1.4.2、 页式内存管理"></a>1.4.2、 页式内存管理</h5><p>上一节笼统的介绍了虚拟内存的概念。接下来学习内存管理中的一种方式：页式内存管理。<br>页式内存管理中我们需要了解：</p>
+<blockquote>
+<ul>
+<li>页的概念</li>
+<li>页表的概念</li>
+<li>缺页的概念与页命中的概念</li>
+<li>分配页面</li>
+<li>程序的局部性原则</li>
+</ul>
+</blockquote>
+<h5 id="1-4-2-页的概念"><a href="#1-4-2-页的概念" class="headerlink" title="1.4.2      页的概念"></a>1.4.2      页的概念</h5><pre><code>我们知道了**交换区**。我们知道交换区里面存放的是大部分的可执行代码与数据。而物理内存中，执行的是少部分的可执行代码与数据。
+</code></pre><p>那么此时就需要从交换区获取程序的代码，将它拿到物理内存执行。<strong>那么一次拿多少代码过来呢？这是一个问题！</strong></p>
+<p>​        为了CPU的高效执行以及方便的内存管理，每次需要拿一个<strong>页的代码</strong>。这个页，指的是一段连续的存储空间（常见的是4Kb），也叫作块。</p>
+<p>​        假设页的大小为P。在虚拟内存中，叫做<strong>虚拟页</strong>（VP）。从虚拟内存拿了一个页的代码要放到物理内存，那么自然物理内存也得有一个刚好一般大小的页才能存放虚拟页的代码。物理内存中的页叫做物理页（PP）</p>
+<p>在任何时刻，虚拟页都是以下三种状态中的一种：</p>
+<blockquote>
+<ul>
+<li>未分配的：VM系统还未分配的页（或者未创建）。未分配的页还没有任何数据与代码与他们相关联，因此也就不占用任何磁盘。</li>
+<li>缓存的： 当前已缓存在物理内存中的已分配页</li>
+<li>未缓存的：未缓存在物理内存中的已分配页</li>
+</ul>
+</blockquote>
+<p>​        下图展示了一个8个虚拟页的小虚拟内存。其中：虚拟页0和3还没有被分配，因此在磁盘上还不存在。虚拟页1、4、 6被缓存在物理内存中。虚拟页2、 5、 7已经被分配，但是还没有缓存到物理内存中去执行。</p>
+<img src="/2023/02/08/Binder-内存管理单元/12.png" title="[Binder-内存管理单元]">
+<h5 id="1-4-3-页表的概念"><a href="#1-4-3-页表的概念" class="headerlink" title="1.4.3 页表的概念"></a>1.4.3 页表的概念</h5><p>​        虚拟内存中的一些虚拟页是缓存在物理内存中被执行的。理所应当，应该有一种机制，来判断虚拟页，是否被缓存在了物理内存中的某个物理页上。如果不命中（需要一个页的代码，但是这个页未缓存在物理内存中），系统还必须知道这个虚拟页存放在磁盘上的哪个位置，从而在物理内存中选择一个空闲页或者替换一个牺牲页，并将需要的虚拟页从磁盘复制到物理内存中。</p>
+<p>​        这些功能，是由软硬件结合完成的。 包括操作系统软件，MMU中的地址翻译硬件，和一个存放在物理内存中的页表的数据结构。</p>
+<p>​        上一节说将<strong>虚拟页映射到物理页</strong>，实际上就是MMU地址翻译硬件将一个虚拟地址翻译成物理地址时，都会去读取页表的内容。操作系统负责维护页表的内容，以及在磁盘与物理内存之间来回传送页。</p>
+<p><strong>下图是一个页表的基本组织结构</strong> </p>
+<img src="/2023/02/08/Binder-内存管理单元/13.png" title="[Binder-内存管理单元]">
+<p>如上图所示：</p>
+<p>​        页表实际上就是一个数组。这个数组存放的是一个称为页表条目（PTE）的结构。虚拟地址空间的每一个页在页表中，都有一个对应的页表条目（PTE）。虚拟页地址（首地址）翻译的时候就是查询的各个虚拟页在页表中的PTE，从而进行地址翻译的。</p>
+<p>现在假设每一个PTE都有一个有效位和一个n位字段的地址。其中</p>
+<blockquote>
+<ul>
+<li>有效位：表示对应的虚拟页是否缓存在了物理内存中。<strong>0表示未缓存。1表示已缓存</strong>。</li>
+<li>n位地址字段：如果未缓存（有效字段为0），n位地址字段不为空的话，这个n位地址字段就表示该虚拟页在磁盘上的起始的位置。如果这个n位字段为空，那么就说明该虚拟页未分配。如果已缓存（有效字段为1），n位地址字段肯定不为空，它表示该虚拟页在物理内存中的起始地址。</li>
+</ul>
+</blockquote>
+<p>​        综上分析，就得知，上图中：四个虚拟页VP1 , VP2, VP4 , VP7 是被缓存在物理内存中。 两个虚拟页VP0, VP5还未被分配。但是剩下的虚拟页VP3 ,VP6已经被分配了，但是还没有缓存到物理内存中去执行。</p>
+<p>注意：任意的物理页，都可以缓存任意的虚拟页。（因为物理内存是全相联的）</p>
+<h5 id="1-4-3-页命中"><a href="#1-4-3-页命中" class="headerlink" title="1.4.3  页命中"></a>1.4.3  页命中</h5><p>考虑下图的情形：</p>
+<img src="/2023/02/08/Binder-内存管理单元/14.png" title="[Binder-内存管理单元]">
+<blockquote>
+<p><strong>假设现在CPU想读取VP2页面中的某一个字节的内容。会发生什么呢？</strong></p>
+</blockquote>
+<p>​        当CPU得到一个地址vaddr想要访问它（这个addr就是上面想要访问的某一个字节的地址），</p>
+<p>通过后面会学习的MMU地址翻译硬件，将虚拟地址addr作为索引定位到页表的PTE条目中的PTE2（这里假设是PTE2），</p>
+<p>​        从内存中去读到PTE2的有效位为1，说明该虚拟页面已经被缓存了，所以CPU使用该PTE2条目中的物理内存地址（这个物理内存地址是PP1中的起始地址）构造出vaddr的物理地址paddr（这个地址是PP1页面起始地址或后面的某一个地址）。</p>
+<p>​        然后CPU就会去paddr这个物理内存地址去取数据。这种情况，就是也命中。</p>
+<p>实际上，上面的VP2的起始地址与paddr地址，很类似于内存的分段机制（X86以前就是</p>
+
+
+            
+            <div class="post-reward">
+                <a id="rewardBtn" href="javascript:;" class="post-reward-btn waves-effect waves-circle waves-light">赏</a>
+            </div>
+            
+            
+            <blockquote>
+                <p>
+                本文地址：
+                <a href="http://www.yppcat.top/2023/02/08/Binder-内存管理单元/" target="_blank" rel="external">http://www.yppcat.top/2023/02/08/Binder-内存管理单元/</a>
+                </p>
+                <footer><cite><a href="http://www.yppcat.top">@Eric笔记</a></cite></footer>
+            </blockquote>
+            </div>
+            
+<nav class="post-nav">
+  
+
+  
+    <div class="waves-block waves-effect next fr">
+      <a href="/2023/02/08/Binder-为什么会有内核空间与用户空间/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">Binder-为什么会有内核空间与用户空间</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+            
+            
+<div class="duoshuo">
+	<!-- 多说评论框 start -->
+	<div class="ds-thread" data-thread-key="Binder-内存管理单元" data-title="Binder-内存管理单元" data-url="http://www.yppcat.top/2023/02/08/Binder-内存管理单元/index.html"></div>
+	<!-- 多说评论框 end -->
+	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+	<script type="text/javascript">
+	var duoshuoQuery = {short_name:"ysblog"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+	<!-- 多说公共JS代码 end -->
+</div>
+
+
+
+
+
+        </div>
+    </div>
+</article>
+
+<div id="reward" class="reward-lay">
+    <a class="reward-off" id="rewardOff" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        谢谢老板~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <ul class="reward-items">
+        
+        <li>
+            <img src="/img/wechat.jpg" title="微信打赏二维码" alt="微信打赏二维码">
+            <p>微信</p>
+        </li>
+        
+
+        
+    </ul>
+</div>
+
+    </div>
+  </main>
+<div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+<script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+
+<script src="/js/main.js"></script>
+
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<script type="text/template" id="search-tpl">
+<li class="item">
+    <a href="/{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</script>
+
+<script src="/js/search.js"></script>
+
+
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script type="text/javascript" async src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  <title>Binder-为什么会有内核空间与用户空间 | Eric笔记 | Eric笔记</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="theme-color" content="#3F51B5">
+  
+  
+  <meta name="keywords" content="binder">
+  <meta name="description" content="1.1 简介 内存 现代计算机都有两种以上的运行模式（普通模式、特权模式）， linux系统只有两层： 用户空间  高优先级模式（特权模式） 低优先级模式（普通模式）。   ​        linux系统在高优先级模式中运行系统内核代码以及与硬件密切相关的代码。低优先级运行应用程序与硬件无关部分。 ​        应用程序不能直接操控硬件或者调用内核函数，需借助一系列接口函数申请让系统调用相关">
+<meta name="keywords" content="binder">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Binder-为什么会有内核空间与用户空间">
+<meta property="og:url" content="http://www.yppcat.top/2023/02/08/Binder-为什么会有内核空间与用户空间/index.html">
+<meta property="og:site_name" content="Eric笔记">
+<meta property="og:description" content="1.1 简介 内存 现代计算机都有两种以上的运行模式（普通模式、特权模式）， linux系统只有两层： 用户空间  高优先级模式（特权模式） 低优先级模式（普通模式）。   ​        linux系统在高优先级模式中运行系统内核代码以及与硬件密切相关的代码。低优先级运行应用程序与硬件无关部分。 ​        应用程序不能直接操控硬件或者调用内核函数，需借助一系列接口函数申请让系统调用相关">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="http://www.yppcat.top/2023/02/08/Binder-为什么会有内核空间与用户空间/1.png">
+<meta property="og:updated_time" content="2023-02-08T00:32:31.502Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Binder-为什么会有内核空间与用户空间">
+<meta name="twitter:description" content="1.1 简介 内存 现代计算机都有两种以上的运行模式（普通模式、特权模式）， linux系统只有两层： 用户空间  高优先级模式（特权模式） 低优先级模式（普通模式）。   ​        linux系统在高优先级模式中运行系统内核代码以及与硬件密切相关的代码。低优先级运行应用程序与硬件无关部分。 ​        应用程序不能直接操控硬件或者调用内核函数，需借助一系列接口函数申请让系统调用相关">
+<meta name="twitter:image" content="http://www.yppcat.top/2023/02/08/Binder-为什么会有内核空间与用户空间/1.png">
+  
+    <link rel="alternative" href="/atom.xml" title="Eric笔记" type="application/atom+xml">
+  
+  <meta name="summary" content="">
+  <link rel="shortcut icon" href="/favicon.ico">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="loading" class="active"></div>
+
+  <nav id="menu" class="hide" >
+   <div class="inner flex-row-vertical">
+  <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+      <i class="icon icon-lg icon-close"></i>
+  </a>
+  <div class="brand-wrap">
+    <div class="brand">
+      <a href="/" class="avatar"><img src="/img/header.jpg"></a>
+      <hgroup class="introduce">
+        <h5 class="nickname">Eric笔记</h5>
+        <a href="mailto:1246275955@qq.com" title="1246275955@qq.com" class="mail">1246275955@qq.com</a>
+      </hgroup>
+    </div>
+  </div>
+  <div class="scroll-wrap flex-col">
+    <ul class="nav">
+      
+          <li class="waves-block waves-effect">
+            <a href="/">
+              <i class="icon icon-lg icon-home"></i>
+              主页
+            </a>
+          </li>
+      
+          <li class="waves-block waves-effect">
+            <a href="/archives">
+              <i class="icon icon-lg icon-archives"></i>
+              Archives
+            </a>
+          </li>
+      
+          <li class="waves-block waves-effect">
+            <a href="/tags">
+              <i class="icon icon-lg icon-tags"></i>
+              Tags
+            </a>
+          </li>
+      
+          <li class="waves-block waves-effect">
+            <a href="https://github.com/wtdBill" target="_blank">
+              <i class="icon icon-lg icon-github"></i>
+              Github
+            </a>
+          </li>
+      
+    </ul>
+
+    <footer class="footer">
+  <p><a rel="license" target="_blank" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0;vertical-align:middle;" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFAAAAAPCAMAAABEF7i9AAAAllBMVEUAAAD///+rsapERER3d3eIiIjMzMzu7u4iIiKUmZO6v7rKzsoODg4RERFVVVUNDQ0NDg0PEA8zMzNLTEtbXltmZmZydnF9gn2AgICPkI+ZmZmqqqq7u7vFxsXIzMgNDQwZGRkgICAhISEkJSMnKCcuMC4xMzE5Ozk7PTtBQkFCQkJDQ0Nna2eGhoaHh4ezuLLGysbd3d1wVGpAAAAA4UlEQVR42q2T1xqCMAyFk7QsBQeKA9x7j/d/OSm22CpX0nzcpA1/T05aAOuBVkMAScQFHLnEwoCo2f1TnQIGoVMewjZEjVFN4GH1Ue1Cn2jWqwfsOOj6wDwGvotsl/c8lv7KIq1eLOsT0HMFHMIE/RZyHnlphryT9zyV+8WH5e8yQw3wnQvgAFxPTKUVi555SHR/lOfLMgVTeDlSfN+TaoUsiTyeIm+bCkHvCA2FUKG48LDtYBZBknsYP/G8NTw0gaaHyuQf4H5pecrB/FYCT2sL9zAfy1Xyjou6L8X2W7YcLyBZCRtnq/zfAAAAAElFTkSuQmCC"></a></p>
+  <p>Eric笔记 &copy; 2023</p>
+  <p>Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme
+  <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a></p>
+  <a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-2x icon-rss-square"></i></a>
+</footer>
+
+  </div>
+</div>
+
+  </nav>
+  <main id="main">
+    <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">Binder-为什么会有内核空间与用户空间</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input " autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+    </div>
+</header>
+<header class="content-header">
+  <div class="container">
+    <h1 class="author">Binder-为什么会有内核空间与用户空间</h1>
+    <h5 class="subtitle">
+        
+            <time datetime="2023-02-08T00:24:13.000Z" itemprop="datePublished" class="page-time">
+  2023-02-08
+</time>
+
+
+        
+    </h5>
+  </div>
+</header>
+
+    <div class="container body-wrap">
+      <article id="post-Binder-为什么会有内核空间与用户空间" class="article article-type-post" itemprop="blogPost">
+    <div class="post-meta flex-row">
+        
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/binder/">binder</a></li></ul>
+
+    </div>
+    <div class="post-body">
+        <aside class="post-widget" id="post-widget">
+
+            
+
+            
+            <nav class="post-toc-wrap" id="post-toc">
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#1-1-简介-内存"><span class="post-toc-number">1.</span> <span class="post-toc-text">1.1 简介 内存</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-5"><a class="post-toc-link" href="#1-2好处"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">1.2好处</span></a></li><li class="post-toc-item post-toc-level-5"><a class="post-toc-link" href="#1-3计算机蓝屏带来的启示"><span class="post-toc-number">1.2.</span> <span class="post-toc-text">1.3计算机蓝屏带来的启示</span></a></li><li class="post-toc-item post-toc-level-5"><a class="post-toc-link" href="#1-4-在linux中"><span class="post-toc-number">1.3.</span> <span class="post-toc-text">1.4 在linux中</span></a></li><li class="post-toc-item post-toc-level-5"><a class="post-toc-link" href="#1-5-用户空间与内核空间交流"><span class="post-toc-number">1.4.</span> <span class="post-toc-text">1.5 用户空间与内核空间交流</span></a></li></ol></li></ol>
+            </nav>
+            
+        </aside>
+
+        <div class="post-main">
+
+            <div class="post-content" id="post-content" itemprop="postContent">
+            <h4 id="1-1-简介-内存"><a href="#1-1-简介-内存" class="headerlink" title="1.1 简介 内存"></a>1.1 简介 内存</h4><blockquote>
+<p>现代计算机都有两种以上的运行模式（普通模式、特权模式），</p>
+<p>linux系统只有两层：</p>
+<p>用户空间</p>
+<ul>
+<li>高优先级模式（特权模式）</li>
+<li>低优先级模式（普通模式）。</li>
+</ul>
+</blockquote>
+<p>​        linux系统在高优先级模式中运行系统<strong>内核代码</strong>以及与<strong>硬件密切</strong>相关的代码。<strong>低优先级</strong>运行<strong>应用程序</strong>与硬件无关部分。</p>
+<p>​        应用程序不能<strong>直接操控硬件</strong>或者调用内核函数，需借助一系列接口函数申请让系统调用相关代码在内核空间运行，获取代码运行权限。</p>
+<img src="/2023/02/08/Binder-为什么会有内核空间与用户空间/1.png" title="[Binder-为什么会有内核空间与用户空间]">
+<h5 id="1-2好处"><a href="#1-2好处" class="headerlink" title="1.2好处"></a>1.2好处</h5><ol>
+<li><p>​        应用程序崩溃<strong>不会造成内核崩溃</strong>，拿windows举例来说，<strong>QQ崩溃掉不会造成程序死机</strong>。</p>
+</li>
+<li><p>​        每个应用程序或者进程都会有自己特定的地址、私有数据空间，<strong>程序之间一般不会相互影响</strong>        </p>
+<p>​        例如QQ崩溃不会造成微信的崩溃。空间的隔离极大地提高了系统运行的稳定性。</p>
+</li>
+</ol>
+<h5 id="1-3计算机蓝屏带来的启示"><a href="#1-3计算机蓝屏带来的启示" class="headerlink" title="1.3计算机蓝屏带来的启示"></a>1.3计算机蓝屏带来的启示</h5><p>​        计算机蓝屏主要是因为计算机<strong>硬件驱动不兼容</strong>问题造成，<strong>硬件驱动代码运行在内核空间</strong>，与kernel运行在相同空间内，所以驱动程序发生问题容易造成系统的崩溃。将用户空间与内核空间隔离开，可减少系统崩溃的可能，提高系统的稳定性。毕竟现实情况中，应用程序崩溃的情况比蓝屏出现的概率要多的多得多。在linux中这种情况可以类比。</p>
+<p>​        window有上百个驱动，如蓝牙驱动，主板驱动，声卡驱动，麦克风驱动，显卡驱动，USB驱动等等！驱动过多容易造成蓝屏的出现。他们都运行在内核中。为什么会有这么多驱动。电脑中每一个配件都可以随意组合。形成一个完整的电脑</p>
+<p>Android 发现</p>
+<p>​        在Android系统中，虽然也是基于Linux系统，但是这些驱动在Android厂商都已经消失了。全部集成化了、除了Binder驱动外，屏幕驱动，蓝牙驱动外几乎看不到其他驱动，这也是蓝屏比较少的原因</p>
+<h5 id="1-4-在linux中"><a href="#1-4-在linux中" class="headerlink" title="1.4 在linux中"></a>1.4 在linux中</h5><p>​        每一个系统进程都拥有自己私有的地址空间和数据，用户空间造成的进程错误会被局部化，而不会影响到内核或者其他进程。（上面所说QQ和微信的例子）。</p>
+<p>​        当用户进程需要完成在特权模式下才能完成的某些工作时，通过linux向上提供的系统调用接口进入特权模式，然后执行调用所提供的有限功能<br>​        应用程序正常情况下都是运行在普通模式下，这部分代码运行的空间称为用户空间，当代码通过系统调用计入到特权级别运行的时候，对应的代码执行空间称为内核空间。</p>
+<blockquote>
+<p>linux系统中每个进程占有4G空间（虚拟空间，并不一定真实占用）</p>
+</blockquote>
+<p><strong>空间分布如下：</strong></p>
+<ol>
+<li>用户空间： 0~(3G-1) 普通的应用程序代码运行在此部分空间中</li>
+<li>内核空间： 3G~(4G-1) 内核代码段，其中驱动就是运行在此部分空间中</li>
+</ol>
+<h5 id="1-5-用户空间与内核空间交流"><a href="#1-5-用户空间与内核空间交流" class="headerlink" title="1.5 用户空间与内核空间交流"></a>1.5 用户空间与内核空间交流</h5><p>​        用户空间应用程序往往需要调用硬件（QQ调用相机拍照）或者运行与系统核心相关的内容（360清理进程），免不了与内核打交道，他们之间调用关系又是怎样呢？</p>
+<p>交流关系以open()文件打开函数为例<br>上层应用在用户空间执行到 open() API函数时，会触发系统软中断，系统调用 系统调用函数 sys_open()系统调用函数，在内核空间执行open代码，这样用户空间的open函数内部代码就取得了在内核空间运行的权限，可以做一些比较牛比较核心的事情。<br>应用层API函数还有很多，大约有250个左右，涵盖范围包括文件操作、进程控制、网络操作等等。调用原理大致相同。</p>
+
+
+            
+            <div class="post-reward">
+                <a id="rewardBtn" href="javascript:;" class="post-reward-btn waves-effect waves-circle waves-light">赏</a>
+            </div>
+            
+            
+            <blockquote>
+                <p>
+                本文地址：
+                <a href="http://www.yppcat.top/2023/02/08/Binder-为什么会有内核空间与用户空间/" target="_blank" rel="external">http://www.yppcat.top/2023/02/08/Binder-为什么会有内核空间与用户空间/</a>
+                </p>
+                <footer><cite><a href="http://www.yppcat.top">@Eric笔记</a></cite></footer>
+            </blockquote>
+            </div>
+            
+<nav class="post-nav">
+  
+    <div class="waves-block waves-effect prev fl">
+      <a href="/2023/02/08/Binder-内存管理单元/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">Binder-内存管理单元</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next fr">
+      <a href="/2023/02/07/handler笔记/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">handler笔记</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+            
+            
+<div class="duoshuo">
+	<!-- 多说评论框 start -->
+	<div class="ds-thread" data-thread-key="Binder-为什么会有内核空间与用户空间" data-title="Binder-为什么会有内核空间与用户空间" data-url="http://www.yppcat.top/2023/02/08/Binder-为什么会有内核空间与用户空间/index.html"></div>
+	<!-- 多说评论框 end -->
+	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+	<script type="text/javascript">
+	var duoshuoQuery = {short_name:"ysblog"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+	<!-- 多说公共JS代码 end -->
+</div>
+
+
+
+
+
+        </div>
+    </div>
+</article>
+
+<div id="reward" class="reward-lay">
+    <a class="reward-off" id="rewardOff" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        谢谢老板~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <ul class="reward-items">
+        
+        <li>
+            <img src="/img/wechat.jpg" title="微信打赏二维码" alt="微信打赏二维码">
+            <p>微信</p>
+        </li>
+        
+
+        
+    </ul>
+</div>
+
+    </div>
+  </main>
+<div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+<script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+
+<script src="/js/main.js"></script>
+
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<script type="text/template" id="search-tpl">
+<li class="item">
+    <a href="/{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</script>
+
+<script src="/js/search.js"></script>
+
+
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script type="text/javascript" async src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

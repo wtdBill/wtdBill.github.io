@@ -124,6 +124,94 @@
       <ul class="post-list">
   
     <li class="post-list-item">
+        <article id="post-多线程" class="article article-type-post" itemprop="blogPost">
+     
+
+
+  
+    <h3 class="post-title" itemprop="name">
+      <a class="post-title-link" href="/2019/04/10/多线程/">多线程</a>
+    </h3>
+  
+
+
+
+    <div class="post-meta">
+        <time datetime="2019-04-10T01:35:12.000Z" itemprop="datePublished" class="post-time">
+  2019-04-10
+</time>
+
+        
+
+
+    </div>
+
+    <div class="post-content" id="post-content" itemprop="postContent">
+
+    
+          进程 ：可以被看做是程序的实体，同样，它也是线程的容器。是受操作系统管理的最小单元。 
+  线程 ：操作系统调度的最小单元。 
+  多线程的优点：  
+ ​        使用多线程可以减少程序的相应时间 
+ ​        与进程比，线程创建和切换开销很小，同时多线程在数据共享方面效率非常高 
+ ​        多CPU或者多核计算机本身就具备执行多线程的能力 
+ ​        使用
+    
+    
+        <a href="/2019/04/10/多线程/" class="post-more waves-effect waves-button">
+            阅读全文...
+        </a>
+    </div>
+    
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Java/">Java</a></li></ul>
+
+</article>
+
+    </li>
+  
+    <li class="post-list-item">
+        <article id="post-kotlin特殊的函数和调用" class="article article-type-post" itemprop="blogPost">
+     
+
+
+  
+    <h3 class="post-title" itemprop="name">
+      <a class="post-title-link" href="/2019/04/04/kotlin特殊的函数和调用/">kotlin特殊的函数和调用</a>
+    </h3>
+  
+
+
+
+    <div class="post-meta">
+        <time datetime="2019-04-04T15:23:38.000Z" itemprop="datePublished" class="post-time">
+  2019-04-04
+</time>
+
+        
+
+
+    </div>
+
+    <div class="post-content" id="post-content" itemprop="postContent">
+
+    
+         1.扩展函数的使用： 
+ 新建.kt文件，并编写如下 
+      1   2   3   4   5       fun Fragment.showToast(content: String): Toast &#123;       val toast = Toast.makeText(this.activity?.applicationContext, content, Toast.LENG
+    
+    
+        <a href="/2019/04/04/kotlin特殊的函数和调用/" class="post-more waves-effect waves-button">
+            阅读全文...
+        </a>
+    </div>
+    
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Kotlin/">Kotlin</a></li></ul>
+
+</article>
+
+    </li>
+  
+    <li class="post-list-item">
         <article id="post-apk优化方式" class="article article-type-post" itemprop="blogPost">
      
 
@@ -373,88 +461,6 @@
     
     
         <a href="/2019/03/09/ContentProvider用法详解/" class="post-more waves-effect waves-button">
-            阅读全文...
-        </a>
-    </div>
-    
-	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/android/">android</a></li></ul>
-
-</article>
-
-    </li>
-  
-    <li class="post-list-item">
-        <article id="post-app冷热启动及优化" class="article article-type-post" itemprop="blogPost">
-     
-
-
-  
-    <h3 class="post-title" itemprop="name">
-      <a class="post-title-link" href="/2019/03/08/app冷热启动及优化/">app冷热启动及优化</a>
-    </h3>
-  
-
-
-
-    <div class="post-meta">
-        <time datetime="2019-03-08T14:35:49.000Z" itemprop="datePublished" class="post-time">
-  2019-03-08
-</time>
-
-        
-
-
-    </div>
-
-    <div class="post-content" id="post-content" itemprop="postContent">
-
-    
-         冷启动：当启动应用时，后台没有该应用的进程，这时系统会重新创建一个新的进程分配给该应用，这个启动方式就是冷启动。  
- 特点：冷启动因为系统会重新创建一个新的进程分配给它，所以会先创建和初始化Application类，再创建和初始化MainActivity类（包括一系列的测量、布局、绘制），最后显示在界面上。 
- 热启动：当启动应用时，后台已有该应用的进程（例：按back键、home键，应用虽然
-    
-    
-        <a href="/2019/03/08/app冷热启动及优化/" class="post-more waves-effect waves-button">
-            阅读全文...
-        </a>
-    </div>
-    
-	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/android/">android</a></li></ul>
-
-</article>
-
-    </li>
-  
-    <li class="post-list-item">
-        <article id="post-IntentFilter的匹配规则" class="article article-type-post" itemprop="blogPost">
-     
-
-
-  
-    <h3 class="post-title" itemprop="name">
-      <a class="post-title-link" href="/2019/02/26/IntentFilter的匹配规则/">IntentFilter的匹配规则</a>
-    </h3>
-  
-
-
-
-    <div class="post-meta">
-        <time datetime="2019-02-26T14:56:34.000Z" itemprop="datePublished" class="post-time">
-  2019-02-26
-</time>
-
-        
-
-
-    </div>
-
-    <div class="post-content" id="post-content" itemprop="postContent">
-
-    
-         IntentFilter中的过滤信息有action、category、data，一个过滤列表中的action、category、data可以有多个，只有一个Intent同时匹配action类别、category类别、data类别才算完全匹配，只有完全匹配才能成功启动目标Activity。此外，一个Activity可以有多个intent-filter，一个Intent只要能匹配任何一组intent
-    
-    
-        <a href="/2019/02/26/IntentFilter的匹配规则/" class="post-more waves-effect waves-button">
             阅读全文...
         </a>
     </div>
