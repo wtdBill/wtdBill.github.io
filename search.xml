@@ -66,6 +66,160 @@
       </tags>
   </entry>
   <entry>
+    <title>Activity和Fragment通信</title>
+    <url>/2019/08/23/Activity%E5%92%8CFragment%E9%80%9A%E4%BF%A1/</url>
+    <content><![CDATA[<p>Activity和Fragment通信的几种方式：</p>
+<p>1.接口的方式：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">class MainFragment : Fragment() &#123;</span><br><span class="line"></span><br><span class="line">    private lateinit var name : String</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    fun setName(name : String)&#123;</span><br><span class="line">        this.name = name</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    override fun onCreateView(</span><br><span class="line">        inflater: LayoutInflater, container: ViewGroup?,</span><br><span class="line">        savedInstanceState: Bundle?</span><br><span class="line">    ): View? &#123;</span><br><span class="line">        return inflater.inflate(R.layout.fragment_main, container, false)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">class MainActivity : AppCompatActivity() &#123;</span><br><span class="line"></span><br><span class="line">    private lateinit var mainFragment: MainFragment</span><br><span class="line"></span><br><span class="line">    override fun onCreate(savedInstanceState: Bundle?) &#123;</span><br><span class="line">        super.onCreate(savedInstanceState)</span><br><span class="line">        setContentView(R.layout.activity_main)</span><br><span class="line"></span><br><span class="line">        mainFragment = MainFragment()</span><br><span class="line">        mainFragment.setName(&quot;Hello&quot;)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>2.Bundle的方式：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">class MainFragment private constructor() : Fragment() &#123;</span><br><span class="line"></span><br><span class="line">    private lateinit var name: String</span><br><span class="line">    private lateinit var mainFragment: MainFragment</span><br><span class="line"></span><br><span class="line">    companion object &#123;</span><br><span class="line">        private lateinit var mainFragment: MainFragment</span><br><span class="line"></span><br><span class="line">        fun newInstance(bundle: Bundle): MainFragment &#123;</span><br><span class="line">            mainFragment = MainFragment()</span><br><span class="line">            mainFragment.arguments = bundle</span><br><span class="line">            return mainFragment</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+<p>3.广播方式</p>
+<p>4.eventBus、RxBus等事件</p>
+<p>5.文件（File、SharedPreference方式等）</p>
+]]></content>
+      <tags>
+        <tag>面试</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Android文件路径详解</title>
+    <url>/2019/04/13/Android%E6%96%87%E4%BB%B6%E8%B7%AF%E5%BE%84%E8%AF%A6%E8%A7%A3/</url>
+    <content><![CDATA[<p>Android磁盘存储可以分为两类，内部存储和外部存储。</p>
+<p><strong>内部存储：</strong>内部存储不是内存，是位于系统磁盘中一个独特的位置。/data/文件夹就是内部存储，内部存储中一般存储一些应用数据，如apk,sharedpreference,database数据，webView缓存和图片缓存等。内部存储中还有一个文件夹，每个应用都有一个，里面中的数据在应用卸载之后就会删除。结构如：/data/data/你的应用报名/。其次还有一个/data/app/的文件夹，这里面存储着我们手机上安装的ａｐｋ文件。</p>
+<p><strong>特点：</strong></p>
+<p>内部存储的文件和目录只能被我们的app自己访问，别的app不能访问。</p>
+<p>内部存储中的私有目录，当用户卸载app之后，该文件目录中关于该应用的信息就会被删除。</p>
+<p>内部存储是可用的。</p>
+<p>内部存储大小有限，不适合存储大量数据。</p>
+<p>只有root的手机，才能从手机文件管理器看见，否则都是隐藏的。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">getCacheDir().getAbsolutePath();///data/data/包名/cache</span><br></pre></td></tr></table></figure>
+<p>常见的内部存储中有这些目录:</p>
+<p>/data/app/</p>
+<p>/data/data/包名/shared_prefs</p>
+<p>/data/data/包名/cache</p>
+<p>/data/data/包名/databases</p>
+<p>/data/data/包名/files</p>
+<p><strong>外部存储：</strong>外部存储并不是指拓展的ＳＤ卡，不管有无外接设备，每个Android手机都有外部存储。</p>
+<p>一般的mnt或者storage目录。外部存储中分两类目录，私有目录和公有目录，私有目录的数据会随着应用的卸载而删除，公有目录不会。</p>
+<p><strong>特点：</strong></p>
+<p>公有目录任何程序都可以访问，私有目录自身可以访问。</p>
+<p>并不一定是可用的，因为SD卡会被挂载。</p>
+<p>外部存储中的私有目录中的数据会随着应用的卸载而删除，而公有目录不会。</p>
+<p><strong>公有目录：</strong></p>
+<p>公有目录是任何程序都可以</p>
+<ul>
+<li><strong>DIRECTORY_MUSIC</strong></li>
+</ul>
+<blockquote>
+<p>音乐/storage/emulated/0/Music</p>
+</blockquote>
+<ul>
+<li><strong>DIRECTORY_PODCASTS</strong></li>
+</ul>
+<blockquote>
+<p>播客/storage/emulated/0/Podcasts</p>
+</blockquote>
+<ul>
+<li><strong>DIRECTORY_RINGTONES</strong></li>
+</ul>
+<blockquote>
+<p>来点铃声</p>
+</blockquote>
+<ul>
+<li><strong>DIRECTORY_ALARMS</strong></li>
+</ul>
+<blockquote>
+<p>闹钟/storage/emulated/0/Alarms</p>
+</blockquote>
+<ul>
+<li><strong>DIRECTORY_NOTIFICATIONS</strong></li>
+</ul>
+<blockquote>
+<p>通知/storage/emulated/0/Notifications</p>
+</blockquote>
+<ul>
+<li><strong>DIRECTORY_PICTURES</strong></li>
+</ul>
+<blockquote>
+<p>图片/storage/emulated/0/Pictures</p>
+</blockquote>
+<ul>
+<li><strong>DIRECTORY_MOVIES</strong></li>
+</ul>
+<blockquote>
+<p>电影/storage/emulated/0/Movies</p>
+</blockquote>
+<ul>
+<li><strong>DIRECTORY_DOWNLOADS</strong></li>
+</ul>
+<blockquote>
+<p>下载文件存储路径/storage/emulated/0/Download</p>
+</blockquote>
+<ul>
+<li><strong>DIRECTORY_DCIM</strong></li>
+</ul>
+<blockquote>
+<p>媒体文件/storage/emulated/0/DCIM</p>
+</blockquote>
+<ul>
+<li><strong>DIRECTORY_DOCUMENTS</strong></li>
+</ul>
+<blockquote>
+<p>文档/storage/emulated/0/Documents</p>
+</blockquote>
+<p>我们通过<strong>Environment.getExternalStoragePublicDirectory()</strong>来获取这些目录</p>
+<p><strong>私有目录：</strong></p>
+<p>外部存储中的私有目录是不会主动创建的，需要我们自己创建，私有目录应用本身无需申请动态权限，就能直接访问。我们可以在私有目录下创建我们自己的文件夹：</p>
+<ul>
+<li><strong>getExternalFilesDir(“files目录的子目录名称”)</strong></li>
+</ul>
+<p>获取应用私有目录files目录中的文件目录(storage/emulated/0/Android/data/包名/files/子目录)</p>
+<ul>
+<li><strong>getExternalCacheDir()</strong></li>
+</ul>
+<p>获取应用cache目录（/storage/emulated/0/Android/data/包名/cache）</p>
+]]></content>
+      <tags>
+        <tag>android</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>AsyncTask原理分析</title>
+    <url>/2019/04/12/AsyncTask%E5%8E%9F%E7%90%86%E5%88%86%E6%9E%90/</url>
+    <content><![CDATA[<p>AsyncTask是一个抽象泛型类，它有三个参数，分别是Params,Progress和Result，其中Params为参数类型,Progress为后台执行任务的进度，Result为返回的结果的类型。如果不需要某个参数，可以将其设置为Void类型。</p>
+<p><strong>AsyncTask中有四个核心的方法:</strong></p>
+<p><strong>onPreExecute</strong>：在主线程中执行，一般在任务执行前做准备工作，比如对UI做一些标记。<strong>doInBackground(Params…params)</strong>：在线程池中执行。在onPreExecute方法执行后运行，用来执行较为耗时的操作。在执行过程中可以调用publishProgress(Progress…values)来更新进度信息。</p>
+<p><strong>onProgressUpdate(Progress…values)</strong>：在主线程中执行。当调用publishProgress(Progress…values)时，此方法会将进度更新到ＵＩ组件上。</p>
+<p><strong>onPostExecute(Result result)</strong>：在主线程中执行。当后台任务执行完成后，它会被执行。doInBackground方法得到的结果就是返回的result的值。此方法一般做任务执行后的收尾工作，比如更新ＵＩ和数据。</p>
+<p><strong>AsyncTask源码解析：</strong></p>
+<p>先看一下它的初始化的一些数据和方法：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">private static final int CPU_COUNT = Runtime.getRuntime().availableProcessors();</span><br><span class="line">// We want at least 2 threads and at most 4 threads in the core pool,</span><br><span class="line">// preferring to have 1 less than the CPU count to avoid saturating</span><br><span class="line">// the CPU with background work</span><br><span class="line">private static final int CORE_POOL_SIZE = Math.max(2, Math.min(CPU_COUNT - 1, 4));</span><br><span class="line">private static final int MAXIMUM_POOL_SIZE = CPU_COUNT * 2 + 1;</span><br><span class="line">private static final int KEEP_ALIVE_SECONDS = 30;</span><br><span class="line"></span><br><span class="line">private static final ThreadFactory sThreadFactory = new ThreadFactory() &#123;</span><br><span class="line">    private final AtomicInteger mCount = new AtomicInteger(1);</span><br><span class="line"></span><br><span class="line">    public Thread newThread(Runnable r) &#123;</span><br><span class="line">        return new Thread(r, &quot;AsyncTask #&quot; + mCount.getAndIncrement());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">private static final BlockingQueue&lt;Runnable&gt; sPoolWorkQueue =</span><br><span class="line">        new LinkedBlockingQueue&lt;Runnable&gt;(128);</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> * An &#123;@link Executor&#125; that can be used to execute tasks in parallel.</span><br><span class="line"> */</span><br><span class="line">public static final Executor THREAD_POOL_EXECUTOR;</span><br><span class="line"></span><br><span class="line">static &#123;</span><br><span class="line">    ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(</span><br><span class="line">            CORE_POOL_SIZE, MAXIMUM_POOL_SIZE, KEEP_ALIVE_SECONDS, TimeUnit.SECONDS,</span><br><span class="line">            sPoolWorkQueue, sThreadFactory);</span><br><span class="line">    threadPoolExecutor.allowCoreThreadTimeOut(true);</span><br><span class="line">    THREAD_POOL_EXECUTOR = threadPoolExecutor;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这里的corePoolSize获取的是Java虚拟机的可用的处理器数量来计算的</p>
+<p>maximumPoolSize也是根据这个来计算的</p>
+<p>keepAliveTime的时间是３０ｓ</p>
+<p>阻塞队列采用的是LinkedBlockingQueue，容量为１２８</p>
+<p>ThreadFactory给线程起了”AsyncTask#”这样格式的名字</p>
+<p>这样就完成了线程池的构造。</p>
+<p>接着看一下AsyncTask的构造：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">public AsyncTask(@Nullable Looper callbackLooper) &#123;</span><br><span class="line">    mHandler = callbackLooper == null || callbackLooper == Looper.getMainLooper()</span><br><span class="line">        ? getMainHandler()</span><br><span class="line">        : new Handler(callbackLooper);</span><br><span class="line"></span><br><span class="line">    mWorker = new WorkerRunnable&lt;Params, Result&gt;() &#123;</span><br><span class="line">        public Result call() throws Exception &#123;</span><br><span class="line">            mTaskInvoked.set(true);</span><br><span class="line">            Result result = null;</span><br><span class="line">            try &#123;</span><br><span class="line">                Process.setThreadPriority(Process.THREAD_PRIORITY_BACKGROUND);</span><br><span class="line">                //noinspection unchecked</span><br><span class="line">                result = doInBackground(mParams);</span><br><span class="line">                Binder.flushPendingCommands();</span><br><span class="line">            &#125; catch (Throwable tr) &#123;</span><br><span class="line">                mCancelled.set(true);</span><br><span class="line">                throw tr;</span><br><span class="line">            &#125; finally &#123;</span><br><span class="line">                postResult(result);</span><br><span class="line">            &#125;</span><br><span class="line">            return result;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    mFuture = new FutureTask&lt;Result&gt;(mWorker) &#123;</span><br><span class="line">        @Override</span><br><span class="line">        protected void done() &#123;</span><br><span class="line">            try &#123;</span><br><span class="line">                postResultIfNotInvoked(get());</span><br><span class="line">            &#125; catch (InterruptedException e) &#123;</span><br><span class="line">                android.util.Log.w(LOG_TAG, e);</span><br><span class="line">            &#125; catch (ExecutionException e) &#123;</span><br><span class="line">                throw new RuntimeException(&quot;An error occurred while executing doInBackground()&quot;,</span><br><span class="line">                        e.getCause());</span><br><span class="line">            &#125; catch (CancellationException e) &#123;</span><br><span class="line">                postResultIfNotInvoked(null);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这里强调一下，AsyncTask的execute方法一定要在主线程中调用，因为这里的handler一定要是getMainHandler,具体的原因下面会讲。此外创建了一个WorkRunnable对象mWorker,这个WorkRunnable实现了Calable接口，并实现了call方法，并且在该方法中调用了doInBackground方法类处理任务并得到结果，最终还通过postResult将结果传递了出去。这里的FutureTask是一个可管理的异步任务，它实现了Runnable和Future这两个接口。所以，它可以包装Runnable和Callable，并且提供给Executor执行，在这里我们将WorkerRunnable作为参数传递给了FutureTask。接下来我们看一下execute方法：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">public final AsyncTask&lt;Params, Progress, Result&gt; execute(Params... params) &#123;</span><br><span class="line">    return executeOnExecutor(sDefaultExecutor, params);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">public final AsyncTask&lt;Params, Progress, Result&gt; executeOnExecutor(Executor exec,</span><br><span class="line">            Params... params) &#123;</span><br><span class="line">        if (mStatus != Status.PENDING) &#123;</span><br><span class="line">            switch (mStatus) &#123;</span><br><span class="line">                case RUNNING:</span><br><span class="line">                    throw new IllegalStateException(&quot;Cannot execute task:&quot;</span><br><span class="line">                            + &quot; the task is already running.&quot;);</span><br><span class="line">                case FINISHED:</span><br><span class="line">                    throw new IllegalStateException(&quot;Cannot execute task:&quot;</span><br><span class="line">                            + &quot; the task has already been executed &quot;</span><br><span class="line">                            + &quot;(a task can be executed only once)&quot;);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        mStatus = Status.RUNNING;</span><br><span class="line"></span><br><span class="line">        onPreExecute();</span><br><span class="line"></span><br><span class="line">        mWorker.mParams = params;</span><br><span class="line">        exec.execute(mFuture);</span><br><span class="line"></span><br><span class="line">        return this;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>我们看到这里首先执行了onPreExecute方法，然后将参数传给mWorker。前面我们已经说过WokrerRunnable作为参数传递给了FutureTask,因此，参数被封装到了FutureTask中。接下来我们看一下exec这个对象：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">private static class SerialExecutor implements Executor &#123;</span><br><span class="line">    final ArrayDeque&lt;Runnable&gt; mTasks = new ArrayDeque&lt;Runnable&gt;();</span><br><span class="line">    Runnable mActive;</span><br><span class="line"></span><br><span class="line">    public synchronized void execute(final Runnable r) &#123;</span><br><span class="line">        mTasks.offer(new Runnable() &#123;</span><br><span class="line">            public void run() &#123;</span><br><span class="line">                try &#123;</span><br><span class="line">                    r.run();</span><br><span class="line">                &#125; finally &#123;</span><br><span class="line">                    scheduleNext();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">        if (mActive == null) &#123;</span><br><span class="line">            scheduleNext();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    protected synchronized void scheduleNext() &#123;</span><br><span class="line">        if ((mActive = mTasks.poll()) != null) &#123;</span><br><span class="line">            THREAD_POOL_EXECUTOR.execute(mActive);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>从上面的代码可以看出该对象表示的是一个串行的线程池，当调用execute方法时，会将futureTask加入到mTask中。且当任务执行完或者当前没有活动是都会执行scheduleNext方法，会从mTaskｓ中取出FutureTask任务并交由THREAD_POOL_EXECUTOR处理。执行的时候因为传进来的是由WorkerRunnable作为参数的FutureTask，所以会执行WorkerRunnable的call方法，在call方法中会将结果通过postResult方法传递出去：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">private Result postResult(Result result) &#123;</span><br><span class="line">    @SuppressWarnings(&quot;unchecked&quot;)</span><br><span class="line">    Message message = getHandler().obtainMessage(MESSAGE_POST_RESULT,</span><br><span class="line">            new AsyncTaskResult&lt;Result&gt;(this, result));</span><br><span class="line">    message.sendToTarget();</span><br><span class="line">    return result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>可以看到，上面说的使用getMainHandler和这里的getHandler是一样的，在这里创建了Message,并通过Handler发送了该消息：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">private static Handler getMainHandler() &#123;</span><br><span class="line">    synchronized (AsyncTask.class) &#123;</span><br><span class="line">        if (sHandler == null) &#123;</span><br><span class="line">            sHandler = new InternalHandler(Looper.getMainLooper());</span><br><span class="line">        &#125;</span><br><span class="line">        return sHandler;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">private static class InternalHandler extends Handler &#123;</span><br><span class="line">        public InternalHandler(Looper looper) &#123;</span><br><span class="line">            super(looper);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        @SuppressWarnings(&#123;&quot;unchecked&quot;, &quot;RawUseOfParameterizedType&quot;&#125;)</span><br><span class="line">        @Override</span><br><span class="line">        public void handleMessage(Message msg) &#123;</span><br><span class="line">            AsyncTaskResult&lt;?&gt; result = (AsyncTaskResult&lt;?&gt;) msg.obj;</span><br><span class="line">            switch (msg.what) &#123;</span><br><span class="line">                case MESSAGE_POST_RESULT:</span><br><span class="line">                    // There is only one result</span><br><span class="line">                    result.mTask.finish(result.mData[0]);</span><br><span class="line">                    break;</span><br><span class="line">                case MESSAGE_POST_PROGRESS:</span><br><span class="line">                    result.mTask.onProgressUpdate(result.mData);</span><br><span class="line">                    break;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>这里自定义了一个Handler并处理了它的处理方式，可以看到上面发送的消息会调用finish方法：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">private void finish(Result result) &#123;</span><br><span class="line">    if (isCancelled()) &#123;</span><br><span class="line">        onCancelled(result);</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        onPostExecute(result);</span><br><span class="line">    &#125;</span><br><span class="line">    mStatus = Status.FINISHED;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这里判断了是否被取消，如果被取消了，则调用onCancelled方法，否则调用onPostExecute方法。</p>
+]]></content>
+      <tags>
+        <tag>android</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Activity问题</title>
     <url>/2022/11/15/Activity%E9%97%AE%E9%A2%98/</url>
     <content><![CDATA[<p><strong>Activity</strong>的启动流程</p>
@@ -347,160 +501,6 @@
 </action></category></category>]]></content>
       <tags>
         <tag>面试</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Android文件路径详解</title>
-    <url>/2019/04/13/Android%E6%96%87%E4%BB%B6%E8%B7%AF%E5%BE%84%E8%AF%A6%E8%A7%A3/</url>
-    <content><![CDATA[<p>Android磁盘存储可以分为两类，内部存储和外部存储。</p>
-<p><strong>内部存储：</strong>内部存储不是内存，是位于系统磁盘中一个独特的位置。/data/文件夹就是内部存储，内部存储中一般存储一些应用数据，如apk,sharedpreference,database数据，webView缓存和图片缓存等。内部存储中还有一个文件夹，每个应用都有一个，里面中的数据在应用卸载之后就会删除。结构如：/data/data/你的应用报名/。其次还有一个/data/app/的文件夹，这里面存储着我们手机上安装的ａｐｋ文件。</p>
-<p><strong>特点：</strong></p>
-<p>内部存储的文件和目录只能被我们的app自己访问，别的app不能访问。</p>
-<p>内部存储中的私有目录，当用户卸载app之后，该文件目录中关于该应用的信息就会被删除。</p>
-<p>内部存储是可用的。</p>
-<p>内部存储大小有限，不适合存储大量数据。</p>
-<p>只有root的手机，才能从手机文件管理器看见，否则都是隐藏的。</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">getCacheDir().getAbsolutePath();///data/data/包名/cache</span><br></pre></td></tr></table></figure>
-<p>常见的内部存储中有这些目录:</p>
-<p>/data/app/</p>
-<p>/data/data/包名/shared_prefs</p>
-<p>/data/data/包名/cache</p>
-<p>/data/data/包名/databases</p>
-<p>/data/data/包名/files</p>
-<p><strong>外部存储：</strong>外部存储并不是指拓展的ＳＤ卡，不管有无外接设备，每个Android手机都有外部存储。</p>
-<p>一般的mnt或者storage目录。外部存储中分两类目录，私有目录和公有目录，私有目录的数据会随着应用的卸载而删除，公有目录不会。</p>
-<p><strong>特点：</strong></p>
-<p>公有目录任何程序都可以访问，私有目录自身可以访问。</p>
-<p>并不一定是可用的，因为SD卡会被挂载。</p>
-<p>外部存储中的私有目录中的数据会随着应用的卸载而删除，而公有目录不会。</p>
-<p><strong>公有目录：</strong></p>
-<p>公有目录是任何程序都可以</p>
-<ul>
-<li><strong>DIRECTORY_MUSIC</strong></li>
-</ul>
-<blockquote>
-<p>音乐/storage/emulated/0/Music</p>
-</blockquote>
-<ul>
-<li><strong>DIRECTORY_PODCASTS</strong></li>
-</ul>
-<blockquote>
-<p>播客/storage/emulated/0/Podcasts</p>
-</blockquote>
-<ul>
-<li><strong>DIRECTORY_RINGTONES</strong></li>
-</ul>
-<blockquote>
-<p>来点铃声</p>
-</blockquote>
-<ul>
-<li><strong>DIRECTORY_ALARMS</strong></li>
-</ul>
-<blockquote>
-<p>闹钟/storage/emulated/0/Alarms</p>
-</blockquote>
-<ul>
-<li><strong>DIRECTORY_NOTIFICATIONS</strong></li>
-</ul>
-<blockquote>
-<p>通知/storage/emulated/0/Notifications</p>
-</blockquote>
-<ul>
-<li><strong>DIRECTORY_PICTURES</strong></li>
-</ul>
-<blockquote>
-<p>图片/storage/emulated/0/Pictures</p>
-</blockquote>
-<ul>
-<li><strong>DIRECTORY_MOVIES</strong></li>
-</ul>
-<blockquote>
-<p>电影/storage/emulated/0/Movies</p>
-</blockquote>
-<ul>
-<li><strong>DIRECTORY_DOWNLOADS</strong></li>
-</ul>
-<blockquote>
-<p>下载文件存储路径/storage/emulated/0/Download</p>
-</blockquote>
-<ul>
-<li><strong>DIRECTORY_DCIM</strong></li>
-</ul>
-<blockquote>
-<p>媒体文件/storage/emulated/0/DCIM</p>
-</blockquote>
-<ul>
-<li><strong>DIRECTORY_DOCUMENTS</strong></li>
-</ul>
-<blockquote>
-<p>文档/storage/emulated/0/Documents</p>
-</blockquote>
-<p>我们通过<strong>Environment.getExternalStoragePublicDirectory()</strong>来获取这些目录</p>
-<p><strong>私有目录：</strong></p>
-<p>外部存储中的私有目录是不会主动创建的，需要我们自己创建，私有目录应用本身无需申请动态权限，就能直接访问。我们可以在私有目录下创建我们自己的文件夹：</p>
-<ul>
-<li><strong>getExternalFilesDir(“files目录的子目录名称”)</strong></li>
-</ul>
-<p>获取应用私有目录files目录中的文件目录(storage/emulated/0/Android/data/包名/files/子目录)</p>
-<ul>
-<li><strong>getExternalCacheDir()</strong></li>
-</ul>
-<p>获取应用cache目录（/storage/emulated/0/Android/data/包名/cache）</p>
-]]></content>
-      <tags>
-        <tag>android</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Activity和Fragment通信</title>
-    <url>/2019/08/23/Activity%E5%92%8CFragment%E9%80%9A%E4%BF%A1/</url>
-    <content><![CDATA[<p>Activity和Fragment通信的几种方式：</p>
-<p>1.接口的方式：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">class MainFragment : Fragment() &#123;</span><br><span class="line"></span><br><span class="line">    private lateinit var name : String</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    fun setName(name : String)&#123;</span><br><span class="line">        this.name = name</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    override fun onCreateView(</span><br><span class="line">        inflater: LayoutInflater, container: ViewGroup?,</span><br><span class="line">        savedInstanceState: Bundle?</span><br><span class="line">    ): View? &#123;</span><br><span class="line">        return inflater.inflate(R.layout.fragment_main, container, false)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">class MainActivity : AppCompatActivity() &#123;</span><br><span class="line"></span><br><span class="line">    private lateinit var mainFragment: MainFragment</span><br><span class="line"></span><br><span class="line">    override fun onCreate(savedInstanceState: Bundle?) &#123;</span><br><span class="line">        super.onCreate(savedInstanceState)</span><br><span class="line">        setContentView(R.layout.activity_main)</span><br><span class="line"></span><br><span class="line">        mainFragment = MainFragment()</span><br><span class="line">        mainFragment.setName(&quot;Hello&quot;)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>2.Bundle的方式：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">class MainFragment private constructor() : Fragment() &#123;</span><br><span class="line"></span><br><span class="line">    private lateinit var name: String</span><br><span class="line">    private lateinit var mainFragment: MainFragment</span><br><span class="line"></span><br><span class="line">    companion object &#123;</span><br><span class="line">        private lateinit var mainFragment: MainFragment</span><br><span class="line"></span><br><span class="line">        fun newInstance(bundle: Bundle): MainFragment &#123;</span><br><span class="line">            mainFragment = MainFragment()</span><br><span class="line">            mainFragment.arguments = bundle</span><br><span class="line">            return mainFragment</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
-<p>3.广播方式</p>
-<p>4.eventBus、RxBus等事件</p>
-<p>5.文件（File、SharedPreference方式等）</p>
-]]></content>
-      <tags>
-        <tag>面试</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>AsyncTask原理分析</title>
-    <url>/2019/04/12/AsyncTask%E5%8E%9F%E7%90%86%E5%88%86%E6%9E%90/</url>
-    <content><![CDATA[<p>AsyncTask是一个抽象泛型类，它有三个参数，分别是Params,Progress和Result，其中Params为参数类型,Progress为后台执行任务的进度，Result为返回的结果的类型。如果不需要某个参数，可以将其设置为Void类型。</p>
-<p><strong>AsyncTask中有四个核心的方法:</strong></p>
-<p><strong>onPreExecute</strong>：在主线程中执行，一般在任务执行前做准备工作，比如对UI做一些标记。<strong>doInBackground(Params…params)</strong>：在线程池中执行。在onPreExecute方法执行后运行，用来执行较为耗时的操作。在执行过程中可以调用publishProgress(Progress…values)来更新进度信息。</p>
-<p><strong>onProgressUpdate(Progress…values)</strong>：在主线程中执行。当调用publishProgress(Progress…values)时，此方法会将进度更新到ＵＩ组件上。</p>
-<p><strong>onPostExecute(Result result)</strong>：在主线程中执行。当后台任务执行完成后，它会被执行。doInBackground方法得到的结果就是返回的result的值。此方法一般做任务执行后的收尾工作，比如更新ＵＩ和数据。</p>
-<p><strong>AsyncTask源码解析：</strong></p>
-<p>先看一下它的初始化的一些数据和方法：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">private static final int CPU_COUNT = Runtime.getRuntime().availableProcessors();</span><br><span class="line">// We want at least 2 threads and at most 4 threads in the core pool,</span><br><span class="line">// preferring to have 1 less than the CPU count to avoid saturating</span><br><span class="line">// the CPU with background work</span><br><span class="line">private static final int CORE_POOL_SIZE = Math.max(2, Math.min(CPU_COUNT - 1, 4));</span><br><span class="line">private static final int MAXIMUM_POOL_SIZE = CPU_COUNT * 2 + 1;</span><br><span class="line">private static final int KEEP_ALIVE_SECONDS = 30;</span><br><span class="line"></span><br><span class="line">private static final ThreadFactory sThreadFactory = new ThreadFactory() &#123;</span><br><span class="line">    private final AtomicInteger mCount = new AtomicInteger(1);</span><br><span class="line"></span><br><span class="line">    public Thread newThread(Runnable r) &#123;</span><br><span class="line">        return new Thread(r, &quot;AsyncTask #&quot; + mCount.getAndIncrement());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">private static final BlockingQueue&lt;Runnable&gt; sPoolWorkQueue =</span><br><span class="line">        new LinkedBlockingQueue&lt;Runnable&gt;(128);</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> * An &#123;@link Executor&#125; that can be used to execute tasks in parallel.</span><br><span class="line"> */</span><br><span class="line">public static final Executor THREAD_POOL_EXECUTOR;</span><br><span class="line"></span><br><span class="line">static &#123;</span><br><span class="line">    ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(</span><br><span class="line">            CORE_POOL_SIZE, MAXIMUM_POOL_SIZE, KEEP_ALIVE_SECONDS, TimeUnit.SECONDS,</span><br><span class="line">            sPoolWorkQueue, sThreadFactory);</span><br><span class="line">    threadPoolExecutor.allowCoreThreadTimeOut(true);</span><br><span class="line">    THREAD_POOL_EXECUTOR = threadPoolExecutor;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>这里的corePoolSize获取的是Java虚拟机的可用的处理器数量来计算的</p>
-<p>maximumPoolSize也是根据这个来计算的</p>
-<p>keepAliveTime的时间是３０ｓ</p>
-<p>阻塞队列采用的是LinkedBlockingQueue，容量为１２８</p>
-<p>ThreadFactory给线程起了”AsyncTask#”这样格式的名字</p>
-<p>这样就完成了线程池的构造。</p>
-<p>接着看一下AsyncTask的构造：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">public AsyncTask(@Nullable Looper callbackLooper) &#123;</span><br><span class="line">    mHandler = callbackLooper == null || callbackLooper == Looper.getMainLooper()</span><br><span class="line">        ? getMainHandler()</span><br><span class="line">        : new Handler(callbackLooper);</span><br><span class="line"></span><br><span class="line">    mWorker = new WorkerRunnable&lt;Params, Result&gt;() &#123;</span><br><span class="line">        public Result call() throws Exception &#123;</span><br><span class="line">            mTaskInvoked.set(true);</span><br><span class="line">            Result result = null;</span><br><span class="line">            try &#123;</span><br><span class="line">                Process.setThreadPriority(Process.THREAD_PRIORITY_BACKGROUND);</span><br><span class="line">                //noinspection unchecked</span><br><span class="line">                result = doInBackground(mParams);</span><br><span class="line">                Binder.flushPendingCommands();</span><br><span class="line">            &#125; catch (Throwable tr) &#123;</span><br><span class="line">                mCancelled.set(true);</span><br><span class="line">                throw tr;</span><br><span class="line">            &#125; finally &#123;</span><br><span class="line">                postResult(result);</span><br><span class="line">            &#125;</span><br><span class="line">            return result;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    mFuture = new FutureTask&lt;Result&gt;(mWorker) &#123;</span><br><span class="line">        @Override</span><br><span class="line">        protected void done() &#123;</span><br><span class="line">            try &#123;</span><br><span class="line">                postResultIfNotInvoked(get());</span><br><span class="line">            &#125; catch (InterruptedException e) &#123;</span><br><span class="line">                android.util.Log.w(LOG_TAG, e);</span><br><span class="line">            &#125; catch (ExecutionException e) &#123;</span><br><span class="line">                throw new RuntimeException(&quot;An error occurred while executing doInBackground()&quot;,</span><br><span class="line">                        e.getCause());</span><br><span class="line">            &#125; catch (CancellationException e) &#123;</span><br><span class="line">                postResultIfNotInvoked(null);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>这里强调一下，AsyncTask的execute方法一定要在主线程中调用，因为这里的handler一定要是getMainHandler,具体的原因下面会讲。此外创建了一个WorkRunnable对象mWorker,这个WorkRunnable实现了Calable接口，并实现了call方法，并且在该方法中调用了doInBackground方法类处理任务并得到结果，最终还通过postResult将结果传递了出去。这里的FutureTask是一个可管理的异步任务，它实现了Runnable和Future这两个接口。所以，它可以包装Runnable和Callable，并且提供给Executor执行，在这里我们将WorkerRunnable作为参数传递给了FutureTask。接下来我们看一下execute方法：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">public final AsyncTask&lt;Params, Progress, Result&gt; execute(Params... params) &#123;</span><br><span class="line">    return executeOnExecutor(sDefaultExecutor, params);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">public final AsyncTask&lt;Params, Progress, Result&gt; executeOnExecutor(Executor exec,</span><br><span class="line">            Params... params) &#123;</span><br><span class="line">        if (mStatus != Status.PENDING) &#123;</span><br><span class="line">            switch (mStatus) &#123;</span><br><span class="line">                case RUNNING:</span><br><span class="line">                    throw new IllegalStateException(&quot;Cannot execute task:&quot;</span><br><span class="line">                            + &quot; the task is already running.&quot;);</span><br><span class="line">                case FINISHED:</span><br><span class="line">                    throw new IllegalStateException(&quot;Cannot execute task:&quot;</span><br><span class="line">                            + &quot; the task has already been executed &quot;</span><br><span class="line">                            + &quot;(a task can be executed only once)&quot;);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        mStatus = Status.RUNNING;</span><br><span class="line"></span><br><span class="line">        onPreExecute();</span><br><span class="line"></span><br><span class="line">        mWorker.mParams = params;</span><br><span class="line">        exec.execute(mFuture);</span><br><span class="line"></span><br><span class="line">        return this;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-<p>我们看到这里首先执行了onPreExecute方法，然后将参数传给mWorker。前面我们已经说过WokrerRunnable作为参数传递给了FutureTask,因此，参数被封装到了FutureTask中。接下来我们看一下exec这个对象：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">private static class SerialExecutor implements Executor &#123;</span><br><span class="line">    final ArrayDeque&lt;Runnable&gt; mTasks = new ArrayDeque&lt;Runnable&gt;();</span><br><span class="line">    Runnable mActive;</span><br><span class="line"></span><br><span class="line">    public synchronized void execute(final Runnable r) &#123;</span><br><span class="line">        mTasks.offer(new Runnable() &#123;</span><br><span class="line">            public void run() &#123;</span><br><span class="line">                try &#123;</span><br><span class="line">                    r.run();</span><br><span class="line">                &#125; finally &#123;</span><br><span class="line">                    scheduleNext();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">        if (mActive == null) &#123;</span><br><span class="line">            scheduleNext();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    protected synchronized void scheduleNext() &#123;</span><br><span class="line">        if ((mActive = mTasks.poll()) != null) &#123;</span><br><span class="line">            THREAD_POOL_EXECUTOR.execute(mActive);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>从上面的代码可以看出该对象表示的是一个串行的线程池，当调用execute方法时，会将futureTask加入到mTask中。且当任务执行完或者当前没有活动是都会执行scheduleNext方法，会从mTaskｓ中取出FutureTask任务并交由THREAD_POOL_EXECUTOR处理。执行的时候因为传进来的是由WorkerRunnable作为参数的FutureTask，所以会执行WorkerRunnable的call方法，在call方法中会将结果通过postResult方法传递出去：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">private Result postResult(Result result) &#123;</span><br><span class="line">    @SuppressWarnings(&quot;unchecked&quot;)</span><br><span class="line">    Message message = getHandler().obtainMessage(MESSAGE_POST_RESULT,</span><br><span class="line">            new AsyncTaskResult&lt;Result&gt;(this, result));</span><br><span class="line">    message.sendToTarget();</span><br><span class="line">    return result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>可以看到，上面说的使用getMainHandler和这里的getHandler是一样的，在这里创建了Message,并通过Handler发送了该消息：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">private static Handler getMainHandler() &#123;</span><br><span class="line">    synchronized (AsyncTask.class) &#123;</span><br><span class="line">        if (sHandler == null) &#123;</span><br><span class="line">            sHandler = new InternalHandler(Looper.getMainLooper());</span><br><span class="line">        &#125;</span><br><span class="line">        return sHandler;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">private static class InternalHandler extends Handler &#123;</span><br><span class="line">        public InternalHandler(Looper looper) &#123;</span><br><span class="line">            super(looper);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        @SuppressWarnings(&#123;&quot;unchecked&quot;, &quot;RawUseOfParameterizedType&quot;&#125;)</span><br><span class="line">        @Override</span><br><span class="line">        public void handleMessage(Message msg) &#123;</span><br><span class="line">            AsyncTaskResult&lt;?&gt; result = (AsyncTaskResult&lt;?&gt;) msg.obj;</span><br><span class="line">            switch (msg.what) &#123;</span><br><span class="line">                case MESSAGE_POST_RESULT:</span><br><span class="line">                    // There is only one result</span><br><span class="line">                    result.mTask.finish(result.mData[0]);</span><br><span class="line">                    break;</span><br><span class="line">                case MESSAGE_POST_PROGRESS:</span><br><span class="line">                    result.mTask.onProgressUpdate(result.mData);</span><br><span class="line">                    break;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-<p>这里自定义了一个Handler并处理了它的处理方式，可以看到上面发送的消息会调用finish方法：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">private void finish(Result result) &#123;</span><br><span class="line">    if (isCancelled()) &#123;</span><br><span class="line">        onCancelled(result);</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        onPostExecute(result);</span><br><span class="line">    &#125;</span><br><span class="line">    mStatus = Status.FINISHED;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>这里判断了是否被取消，如果被取消了，则调用onCancelled方法，否则调用onPostExecute方法。</p>
-]]></content>
-      <tags>
-        <tag>android</tag>
       </tags>
   </entry>
   <entry>
@@ -2102,44 +2102,6 @@
       </tags>
   </entry>
   <entry>
-    <title>apk优化方式</title>
-    <url>/2019/04/02/apk%E4%BC%98%E5%8C%96%E6%96%B9%E5%BC%8F/</url>
-    <content><![CDATA[<p>apk优化的几种方式：</p>
-<p>1.svg图片的使用</p>
-<p>强调点：在安卓5.0 以下是不支持这种方式的，需要做以下兼容：</p>
-<p>在app的build.gradle目录下的defaultConfig中添加</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">//将svg图片生成指定的png图片</span><br><span class="line">vectorDrawables.generatedDensities(&apos;xhdpi&apos;,&apos;xxhdpi&apos;,&apos;xxxhdpi&apos;)</span><br></pre></td></tr></table></figure>
-<p>或者添加</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">//使用support-v7兼容</span><br><span class="line">vectorDrawables.useSupportLibrary = true</span><br></pre></td></tr></table></figure>
-<p>2.使用tint着色器来给png图片增加颜色</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;ImageView</span><br><span class="line">    android:layout_width=&quot;wrap_content&quot;</span><br><span class="line">    android:layout_height=&quot;wrap_content&quot;</span><br><span class="line">    android:src=&quot;@drawable/test&quot;/&gt;</span><br><span class="line"></span><br><span class="line">&lt;ImageView</span><br><span class="line">    android:layout_width=&quot;wrap_content&quot;</span><br><span class="line">    android:layout_height=&quot;wrap_content&quot;</span><br><span class="line">    android:src=&quot;@drawable/test&quot;</span><br><span class="line">    android:tint=&quot;@android:color/holo_green_dark&quot; /&gt;</span><br></pre></td></tr></table></figure>
-<p>也可以增加类似的点击效果：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;ImageView</span><br><span class="line">    android:layout_width=&quot;wrap_content&quot;</span><br><span class="line">    android:layout_height=&quot;wrap_content&quot;</span><br><span class="line">    android:src=&quot;@drawable/test&quot;</span><br><span class="line">    android:tint=&quot;@color/color&quot; /&gt;</span><br></pre></td></tr></table></figure>
-<p>color的selector：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;selector xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;&gt;</span><br><span class="line">    &lt;item android:state_pressed=&quot;true&quot; android:color=&quot;@android:color/holo_green_dark&quot;/&gt;</span><br><span class="line">    &lt;item android:color=&quot;@android:color/transparent&quot; /&gt;</span><br><span class="line"></span><br><span class="line">&lt;/selector&gt;</span><br></pre></td></tr></table></figure>
-<p>3.打包时只保留中文语言：</p>
-<p>在app的build.gradle目录下的defaultConfig中添加</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">resConfigs(&apos;zh-rCN&apos;,&apos;ko&apos;)//中文和韩语</span><br></pre></td></tr></table></figure>
-<p>4.打包时将只打包需要的so库：</p>
-<p>在app的build.gradle目录下的defaultConfig中添加</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ndk&#123;</span><br><span class="line">    abiFilters(&apos;armeabi&apos;,&apos;armeabi-v7a&apos;)//这两种是常见的手机架构</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>5.删除无用的资源（Lint工具检查）</p>
-<p>Analyze-&gt;Run Inspection by name-&gt;搜索unused resource 删除</p>
-<p>6.混淆的使用：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">release &#123;</span><br><span class="line">    //开启代码混淆</span><br><span class="line">    minifyEnabled true</span><br><span class="line">    proguardFiles getDefaultProguardFile(&apos;proguard-android.txt&apos;), &apos;proguard-rules.pro&apos;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>7.资源压缩：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">release &#123;</span><br><span class="line">    //开启代码混淆</span><br><span class="line">    minifyEnabled true</span><br><span class="line">    //资源压缩</span><br><span class="line">    shrinkResources true</span><br><span class="line">    proguardFiles getDefaultProguardFile(&apos;proguard-android.txt&apos;), &apos;proguard-rules.pro&apos;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>此外还可以通过指定的方式不压缩某些资源，在res目录下新建raw文件夹，新建keep.xml文件：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;</span><br><span class="line">&lt;resources xmlns:tools=&quot;http://schemas.android.com/tools&quot;</span><br><span class="line">    tools:discard=&quot;@color/color&quot;</span><br><span class="line">    tools:keep=&quot;@layout/activity_main&quot; //指定不压缩的资源</span><br><span class="line">    tools:shrinkMode=&quot;strict&quot;&gt;</span><br><span class="line"></span><br><span class="line">&lt;/resources&gt;</span><br></pre></td></tr></table></figure>
-<p>8.androidStudio中webp插件的使用：</p>
-<p>右键png或jepg图片convert to webp可以压缩需要的图片</p>
-<p>9.资源混淆、压缩对齐（待详解～～～）</p>
-]]></content>
-      <tags>
-        <tag>android</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>android性能优化</title>
     <url>/2019/01/29/android%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/</url>
     <content><![CDATA[<p>1.优化布局</p>
@@ -2185,6 +2147,44 @@
 <p>5.<a href="https://blog.csdn.net/u011240877/article/details/54347396" target="_blank" rel="noopener">使用TraceView工具优化</a></p>
 <p>6.<a href="https://blog.csdn.net/zxm317122667/article/details/52162764" target="_blank" rel="noopener">使用MAT工具分析应用内存</a></p>
 <p>7.<a href="https://www.jianshu.com/p/2ff0f2a5571c" target="_blank" rel="noopener">使用Dumpsys分析系统状态</a></p>
+]]></content>
+      <tags>
+        <tag>android</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>apk优化方式</title>
+    <url>/2019/04/02/apk%E4%BC%98%E5%8C%96%E6%96%B9%E5%BC%8F/</url>
+    <content><![CDATA[<p>apk优化的几种方式：</p>
+<p>1.svg图片的使用</p>
+<p>强调点：在安卓5.0 以下是不支持这种方式的，需要做以下兼容：</p>
+<p>在app的build.gradle目录下的defaultConfig中添加</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">//将svg图片生成指定的png图片</span><br><span class="line">vectorDrawables.generatedDensities(&apos;xhdpi&apos;,&apos;xxhdpi&apos;,&apos;xxxhdpi&apos;)</span><br></pre></td></tr></table></figure>
+<p>或者添加</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">//使用support-v7兼容</span><br><span class="line">vectorDrawables.useSupportLibrary = true</span><br></pre></td></tr></table></figure>
+<p>2.使用tint着色器来给png图片增加颜色</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;ImageView</span><br><span class="line">    android:layout_width=&quot;wrap_content&quot;</span><br><span class="line">    android:layout_height=&quot;wrap_content&quot;</span><br><span class="line">    android:src=&quot;@drawable/test&quot;/&gt;</span><br><span class="line"></span><br><span class="line">&lt;ImageView</span><br><span class="line">    android:layout_width=&quot;wrap_content&quot;</span><br><span class="line">    android:layout_height=&quot;wrap_content&quot;</span><br><span class="line">    android:src=&quot;@drawable/test&quot;</span><br><span class="line">    android:tint=&quot;@android:color/holo_green_dark&quot; /&gt;</span><br></pre></td></tr></table></figure>
+<p>也可以增加类似的点击效果：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;ImageView</span><br><span class="line">    android:layout_width=&quot;wrap_content&quot;</span><br><span class="line">    android:layout_height=&quot;wrap_content&quot;</span><br><span class="line">    android:src=&quot;@drawable/test&quot;</span><br><span class="line">    android:tint=&quot;@color/color&quot; /&gt;</span><br></pre></td></tr></table></figure>
+<p>color的selector：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;selector xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;&gt;</span><br><span class="line">    &lt;item android:state_pressed=&quot;true&quot; android:color=&quot;@android:color/holo_green_dark&quot;/&gt;</span><br><span class="line">    &lt;item android:color=&quot;@android:color/transparent&quot; /&gt;</span><br><span class="line"></span><br><span class="line">&lt;/selector&gt;</span><br></pre></td></tr></table></figure>
+<p>3.打包时只保留中文语言：</p>
+<p>在app的build.gradle目录下的defaultConfig中添加</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">resConfigs(&apos;zh-rCN&apos;,&apos;ko&apos;)//中文和韩语</span><br></pre></td></tr></table></figure>
+<p>4.打包时将只打包需要的so库：</p>
+<p>在app的build.gradle目录下的defaultConfig中添加</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ndk&#123;</span><br><span class="line">    abiFilters(&apos;armeabi&apos;,&apos;armeabi-v7a&apos;)//这两种是常见的手机架构</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>5.删除无用的资源（Lint工具检查）</p>
+<p>Analyze-&gt;Run Inspection by name-&gt;搜索unused resource 删除</p>
+<p>6.混淆的使用：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">release &#123;</span><br><span class="line">    //开启代码混淆</span><br><span class="line">    minifyEnabled true</span><br><span class="line">    proguardFiles getDefaultProguardFile(&apos;proguard-android.txt&apos;), &apos;proguard-rules.pro&apos;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>7.资源压缩：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">release &#123;</span><br><span class="line">    //开启代码混淆</span><br><span class="line">    minifyEnabled true</span><br><span class="line">    //资源压缩</span><br><span class="line">    shrinkResources true</span><br><span class="line">    proguardFiles getDefaultProguardFile(&apos;proguard-android.txt&apos;), &apos;proguard-rules.pro&apos;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>此外还可以通过指定的方式不压缩某些资源，在res目录下新建raw文件夹，新建keep.xml文件：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;</span><br><span class="line">&lt;resources xmlns:tools=&quot;http://schemas.android.com/tools&quot;</span><br><span class="line">    tools:discard=&quot;@color/color&quot;</span><br><span class="line">    tools:keep=&quot;@layout/activity_main&quot; //指定不压缩的资源</span><br><span class="line">    tools:shrinkMode=&quot;strict&quot;&gt;</span><br><span class="line"></span><br><span class="line">&lt;/resources&gt;</span><br></pre></td></tr></table></figure>
+<p>8.androidStudio中webp插件的使用：</p>
+<p>右键png或jepg图片convert to webp可以压缩需要的图片</p>
+<p>9.资源混淆、压缩对齐（待详解～～～）</p>
 ]]></content>
       <tags>
         <tag>android</tag>
@@ -2904,6 +2904,63 @@ private Utils(Context context) {
 ]]></content>
       <tags>
         <tag>面试</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>函数指针与指针函数</title>
+    <url>/2023/02/19/%E5%87%BD%E6%95%B0%E6%8C%87%E9%92%88%E4%B8%8E%E6%8C%87%E9%92%88%E5%87%BD%E6%95%B0/</url>
+    <content><![CDATA[<p><strong>函数调用的内存中的三个区域</strong></p>
+<p>1.<strong>代码区</strong><br>    代码区装载了这个程序所对应的机器指令<br>    程序的执行就靠这些指令来驱动<br>2.<strong>静态数据区</strong><br>    装载了全局变量的数值<br>    后面程序的执行会改变这里的值<br>3.<strong>动态数据区</strong><br>    初始什么都没有，因为只有程序执行后，在指令的驱动下，这个区域才会产生数据。<br>    压栈、清栈的工作就是在这个区域完成的。</p>
+<p><strong>CPU的三个寄存器</strong></p>
+<p>1.eip<br>    代码区装载了这个程序所对应的机器指令<br>    程序的执行就靠这些指令来驱动<br>2.ebp<br>    装载了全局变量的数值<br>    后面程序的执行会改变这里的值<br>3.esp<br>    初始什么都没有，因为只有程序执行后，在指令的驱动下，这个区域才会产生数据。<br>    压栈、清栈的工作就是在这个区域完成的。</p>
+<p><strong>指针函数概念（返回值）</strong></p>
+<p>指针函数是 返回指针的函数 主体是函数，返回值是一个指针</p>
+<p>int<em> fun(int,int);  //更加直观，返回值是int</em> 类型<br>int <em> fun(int,int);<br>int </em>fun(int,int);</p>
+<p>在实现一个指针函数时，应该特别注意，指针函数返回的地址，在主调函数中，必须是有效的，是可以访问的内存。在上面程序中，str是函数内部的局部数组，局部变量分配在堆栈中，当函数执行完后，局部变量自动释放，在主调函数中，不能再访问，因此会有警告。访问一段释放的内存，是非法操作，显示的是0地址，若修改非法内存中的值，程序的后果可能更严重，是不可预料的</p>
+<img src="/2023/02/19/函数指针与指针函数/image-20230219220902034.png" title="[函数指针与指针函数]">
+<p><strong>系统指针函数举例</strong></p>
+<p>字符串拷贝函数</p>
+<img src="/2023/02/19/函数指针与指针函数/image-20230219220956179.png" title="[函数指针与指针函数]">
+<p>字符串连接函数</p>
+<img src="/2023/02/19/函数指针与指针函数/image-20230219221018602.png" title="[函数指针与指针函数]">
+<p><strong>函数指针</strong></p>
+<p>函数指针是专门用来存放函数地址的指针，函数地址是一个函数的入口地址，函数名代表了函数的入口地址。</p>
+<p>当一个函数指针指向了一个函数，就可以通过这个指针来调用该函数，可以将函数作为参数传递给函数指针</p>
+<p><strong>声明形式</strong></p>
+<p>&lt;数据类型&gt; （*&lt;函数指针名称&gt;)（&lt;参数说明列表&gt;)；</p>
+<p>&lt;数据类型&gt;是函数指针所指向的函数的返回值类型；<br>&lt;函数指针名称&gt;符合标识符命名规则；<br>&lt;参数说明列表&gt;应该与函数指针所指向的函数的形参说明保持一致；<br>（<em>&lt;函数指针名称&gt;）中，</em>说明为指针，（）不可缺省，表明为指向函数的指针。</p>
+<p>例子：int (<em>fun) (int);<br>注意 </em> 和函数名要用括号括起来，否则因为运算符的优先级原因就变成指针函数了</p>
+<p>案例</p>
+<img src="/2023/02/19/函数指针与指针函数/image-20230219221113636.png" title="[函数指针与指针函数]">
+<img src="/2023/02/19/函数指针与指针函数/image-20230219221121051.png" title="[函数指针与指针函数]">
+<p><strong>定义函数指针类型</strong></p>
+<p>有时为了书写方便，可以声明一个函数指针数据类型<br>在函数指针变量说明前面，加上typedef，就变成了函数指针类型。<br>typedef &lt;数据类型&gt; （*&lt;函数指针类型名称&gt;)（&lt;参数说明列表&gt;)；</p>
+<p>typedef int (*MFunc)(int, int);</p>
+<p>int test(int a, int b, MFunc pFunc);<br>int plus(int a, int b); //函数声明<br>int minus(int, int);    //函数声明，缺省形参名称</p>
+<p><strong>函数指针数组</strong></p>
+<p>函数指针数组是一个包含若干个函数指针变量的数组。</p>
+<p>&lt;数据类型&gt; ( * &lt;函数指针数组名称&gt; [&lt;大小&gt;] ) ( &lt;参数说明列表&gt; )；<br>&lt;大小&gt;是指函数指针数组元素的个数。</p>
+<img src="/2023/02/19/函数指针与指针函数/image-20230219221229840.png" title="[函数指针与指针函数]">
+<p><strong>函数指针程序举例</strong></p>
+<img src="/2023/02/19/函数指针与指针函数/image-20230219221245616.png" title="[函数指针与指针函数]">
+<p><strong>函数回调</strong></p>
+<p>本质上就是一个函数指针的应用场景而已</p>
+<p>回调函数主要结构有三部分组成：主函数、调用函数和被调函数，主要核心目的值在为了完成某个功能之后给与消息通知，或者是功能触发</p>
+<p>因为可以把调用者与被调用者分开。调用者不关心谁是被调用者，所有它需知道的，只是存在一个具有某种特定原型、某些限制条件（如返回值为int）的被调用函数</p>
+<p>如果想知道回调函数在实际中有什么作用，先假设有这样一种情况，我们要编写一个库，它提供了某些排序算法的实现，如冒泡排序、快速排序、归并排序等等，但为使库更加通用，不想在函数中嵌入排序逻辑，而让使用者来实现相应的逻辑；或者，想让库可用于多种数据类型（int、float、string），此时，该怎么办呢？可以使用函数指针，并进行回调</p>
+<p>回调函数的优点</p>
+<p>可以让实现方，根据回调方的多种形态进行不同的处理和操作。</p>
+<p>可以让实现方，根据自己的需要定制回调方的不同形态。</p>
+<p>可以将耗时的操作隐藏在回调方，不影响实现方其它信息的展示。</p>
+<p>让代码的逻辑更加集中，更加易读。</p>
+<p><strong>总结</strong></p>
+<p>1.函数返回值返回是由条件的</p>
+<p>2.函数的参数传递，数组条件下会有降级问题出现</p>
+<p>3.函数实际上是有执行地址的</p>
+<p>4.回调函数就是函数指针的一种应用</p>
+]]></content>
+      <tags>
+        <tag>C++学习笔记</tag>
       </tags>
   </entry>
   <entry>
@@ -3758,63 +3815,6 @@ public static void recycleBitmaps(Bitmap... bitmaps) {
 <img src="/2022/11/24/锁/image-20221124084041320.png" title="[锁]">]]></content>
       <tags>
         <tag>JUC</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>函数指针与指针函数</title>
-    <url>/2023/02/19/%E5%87%BD%E6%95%B0%E6%8C%87%E9%92%88%E4%B8%8E%E6%8C%87%E9%92%88%E5%87%BD%E6%95%B0/</url>
-    <content><![CDATA[<p><strong>函数调用的内存中的三个区域</strong></p>
-<p>1.<strong>代码区</strong><br>    代码区装载了这个程序所对应的机器指令<br>    程序的执行就靠这些指令来驱动<br>2.<strong>静态数据区</strong><br>    装载了全局变量的数值<br>    后面程序的执行会改变这里的值<br>3.<strong>动态数据区</strong><br>    初始什么都没有，因为只有程序执行后，在指令的驱动下，这个区域才会产生数据。<br>    压栈、清栈的工作就是在这个区域完成的。</p>
-<p><strong>CPU的三个寄存器</strong></p>
-<p>1.eip<br>    代码区装载了这个程序所对应的机器指令<br>    程序的执行就靠这些指令来驱动<br>2.ebp<br>    装载了全局变量的数值<br>    后面程序的执行会改变这里的值<br>3.esp<br>    初始什么都没有，因为只有程序执行后，在指令的驱动下，这个区域才会产生数据。<br>    压栈、清栈的工作就是在这个区域完成的。</p>
-<p><strong>指针函数概念（返回值）</strong></p>
-<p>指针函数是 返回指针的函数 主体是函数，返回值是一个指针</p>
-<p>int<em> fun(int,int);  //更加直观，返回值是int</em> 类型<br>int <em> fun(int,int);<br>int </em>fun(int,int);</p>
-<p>在实现一个指针函数时，应该特别注意，指针函数返回的地址，在主调函数中，必须是有效的，是可以访问的内存。在上面程序中，str是函数内部的局部数组，局部变量分配在堆栈中，当函数执行完后，局部变量自动释放，在主调函数中，不能再访问，因此会有警告。访问一段释放的内存，是非法操作，显示的是0地址，若修改非法内存中的值，程序的后果可能更严重，是不可预料的</p>
-<img src="/2023/02/19/函数指针与指针函数/image-20230219220902034.png" title="[函数指针与指针函数]">
-<p><strong>系统指针函数举例</strong></p>
-<p>字符串拷贝函数</p>
-<img src="/2023/02/19/函数指针与指针函数/image-20230219220956179.png" title="[函数指针与指针函数]">
-<p>字符串连接函数</p>
-<img src="/2023/02/19/函数指针与指针函数/image-20230219221018602.png" title="[函数指针与指针函数]">
-<p><strong>函数指针</strong></p>
-<p>函数指针是专门用来存放函数地址的指针，函数地址是一个函数的入口地址，函数名代表了函数的入口地址。</p>
-<p>当一个函数指针指向了一个函数，就可以通过这个指针来调用该函数，可以将函数作为参数传递给函数指针</p>
-<p><strong>声明形式</strong></p>
-<p>&lt;数据类型&gt; （*&lt;函数指针名称&gt;)（&lt;参数说明列表&gt;)；</p>
-<p>&lt;数据类型&gt;是函数指针所指向的函数的返回值类型；<br>&lt;函数指针名称&gt;符合标识符命名规则；<br>&lt;参数说明列表&gt;应该与函数指针所指向的函数的形参说明保持一致；<br>（<em>&lt;函数指针名称&gt;）中，</em>说明为指针，（）不可缺省，表明为指向函数的指针。</p>
-<p>例子：int (<em>fun) (int);<br>注意 </em> 和函数名要用括号括起来，否则因为运算符的优先级原因就变成指针函数了</p>
-<p>案例</p>
-<img src="/2023/02/19/函数指针与指针函数/image-20230219221113636.png" title="[函数指针与指针函数]">
-<img src="/2023/02/19/函数指针与指针函数/image-20230219221121051.png" title="[函数指针与指针函数]">
-<p><strong>定义函数指针类型</strong></p>
-<p>有时为了书写方便，可以声明一个函数指针数据类型<br>在函数指针变量说明前面，加上typedef，就变成了函数指针类型。<br>typedef &lt;数据类型&gt; （*&lt;函数指针类型名称&gt;)（&lt;参数说明列表&gt;)；</p>
-<p>typedef int (*MFunc)(int, int);</p>
-<p>int test(int a, int b, MFunc pFunc);<br>int plus(int a, int b); //函数声明<br>int minus(int, int);    //函数声明，缺省形参名称</p>
-<p><strong>函数指针数组</strong></p>
-<p>函数指针数组是一个包含若干个函数指针变量的数组。</p>
-<p>&lt;数据类型&gt; ( * &lt;函数指针数组名称&gt; [&lt;大小&gt;] ) ( &lt;参数说明列表&gt; )；<br>&lt;大小&gt;是指函数指针数组元素的个数。</p>
-<img src="/2023/02/19/函数指针与指针函数/image-20230219221229840.png" title="[函数指针与指针函数]">
-<p><strong>函数指针程序举例</strong></p>
-<img src="/2023/02/19/函数指针与指针函数/image-20230219221245616.png" title="[函数指针与指针函数]">
-<p><strong>函数回调</strong></p>
-<p>本质上就是一个函数指针的应用场景而已</p>
-<p>回调函数主要结构有三部分组成：主函数、调用函数和被调函数，主要核心目的值在为了完成某个功能之后给与消息通知，或者是功能触发</p>
-<p>因为可以把调用者与被调用者分开。调用者不关心谁是被调用者，所有它需知道的，只是存在一个具有某种特定原型、某些限制条件（如返回值为int）的被调用函数</p>
-<p>如果想知道回调函数在实际中有什么作用，先假设有这样一种情况，我们要编写一个库，它提供了某些排序算法的实现，如冒泡排序、快速排序、归并排序等等，但为使库更加通用，不想在函数中嵌入排序逻辑，而让使用者来实现相应的逻辑；或者，想让库可用于多种数据类型（int、float、string），此时，该怎么办呢？可以使用函数指针，并进行回调</p>
-<p>回调函数的优点</p>
-<p>可以让实现方，根据回调方的多种形态进行不同的处理和操作。</p>
-<p>可以让实现方，根据自己的需要定制回调方的不同形态。</p>
-<p>可以将耗时的操作隐藏在回调方，不影响实现方其它信息的展示。</p>
-<p>让代码的逻辑更加集中，更加易读。</p>
-<p><strong>总结</strong></p>
-<p>1.函数返回值返回是由条件的</p>
-<p>2.函数的参数传递，数组条件下会有降级问题出现</p>
-<p>3.函数实际上是有执行地址的</p>
-<p>4.回调函数就是函数指针的一种应用</p>
-]]></content>
-      <tags>
-        <tag>C++学习笔记</tag>
       </tags>
   </entry>
 </search>
