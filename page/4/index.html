@@ -124,6 +124,169 @@
       <ul class="post-list">
   
     <li class="post-list-item">
+        <article id="post-kotlin笔记-标准函数" class="article article-type-post" itemprop="blogPost">
+     
+
+
+  
+    <h3 class="post-title" itemprop="name">
+      <a class="post-title-link" href="/2021/12/08/kotlin笔记-标准函数/">kotlin笔记-标准函数</a>
+    </h3>
+  
+
+
+
+    <div class="post-meta">
+        <time datetime="2021-12-08T14:59:06.000Z" itemprop="datePublished" class="post-time">
+  2021-12-08
+</time>
+
+        
+
+
+    </div>
+
+    <div class="post-content" id="post-content" itemprop="postContent">
+
+    
+           let函数会将参数传入到lambda作用域中，返回作用域的最后一行       1   2   3   4        val  res = listOf( 1 , 2 , 3 ).first().let &#123;       it * it   &#125;   println(res)       
+   also函数会返回接收者对象，作用域和功能类似，传入参数       1  
+    
+    
+        <a href="/2021/12/08/kotlin笔记-标准函数/" class="post-more waves-effect waves-button">
+            阅读全文...
+        </a>
+    </div>
+    
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/kotlin/">kotlin</a></li></ul>
+
+</article>
+
+    </li>
+  
+    <li class="post-list-item">
+        <article id="post-kotlin笔记" class="article article-type-post" itemprop="blogPost">
+     
+
+
+  
+    <h3 class="post-title" itemprop="name">
+      <a class="post-title-link" href="/2021/12/08/kotlin笔记/">kotlin笔记-列表</a>
+    </h3>
+  
+
+
+
+    <div class="post-meta">
+        <time datetime="2021-12-08T14:18:06.000Z" itemprop="datePublished" class="post-time">
+  2021-12-08
+</time>
+
+        
+
+
+    </div>
+
+    <div class="post-content" id="post-content" itemprop="postContent">
+
+    
+           kotlin普通列表       1   2   3   4        val  list = listOf( "jack" ,  "lucy" ,  "black" )   println(list.getOrElse( 4 ) &#123;  "UnKnown"  &#125;)   println(list.getOrNull( 4 ) ?:  "UnKnown" )   prin
+    
+    
+        <a href="/2021/12/08/kotlin笔记/" class="post-more waves-effect waves-button">
+            阅读全文...
+        </a>
+    </div>
+    
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Kotlin/">Kotlin</a></li></ul>
+
+</article>
+
+    </li>
+  
+    <li class="post-list-item">
+        <article id="post-Activity启动流程" class="article article-type-post" itemprop="blogPost">
+     
+
+
+  
+    <h3 class="post-title" itemprop="name">
+      <a class="post-title-link" href="/2020/07/29/Activity启动流程/">Activity启动流程</a>
+    </h3>
+  
+
+
+
+    <div class="post-meta">
+        <time datetime="2020-07-29T03:40:07.000Z" itemprop="datePublished" class="post-time">
+  2020-07-29
+</time>
+
+        
+
+
+    </div>
+
+    <div class="post-content" id="post-content" itemprop="postContent">
+
+    
+         我们看一下startActivity方法中到底发生了什么： 
+      1   2   3   4   5   6   7   8   9   10   11   12   13   14   15   16   17   18   19   20   21   22   23   24   25   26   27   28   29   30   31   32   33   34   3
+    
+    
+        <a href="/2020/07/29/Activity启动流程/" class="post-more waves-effect waves-button">
+            阅读全文...
+        </a>
+    </div>
+    
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/android/">android</a></li></ul>
+
+</article>
+
+    </li>
+  
+    <li class="post-list-item">
+        <article id="post-Okhttp源码分析" class="article article-type-post" itemprop="blogPost">
+     
+
+
+  
+    <h3 class="post-title" itemprop="name">
+      <a class="post-title-link" href="/2020/07/27/Okhttp源码分析/">Okhttp源码分析</a>
+    </h3>
+  
+
+
+
+    <div class="post-meta">
+        <time datetime="2020-07-27T09:10:53.000Z" itemprop="datePublished" class="post-time">
+  2020-07-27
+</time>
+
+        
+
+
+    </div>
+
+    <div class="post-content" id="post-content" itemprop="postContent">
+
+    
+         首先看Okhttp发起一个异步的请求： 
+      1   2   3   4   5   6   7   8   9   10   11   12   13   14   15   16   17   18   19   20   21   22   23   24         private   void   testOkHttp  ()   &#123;              O
+    
+    
+        <a href="/2020/07/27/Okhttp源码分析/" class="post-more waves-effect waves-button">
+            阅读全文...
+        </a>
+    </div>
+    
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/android/">android</a></li></ul>
+
+</article>
+
+    </li>
+  
+    <li class="post-list-item">
         <article id="post-Java线程状态" class="article article-type-post" itemprop="blogPost">
      
 
@@ -309,182 +472,11 @@
 
     </li>
   
-    <li class="post-list-item">
-        <article id="post-内存泄漏的原因和解决方式" class="article article-type-post" itemprop="blogPost">
-     
-
-
-  
-    <h3 class="post-title" itemprop="name">
-      <a class="post-title-link" href="/2019/08/26/内存泄漏的原因和解决方式/">内存泄漏的原因和解决方式</a>
-    </h3>
-  
-
-
-
-    <div class="post-meta">
-        <time datetime="2019-08-26T13:39:00.000Z" itemprop="datePublished" class="post-time">
-  2019-08-26
-</time>
-
-        
-
-
-    </div>
-
-    <div class="post-content" id="post-content" itemprop="postContent">
-
-    
-         1. Handler引起的内存泄漏 （生命周期长的持有了生命周期短的引用） 
- 2.Bitmap对象使用结束没有使用recycle释放内存 
-      1   2       val bitmap = BitmapFactory.decodeResource(resources,R.drawable.ic_launcher)   bitmap.recycle()       
- 3.curso
-    
-    
-        <a href="/2019/08/26/内存泄漏的原因和解决方式/" class="post-more waves-effect waves-button">
-            阅读全文...
-        </a>
-    </div>
-    
-	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/面试/">面试</a></li></ul>
-
-</article>
-
-    </li>
-  
-    <li class="post-list-item">
-        <article id="post-Activity和Fragment通信" class="article article-type-post" itemprop="blogPost">
-     
-
-
-  
-    <h3 class="post-title" itemprop="name">
-      <a class="post-title-link" href="/2019/08/23/Activity和Fragment通信/">Activity和Fragment通信</a>
-    </h3>
-  
-
-
-
-    <div class="post-meta">
-        <time datetime="2019-08-23T14:19:48.000Z" itemprop="datePublished" class="post-time">
-  2019-08-23
-</time>
-
-        
-
-
-    </div>
-
-    <div class="post-content" id="post-content" itemprop="postContent">
-
-    
-         Activity和Fragment通信的几种方式： 
- 1.接口的方式： 
-      1   2   3   4   5   6   7   8   9   10   11   12   13   14   15   16   17       class MainFragment : Fragment() &#123;          private lateinit var name :
-    
-    
-        <a href="/2019/08/23/Activity和Fragment通信/" class="post-more waves-effect waves-button">
-            阅读全文...
-        </a>
-    </div>
-    
-	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/面试/">面试</a></li></ul>
-
-</article>
-
-    </li>
-  
-    <li class="post-list-item">
-        <article id="post-自定义-Handler-时如何有效地避免内存泄漏问题" class="article article-type-post" itemprop="blogPost">
-     
-
-
-  
-    <h3 class="post-title" itemprop="name">
-      <a class="post-title-link" href="/2019/08/22/自定义-Handler-时如何有效地避免内存泄漏问题/">自定义 Handler 时如何有效地避免内存泄漏问题</a>
-    </h3>
-  
-
-
-
-    <div class="post-meta">
-        <time datetime="2019-08-22T14:17:26.000Z" itemprop="datePublished" class="post-time">
-  2019-08-22
-</time>
-
-        
-
-
-    </div>
-
-    <div class="post-content" id="post-content" itemprop="postContent">
-
-    
-         我们在使用Handler时通常都会按照如下方式创建Handler： 
-      1   2   3   4   5   6       val handler : Handler = object : Handler() &#123;          override fun handleMessage(msg: Message) &#123;           super.handleM
-    
-    
-        <a href="/2019/08/22/自定义-Handler-时如何有效地避免内存泄漏问题/" class="post-more waves-effect waves-button">
-            阅读全文...
-        </a>
-    </div>
-    
-	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/面试/">面试</a></li></ul>
-
-</article>
-
-    </li>
-  
-    <li class="post-list-item">
-        <article id="post-C-学习笔记－复合类型" class="article article-type-post" itemprop="blogPost">
-     
-
-
-  
-    <h3 class="post-title" itemprop="name">
-      <a class="post-title-link" href="/2019/06/16/C-学习笔记－复合类型/">C++学习笔记－复合类型</a>
-    </h3>
-  
-
-
-
-    <div class="post-meta">
-        <time datetime="2019-06-16T10:42:46.000Z" itemprop="datePublished" class="post-time">
-  2019-06-16
-</time>
-
-        
-
-
-    </div>
-
-    <div class="post-content" id="post-content" itemprop="postContent">
-
-    
-         1.数组 
- 类似Java中的数组 
-      1   2   3   4       unsigned int name[10] = &#123;&#125;;   name[1] = 9;   name[3] = 1;   cout &lt;&lt; sizeof name / sizeof (int);//获取数组长度       
- ２.字符串 
- (1)char数组形式： 
-    
-    
-    
-        <a href="/2019/06/16/C-学习笔记－复合类型/" class="post-more waves-effect waves-button">
-            阅读全文...
-        </a>
-    </div>
-    
-	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/C-学习笔记/">C++学习笔记</a></li></ul>
-
-</article>
-
-    </li>
-  
 </ul>
 
 <nav id="page-nav">
     <div class="inner">
-    <a class="extend prev" rel="prev" href="/page/3/">上一页</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><a class="page-number" href="/page/6/">6</a><a class="page-number" href="/page/7/">7</a><a class="extend next" rel="next" href="/page/5/">下一页</a>
+    <a class="extend prev" rel="prev" href="/page/3/">上一页</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><a class="page-number" href="/page/6/">6</a><span class="space">&hellip;</span><a class="page-number" href="/page/8/">8</a><a class="extend next" rel="next" href="/page/5/">下一页</a>
     </div>
 </nav>
 

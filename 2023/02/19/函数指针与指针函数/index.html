@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  <title>函数指针与指针函数 | Eric笔记 | Eric笔记</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="theme-color" content="#3F51B5">
+  
+  
+  <meta name="keywords" content="C++学习笔记">
+  <meta name="description" content="函数调用的内存中的三个区域 1.代码区    代码区装载了这个程序所对应的机器指令    程序的执行就靠这些指令来驱动2.静态数据区    装载了全局变量的数值    后面程序的执行会改变这里的值3.动态数据区    初始什么都没有，因为只有程序执行后，在指令的驱动下，这个区域才会产生数据。    压栈、清栈的工作就是在这个区域完成的。 CPU的三个寄存器 1.eip    代码区装载了这个程序所">
+<meta name="keywords" content="C++学习笔记">
+<meta property="og:type" content="article">
+<meta property="og:title" content="函数指针与指针函数">
+<meta property="og:url" content="http://www.yppcat.top/2023/02/19/函数指针与指针函数/index.html">
+<meta property="og:site_name" content="Eric笔记">
+<meta property="og:description" content="函数调用的内存中的三个区域 1.代码区    代码区装载了这个程序所对应的机器指令    程序的执行就靠这些指令来驱动2.静态数据区    装载了全局变量的数值    后面程序的执行会改变这里的值3.动态数据区    初始什么都没有，因为只有程序执行后，在指令的驱动下，这个区域才会产生数据。    压栈、清栈的工作就是在这个区域完成的。 CPU的三个寄存器 1.eip    代码区装载了这个程序所">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="http://www.yppcat.top/2023/02/19/函数指针与指针函数/image-20230219220902034.png">
+<meta property="og:image" content="http://www.yppcat.top/2023/02/19/函数指针与指针函数/image-20230219220956179.png">
+<meta property="og:image" content="http://www.yppcat.top/2023/02/19/函数指针与指针函数/image-20230219221018602.png">
+<meta property="og:image" content="http://www.yppcat.top/2023/02/19/函数指针与指针函数/image-20230219221113636.png">
+<meta property="og:image" content="http://www.yppcat.top/2023/02/19/函数指针与指针函数/image-20230219221121051.png">
+<meta property="og:image" content="http://www.yppcat.top/2023/02/19/函数指针与指针函数/image-20230219221229840.png">
+<meta property="og:image" content="http://www.yppcat.top/2023/02/19/函数指针与指针函数/image-20230219221245616.png">
+<meta property="og:updated_time" content="2023-02-19T14:16:05.270Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="函数指针与指针函数">
+<meta name="twitter:description" content="函数调用的内存中的三个区域 1.代码区    代码区装载了这个程序所对应的机器指令    程序的执行就靠这些指令来驱动2.静态数据区    装载了全局变量的数值    后面程序的执行会改变这里的值3.动态数据区    初始什么都没有，因为只有程序执行后，在指令的驱动下，这个区域才会产生数据。    压栈、清栈的工作就是在这个区域完成的。 CPU的三个寄存器 1.eip    代码区装载了这个程序所">
+<meta name="twitter:image" content="http://www.yppcat.top/2023/02/19/函数指针与指针函数/image-20230219220902034.png">
+  
+    <link rel="alternative" href="/atom.xml" title="Eric笔记" type="application/atom+xml">
+  
+  <meta name="summary" content="">
+  <link rel="shortcut icon" href="/favicon.ico">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="loading" class="active"></div>
+
+  <nav id="menu" class="hide" >
+   <div class="inner flex-row-vertical">
+  <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+      <i class="icon icon-lg icon-close"></i>
+  </a>
+  <div class="brand-wrap">
+    <div class="brand">
+      <a href="/" class="avatar"><img src="/img/header.jpg"></a>
+      <hgroup class="introduce">
+        <h5 class="nickname">Eric笔记</h5>
+        <a href="mailto:1246275955@qq.com" title="1246275955@qq.com" class="mail">1246275955@qq.com</a>
+      </hgroup>
+    </div>
+  </div>
+  <div class="scroll-wrap flex-col">
+    <ul class="nav">
+      
+          <li class="waves-block waves-effect">
+            <a href="/">
+              <i class="icon icon-lg icon-home"></i>
+              主页
+            </a>
+          </li>
+      
+          <li class="waves-block waves-effect">
+            <a href="/archives">
+              <i class="icon icon-lg icon-archives"></i>
+              Archives
+            </a>
+          </li>
+      
+          <li class="waves-block waves-effect">
+            <a href="/tags">
+              <i class="icon icon-lg icon-tags"></i>
+              Tags
+            </a>
+          </li>
+      
+          <li class="waves-block waves-effect">
+            <a href="https://github.com/wtdBill" target="_blank">
+              <i class="icon icon-lg icon-github"></i>
+              Github
+            </a>
+          </li>
+      
+    </ul>
+
+    <footer class="footer">
+  <p><a rel="license" target="_blank" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0;vertical-align:middle;" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFAAAAAPCAMAAABEF7i9AAAAllBMVEUAAAD///+rsapERER3d3eIiIjMzMzu7u4iIiKUmZO6v7rKzsoODg4RERFVVVUNDQ0NDg0PEA8zMzNLTEtbXltmZmZydnF9gn2AgICPkI+ZmZmqqqq7u7vFxsXIzMgNDQwZGRkgICAhISEkJSMnKCcuMC4xMzE5Ozk7PTtBQkFCQkJDQ0Nna2eGhoaHh4ezuLLGysbd3d1wVGpAAAAA4UlEQVR42q2T1xqCMAyFk7QsBQeKA9x7j/d/OSm22CpX0nzcpA1/T05aAOuBVkMAScQFHLnEwoCo2f1TnQIGoVMewjZEjVFN4GH1Ue1Cn2jWqwfsOOj6wDwGvotsl/c8lv7KIq1eLOsT0HMFHMIE/RZyHnlphryT9zyV+8WH5e8yQw3wnQvgAFxPTKUVi555SHR/lOfLMgVTeDlSfN+TaoUsiTyeIm+bCkHvCA2FUKG48LDtYBZBknsYP/G8NTw0gaaHyuQf4H5pecrB/FYCT2sL9zAfy1Xyjou6L8X2W7YcLyBZCRtnq/zfAAAAAElFTkSuQmCC"></a></p>
+  <p>Eric笔记 &copy; 2023</p>
+  <p>Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme
+  <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a></p>
+  <a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-2x icon-rss-square"></i></a>
+</footer>
+
+  </div>
+</div>
+
+  </nav>
+  <main id="main">
+    <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">函数指针与指针函数</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input " autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+    </div>
+</header>
+<header class="content-header">
+  <div class="container">
+    <h1 class="author">函数指针与指针函数</h1>
+    <h5 class="subtitle">
+        
+            <time datetime="2023-02-19T14:06:25.000Z" itemprop="datePublished" class="page-time">
+  2023-02-19
+</time>
+
+
+        
+    </h5>
+  </div>
+</header>
+
+    <div class="container body-wrap">
+      <article id="post-函数指针与指针函数" class="article article-type-post" itemprop="blogPost">
+    <div class="post-meta flex-row">
+        
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/C-学习笔记/">C++学习笔记</a></li></ul>
+
+    </div>
+    <div class="post-body">
+        <aside class="post-widget" id="post-widget">
+
+            
+
+            
+            <nav class="post-toc-wrap" id="post-toc">
+            
+            </nav>
+            
+        </aside>
+
+        <div class="post-main">
+
+            <div class="post-content" id="post-content" itemprop="postContent">
+            <p><strong>函数调用的内存中的三个区域</strong></p>
+<p>1.<strong>代码区</strong><br>    代码区装载了这个程序所对应的机器指令<br>    程序的执行就靠这些指令来驱动<br>2.<strong>静态数据区</strong><br>    装载了全局变量的数值<br>    后面程序的执行会改变这里的值<br>3.<strong>动态数据区</strong><br>    初始什么都没有，因为只有程序执行后，在指令的驱动下，这个区域才会产生数据。<br>    压栈、清栈的工作就是在这个区域完成的。</p>
+<p><strong>CPU的三个寄存器</strong></p>
+<p>1.eip<br>    代码区装载了这个程序所对应的机器指令<br>    程序的执行就靠这些指令来驱动<br>2.ebp<br>    装载了全局变量的数值<br>    后面程序的执行会改变这里的值<br>3.esp<br>    初始什么都没有，因为只有程序执行后，在指令的驱动下，这个区域才会产生数据。<br>    压栈、清栈的工作就是在这个区域完成的。</p>
+<p><strong>指针函数概念（返回值）</strong></p>
+<p>指针函数是 返回指针的函数 主体是函数，返回值是一个指针</p>
+<p>int<em> fun(int,int);  //更加直观，返回值是int</em> 类型<br>int <em> fun(int,int);<br>int </em>fun(int,int);</p>
+<p>在实现一个指针函数时，应该特别注意，指针函数返回的地址，在主调函数中，必须是有效的，是可以访问的内存。在上面程序中，str是函数内部的局部数组，局部变量分配在堆栈中，当函数执行完后，局部变量自动释放，在主调函数中，不能再访问，因此会有警告。访问一段释放的内存，是非法操作，显示的是0地址，若修改非法内存中的值，程序的后果可能更严重，是不可预料的</p>
+<img src="/2023/02/19/函数指针与指针函数/image-20230219220902034.png" title="[函数指针与指针函数]">
+<p><strong>系统指针函数举例</strong></p>
+<p>字符串拷贝函数</p>
+<img src="/2023/02/19/函数指针与指针函数/image-20230219220956179.png" title="[函数指针与指针函数]">
+<p>字符串连接函数</p>
+<img src="/2023/02/19/函数指针与指针函数/image-20230219221018602.png" title="[函数指针与指针函数]">
+<p><strong>函数指针</strong></p>
+<p>函数指针是专门用来存放函数地址的指针，函数地址是一个函数的入口地址，函数名代表了函数的入口地址。</p>
+<p>当一个函数指针指向了一个函数，就可以通过这个指针来调用该函数，可以将函数作为参数传递给函数指针</p>
+<p><strong>声明形式</strong></p>
+<p>&lt;数据类型&gt; （*&lt;函数指针名称&gt;)（&lt;参数说明列表&gt;)；</p>
+<p>&lt;数据类型&gt;是函数指针所指向的函数的返回值类型；<br>&lt;函数指针名称&gt;符合标识符命名规则；<br>&lt;参数说明列表&gt;应该与函数指针所指向的函数的形参说明保持一致；<br>（<em>&lt;函数指针名称&gt;）中，</em>说明为指针，（）不可缺省，表明为指向函数的指针。</p>
+<p>例子：int (<em>fun) (int);<br>注意 </em> 和函数名要用括号括起来，否则因为运算符的优先级原因就变成指针函数了</p>
+<p>案例</p>
+<img src="/2023/02/19/函数指针与指针函数/image-20230219221113636.png" title="[函数指针与指针函数]">
+<img src="/2023/02/19/函数指针与指针函数/image-20230219221121051.png" title="[函数指针与指针函数]">
+<p><strong>定义函数指针类型</strong></p>
+<p>有时为了书写方便，可以声明一个函数指针数据类型<br>在函数指针变量说明前面，加上typedef，就变成了函数指针类型。<br>typedef &lt;数据类型&gt; （*&lt;函数指针类型名称&gt;)（&lt;参数说明列表&gt;)；</p>
+<p>typedef int (*MFunc)(int, int);</p>
+<p>int test(int a, int b, MFunc pFunc);<br>int plus(int a, int b); //函数声明<br>int minus(int, int);    //函数声明，缺省形参名称</p>
+<p><strong>函数指针数组</strong></p>
+<p>函数指针数组是一个包含若干个函数指针变量的数组。</p>
+<p>&lt;数据类型&gt; ( * &lt;函数指针数组名称&gt; [&lt;大小&gt;] ) ( &lt;参数说明列表&gt; )；<br>&lt;大小&gt;是指函数指针数组元素的个数。</p>
+<img src="/2023/02/19/函数指针与指针函数/image-20230219221229840.png" title="[函数指针与指针函数]">
+<p><strong>函数指针程序举例</strong></p>
+<img src="/2023/02/19/函数指针与指针函数/image-20230219221245616.png" title="[函数指针与指针函数]">
+<p><strong>函数回调</strong></p>
+<p>本质上就是一个函数指针的应用场景而已</p>
+<p>回调函数主要结构有三部分组成：主函数、调用函数和被调函数，主要核心目的值在为了完成某个功能之后给与消息通知，或者是功能触发</p>
+<p>因为可以把调用者与被调用者分开。调用者不关心谁是被调用者，所有它需知道的，只是存在一个具有某种特定原型、某些限制条件（如返回值为int）的被调用函数</p>
+<p>如果想知道回调函数在实际中有什么作用，先假设有这样一种情况，我们要编写一个库，它提供了某些排序算法的实现，如冒泡排序、快速排序、归并排序等等，但为使库更加通用，不想在函数中嵌入排序逻辑，而让使用者来实现相应的逻辑；或者，想让库可用于多种数据类型（int、float、string），此时，该怎么办呢？可以使用函数指针，并进行回调</p>
+<p>回调函数的优点</p>
+<p>可以让实现方，根据回调方的多种形态进行不同的处理和操作。</p>
+<p>可以让实现方，根据自己的需要定制回调方的不同形态。</p>
+<p>可以将耗时的操作隐藏在回调方，不影响实现方其它信息的展示。</p>
+<p>让代码的逻辑更加集中，更加易读。</p>
+<p><strong>总结</strong></p>
+<p>1.函数返回值返回是由条件的</p>
+<p>2.函数的参数传递，数组条件下会有降级问题出现</p>
+<p>3.函数实际上是有执行地址的</p>
+<p>4.回调函数就是函数指针的一种应用</p>
+
+
+            
+            <div class="post-reward">
+                <a id="rewardBtn" href="javascript:;" class="post-reward-btn waves-effect waves-circle waves-light">赏</a>
+            </div>
+            
+            
+            <blockquote>
+                <p>
+                本文地址：
+                <a href="http://www.yppcat.top/2023/02/19/函数指针与指针函数/" target="_blank" rel="external">http://www.yppcat.top/2023/02/19/函数指针与指针函数/</a>
+                </p>
+                <footer><cite><a href="http://www.yppcat.top">@Eric笔记</a></cite></footer>
+            </blockquote>
+            </div>
+            
+<nav class="post-nav">
+  
+
+  
+    <div class="waves-block waves-effect next fr">
+      <a href="/2023/02/19/指针详解/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">指针详解</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+            
+            
+<div class="duoshuo">
+	<!-- 多说评论框 start -->
+	<div class="ds-thread" data-thread-key="函数指针与指针函数" data-title="函数指针与指针函数" data-url="http://www.yppcat.top/2023/02/19/函数指针与指针函数/index.html"></div>
+	<!-- 多说评论框 end -->
+	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+	<script type="text/javascript">
+	var duoshuoQuery = {short_name:"ysblog"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+	<!-- 多说公共JS代码 end -->
+</div>
+
+
+
+
+
+        </div>
+    </div>
+</article>
+
+<div id="reward" class="reward-lay">
+    <a class="reward-off" id="rewardOff" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        谢谢老板~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <ul class="reward-items">
+        
+        <li>
+            <img src="/img/wechat.jpg" title="微信打赏二维码" alt="微信打赏二维码">
+            <p>微信</p>
+        </li>
+        
+
+        
+    </ul>
+</div>
+
+    </div>
+  </main>
+<div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+<script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+
+<script src="/js/main.js"></script>
+
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<script type="text/template" id="search-tpl">
+<li class="item">
+    <a href="/{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</script>
+
+<script src="/js/search.js"></script>
+
+
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script type="text/javascript" async src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

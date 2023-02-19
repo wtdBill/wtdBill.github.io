@@ -124,6 +124,184 @@
       <ul class="post-list">
   
     <li class="post-list-item">
+        <article id="post-JVM指令手册" class="article article-type-post" itemprop="blogPost">
+     
+
+
+  
+    <h3 class="post-title" itemprop="name">
+      <a class="post-title-link" href="/2022/11/20/JVM指令手册/">JVM指令手册</a>
+    </h3>
+  
+
+
+
+    <div class="post-meta">
+        <time datetime="2022-11-20T13:30:37.000Z" itemprop="datePublished" class="post-time">
+  2022-11-20
+</time>
+
+        
+
+
+    </div>
+
+    <div class="post-content" id="post-content" itemprop="postContent">
+
+    
+           JVM指令手册  ## 一、栈和局部变量操作 
+ ### 将常量压入栈的指令 
+ aconst_null 将null对象引用压入栈 
+ iconst_m1 将int类型常量-1压入栈 
+ iconst_0 将int类型常量0压入栈 
+ iconst_1 将int类型常量1压入栈 
+ iconst_2 将int类型常量2压入栈 
+ iconst_3 将int类型常量3压入栈 
+ iconst_
+    
+    
+        <a href="/2022/11/20/JVM指令手册/" class="post-more waves-effect waves-button">
+            阅读全文...
+        </a>
+    </div>
+    
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JVM/">JVM</a></li></ul>
+
+</article>
+
+    </li>
+  
+    <li class="post-list-item">
+        <article id="post-class字节码文件结构" class="article article-type-post" itemprop="blogPost">
+     
+
+
+  
+    <h3 class="post-title" itemprop="name">
+      <a class="post-title-link" href="/2022/11/20/class字节码文件结构/">class字节码文件结构</a>
+    </h3>
+  
+
+
+
+    <div class="post-meta">
+        <time datetime="2022-11-20T13:30:19.000Z" itemprop="datePublished" class="post-time">
+  2022-11-20
+</time>
+
+        
+
+
+    </div>
+
+    <div class="post-content" id="post-content" itemprop="postContent">
+
+    
+           class字节码文件结构  ## class字节码文件结构 
+ | 类型      | 名称        | 说明          | 长度  | 数量         | 
+ | ————– | ——————- | ———————- | ——- | ——————— | 
+ | u4       | magic        | 魔数,识别Class文件格式 | 4个字节 | 1    
+    
+    
+        <a href="/2022/11/20/class字节码文件结构/" class="post-more waves-effect waves-button">
+            阅读全文...
+        </a>
+    </div>
+    
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JVM/">JVM</a></li></ul>
+
+</article>
+
+    </li>
+  
+    <li class="post-list-item">
+        <article id="post-字节码文件与类加载" class="article article-type-post" itemprop="blogPost">
+     
+
+
+  
+    <h3 class="post-title" itemprop="name">
+      <a class="post-title-link" href="/2022/11/20/字节码文件与类加载/">字节码文件与类加载</a>
+    </h3>
+  
+
+
+
+    <div class="post-meta">
+        <time datetime="2022-11-20T13:11:06.000Z" itemprop="datePublished" class="post-time">
+  2022-11-20
+</time>
+
+        
+
+
+    </div>
+
+    <div class="post-content" id="post-content" itemprop="postContent">
+
+    
+          Dalvik虚拟机 执行的是dex字节码，解释执行。从Android 2.2版本开始，支持在程序运行的过程中进行选择热点代码（经常执行的代码）进行编译或者优化。 
+ 而 ART（Android Runtime）  是在 Android 4.4 中引入的一个开发者选项，也是 Android 5.0 及更高版本的默认 Android 运行时。 ART虚拟机执行的是本地机器码 。Android的运行
+    
+    
+        <a href="/2022/11/20/字节码文件与类加载/" class="post-more waves-effect waves-button">
+            阅读全文...
+        </a>
+    </div>
+    
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JVM/">JVM</a></li></ul>
+
+</article>
+
+    </li>
+  
+    <li class="post-list-item">
+        <article id="post-GC及调优" class="article article-type-post" itemprop="blogPost">
+     
+
+
+  
+    <h3 class="post-title" itemprop="name">
+      <a class="post-title-link" href="/2022/11/18/GC及调优/">GC及调优</a>
+    </h3>
+  
+
+
+
+    <div class="post-meta">
+        <time datetime="2022-11-18T11:25:19.000Z" itemprop="datePublished" class="post-time">
+  2022-11-18
+</time>
+
+        
+
+
+    </div>
+
+    <div class="post-content" id="post-content" itemprop="postContent">
+
+    
+            GC核心概述    Java自动化内存管理  
+ 好处：    无需开发人员手动参与内存分配与回收，降低内存泄漏与溢出风险 
+ 缺点：    弱化了开发人员在程序出现内存溢出时定位问题和解决问题的能 
+ 对于我们现在的意义： 我们必须堆这些自动化技术的原理进行了解，学会如何去监控和调节 
+  垃圾 ：指在程序中没有任何指针指向的对象，这个对象就是需要被回收的垃圾 
+  内存碎片概念  
+ 
+    
+    
+        <a href="/2022/11/18/GC及调优/" class="post-more waves-effect waves-button">
+            阅读全文...
+        </a>
+    </div>
+    
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JVM/">JVM</a></li></ul>
+
+</article>
+
+    </li>
+  
+    <li class="post-list-item">
         <article id="post-Dalvik虚拟机与ART虚拟机" class="article article-type-post" itemprop="blogPost">
      
 
@@ -303,174 +481,11 @@
 
     </li>
   
-    <li class="post-list-item">
-        <article id="post-kotlin笔记-标准函数" class="article article-type-post" itemprop="blogPost">
-     
-
-
-  
-    <h3 class="post-title" itemprop="name">
-      <a class="post-title-link" href="/2021/12/08/kotlin笔记-标准函数/">kotlin笔记-标准函数</a>
-    </h3>
-  
-
-
-
-    <div class="post-meta">
-        <time datetime="2021-12-08T14:59:06.000Z" itemprop="datePublished" class="post-time">
-  2021-12-08
-</time>
-
-        
-
-
-    </div>
-
-    <div class="post-content" id="post-content" itemprop="postContent">
-
-    
-           let函数会将参数传入到lambda作用域中，返回作用域的最后一行       1   2   3   4        val  res = listOf( 1 , 2 , 3 ).first().let &#123;       it * it   &#125;   println(res)       
-   also函数会返回接收者对象，作用域和功能类似，传入参数       1  
-    
-    
-        <a href="/2021/12/08/kotlin笔记-标准函数/" class="post-more waves-effect waves-button">
-            阅读全文...
-        </a>
-    </div>
-    
-	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/kotlin/">kotlin</a></li></ul>
-
-</article>
-
-    </li>
-  
-    <li class="post-list-item">
-        <article id="post-kotlin笔记" class="article article-type-post" itemprop="blogPost">
-     
-
-
-  
-    <h3 class="post-title" itemprop="name">
-      <a class="post-title-link" href="/2021/12/08/kotlin笔记/">kotlin笔记-列表</a>
-    </h3>
-  
-
-
-
-    <div class="post-meta">
-        <time datetime="2021-12-08T14:18:06.000Z" itemprop="datePublished" class="post-time">
-  2021-12-08
-</time>
-
-        
-
-
-    </div>
-
-    <div class="post-content" id="post-content" itemprop="postContent">
-
-    
-           kotlin普通列表       1   2   3   4        val  list = listOf( "jack" ,  "lucy" ,  "black" )   println(list.getOrElse( 4 ) &#123;  "UnKnown"  &#125;)   println(list.getOrNull( 4 ) ?:  "UnKnown" )   prin
-    
-    
-        <a href="/2021/12/08/kotlin笔记/" class="post-more waves-effect waves-button">
-            阅读全文...
-        </a>
-    </div>
-    
-	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Kotlin/">Kotlin</a></li></ul>
-
-</article>
-
-    </li>
-  
-    <li class="post-list-item">
-        <article id="post-Activity启动流程" class="article article-type-post" itemprop="blogPost">
-     
-
-
-  
-    <h3 class="post-title" itemprop="name">
-      <a class="post-title-link" href="/2020/07/29/Activity启动流程/">Activity启动流程</a>
-    </h3>
-  
-
-
-
-    <div class="post-meta">
-        <time datetime="2020-07-29T03:40:07.000Z" itemprop="datePublished" class="post-time">
-  2020-07-29
-</time>
-
-        
-
-
-    </div>
-
-    <div class="post-content" id="post-content" itemprop="postContent">
-
-    
-         我们看一下startActivity方法中到底发生了什么： 
-      1   2   3   4   5   6   7   8   9   10   11   12   13   14   15   16   17   18   19   20   21   22   23   24   25   26   27   28   29   30   31   32   33   34   3
-    
-    
-        <a href="/2020/07/29/Activity启动流程/" class="post-more waves-effect waves-button">
-            阅读全文...
-        </a>
-    </div>
-    
-	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/android/">android</a></li></ul>
-
-</article>
-
-    </li>
-  
-    <li class="post-list-item">
-        <article id="post-Okhttp源码分析" class="article article-type-post" itemprop="blogPost">
-     
-
-
-  
-    <h3 class="post-title" itemprop="name">
-      <a class="post-title-link" href="/2020/07/27/Okhttp源码分析/">Okhttp源码分析</a>
-    </h3>
-  
-
-
-
-    <div class="post-meta">
-        <time datetime="2020-07-27T09:10:53.000Z" itemprop="datePublished" class="post-time">
-  2020-07-27
-</time>
-
-        
-
-
-    </div>
-
-    <div class="post-content" id="post-content" itemprop="postContent">
-
-    
-         首先看Okhttp发起一个异步的请求： 
-      1   2   3   4   5   6   7   8   9   10   11   12   13   14   15   16   17   18   19   20   21   22   23   24         private   void   testOkHttp  ()   &#123;              O
-    
-    
-        <a href="/2020/07/27/Okhttp源码分析/" class="post-more waves-effect waves-button">
-            阅读全文...
-        </a>
-    </div>
-    
-	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/android/">android</a></li></ul>
-
-</article>
-
-    </li>
-  
 </ul>
 
 <nav id="page-nav">
     <div class="inner">
-    <a class="extend prev" rel="prev" href="/page/2/">上一页</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><a class="extend next" rel="next" href="/page/4/">下一页</a>
+    <a class="extend prev" rel="prev" href="/page/2/">上一页</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><span class="space">&hellip;</span><a class="page-number" href="/page/8/">8</a><a class="extend next" rel="next" href="/page/4/">下一页</a>
     </div>
 </nav>
 

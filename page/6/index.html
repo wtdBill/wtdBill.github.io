@@ -124,6 +124,174 @@
       <ul class="post-list">
   
     <li class="post-list-item">
+        <article id="post-HashMap实现原理" class="article article-type-post" itemprop="blogPost">
+     
+
+
+  
+    <h3 class="post-title" itemprop="name">
+      <a class="post-title-link" href="/2019/04/14/HashMap实现原理/">HashMap实现原理</a>
+    </h3>
+  
+
+
+
+    <div class="post-meta">
+        <time datetime="2019-04-14T14:15:21.000Z" itemprop="datePublished" class="post-time">
+  2019-04-14
+</time>
+
+        
+
+
+    </div>
+
+    <div class="post-content" id="post-content" itemprop="postContent">
+
+    
+          HashMap原理  
+ 几个注意点： 
+  哈希冲突： 当插入的Entry越来越多时，不同的Key值通过哈希函数算出来的index值肯定会有冲突，此时就可以利用链表来解决。 其实HaspMap数组的每一个元素不止是一个Entry对象，也是一个链表的头节点，每一个Entry对象通过Next指针指向下一个Entry对象，这样，当新的Entry的hash值与之前的存在冲突时，只需要插入到对应点链表
+    
+    
+        <a href="/2019/04/14/HashMap实现原理/" class="post-more waves-effect waves-button">
+            阅读全文...
+        </a>
+    </div>
+    
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Java/">Java</a></li></ul>
+
+</article>
+
+    </li>
+  
+    <li class="post-list-item">
+        <article id="post-Android文件路径详解" class="article article-type-post" itemprop="blogPost">
+     
+
+
+  
+    <h3 class="post-title" itemprop="name">
+      <a class="post-title-link" href="/2019/04/13/Android文件路径详解/">Android文件路径详解</a>
+    </h3>
+  
+
+
+
+    <div class="post-meta">
+        <time datetime="2019-04-13T05:11:50.000Z" itemprop="datePublished" class="post-time">
+  2019-04-13
+</time>
+
+        
+
+
+    </div>
+
+    <div class="post-content" id="post-content" itemprop="postContent">
+
+    
+         Android磁盘存储可以分为两类，内部存储和外部存储。 
+  内部存储： 内部存储不是内存，是位于系统磁盘中一个独特的位置。/data/文件夹就是内部存储，内部存储中一般存储一些应用数据，如apk,sharedpreference,database数据，webView缓存和图片缓存等。内部存储中还有一个文件夹，每个应用都有一个，里面中的数据在应用卸载之后就会删除。结构如：/data/data/
+    
+    
+        <a href="/2019/04/13/Android文件路径详解/" class="post-more waves-effect waves-button">
+            阅读全文...
+        </a>
+    </div>
+    
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/android/">android</a></li></ul>
+
+</article>
+
+    </li>
+  
+    <li class="post-list-item">
+        <article id="post-单例模式" class="article article-type-post" itemprop="blogPost">
+     
+
+
+  
+    <h3 class="post-title" itemprop="name">
+      <a class="post-title-link" href="/2019/04/12/单例模式/">单例模式</a>
+    </h3>
+  
+
+
+
+    <div class="post-meta">
+        <time datetime="2019-04-12T14:47:57.000Z" itemprop="datePublished" class="post-time">
+  2019-04-12
+</time>
+
+        
+
+
+    </div>
+
+    <div class="post-content" id="post-content" itemprop="postContent">
+
+    
+         单例模式：保证一个类仅有一个实例，并提供一个访问它的全局访问点。 
+ 单例模式的６中写法： 
+  饿汉模式： 在类加载时就完成了初始化，所以加载较慢，但是对象的获取速度快，避免了多线程同步问题。 
+      1   2   3   4   5   6   7   8   9   10   11   12       public class SingleTon &#123;          
+    
+    
+        <a href="/2019/04/12/单例模式/" class="post-more waves-effect waves-button">
+            阅读全文...
+        </a>
+    </div>
+    
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Java/">Java</a></li></ul>
+
+</article>
+
+    </li>
+  
+    <li class="post-list-item">
+        <article id="post-AsyncTask原理分析" class="article article-type-post" itemprop="blogPost">
+     
+
+
+  
+    <h3 class="post-title" itemprop="name">
+      <a class="post-title-link" href="/2019/04/12/AsyncTask原理分析/">AsyncTask原理分析</a>
+    </h3>
+  
+
+
+
+    <div class="post-meta">
+        <time datetime="2019-04-12T01:21:57.000Z" itemprop="datePublished" class="post-time">
+  2019-04-12
+</time>
+
+        
+
+
+    </div>
+
+    <div class="post-content" id="post-content" itemprop="postContent">
+
+    
+         AsyncTask是一个抽象泛型类，它有三个参数，分别是Params,Progress和Result，其中Params为参数类型,Progress为后台执行任务的进度，Result为返回的结果的类型。如果不需要某个参数，可以将其设置为Void类型。 
+  AsyncTask中有四个核心的方法:  
+  onPreExecute ：在主线程中执行，一般在任务执行前做准备工作，比如对UI做一些标记。
+    
+    
+        <a href="/2019/04/12/AsyncTask原理分析/" class="post-more waves-effect waves-button">
+            阅读全文...
+        </a>
+    </div>
+    
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/android/">android</a></li></ul>
+
+</article>
+
+    </li>
+  
+    <li class="post-list-item">
         <article id="post-多线程" class="article article-type-post" itemprop="blogPost">
      
 
@@ -297,185 +465,11 @@
 
     </li>
   
-    <li class="post-list-item">
-        <article id="post-表" class="article article-type-post" itemprop="blogPost">
-     
-
-
-  
-    <h3 class="post-title" itemprop="name">
-      <a class="post-title-link" href="/2019/03/25/表/">表</a>
-    </h3>
-  
-
-
-
-    <div class="post-meta">
-        <time datetime="2019-03-25T14:22:11.000Z" itemprop="datePublished" class="post-time">
-  2019-03-25
-</time>
-
-        
-
-
-    </div>
-
-    <div class="post-content" id="post-content" itemprop="postContent">
-
-    
-         1.数组 
- 特点： 
- 在内存中，数组是一块连续的区域。  
- 数组需要预留空间，在使用前要先申请占内存的大小，可能会浪费内存空间。 
- 插入数据和删除数据效率低，插入数据时，这个位置后面的数据在内存中都要向后移。删除数据时，这个数据后面的数据都要往前移动。 
- 随机读取效率很高。因为数组是连续的，知道每一个数据的内存地址，可以直接找到给地址的数据。 
- 并且不利于扩展，数组定义的空间不够时要
-    
-    
-        <a href="/2019/03/25/表/" class="post-more waves-effect waves-button">
-            阅读全文...
-        </a>
-    </div>
-    
-	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/数据结构/">数据结构</a></li></ul>
-
-</article>
-
-    </li>
-  
-    <li class="post-list-item">
-        <article id="post-安卓内存泄漏" class="article article-type-post" itemprop="blogPost">
-     
-
-
-  
-    <h3 class="post-title" itemprop="name">
-      <a class="post-title-link" href="/2019/03/20/安卓内存泄漏/">安卓内存泄漏</a>
-    </h3>
-  
-
-
-
-    <div class="post-meta">
-        <time datetime="2019-03-20T12:44:05.000Z" itemprop="datePublished" class="post-time">
-  2019-03-20
-</time>
-
-        
-
-
-    </div>
-
-    <div class="post-content" id="post-content" itemprop="postContent">
-
-    
-         内存泄漏（Memory Leak）是指程序中己动态分配的堆内存由于某种原因程序未释放或无法释放，造成系统内存的浪费，导致程序运行速度减慢甚至系统崩溃等严重后果。 
- 安卓中常见的容易导致内存泄露的原因有以下几种： 
- 1.非静态内部类的使用； 
- eg: 
-      1   2   3   4   5   6   7   8   9   10   11   12   13   14   15 
-    
-    
-        <a href="/2019/03/20/安卓内存泄漏/" class="post-more waves-effect waves-button">
-            阅读全文...
-        </a>
-    </div>
-    
-	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/android/">android</a></li></ul>
-
-</article>
-
-    </li>
-  
-    <li class="post-list-item">
-        <article id="post-安卓序列化" class="article article-type-post" itemprop="blogPost">
-     
-
-
-  
-    <h3 class="post-title" itemprop="name">
-      <a class="post-title-link" href="/2019/03/12/安卓序列化/">安卓序列化</a>
-    </h3>
-  
-
-
-
-    <div class="post-meta">
-        <time datetime="2019-03-12T14:06:12.000Z" itemprop="datePublished" class="post-time">
-  2019-03-12
-</time>
-
-        
-
-
-    </div>
-
-    <div class="post-content" id="post-content" itemprop="postContent">
-
-    
-         Serializable是 序列化的意思，表示将一个对象转换成可存储或可传输的状态。序列化后的对象可以在网络上进行传输，也可以存储到本地。至于序列化的方式，只需要让一个类实现该接口即可。 
- eg: 
-      1   2   3   4   5   6   7   8   9   10   11   12   13   14   15   16   17   18   19   20   2
-    
-    
-        <a href="/2019/03/12/安卓序列化/" class="post-more waves-effect waves-button">
-            阅读全文...
-        </a>
-    </div>
-    
-	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/android/">android</a></li></ul>
-
-</article>
-
-    </li>
-  
-    <li class="post-list-item">
-        <article id="post-ContentProvider用法详解" class="article article-type-post" itemprop="blogPost">
-     
-
-
-  
-    <h3 class="post-title" itemprop="name">
-      <a class="post-title-link" href="/2019/03/09/ContentProvider用法详解/">ContentProvider用法详解</a>
-    </h3>
-  
-
-
-
-    <div class="post-meta">
-        <time datetime="2019-03-09T10:22:28.000Z" itemprop="datePublished" class="post-time">
-  2019-03-09
-</time>
-
-        
-
-
-    </div>
-
-    <div class="post-content" id="post-content" itemprop="postContent">
-
-    
-         在安卓中，我们可以使用内容提供器ContentResolver来获取其他应用程序的数据： 
-  Cursor cursor = getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI,null,null,null,null);  
-  public final @Nullable Cursor q
-    
-    
-        <a href="/2019/03/09/ContentProvider用法详解/" class="post-more waves-effect waves-button">
-            阅读全文...
-        </a>
-    </div>
-    
-	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/android/">android</a></li></ul>
-
-</article>
-
-    </li>
-  
 </ul>
 
 <nav id="page-nav">
     <div class="inner">
-    <a class="extend prev" rel="prev" href="/page/5/">上一页</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><span class="page-number current">6</span><a class="page-number" href="/page/7/">7</a><a class="extend next" rel="next" href="/page/7/">下一页</a>
+    <a class="extend prev" rel="prev" href="/page/5/">上一页</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><span class="page-number current">6</span><a class="page-number" href="/page/7/">7</a><a class="page-number" href="/page/8/">8</a><a class="extend next" rel="next" href="/page/7/">下一页</a>
     </div>
 </nav>
 
